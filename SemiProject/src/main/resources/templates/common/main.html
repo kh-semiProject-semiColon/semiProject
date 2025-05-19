@@ -1,14 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:text="#{app.name}">messages.properties 값 출력</title>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GoStudy</title>
+    <link href="/css/main.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- common/header 추가-->
+    <th:block th:replace="~{common/header}"></th:block>
 
-</head>
-<body>
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Search Section -->
+      <div class="search-section">
+        <div class="search-bar">
+          <input type="text" class="search-input" placeholder="검색" />
+        </div>
+        <div class="partner-links">
+          <a href="#">
+            <img src="/images/khlogo.png" alt="KH로고" />
+          </a>
+          <a href="#">
+            <img src="/images/gov24logo.png" alt="고용24로고" />
+          </a>
+        </div>
+      </div>
 
-	<h1>semi</h1>
-  
-</body>
+      <!-- Calendar Section - API로 대체될 부분 -->
+      <div class="calendar-section">
+        <!-- 이 부분은 API로 대체될 예정입니다 -->
+      </div>
+
+      <!-- 메인 콘텐츠 레이아웃 -->
+      <div class="main-layout">
+        <!-- 왼쪽 영역: 달력 -->
+        <div class="calendar-container">
+          <!-- Calendar Section - API로 대체될 부분 -->
+          <div class="calendar-section">
+            <!-- 이 부분은 API로 대체될 예정입니다 -->
+          </div>
+        </div>
+
+        <!-- 오른쪽 영역: 로그인 및 자습대장 -->
+        <div class="side-container">
+          <!-- 로그인 섹션 -->
+          <div class="login-section">
+            <div class="login-form">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="이메일" />
+              </div>
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="비밀번호"
+                />
+              </div>
+              <button>로그인</button>
+              <div class="form-group checkbox-group">
+                <input type="checkbox" id="idCheckbox" />
+                <label for="idCheckbox">ID 저장</label>
+                <a href="#" style="margin-left: auto; text-decoration: none"
+                  >ID / PW 찾기</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- 자습대장 섹션 -->
+          <div class="study-log-section">
+            <h3 class="study-log-header">자습대장 적으러 가기</h3>
+            <div class="btn-group">
+              <a href="#" class="btn btn-primary">등록</a>
+              <a href="#" class="btn btn-secondary">수정</a>
+            </div>
+          </div>
+
+          <!-- 스터디원 모집 카드 -->
+          <div class="recruitment-card">
+            <h4 class="recruitment-title">스터디원 모집중!</h4>
+            <ul class="recruitment-details">
+              <li>모코코의 파이썬 스터디</li>
+              <li>스터디 생성일: 2025.05.16</li>
+              <li>기간: 2개월</li>
+            </ul>
+            <img
+              src="/path/to/mococo.png"
+              alt="모코코"
+              class="recruitment-icon"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Study Status Section -->
+      <div class="study-status-section">
+        <div class="study-status-card">
+          <div class="study-status-info">
+            <h3 class="study-status-title">레모나 스터디 현황</h3>
+            <ul class="study-status-details">
+              <li>방향성 : 과배업</li>
+              <li>생성일 : 2025.05.12</li>
+              <li>운영기간 : 3개월</li>
+              <li>진행 : 3 / 5 명</li>
+            </ul>
+          </div>
+          <img
+            src="/path/to/study-image.jpg"
+            alt="스터디 이미지"
+            class="study-status-image"
+          />
+          <div class="carousel-controls">
+            <button class="carousel-control prev">‹</button>
+            <button class="carousel-control next">›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- common/footer 추가-->
+    <th:block th:replace="~{common/footer}"></th:block>
+
+    <script>
+      // 기본 JavaScript 동작을 위한 공간
+      document.addEventListener("DOMContentLoaded", function () {
+        // Calendar event listeners
+        const todayBtn = document.querySelector(".today-btn");
+        if (todayBtn) {
+          todayBtn.addEventListener("click", function () {
+            // 오늘 날짜로 이동하는 기능 구현 (실제 구현 시)
+            alert("오늘 날짜로 이동합니다.");
+          });
+        }
+
+        // Carousel controls
+        const prevBtn = document.querySelector(".carousel-control.prev");
+        const nextBtn = document.querySelector(".carousel-control.next");
+
+        if (prevBtn && nextBtn) {
+          prevBtn.addEventListener("click", function () {
+            // 이전 스터디 보기 (실제 구현 시)
+            alert("이전 스터디로 이동합니다.");
+          });
+
+          nextBtn.addEventListener("click", function () {
+            // 다음 스터디 보기 (실제 구현 시)
+            alert("다음 스터디로 이동합니다.");
+          });
+        }
+      });
+    </script>
+  </body>
 </html>
