@@ -154,6 +154,7 @@ nav a:hover::after {
 }
 .btn-group {
   display: flex;
+  justify-content: space-between;
   gap: 10px;
   margin-bottom: 20px;
 }
@@ -168,10 +169,12 @@ nav a:hover::after {
 }
 .btn-primary {
   background-color: #4285f4;
+  width: 100px;
   color: white;
 }
 .btn-secondary {
   background-color: #5c6bc0;
+  width: 100px;
   color: white;
 }
 .recruitment-card {
