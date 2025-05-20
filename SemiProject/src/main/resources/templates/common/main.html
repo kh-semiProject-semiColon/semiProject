@@ -52,58 +52,135 @@
 
         <!-- 오른쪽 영역: 로그인 및 자습대장 -->
         <div class="side-container">
-          <!-- 로그인 섹션 -->
-          <div class="login-section">
-            <div class="login-form">
-              <div class="form-group">
-                <input type="text" class="form-control" placeholder="이메일" />
+          <!-- 로그인 이전 -->
+          <div class="login-section" th:if="${session.loginMember == null}">
+            <form action="/member/login" method="post" id="login-form">
+              <div class="login-form">
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="memberEmail"
+                    placeholder="이메일"
+                  />
+                </div>
+                <div class="form-group">
+                  <input
+                    type="password"
+                    class="form-control"
+                    name="memberPw"
+                    placeholder="비밀번호"
+                  />
+                </div>
+                <button
+                  style="
+                    height: 40px;
+                    background-color: #4aa7ff;
+                    border: none;
+                    color: #f8f9ff;
+                    border-radius: 15px;
+                    cursor: pointer;
+                  "
+                  class="login-Btn"
+                >
+                  로그인
+                </button>
+                <div class="form-group checkbox-group">
+                  <div>
+                    <input type="checkbox" id="idCheckbox" />
+                    <label for="idCheckbox" style="color: #25272b"
+                      >ID 저장</label
+                    >
+                  </div>
+                  <div>
+                    <a
+                      href="#"
+                      style="
+                        margin-left: auto;
+                        text-decoration: none;
+                        border-bottom: 1px solid #25272b;
+                      "
+                      class="find-idPw"
+                      >회원가입</a
+                    >
+                    <a
+                      href="#"
+                      class="find-idPw"
+                      style="
+                        margin-left: 10px;
+                        text-decoration: none;
+                        border-bottom: 1px solid #25272b;
+                      "
+                      >ID / PW 찾기</a
+                    >
+                  </div>
+                </div>
               </div>
-              <div class="form-group">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="비밀번호"
+            </form>
+          </div>
+
+          <!-- 로그인 이후 -->
+
+          <!-- Profile Section - Only shown when logged in -->
+          <div class="profile-section" th:if="${session.loginMember != null}">
+            <div class="profile-container">
+              <!-- Profile Image - Will load from DB -->
+              <div class="profile-image">
+                <img
+                  th:src="${session.loginMember.profileImg != null ? session.loginMember.profileImg : '/images/default-profile.png'}"
+                  alt="프로필 이미지"
+                  id="profileImage"
                 />
               </div>
-              <button
-                style="
-                  height: 40px;
-                  background-color: #4aa7ff;
-                  border: none;
-                  color: #f8f9ff;
-                  border-radius: 15px;
-                  cursor: pointer;
-                "
-              >
-                로그인
-              </button>
-              <div class="form-group checkbox-group">
-                <div>
-                  <input type="checkbox" id="idCheckbox" />
-                  <label for="idCheckbox" style="color: #25272b">ID 저장</label>
-                </div>
-                <div>
+
+              <!-- User Information -->
+              <div class="profile-info">
+                <p class="profile-name">
+                  <span th:text="${session.loginMember.memberNickname}"
+                    >성원숭</span
+                  >님
+                </p>
+                <p
+                  class="profile-email"
+                  th:text="${session.loginMember.memberEmail}"
+                >
+                  user01@email.com
+                </p>
+
+                <!-- Action Buttons -->
+                <div class="profile-actions">
                   <a
                     href="#"
+                    class="btn btn-primary"
+                    id="createStudyBtn"
                     style="
-                      margin-left: auto;
-                      text-decoration: none;
-                      border-bottom: 1px solid #25272b;
+                      font-size: 12px;
+                      width: 50%;
+                      height: 40px;
+                      border-radius: 50px;
                     "
-                    class="find-idPw"
-                    >회원가입</a
+                    >스터디생성</a
                   >
                   <a
                     href="#"
-                    class="find-idPw"
+                    class="btn btn-secondary"
+                    id="myPageBtn"
                     style="
-                      margin-left: 10px;
-                      text-decoration: none;
-                      border-bottom: 1px solid #25272b;
+                      font-size: 12px;
+                      width: 50%;
+                      height: 40px;
+                      border-radius: 50px;
                     "
-                    >ID / PW 찾기</a
+                    >마이페이지</a
                   >
                 </div>
+              </div>
+
+              <!-- Logout Button -->
+              <div class="logout-container">
+                <a href="/member/logout" class="logout-btn" id="logoutBtn"
+                  >로그아웃</a
+                >
               </div>
             </div>
           </div>
@@ -112,7 +189,13 @@
           <div class="study-log-section">
             <h3 class="study-log-header">자습대장 적으러 가기</h3>
             <div class="btn-group">
-              <a href="#" class="btn btn-primary">등록</a>
+              <a
+                href="/popup/Excel.html"
+                target="_blank"
+                onclick="window.open(this.href, '_blank', 'width=600,height=400,scrollbars=yes,left=600,top=100'); return false;"
+                class="btn btn-secondary"
+                >등록</a
+              >
               <a
                 href="https://docs.google.com/spreadsheets/d/1FczIOY0FEsi1EaTsx-sz2uBtwLv-L5lk2CPMY26M4qw/edit?gid=933226182#gid=933226182"
                 onclick="window.open(this.href, '_blank', 'width=550,height=800,left=600,top=100'); return false;"
