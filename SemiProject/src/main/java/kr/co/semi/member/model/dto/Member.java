@@ -10,5 +10,16 @@ import lombok.NoArgsConstructor;
 public class Member {
 	
 	private int memberNo;
-
+	private int studyNo;
+	private String memberEmail;
+	private String memberNickname;
+	private String memberTel;
+	private String memberAddress;
+	private String profileImg;
+	private String memberDelFl;
+	private String authority;
+	private String enrollDate;
+	private String memberMajor;
+	private String memberIntroduce;
+	private String memberName;
 }

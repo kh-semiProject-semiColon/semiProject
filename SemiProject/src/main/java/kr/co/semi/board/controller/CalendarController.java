@@ -1,5 +1,6 @@
 package kr.co.semi.board.controller;
 
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -49,37 +50,67 @@ public class CalendarController {
         }).collect(Collectors.toList());
     }
 
-    /**
-     * 캘린더 일정 추가
-     */
     @PostMapping("/calendarSave")
     public Calendar calendarSave(@RequestBody Map<String, Object> map,
-    						@SessionAttribute("loginMember") Member loginMember) throws Exception {
-    	
+        						@SessionAttribute(value = "loginMember", required = false) Member loginMember) throws Exception {
+        
+        if (loginMember == null) {
+            throw new IllegalStateException("로그인이 필요합니다."); // 또는 테스트 시 더미 데이터 설정 가능
+        }
+
         Calendar vo = new Calendar();
         vo.setTitle((String) map.get("title"));
-        
-        // UTC → KST 변환
-        ZonedDateTime startUTC = ZonedDateTime.parse((String) map.get("start")).withZoneSameInstant(KST_ZONE);
-        vo.setStart1(startUTC.format(KST_FORMATTER));
 
+        // start 날짜 파싱
+        if (map.get("start") != null) {
+            Instant startInstant = Instant.parse((String) map.get("start"));
+            ZonedDateTime startKST = startInstant.atZone(ZoneId.of("UTC")).withZoneSameInstant(KST_ZONE);
+            vo.setStart1(startKST.format(KST_FORMATTER));
+        }
+
+        // end 날짜 파싱
         if (map.get("end") != null) {
-            ZonedDateTime endUTC = ZonedDateTime.parse((String) map.get("end")).withZoneSameInstant(KST_ZONE);
-            vo.setEnd(endUTC.format(KST_FORMATTER));
+            Instant endInstant = Instant.parse((String) map.get("end"));
+            ZonedDateTime endKST = endInstant.atZone(ZoneId.of("UTC")).withZoneSameInstant(KST_ZONE);
+            vo.setEnd(endKST.format(KST_FORMATTER));
         }
 
         vo.setMemberNo(loginMember.getMemberNo());
+
         service.calendarSave(vo);
         return vo;
     }
+//    /**
+//     * 캘린더 일정 추가
+//     */
+//    @PostMapping("/calendarSave")
+//    public Calendar calendarSave(@RequestBody Map<String, Object> map,
+//    						@SessionAttribute("loginMember") Member loginMember) throws Exception {
+//    	
+//        Calendar vo = new Calendar();
+//        vo.setTitle((String) map.get("title"));
+//        
+//        // UTC → KST 변환
+//        ZonedDateTime startUTC = ZonedDateTime.parse((String) map.get("start")).withZoneSameInstant(KST_ZONE);
+//        vo.setStart1(startUTC.format(KST_FORMATTER));
+//
+//        if (map.get("end") != null) {
+//            ZonedDateTime endUTC = ZonedDateTime.parse((String) map.get("end")).withZoneSameInstant(KST_ZONE);
+//            vo.setEnd(endUTC.format(KST_FORMATTER));
+//        }
+//
+//        vo.setMemberNo(loginMember.getMemberNo());
+//        service.calendarSave(vo);
+//        return vo;
+//    }
 
     /**
      * 캘린더 일정 삭제
      */
     @DeleteMapping("/calendarDelete/{no}")
-    public String calendarDelete(@PathVariable String no) {
+    public String calendarDelete(@PathVariable long calendarNo) {
         try {
-            service.calendarDelete(no);
+            service.calendarDelete(calendarNo);
             return "success";
         } catch (Exception e) {
             e.printStackTrace();

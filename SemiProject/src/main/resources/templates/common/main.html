@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GoStudy</title>
     <link href="/css/main.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
+      type="text/css"
+    />
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var calendarEl = document.getElementById("calendar");
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: "dayGridMonth",
+        });
+        calendar.render();
+      });
+    </script>
   </head>
   <body>
     <!-- common/header 추가-->
@@ -18,28 +34,20 @@
           <input type="text" class="search-input" placeholder="검색" />
         </div>
         <div class="partner-links">
-          <a href="#">
+          <a href="https://kh-academy.co.kr/login/login.kh" target="_blank">
             <img src="/images/khlogo.png" alt="KH로고" />
           </a>
-          <a href="#">
+          <a href="https://www.work24.go.kr/cm/main.do" target="_blank">
             <img src="/images/gov24logo.png" alt="고용24로고" />
           </a>
         </div>
-      </div>
-
-      <!-- Calendar Section - API로 대체될 부분 -->
-      <div class="calendar-section">
-        <!-- 이 부분은 API로 대체될 예정입니다 -->
       </div>
 
       <!-- 메인 콘텐츠 레이아웃 -->
       <div class="main-layout">
         <!-- 왼쪽 영역: 달력 -->
         <div class="calendar-container">
-          <!-- Calendar Section - API로 대체될 부분 -->
-          <div class="calendar-section">
-            <!-- 이 부분은 API로 대체될 예정입니다 -->
-          </div>
+          <div id="calendar"></div>
         </div>
 
         <!-- 오른쪽 영역: 로그인 및 자습대장 -->
@@ -57,13 +65,45 @@
                   placeholder="비밀번호"
                 />
               </div>
-              <button>로그인</button>
+              <button
+                style="
+                  height: 40px;
+                  background-color: #4aa7ff;
+                  border: none;
+                  color: #f8f9ff;
+                  border-radius: 15px;
+                  cursor: pointer;
+                "
+              >
+                로그인
+              </button>
               <div class="form-group checkbox-group">
-                <input type="checkbox" id="idCheckbox" />
-                <label for="idCheckbox">ID 저장</label>
-                <a href="#" style="margin-left: auto; text-decoration: none"
-                  >ID / PW 찾기</a
-                >
+                <div>
+                  <input type="checkbox" id="idCheckbox" />
+                  <label for="idCheckbox" style="color: #25272b">ID 저장</label>
+                </div>
+                <div>
+                  <a
+                    href="#"
+                    style="
+                      margin-left: auto;
+                      text-decoration: none;
+                      border-bottom: 1px solid #25272b;
+                    "
+                    class="find-idPw"
+                    >회원가입</a
+                  >
+                  <a
+                    href="#"
+                    class="find-idPw"
+                    style="
+                      margin-left: 10px;
+                      text-decoration: none;
+                      border-bottom: 1px solid #25272b;
+                    "
+                    >ID / PW 찾기</a
+                  >
+                </div>
               </div>
             </div>
           </div>
@@ -73,7 +113,12 @@
             <h3 class="study-log-header">자습대장 적으러 가기</h3>
             <div class="btn-group">
               <a href="#" class="btn btn-primary">등록</a>
-              <a href="#" class="btn btn-secondary">수정</a>
+              <a
+                href="https://docs.google.com/spreadsheets/d/1FczIOY0FEsi1EaTsx-sz2uBtwLv-L5lk2CPMY26M4qw/edit?gid=933226182#gid=933226182"
+                onclick="window.open(this.href, '_blank', 'width=550,height=800,left=600,top=100'); return false;"
+                class="btn btn-secondary"
+                >수정</a
+              >
             </div>
           </div>
 
@@ -151,5 +196,7 @@
         }
       });
     </script>
+    <!-- 학사일정 캘린더 js추가-->
+    <script src="/js/cal.js"></script>
   </body>
 </html>
