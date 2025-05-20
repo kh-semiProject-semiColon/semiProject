@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>구인 게시판</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
+      type="text/css"
+    />
+    <link rel="stylesheet" th:href="@{/css/hire/hireBoard.css}" />
+  </head>
+  <body>
+    <!-- hearder -->
+    <th:block th:replace="~{common/header}"></th:block>
+
+    <!-- 게시판 본문 -->
+    <div class="hire">
+      <div class="side"></div>
+      <main>
+        <div class="titleContainer">
+          <div class="board-title">구인 게시판</div>
+          <div class="board-title-underline"></div>
+        </div>
+
+        <div class="board-container">
+          <div class="cards-grid" id="cardContainer"></div>
+
+          <div class="write-button-container">
+            <button class="write-button">글쓰기</button>
+          </div>
+        </div>
+
+        <div class="pagination">
+          <button>&laquo;</button>
+          <button class="active">1</button>
+          <button>2</button>
+          <button>3</button>
+          <button>4</button>
+          <button>5</button>
+          <button>6</button>
+          <button>7</button>
+          <button>8</button>
+          <button>9</button>
+          <button>10</button>
+          <button>&raquo;</button>
+        </div>
+
+        <div class="search-container">
+          <select class="search-category">
+            <option>제목</option>
+            <option>작성자</option>
+          </select>
+          <input type="text" class="search-input" placeholder="검색" />
+        </div>
+      </main>
+      <div class="side"></div>
+    </div>
+
+    <!-- footer -->
+    <th:block th:replace="~{common/footer}"></th:block>
+
+    <script src="/js/hire/hireBoard.js"></script>
+  </body>
+</html>

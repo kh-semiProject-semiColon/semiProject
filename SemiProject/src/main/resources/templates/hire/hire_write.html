@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>구인 게시글 작성</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
+      type="text/css"
+    />
+    <style>
+      body {
+        margin: 50px 362px 100px 362px;
+        font-family: "Apple SD Gothic Neo", sans-serif;
+        background-color: #fff;
+      }
+
+      h1 {
+        font-size: 16pt;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .underline {
+        width: 100%;
+        height: 2px;
+        background-color: #dbdae2;
+        margin-bottom: 20px;
+      }
+
+      .placeholder {
+        width: 100%;
+        height: 20px;
+        border-radius: 15px;
+        background-color: #f1f1f1;
+        margin-bottom: 50px;
+      }
+
+      .underline-small {
+        width: 100%;
+        height: 2px;
+        background-color: #dbdae2;
+        margin-bottom: 30px;
+      }
+
+      .form-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 199px;
+        margin-bottom: 50px;
+      }
+
+      .form-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .form-input {
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 0 10px;
+        font-size: 16px;
+      }
+
+      .content-placeholder {
+        width: 100%;
+        height: 200px;
+        border-radius: 15px;
+        background-color: #f1f1f1;
+      }
+
+      .submit-button {
+        width: 150px;
+        height: 50px;
+        border: none;
+        border-radius: 25px;
+        background-color: #3867ff;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>구인 게시글 작성</h1>
+    <div class="underline"></div>
+
+    <div class="placeholder"></div>
+
+    <h1>내용 작성</h1>
+    <div class="underline-small"></div>
+
+    <div class="form-container">
+      <!-- 좌측 양식 -->
+      <div class="form-section">
+        <input class="form-input" type="text" placeholder="제목 입력" />
+        <input class="form-input" type="text" placeholder="모집 인원" />
+        <input class="form-input" type="text" placeholder="분야" />
+      </div>
+
+      <!-- 우측 양식 -->
+      <div class="form-section">
+        <input class="form-input" type="text" placeholder="기간" />
+        <input class="form-input" type="text" placeholder="연락처" />
+        <input class="form-input" type="text" placeholder="기타" />
+      </div>
+    </div>
+
+    <div class="content-placeholder"></div>
+
+    <div style="margin-top: 50px">
+      <button class="submit-button">등록</button>
+    </div>
+  </body>
+</html>
