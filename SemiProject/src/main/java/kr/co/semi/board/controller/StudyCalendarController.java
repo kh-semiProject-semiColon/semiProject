@@ -3,6 +3,7 @@ package kr.co.semi.board.controller;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,7 +43,7 @@ public class StudyCalendarController {
     	
     	int studyNo = service.bringStudyNo(loginMember.getMemberNo());
     	
-    	loginMember.setStudyNo(studyNo);
+//    	loginMember.setStudyNo(studyNo);
     	return service.StudyCalendarList(loginMember).stream().map(cal -> {
             Map<String, Object> event = new HashMap<>();
             event.put("id", cal.getCalendarNo()); // 일정 ID
