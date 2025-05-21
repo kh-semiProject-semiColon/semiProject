@@ -30,7 +30,7 @@
 	</select>
 	
 	<!-- 회원가입 -->
-	<insert id="signup">
+	<insert id="signupInfo">
 		INSERT INTO "MEMBER"
 		VALUES(SEQ_MEMBER_NO.NEXTVAL, 
 					 #{memberEmail},
@@ -41,7 +41,10 @@
 					 NULL,
 					 DEFAULT,
 					 DEFAULT,
-					 DEFAULT
+					 DEFAULT,
+					 DEFAULT,
+					 #{memberIntroduce},
+					 #{memberName}
 		)
 	</insert>
 	

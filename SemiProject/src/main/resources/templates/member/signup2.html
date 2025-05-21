@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원가입 폼</title>
+    <link href="/css/signup2.css" rel="stylesheet" />
+    <link href="/css/main.css" rel="stylesheet" />
+  </head>
+  <body>
+    <th:block th:replace="~{common/headerNude}"></th:block>
+    <div class="container">
+      <div class="step-container">
+        <div class="step step1">STEP1 약관 동의</div>
+        <div class="step step2">STEP2 정보입력</div>
+        <div class="step step3">STEP3 가입완료</div>
+      </div>
+      <div class="introduceInfo">회원 가입을 위해 아래 정보들을 채워주세요</div>
+
+      <div class="body-container">
+        <form
+          action="/member/signupInfo"
+          method="POST"
+          name="signUpForm"
+          id="signUpForm"
+        >
+          <!-- 이메일 -->
+          <div class="form-group-email">
+            <label for="memberEmail" class="form-label">
+              <span class="required">*</span> 이메일
+            </label>
+            <div class="form-input-container">
+              <input
+                id="memberEmail"
+                name="memberEmail"
+                type="email"
+                class="form-input"
+                placeholder="example123@example.com"
+              />
+              <button id="sendAuthKeyBtn" type="button" class="form-button">
+                인증요청
+              </button>
+            </div>
+          </div>
+          <span class="signUp-message" id="emailMessage"
+            >메일을 받을 수 있는 이메일을 입력해주세요.</span
+          >
+
+          <!-- 인증번호 -->
+          <div class="form-group-key">
+            <label for="emailCheck" class="form-label"
+              ><span class="required">*</span> 인증번호</label
+            >
+            <div class="form-input-container">
+              <input
+                id="authKey"
+                name="authKey"
+                type="text"
+                class="form-input"
+              />
+              <button id="checkAuthKeyBtn" type="button" class="form-button">
+                인증확인
+              </button>
+            </div>
+          </div>
+          <span class="signUp-message" id="authKeyMessage"></span>
+
+          <!-- 비밀번호 -->
+          <div class="form-group-pass">
+            <label for="memberPw" class="form-label"
+              ><span class="required">*</span> 비밀번호</label
+            >
+            <div class="form-input-container">
+              <input
+                id="memberPw"
+                name="memberPw"
+                type="password"
+                class="form-input"
+                placeholder=""
+              />
+            </div>
+          </div>
+          <span class="signUp-message" id="pwMessage"
+            >영어,숫자,특수문자(!,@,#,-,_) 6~20글자 사이로 입력해주세요.</span
+          >
+
+          <!-- 비밀번호 확인 -->
+          <div class="form-group-pass-confirm">
+            <label class="form-label"
+              ><span class="required">*</span> 비밀번호 확인</label
+            >
+            <div class="form-input-container">
+              <input
+                id="memberPwConfirm"
+                name="memberPwConfirm"
+                type="password"
+                class="form-input"
+                placeholder="비밀번호를 한번 더 입력해주세요"
+              />
+            </div>
+          </div>
+
+          <!-- 이름 -->
+          <div class="form-group">
+            <label class="form-label"
+              ><span class="required">*</span> 이름</label
+            >
+            <div class="form-input-container">
+              <input
+                id="memberName"
+                name="memberName"
+                type="text"
+                class="form-input"
+                placeholder=""
+              />
+            </div>
+          </div>
+
+          <!-- 닉네임 -->
+          <div class="form-group-key">
+            <label class="form-label"
+              ><span class="required">*</span> 닉네임</label
+            >
+            <div class="form-input-container">
+              <input
+                id="memberNickname"
+                name="memberNickname"
+                type="text"
+                class="form-input"
+                placeholder=""
+              />
+            </div>
+          </div>
+          <span class="signUp-message" id="nickMessage"
+            >한글,영어,숫자로만 2~10글자</span
+          >
+
+          <!-- 전화번호 -->
+          <div class="form-group-tel">
+            <label class="form-label"
+              ><span class="required">*</span> 전화번호</label
+            >
+            <div class="form-input-container">
+              <input
+                id="memberTel"
+                name="memberTel"
+                type="tel"
+                class="form-input"
+                placeholder=""
+              />
+            </div>
+          </div>
+          <span class="signUp-message" id="telMessage"
+            >전화번호를 입력해주세요.(- 제외)</span
+          >
+
+          <!-- 전공 여부 -->
+          <div class="form-group-major">
+            <label class="form-label"
+              ><span class="required">*</span> IT 전공</label
+            >
+            <div class="radio-group">
+              <div class="radio-item">
+                <input
+                  class="major"
+                  name="memberMajor"
+                  type="radio"
+                  id="major-yes"
+                  value="yes"
+                />
+                <label for="major-yes">전공자</label>
+              </div>
+              <div class="radio-item">
+                <input
+                  class="major"
+                  name="memberMajor"
+                  type="radio"
+                  id="major-no"
+                  value="no"
+                />
+                <label for="major-no">비전공자</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 자기소개 -->
+          <div class="form-group">
+            <label class="form-label label1">자기소개</label>
+            <div class="form-input-container">
+              <textarea
+                id="memberIntroduce"
+                name="memberIntroduce"
+                class="form-input"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- 주소 -->
+          <div class="form-group">
+            <label class="form-label label2">주소</label>
+            <div class="form-input-container">
+              <div class="address-container">
+                <div class="address-inputs">
+                  <input
+                    id="postcode"
+                    name="memberAddress"
+                    type="text"
+                    class="form-input"
+                    placeholder="우편번호"
+                  />
+                  <button id="searchAddress" type="button" class="form-button">
+                    주소검색
+                  </button>
+                </div>
+                <input
+                  id="address"
+                  name="memberAddress"
+                  type="text"
+                  class="form-input-address"
+                  placeholder="도로명/지번 주소소"
+                />
+                <input
+                  id="detailAddress"
+                  name="memberAddress"
+                  type="text"
+                  class="form-input-address"
+                  placeholder="상세 주소"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- 버튼 섹션 -->
+          <div class="submit-section">
+            <button type="button" class="submit-button cancel-button">
+              이전으로
+            </button>
+            <button
+              id="submit-btn"
+              type="submit"
+              class="submit-button register-button"
+            >
+              다음으로
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="/js/signup2.js"></script>
+    <!-- 다음 주소 API 추가 -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <th:block th:replace="~{common/footer}"></th:block>
+  </body>
+</html>
