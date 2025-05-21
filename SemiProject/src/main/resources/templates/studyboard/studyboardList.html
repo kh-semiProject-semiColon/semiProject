@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GoStudy 마이페이지</title>
+    <link rel="stylesheet" href="/css/studyboard/studyboardList.css" />
+    <th:block th:replace="~{common/header}"></th:block>
+  </head>
+  <body>
+    <!-- 헤더 -->
+    <th:block th:replace="~{common/header}"></th:block>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="main-content">
+      <!-- 사이드바 -->
+      <div class="sidebar">
+        <h2 class="sidebar-heading">스터디명</h2>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-menu">
+          <div class="sidebar-menu-item" th:text="'스터디 스케줄'"></div>
+          <div class="sidebar-menu-divider"></div>
+          <div class="sidebar-menu-item" th:text="'내규'"></div>
+          <div class="sidebar-menu-divider"></div>
+          <div class="sidebar-menu-item" th:text="'스터디 게시판'"></div>
+          <div class="sidebar-menu-divider"></div>
+          <div class="sidebar-menu-item" th:text="'스터디 정보 수정'"></div>
+          <div class="sidebar-menu-divider"></div>
+          <div class="sidebar-menu-item" th:text="'스터디 탈퇴'"></div>
+          <div class="sidebar-menu-divider"></div>
+          <div class="sidebar-menu-item" th:text="'스터디 해체'"></div>
+          <div class="sidebar-menu-divider"></div>
+        </div>
+      </div>
+
+      <!-- 콘텐츠 영역 -->
+      <div class="content">
+        <!-- 내 게시글 섹션 -->
+        <div class="content-section">
+          <h2 class="content-heading">내 게시글</h2>
+          <div class="content-divider"></div>
+
+          <!-- 게시글 테이블 헤더 -->
+          <div class="table-header">
+            <div class="col-num">글번호</div>
+            <div class="col-title">제목</div>
+            <div class="col-author">작성자</div>
+            <div class="col-date">작성일</div>
+            <div class="col-views">조회수</div>
+            <div class="col-likes">좋아요</div>
+          </div>
+
+          <!-- 게시글 목록 -->
+          <div th:each="board, iterStat : ${studyboardList}" class="table-row">
+            <div class="col-num" th:text="${iterStat.index + 1}"></div>
+            <div class="col-title" th:text="${board.boardTitle}"></div>
+            <div class="col-author" th:text="${board.writerName}"></div>
+            <div
+              class="col-date"
+              th:text="${#dates.format(board.createDate, 'yy.MM.dd')}"
+            ></div>
+            <div class="col-views" th:text="${board.readCount}"></div>
+            <div class="col-likes" th:text="${board.likeCount}"></div>
+          </div>
+
+          <!-- 페이지네이션 -->
+          <div class="pagination" th:if="${pagination != null}">
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${pagination.currentPage > 1}"
+              th:href="@{/mypage/posts(page=1)}"
+              >《</a
+            >
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${pagination.currentPage > 1}"
+              th:href="@{/mypage/posts(page=${pagination.currentPage - 1})}"
+              >〈</a
+            >
+
+            <a
+              href="#"
+              class="page-item"
+              th:each="i : ${pagination.pageList}"
+              th:classappend="${i == pagination.currentPage} ? 'active'"
+              th:href="@{/mypage/posts(page=${i})}"
+              th:text="${i}"
+            ></a>
+
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${pagination.currentPage < pagination.totalPages}"
+              th:href="@{/mypage/posts(page=${pagination.currentPage + 1})}"
+              >〉</a
+            >
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${pagination.currentPage < pagination.totalPages}"
+              th:href="@{/mypage/posts(page=${pagination.totalPages})}"
+              >》</a
+            >
+          </div>
+        </div>
+
+        <!-- 내 댓글 섹션 -->
+        <div class="content-section">
+          <h2 class="content-heading">내 댓글</h2>
+          <div class="content-divider"></div>
+
+          <!-- 내 댓글 테이블 헤더 -->
+          <div class="table-header">
+            <div class="col-num">글번호</div>
+            <div class="col-post-title">게시글 제목</div>
+            <div class="col-comment-text">댓글내용</div>
+            <div class="col-comment-date">작성일</div>
+          </div>
+
+          <!-- 댓글 목록 -->
+          <div class="table-row" th:each="comment : ${comments}">
+            <div class="col-num" th:text="${comment.id}"></div>
+            <div class="col-post-title" th:text="${comment.postTitle}"></div>
+            <div class="col-comment-text" th:text="${comment.content}"></div>
+            <div
+              class="col-comment-date"
+              th:text="${#dates.format(comment.createdAt, 'yy.MM.dd HH:mm')}"
+            ></div>
+          </div>
+
+          <!-- 페이지네이션 -->
+          <div class="pagination" th:if="${commentPagination != null}">
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${commentPagination.currentPage > 1}"
+              th:href="@{/mypage/comments(page=1)}"
+              >《</a
+            >
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${commentPagination.currentPage > 1}"
+              th:href="@{/mypage/comments(page=${commentPagination.currentPage - 1})}"
+              >〈</a
+            >
+
+            <a
+              href="#"
+              class="page-item"
+              th:each="i : ${commentPagination.pageList}"
+              th:classappend="${i == commentPagination.currentPage} ? 'active'"
+              th:href="@{/mypage/comments(page=${i})}"
+              th:text="${i}"
+            ></a>
+
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${commentPagination.currentPage < commentPagination.totalPages}"
+              th:href="@{/mypage/comments(page=${commentPagination.currentPage + 1})}"
+              >〉</a
+            >
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${commentPagination.currentPage < commentPagination.totalPages}"
+              th:href="@{/mypage/comments(page=${commentPagination.totalPages})}"
+              >》</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <th:block th:replace="~{common/footer}"></th:block>
+  </body>
+  <script>
+    document.querySelectorAll(".sidebar-menu-item").forEach((item) => {
+      item.addEventListener("click", function () {
+        document.querySelectorAll(".sidebar-menu-item").forEach((i) => {
+          i.style.backgroundColor = "";
+          i.style.color = "";
+        });
+        this.style.backgroundColor = "#3867FF";
+        this.style.color = "#FFFFFF";
+      });
+    });
+
+    document
+      .querySelectorAll(".pagination .page-item:not(.arrow)")
+      .forEach((item) => {
+        item.addEventListener("click", function () {
+          document.querySelectorAll(".pagination .page-item").forEach((i) => {
+            i.classList.remove("active");
+          });
+          this.classList.add("active");
+        });
+      });
+  </script>
+  <script src="/js/studyboard/studyboard.js"></script>
+</html>
