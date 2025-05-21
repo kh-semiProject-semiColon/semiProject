@@ -107,5 +107,10 @@ public class MemberSerivceImpl implements MemberService {
 	public int checkNickname(String memberNickname) {
 		return mapper.checkNickname(memberNickname);
 	}
+	
+	@Override
+	public int checkName(Member inputMember) {
+		return mapper.checkName(inputMember);
+	}
 
 }

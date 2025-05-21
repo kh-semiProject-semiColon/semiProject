@@ -2,19 +2,132 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: "Arial", sans-serif;
 }
 
 body {
-  background-color: white;
+  background-color: #ffffff;
 }
 
 .container {
   width: calc(100% - 1200px);
-  margin-top: 50px;
   margin: 0 auto;
   max-width: 900px;
   min-width: 500px;
+  padding-top: 50px;
+}
+
+.introHeader {
+  border-bottom: 1px solid #dbdae2;
+}
+
+.introHeader h1 {
+  font-size: 24px;
+  color: #333;
+}
+
+.introHeader div {
+  font-size: 16px;
+  color: #666;
+}
+
+.card {
+  background-color: #fff;
+  /* border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+  padding: 30px;
+  display: flex;
+  margin-top: 20px;
+}
+
+.left-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-right: 20px;
+}
+
+.cat-image {
+  width: 200px;
+  height: 200px;
+  margin-top: 50px;
+  margin-left: -100px;
+}
+
+.cat-image img {
+  height: 200px;
+}
+
+.right-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.welcome h2 {
+  font-size: 22px;
+  color: #333;
+  margin-right: 10px;
+}
+
+.welcome .emoji {
+  font-size: 24px;
+}
+
+.feature-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #4285f4;
+  margin-bottom: 15px;
+}
+
+.features ul {
+  list-style: none;
+}
+
+.features li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 15px;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.features li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #4285f4;
+  font-weight: bold;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 30px;
+}
+
+.go-login {
+  background-color: #3867ff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-login:hover {
+  background-color: #3367d6;
 }
 
 .step-container {
@@ -22,7 +135,6 @@ body {
   font-weight: bold;
   justify-content: center;
   margin-bottom: 50px;
-  padding-top: 50px;
 }
 
 .step {
@@ -37,10 +149,10 @@ body {
 .step1 {
   width: 700px;
   height: 50px;
-  background-color: #4aa7ff;
-  color: white;
+  background-color: #dbdae2;
   padding: 12px 24px;
   min-width: 140px;
+  font-weight: 600;
   text-align: center;
   clip-path: polygon(
     0 0,
@@ -61,6 +173,7 @@ body {
   height: 50px;
   position: relative;
   background: #dbdae2;
+  color: #444;
   padding: 10px 40px; /* 좌우 공간 확보 */
   font-weight: 600;
   text-align: center;
@@ -93,8 +206,8 @@ body {
   width: 700px;
   height: 50px;
   position: relative;
-  background: #dbdae2;
-  color: #444;
+  background: #4aa7ff;
+  color: white;
   padding-left: 40px;
   padding-right: 30px;
   font-weight: 600;
@@ -116,77 +229,4 @@ body {
   background-color: white;
   border: none;
   clip-path: polygon(0 0, 100% 50%, 0 100%);
-}
-
-/* 약관 섹션 */
-.section-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 8px;
-}
-
-.section-title h3 {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.terms-box {
-  background-color: white;
-  border-radius: 15px;
-  padding: 10px;
-  margin-bottom: 25px;
-  border: 1px solid #e1e1e1;
-  max-height: 200px;
-  overflow-y: auto;
-  line-height: 1.5;
-  font-size: 14px;
-  color: #555;
-}
-
-.agreement {
-  display: flex;
-  align-items: center;
-}
-
-.agreement label {
-  margin-left: 5px;
-  font-size: 14px;
-  cursor: pointer;
-  margin-right: 15px;
-}
-
-/* 버튼 스타일 */
-.btn-container {
-  text-align: right;
-  margin-top: 30px;
-}
-
-.btn-next {
-  background-color: #3867ff;
-  color: white;
-  border: none;
-  padding: 10px 24px;
-  border-radius: 30px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.btn-next:hover {
-  background-color: #2563eb;
-}
-
-.agreeAll {
-  display: flex;
-  justify-content: right;
-}
-
-.agreeAll label {
-  margin-left: 5px;
-  font-size: 14px;
-  cursor: pointer;
-  margin-right: 15px;
 }
