@@ -46,6 +46,6 @@ public class MyPageController {
 	
 	@GetMapping("posts")
 	public String posts() {
-		return"";
+		return"myPage/myPage-posts";
 	}
 }
