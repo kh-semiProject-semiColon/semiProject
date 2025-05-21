@@ -19,14 +19,18 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MyPageController {
 
+	// 회원가입 시 적었던 내용들을 조회할 수 있게 하는 메서드
+	// 
 	@RequestMapping("info")
 	public String info(@SessionAttribute("loginMember") Member loginMember,
 								Model model) {
 		
+		String memberName = loginMember.getMemberName();
 		String profileImg = loginMember.getProfileImg();
 		String memberNickname = loginMember.getMemberNickname();
 		String memberTel = loginMember.getMemberTel();
 		String memberEmail = loginMember.getMemberEmail();
+		String memberMajor= loginMember.getMemberMajor();
 		String memberAddress = loginMember.getMemberAddress();
 		String memberIntroduce = loginMember.getMemberIntroduce();
 		
@@ -40,4 +44,8 @@ public class MyPageController {
 		return "myPage/myPage-info";
 	}
 	
+	@GetMapping("posts")
+	public String posts() {
+		return"";
+	}
 }

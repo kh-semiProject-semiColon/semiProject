@@ -422,19 +422,19 @@
         <div class="sidebar-divider"></div>
         <div class="sidebar-menu">
           <div class="sidebar-menu-item active">
-            <a th:href="@{/mypage/info}">프로필</a>
+            <a th:href="@{/myPage/info}">프로필</a>
           </div>
           <div class="sidebar-menu-divider"></div>
           <div class="sidebar-menu-item">
-            <a th:href="@{/mypage/posts}">내 게시글/댓글 보기</a>
+            <a th:href="@{/myPage/posts}">내 게시글/댓글 보기</a>
           </div>
           <div class="sidebar-menu-divider"></div>
           <div class="sidebar-menu-item">
-            <a th:href="@{/mypage/password}">비밀번호 변경</a>
+            <a th:href="@{/myPage/password}">비밀번호 변경</a>
           </div>
           <div class="sidebar-menu-divider"></div>
           <div class="sidebar-menu-item">
-            <a th:href="@{/mypage/withdraw}">회원 탈퇴</a>
+            <a th:href="@{/myPage/withdraw}">회원 탈퇴</a>
           </div>
         </div>
       </div>
@@ -474,6 +474,20 @@
               th:object="${loginMember}"
               class="info-form"
             >
+              <!-- 이름 입력 -->
+              <div class="form-group">
+                <label class="form-label">이름</label>
+                <div class="form-input-container">
+                  <input
+                    type="text"
+                    class="form-input"
+                    name="memberName"
+                    th:value="${session.loginMember.memberName}"
+                    required
+                  />
+                </div>
+              </div>
+
               <!-- 닉네임 입력 -->
               <div class="form-group">
                 <label class="form-label">닉네임</label>
@@ -481,7 +495,23 @@
                   <input
                     type="text"
                     class="form-input"
+                    name="memberNickname"
                     th:value="${session.loginMember.memberNickname}"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- 이메일 입력 -->
+              <div class="form-group">
+                <label class="form-label">이메일</label>
+                <div class="form-input-container">
+                  <input
+                    disabled
+                    type="email"
+                    class="form-input"
+                    name="memberEmail"
+                    th:value="${session.loginMember.memberEmail}"
                     required
                   />
                 </div>
@@ -494,21 +524,21 @@
                   <input
                     type="tel"
                     class="form-input"
+                    name="memberTel"
                     th:value="${session.loginMember.memberTel}"
                   />
                 </div>
               </div>
 
-              <!-- 이메일 입력 -->
+              <!-- 컴퓨터 전공 여부 -->
               <div class="form-group">
-                <label class="form-label">이메일</label>
+                <label class="form-label">컴퓨터 전공 여부</label>
                 <div class="form-input-container">
-                  <input
-                    type="email"
-                    class="form-input"
-                    th:value="${session.loginMember.memberEmail}"
-                    required
-                  />
+
+                  
+
+                  <input type="radio" name="major" th:value="${session.loginMember.memberTel}" /> O
+                  <input type="radio" name="major" th:value="${session.loginMember.memberTel}" /> X
                 </div>
               </div>
 
@@ -533,7 +563,7 @@
                       type="text"
                       name="memberAddress"
                       placeholder="도로명/지번 주소"
-                      id="memberAddress"
+                      id="address"
                       class="form-input"
                       th:value="${address}"
                     />
@@ -557,7 +587,7 @@
                 <div class="form-input-container">
                   <textarea
                     class="bio-input"
-                    th:text="${session.loginMember.memberIntroduce}"
+                    th:field="*{memberIntroduce}"
                   ></textarea>
                 </div>
               </div>
@@ -571,63 +601,9 @@
     </div>
     <th:block th:replace="~{common/footer}"></th:block>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const removeImageBtn = document.querySelector(".remove-image");
-        const profileImage = document.querySelector(".profile-image");
-        const imageSelectBtn = document.querySelector(".image-select-btn");
-        const submitBtn = document.querySelector(".submit-btn");
+    <!-- 다음 주소 API 추가 -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-        // 이미지 제거 기능
-        removeImageBtn.addEventListener("click", function () {
-          profileImage.src = "/images/default-profile.png";
-          // 실제 구현 시에는 hidden input을 활용하여 이미지 제거 상태를 서버에 전송할 수 있음
-        });
-
-        // 이미지 선택 버튼 기능
-        imageSelectBtn.addEventListener("click", function () {
-          const fileInput = document.createElement("input");
-          fileInput.type = "file";
-          fileInput.accept = "image/*";
-          fileInput.click();
-
-          fileInput.addEventListener("change", function () {
-            if (this.files && this.files[0]) {
-              const reader = new FileReader();
-              reader.onload = function (e) {
-                profileImage.src = e.target.result;
-              };
-              reader.readAsDataURL(this.files[0]);
-            }
-          });
-        });
-
-        // 주소 검색 버튼 기능
-        const addressSearchBtn = document.querySelector(".address-search");
-        addressSearchBtn.addEventListener("click", function () {
-          // 주소 검색 API 연동 코드 (실제 구현 필요)
-          alert("주소 검색 기능이 연동됩니다.");
-        });
-
-        // 사이드바 메뉴 활성화
-        document.querySelectorAll(".sidebar-menu-item").forEach((item) => {
-          item.addEventListener("click", function () {
-            document.querySelectorAll(".sidebar-menu-item").forEach((i) => {
-              i.classList.remove("active");
-            });
-            this.classList.add("active");
-          });
-        });
-
-        // 반응형 메뉴 토글
-        const menuButton = document.querySelector(".menu-button");
-        const navMenu = document.querySelector(".nav-menu");
-
-        menuButton.addEventListener("click", function () {
-          navMenu.style.display =
-            navMenu.style.display === "flex" ? "none" : "flex";
-        });
-      });
-    </script>
+    <script src="/js/myPage/myPage.js"></script>
   </body>
 </html>
