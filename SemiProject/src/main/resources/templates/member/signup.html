@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원가입 - 약관 동의</title>
+    <link href="/css/signup.css" rel="stylesheet" />
+    <link href="/css/main.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
+      type="text/css"
+    />
+  <body>
+    <main>
+      <!-- 헤더는 별도로 가져올 예정이므로 생략 -->
+      <th:block th:replace="~{common/headerNude}"></th:block>
+      <div class="container">
+        <!-- 스텝 표시 -->
+        <div class="step-container">
+          <div class="step step1">STEP1 약관 동의</div>
+          <div class="step step2">STEP2 정보입력</div>
+          <div class="step step3">STEP3 가입완료</div>
+        </div>
+
+        <!-- 이용약관 섹션 -->
+        <div class="section-title">
+          <h3>이용약관</h3>
+          <div class="agreement">
+            <input type="checkbox" id="agree1" name="agree1" required />
+            <label for="agree1">동의합니다</label>
+          </div>
+        </div>
+
+        <!-- 이용약관 1 -->
+        <div class="terms-box">
+          <p>1. 이용약관</p>
+          본 스터디는 자발적인 학습을 장려하고, 서로에 대한 존중과 책임을
+          바탕으로 운영되는 비영리 학습 공동체입니다. 스터디 참여자는 아래의
+          내용을
+          <p>성실히 준수해 주시기 바랍니다.</p>
+          <br />
+          <ul>
+            1.1 참여자의 기본 의무
+          </ul>
+
+          <li>
+            참여자는 스터디에 성실하게 참여할 책임이 있으며, 정해진 일정과
+            과제를 이행하기 위해 최선을 다해야 합니다.
+          </li>
+          <li>
+            공동체 내에서의 모든 발언과 행동은 예의와 존중을 바탕으로 이루어져야
+            하며, 타인의 학습을 방해하거나 불쾌감을 주는 행위는 허용되지
+            않습니다.
+          </li>
+        </div>
+
+        <!-- 개인정보 처리방침 섹션 -->
+        <div class="section-title">
+          <h3>개인정보의 수집범위</h3>
+          <div class="agreement">
+            <input type="checkbox" id="agree2" name="agree2" required />
+            <label for="agree2">동의합니다</label>
+          </div>
+        </div>
+        <div class="terms-box">
+          <p>2. 개인정보 수집 항목목</p>
+          회원가입 및 스터디 운영을 위해 아래와 같은 개인정보를 수집합니다. 모든
+          정보는 명확한 목적 아래 최소한으로 수집되며, 참여자가 직접 제공한
+          <p>정보에 한정됩니다.</p>
+          <br />
+          <ul>
+            2.1 수집하는 항목
+          </ul>
+          <li>
+            필수 정보: 이름(실명 또는 닉네임), 카카오톡 ID 또는 이메일 주소,
+            거주 지역(온라인/오프라인 구분용), 학습 수준(초급/중급/고급)
+          </li>
+          <li>
+            선택 정보: 관심 분야, 학습 목표, 스터디 참여 목적, 사용 가능한
+            시간대
+          </li>
+          <br />
+          <ul>
+            2.2 수집 방법
+          </ul>
+          <li>
+            위 정보는 구글 폼 또는 별도의 신청서 양식을 통해 참여자가 직접
+            입력한 방식으로 수집됩니다.
+          </li>
+        </div>
+
+        <!-- 마케팅 정보 수신 동의 섹션 -->
+        <div class="section-title">
+          <h3>개인정보의 수집 및 이용목적</h3>
+          <div class="agreement">
+            <input type="checkbox" id="agree3-yes" name="agree3" value="yes" />
+            <label for="agree3-yes">동의합니다</label>
+          </div>
+        </div>
+        <div class="terms-box">
+          <p>3. 개인정보 수집 및 이용 목적</p>
+          <p>
+            수집된 개인정보는 아래의 목적을 위해 사용되며, 목적 외 사용은 절대
+            하지 않습니다.
+          </p>
+          <br />
+          <ul>
+            3.1 스터디 운영을 위한 기초 정보 활용
+          </ul>
+          <li>참여자 신원 확인 및 연락 수단 확보</li>
+          <li>
+            스터디 그룹의 수준별 분류, 지역 기반 모임 조정, 개별 피드백 제공 등
+            운영의 기초 자료로 사용
+          </li>
+          <br />
+          <p>3.2 학습 자료 전달 및 공지</p>
+          <li>공지사항 전달, 일정 안내, 모임 링크 공유 등의 운영 소통</li>
+          <li>
+            필요한 경우 과제 안내, 자료 다운로드 링크 등 커뮤니케이션 목적
+          </li>
+        </div>
+
+        <!-- 푸쉬알림 수신 동의 섹션 -->
+        <div class="section-title">
+          <h3>개인정보의 보유기간 및 이용기간</h3>
+          <div class="agreement">
+            <input type="checkbox" id="agree4-yes" name="agree4" value="yes" />
+            <label for="agree4-yes">동의합니다</label>
+          </div>
+        </div>
+        <div class="terms-box">
+          <p>4. 개인정보 보유 및 이용 기간</p>
+          <p>
+            수집된 개인정보는 아래의 기간 동안 보유되며, 보유 기간이 종료된
+            이후에는 지체 없이 안전하게 파기됩니다.
+          </p>
+          <br />
+          <p>4.1 보유 및 이용 기간</p>
+          <li>
+            일반적인 스터디 참여자의 정보는 스터디 종료일로부터 최대 3개월간
+            보관됩니다.
+          </li>
+          <li>
+            해당 기간 동안 운영상 문제 해결, 후속 연락, 통계 분석 등의 목적을
+            위해 제한적으로 활용될 수 있습니다.
+          </li>
+          <br />
+          <p>4.2 정보 파기 절차</p>
+          <li>
+            보유 기간이 만료된 개인정보는 별도의 보관 없이 시스템 상에서 즉시
+            삭제 또는 파기됩니다.
+          </li>
+          <li>
+            파기 방식은 전자 파일의 경우 완전 삭제, 종이 문서의 경우 분쇄 또는
+            소각을 통해 이루어집니다.
+          </li>
+        </div>
+
+        <div class="agreeAll">
+          <input type="checkbox" id="agreeAll" name="agreeAll" value="yes" />
+          <label for="agreeAll">전체 동의합니다</label>
+        </div>
+
+        <!-- 다음 버튼 -->
+        <div class="btn-container">
+          <button class="btn-next">다음으로</button>
+        </div>
+      </div>
+
+      <!-- 푸터는 별도로 가져올 예정이므로 생략 -->
+    </main>
+    <script src="/js/signup.js"></script>
+    <th:block th:replace="~{common/footer}"></th:block>
+  </body>
+</html>
