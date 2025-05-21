@@ -1,0 +1,235 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+body {
+  background-color: #ffffff;
+  width: 1920px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 메인 컨텐츠 스타일 */
+.main-content {
+  width: 100%;
+  margin: 50px auto;
+  max-width: 1196px;
+  min-width: 1120;
+  display: flex;
+  gap: 4%;
+  padding-bottom: 50px;
+  position: relative;
+  justify-content: center;
+}
+
+/* 사이드바 스타일 */
+.sidebar {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sidebar-heading {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.sidebar-divider {
+  width: 100%;
+  height: 2px;
+  background-color: #dbdae2;
+  margin-bottom: 20px;
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.sidebar-menu-item {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 auto;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar-menu-item:hover {
+  background-color: #3867ff;
+  color: #ffffff;
+}
+
+.sidebar-menu-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #dbdae2;
+  margin: 5px 0;
+}
+
+/* 콘텐츠 영역 스타일 */
+.content {
+  width: 100%;
+  /* flex: 1; 아직 이해못해서 정의 못함 */
+  position: relative;
+  /* margin-right: 10px; */
+}
+
+.content::before {
+  content: "";
+  position: absolute;
+  left: -2.5%;
+  top: 0;
+  width: 2px;
+  height: calc(100% - 50px);
+  background-color: #dbdae2;
+}
+
+.content-section {
+  margin-bottom: 50px;
+  width: 100%;
+}
+
+.content-heading {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.content-divider {
+  width: 100%;
+  height: 2px;
+  background-color: #dbdae2;
+  margin-bottom: 30px;
+}
+
+/* 테이블 스타일 */
+.table-header {
+  display: flex;
+  background-color: #3867ff;
+  color: white;
+  border-radius: 4px;
+  width: 100%;
+  height: 50px;
+  align-items: center;
+  margin-bottom: 10px;
+  white-space: nowrap;
+}
+
+.table-row {
+  width: 100%;
+  display: flex;
+  border: 2px solid #dbdae2;
+  border-radius: 4px;
+  height: 50px;
+  align-items: center;
+  margin-bottom: 10px;
+  white-space: nowrap;
+}
+
+.col-num {
+  width: 15%;
+  text-align: center;
+  /* padding-left: 31px; */
+}
+
+.col-title {
+  width: 40%;
+  /* padding-left: 221px; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.col-author {
+  width: 15%;
+  text-align: center;
+  /* padding-left: 163px; */
+}
+
+.col-date {
+  width: 15%;
+  text-align: center;
+  /* padding-left: 73px; */
+}
+
+.col-views {
+  width: 15%;
+  text-align: center;
+  /* padding-left: 67px; */
+}
+
+.col-likes {
+  width: 15%;
+  text-align: center;
+  /* padding-left: 59px; */
+  /* padding-right: 42px; */
+}
+
+.table-row .col-title {
+  /* padding-left: 88px; */
+  width: 40%;
+}
+
+.col-post-title {
+  width: 30%;
+  /* padding-left: 221px; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.col-comment-text {
+  width: 30%;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.col-comment-date {
+  width: 25%;
+  text-align: center;
+  /* padding-left: 110px; */
+}
+
+/* 페이지네이션 스타일 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  gap: 1px;
+}
+
+.page-item {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: #333;
+  text-decoration: none;
+}
+
+.page-item.active {
+  color: #3867ff;
+  font-weight: bold;
+}
+
+.page-item.arrow {
+  color: #3867ff;
+  font-weight: bold;
+  font-size: 18px;
+  font-weight: 700;
+}
