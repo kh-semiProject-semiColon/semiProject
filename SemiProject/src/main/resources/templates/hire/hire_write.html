@@ -195,6 +195,9 @@
     </style>
   </head>
   <body>
+    <!-- hearder -->
+    <th:block th:replace="~{common/header}"></th:block>
+
     <main class="container">
       <h2 class="form-title">구인 게시글 작성</h2>
       <div class="divider"></div>
@@ -359,5 +362,8 @@
         <button type="submit" class="submit-btn">확인</button>
       </form>
     </main>
+
+    <!-- footer -->
+    <th:block th:replace="~{common/footer}"></th:block>
   </body>
 </html>
