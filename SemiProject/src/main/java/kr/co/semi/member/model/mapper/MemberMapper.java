@@ -31,4 +31,10 @@ public interface MemberMapper {
 	 */
 	int checkNickname(String memberNickname);
 
+	/** 아이디 찾기 이름 조회
+	 * @param memberName
+	 * @return
+	 */
+	int checkName(Member inputMember);
+
 }

@@ -29,6 +29,15 @@
 		AND MEMBER_DEL_FL = 'N'
 	</select>
 	
+	<!-- 아이디 찾기 이름 조회 -->
+	<select id="checkName">
+		SELECT COUNT(*)
+		FROM "MEMBER"
+		WHERE MEMBER_NAME = #{memberName}
+		AND MEMBER_TEL = #{memberTel}
+		AND MEMBER_DEL_FL = 'N'
+	</select>
+	
 	<!-- 회원가입 -->
 	<insert id="signupInfo">
 		INSERT INTO "MEMBER"
