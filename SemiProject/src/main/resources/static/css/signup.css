@@ -21,6 +21,7 @@ body {
   display: flex;
   font-weight: bold;
   justify-content: center;
+  margin-top: 50px;
   margin-bottom: 50px;
 }
 
@@ -147,6 +148,7 @@ body {
 
 .agreement {
   display: flex;
+  margin-top: 30px;
   align-items: center;
 }
 
@@ -161,6 +163,7 @@ body {
 .btn-container {
   text-align: right;
   margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .btn-next {
