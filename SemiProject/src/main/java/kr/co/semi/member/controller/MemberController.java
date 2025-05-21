@@ -155,7 +155,7 @@ public class MemberController {
 		
 		String path = null;
 		
-		if(result > 0) { // 회원가입 성공
+		if(result > 0) { // 회원가입 성공시
 			path = "signup3";
 		}else {// 회원가입 실패
 			path = "signup2";
