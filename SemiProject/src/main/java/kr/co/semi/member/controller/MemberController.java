@@ -139,6 +139,15 @@ public class MemberController {
 		return "member/signup3";
 	}
 	
+	/** ID 찾기 페이지로 이동
+	 * @return
+	 */
+	@RequestMapping("findId")
+	public String fingId() {
+		
+		return "member/findId";
+	}
+	
 	/** 회원가입 페이지
 	 * @param inputMember
 	 * @param memberAddress
@@ -181,5 +190,24 @@ public class MemberController {
 		
 		return service.checkNickname(memberNickname); 
 	}
+	
+	@ResponseBody
+	@PostMapping("checkName")
+	public int checkName(Member inputMember) {
+		
+		int result = service.checkName(inputMember);
+		
+		return result;
+	}
+	
+	@PostMapping("findIdResult")
+	public String findIdResult(@RequestParam String memberName, @RequestParam String memberTel, Model model) {
+		
+		model.addAttribute("memberName", memberName);
+		model.addAttribute("memberTel", memberTel);
+		
+		return "/member/findIdResult";
+	}
+
 	
 }
