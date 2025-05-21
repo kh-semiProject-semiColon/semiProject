@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>구인 게시글 상세</title>
+    <link rel="stylesheet" th:href="@{/css/hire/boardDetail.css}" />
+  </head>
+  <body>
+    <main class="board-detail-container">
+      <!-- 게시판 이름 -->
+      <div class="board-name">구인 게시판</div>
+
+      <!-- 게시글 헤더 -->
+      <div class="post-header">
+        <h2 class="post-title">혼자서 공부하기 힘든 사람 여기여기 붙어라</h2>
+        <div class="post-controls">
+          <button class="post-btn">수정</button>
+          <button class="post-btn">삭제</button>
+        </div>
+      </div>
+
+      <!-- 작성자 정보 -->
+      <div class="author-info">
+        <img
+          src="/images/profile.png"
+          class="profile-img"
+          alt="프로필 이미지"
+        />
+        <div class="author-meta">
+          <div class="author-name">모코콩</div>
+          <div class="author-date">2025.05.21 작성</div>
+        </div>
+        <div class="post-views">조회수 23</div>
+      </div>
+
+      <!-- 게시글과 댓글 사이 구분선 -->
+      <hr class="post-divider" />
+
+      <!-- 구인글 요약 박스 -->
+      <div class="study-details">
+        <div class="details-title">모집공의 스터디파티</div>
+        <div class="detail-item">
+          <div class="detail-label">방향성</div>
+          <div class="detail-value"><span class="dot"></span>복습</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">기간</div>
+          <div class="detail-value"><span class="dot"></span>2개월</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">현재 인원</div>
+          <div class="detail-value"><span class="dot"></span>3 / 5 명</div>
+        </div>
+      </div>
+
+      <!-- 게시글 본문 -->
+      <div class="post-content">
+        <p>혼자 하니까 집중이 안돼…</p>
+        <p>같이 공부해 줄 사람 어디 없남….</p>
+      </div>
+
+      <!-- 좋아요 -->
+      <div class="post-likes">❤️ 15</div>
+
+      <!-- 댓글 섹션 -->
+      <hr class="divider-post-comment" />
+      <h3 class="comments-title">댓글</h3>
+      <div class="comments-section">
+        <!-- 첫 댓글 -->
+        <div class="comment">
+          <img
+            src="/images/commenter.png"
+            class="comment-profile"
+            alt="댓글자 프로필"
+          />
+          <div class="comment-body">
+            <div class="comment-header">
+              <span class="comment-author">딩딩대왕</span>
+              <button class="invite-btn">초대하기</button>
+            </div>
+            <div class="comment-text">저랑 같이 해요!</div>
+            <div class="comment-footer">
+              <span class="comment-date">2025.05.20 13:03</span>
+              <div class="comment-actions">
+                <button>답글</button>
+                <button>수정</button>
+                <button>삭제</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider-comment" />
+
+        <!-- 대댓글 -->
+        <div class="reply">
+          <img
+            src="/"
+            class="reply-profile"
+            alt="대댓글자 프로필"
+            onclick="openResumeModal()"
+          />
+          <div class="comment-body">
+            <div class="reply-header">
+              <span class="comment-author">모코콩</span>
+              <button class="invite-btn">초대하기</button>
+            </div>
+            <div class="comment-text">좋아요, 디스코드 아이디 주세요.</div>
+            <div class="comment-footer">
+              <span class="comment-date">2025.05.20 13:15</span>
+              <div class="comment-actions">
+                <button>답글</button>
+                <button>수정</button>
+                <button>삭제</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider-comment" />
+
+        <!-- 또 다른 댓글 -->
+        <div class="comment">
+          <img
+            src="/images/commenter3.png"
+            class="comment-profile"
+            alt="댓글자 프로필"
+          />
+          <div class="comment-body">
+            <div class="comment-header">
+              <span class="comment-author">별이반짝</span>
+              <button class="invite-btn">초대하기</button>
+            </div>
+            <div class="comment-text">저도 참여할게요~</div>
+            <div class="comment-footer">
+              <span class="comment-date">2025.05.20 14:00</span>
+              <div class="comment-actions">
+                <button>답글</button>
+                <button>수정</button>
+                <button>삭제</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 이력서 팝업 -->
+    <div class="resume-modal" id="resumeModal">
+      <div class="resume-content">
+        <div class="resume-header">
+          <span class="resume-title">이력서</span>
+          <button class="resume-close" onclick="closeResumeModal()">×</button>
+        </div>
+        <div class="resume-body">
+          <div class="resume-row">
+            <span class="resume-label">닉네임</span>
+            <div class="resume-profile">
+              <img src="프로필이미지.png" class="resume-avatar" />
+              <span class="resume-nickname">짱구</span>
+            </div>
+          </div>
+          <div class="resume-row">
+            <span class="resume-label">자기소개</span>
+            <div class="resume-intro">
+              ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
+            </div>
+          </div>
+          <div class="resume-row">
+            <span class="resume-label">컴퓨터 전공 여부</span>
+            <div class="resume-radio">
+              <label
+                ><input type="radio" name="major" checked disabled /> ●</label
+              >
+              <label><input type="radio" name="major" disabled /> ○</label>
+              <label><input type="radio" name="major" disabled /> ✕</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 팝업창 js -->
+    <script>
+      function openResumeModal() {
+        document.getElementById("resumeModal").style.display = "flex";
+      }
+
+      function closeResumeModal() {
+        document.getElementById("resumeModal").style.display = "none";
+      }
+    </script>
+  </body>
+</html>
