@@ -5,28 +5,31 @@
 	 <!-- 일정 조회하기 -->
     <select id="calendarList">
         SELECT
-            MAIN_CALENDAR_NO,
+            MAIN_CALENDAR_NO AS CALENDAR_NO,
             MAIN_CALENDAR_TITLE AS TITLE,
-            TO_CHAR(MAIN_START, 'YYYY-MM-DD"T"HH24:MI:SS') AS START1,
-            TO_CHAR("MAIN_END", 'YYYY-MM-DD"T"HH24:MI:SS') AS END
+            TO_CHAR(MAIN_START, 'YYYY-MM-DD') AS START1,
+            TO_CHAR("MAIN_END", 'YYYY-MM-DD') AS END,
+            CALENDAR_COLOR AS COLOR
         FROM MAIN_CALENDAR
     </select>
 
     <!-- 일정 저장하기 -->
     <!-- 저장하고 생성된 no(key) 값을 return 시킨다 -->
-    <insert id="calendarSave"  useGeneratedKeys="true" keyColumn="CALENDAR_NO" keyProperty="calendarNo" >
+    <insert id="calendarSave"  useGeneratedKeys="true" keyColumn="MAIN_CALENDAR_NO" keyProperty="calendarNo" >
         INSERT INTO MAIN_CALENDAR(
             MAIN_CALENDAR_NO,
             MAIN_CALENDAR_TITLE,
             "MAIN_START",
             "MAIN_END",
-            MEMBER_NO
+            MEMBER_NO,
+            CALENDAR_COLOR
         ) values (
                          SEQ_MAIN_CALENDAR_NO.NEXTVAL,
                          #{title},
-                         TO_DATE(#{start1}, 'YYYY-MM-DD HH24:MI:SS'),
-                         TO_DATE(#{end}, 'YYYY-MM-DD HH24:MI:SS'),
-                         #{memberNo}
+                         TO_DATE(#{start1}, 'YYYY-MM-DD'),
+                         TO_DATE(#{end}, 'YYYY-MM-DD'),
+                         #{memberNo},
+                         #{color}
                  )
     </insert>
 
@@ -40,8 +43,8 @@
     <update id="eventUpdate">
         UPDATE MAIN_CALENDAR SET
                             MAIN_CALENDAR_TITLE = #{title} ,
-                            "MAIN_START" = TO_DATE(#{start1}, 'YYYY-MM-DD"T"HH24:MI:SS') ,
-                            "MAIN_END" = TO_DATE(#{end}, 'YYYY-MM-DD"T"HH24:MI:SS')
+                            "MAIN_START" = TO_DATE(#{start1}, 'YYYY-MM-DD') ,
+                            "MAIN_END" = TO_DATE(#{end}, 'YYYY-MM-DD')
         WHERE MAIN_CALENDAR_NO = #{calendarNo}
     </update>
  

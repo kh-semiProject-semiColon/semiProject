@@ -16,4 +16,5 @@ public class Calendar {
         private String end;
         private int memberNo;
         private int studyNo;
+        private String color;
 }

@@ -30,7 +30,7 @@ public class CalendarController {
 
 
 	 private static final ZoneId KST_ZONE = ZoneId.of("Asia/Seoul");
-	 private static final DateTimeFormatter KST_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	 private static final DateTimeFormatter KST_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Autowired
     private CalendarService service;
@@ -40,12 +40,13 @@ public class CalendarController {
      */
     @GetMapping("/calendarList")
     public List<Map<String, Object>> calendarList() throws Exception {
-    	return service.calendarList().stream().map(cal -> {
+    	return service.calendarList().stream().map(calendar -> {
             Map<String, Object> event = new HashMap<>();
-            event.put("id", cal.getCalendarNo()); // 일정 ID
-            event.put("title", cal.getTitle()); // 일정 제목
-            event.put("start", cal.getStart1()); // 시작 날짜 (ISO 8601 형식)
-            event.put("end", cal.getEnd()); // 종료 날짜 (ISO 8601 형식)
+            event.put("id", calendar.getCalendarNo()); // 일정 ID
+            event.put("title", calendar.getTitle()); // 일정 제목
+            event.put("start", calendar.getStart1()); // 시작 날짜 (ISO 8601 형식)
+            event.put("end", calendar.getEnd()); // 종료 날짜 (ISO 8601 형식)
+            event.put("color", calendar.getColor()); // 일정 색깔
             return event;
         }).collect(Collectors.toList());
     }
@@ -60,6 +61,8 @@ public class CalendarController {
 
         Calendar vo = new Calendar();
         vo.setTitle((String) map.get("title"));
+        log.debug((String)map.get("color"));
+        vo.setColor((String)map.get("color"));
 
         // start 날짜 파싱
         if (map.get("start") != null) {
@@ -108,7 +111,7 @@ public class CalendarController {
      * 캘린더 일정 삭제
      */
     @DeleteMapping("/calendarDelete/{no}")
-    public String calendarDelete(@PathVariable long calendarNo) {
+    public String calendarDelete(@PathVariable("no") long calendarNo) {
         try {
             service.calendarDelete(calendarNo);
             return "success";
