@@ -12,15 +12,35 @@
       href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
       type="text/css"
     />
-    <script>
+    <script th:inline="javascript">
+      const authority = Number(
+        /*[[${session.loginMember != null ? session.loginMember.authority : 0}]]*/ 0
+      );
+      console.log("authority:", authority);
+
       document.addEventListener("DOMContentLoaded", function () {
-        var calendarEl = document.getElementById("calendar");
-        var calendar = new FullCalendar.Calendar(calendarEl, {
+        const calendarEl = document.getElementById("calendar");
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
           initialView: "dayGridMonth",
+          displayEventTime: false,
         });
+
         calendar.render();
       });
     </script>
+
+    <style>
+      /* 일요일 날짜: 빨간색 */
+      .fc .fc-day-sun a {
+        color: rgb(253, 114, 114);
+      }
+
+      /* 토요일 날짜: 파란색 */
+      .fc .fc-day-sat a {
+        color: rgb(101, 101, 240);
+      }
+    </style>
   </head>
   <body>
     <!-- common/header 추가-->
@@ -94,7 +114,7 @@
                   </div>
                   <div>
                     <a
-					  th:href="@{/member/signup}"
+                      th:href="@{/member/signup}"
                       style="
                         margin-left: auto;
                         text-decoration: none;
@@ -126,20 +146,20 @@
             <div class="profile-container">
               <!-- Profile Image - Will load from DB -->
               <div class="profile-image">
-                <img
-                  th:src="${session.loginMember.profileImg != null ? session.loginMember.profileImg : '/images/default-profile.png'}"
-                  alt="프로필 이미지"
-                  id="profileImage"
+                  ><img
+                    th:src="${session.loginMember.profileImg != null ? session.loginMember.profileImg : '/images/default-profile.png'}"
+                    alt="프로필 이미지"
+                    id="profileImage"
                 />
               </div>
 
               <!-- User Information -->
               <div class="profile-info">
                 <p class="profile-name">
-                  <span th:text="${session.loginMember.memberNickname}"
+                  <a><span th:text="${session.loginMember.memberNickname}"
                     >성원숭</span
                   >님
-                </p>
+                </p></a>
                 <p
                   class="profile-email"
                   th:text="${session.loginMember.memberEmail}"

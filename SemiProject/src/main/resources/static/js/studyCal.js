@@ -93,7 +93,7 @@ $(document).ready(function () {
       updateEvent(arg);
     },
 
-    // ✅ 수정된 부분: 올바른 방식으로 이벤트 불러오기
+    // 수정된 부분: 올바른 방식으로 이벤트 불러오기
     events: "/study/calendarList",
   });
   calendar.render();
