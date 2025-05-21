@@ -32,21 +32,24 @@
           </div>
           </div>
 
-         <div class="write-button-container" th:if="${session.user != null}">
-           <button class="write-button">글쓰기</button>
-         /div>
+        <div class="write-button-container" th:if="${session.user != null}">
+          <button class="write-button">글쓰기</button>
+        /div>
 
-        <div class="pagination">
-        <button th:if="${currentPage > 1}" th:onclick="|location.href='@{/hire(page=${currentPage - 1})}'|">&laquo;</button>
 
-        <button th:each="pageNum : ${#numbers.sequence(1, totalPages)}"
-                th:text="${pageNum}"
-                th:classappend="${pageNum == currentPage} ? 'active'"
-                th:onclick="|location.href='@{/hire(page=${pageNum})}'|">
-        </button>
+        <!-- 페이지 네이션 -->
+        <!-- <div class="pagination">
+          <button th:if="${currentPage > 1}" th:onclick="|location.href='@{/hire(page=${currentPage - 1})}'|">&laquo;</button>
 
-        <button th:if="${currentPage < totalPages}" th:onclick="|location.href='@{/hire(page=${currentPage + 1})}'|">&raquo;</button>
-      </div>
+          <button th:each="pageNum : ${#numbers.sequence(1, totalPages)}"
+                  th:text="${pageNum}"
+                  th:classappend="${pageNum == currentPage} ? 'active'"
+                  th:onclick="|location.href='@{/hire(page=${pageNum})}'|">
+          </button>
+
+          <button th:if="${currentPage < totalPages}" th:onclick="|location.href='@{/hire(page=${currentPage + 1})}'|">&raquo;</button>
+        </div> -->
+
 
         <div class="search-container">
           <select class="search-category" name="category">
@@ -63,5 +66,7 @@
     <th:block th:replace="~{common/footer}"></th:block>
 
     <script src="/js/hire/hireBoard.js"></script>
+    
+    <script src="/js/hire/boardDetail.js"></script>
   </body>
 </html>

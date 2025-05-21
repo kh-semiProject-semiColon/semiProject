@@ -13,4 +13,10 @@ public class BoardController {
 	
 		return "hire/hireBoard";
 	}
+	
+	@GetMapping("detail")
+	public String showBoardDetail() {
+		
+		return "hire/boardDetail";
+	}
 }

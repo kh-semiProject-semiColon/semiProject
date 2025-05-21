@@ -2,7 +2,7 @@ const cardData = Array.from({ length: 12 }, () => ({
   title: `(번역) 'use client'은 무엇을 하나요?`,
   desc: `"use client"는 React의 클라이언트 렌더링 지시자입니다.`,
   author: "sehyun hwang",
-  see : 142,
+  see: 142,
   likes: 10,
   image: "/images/test.jpg",
 }));
