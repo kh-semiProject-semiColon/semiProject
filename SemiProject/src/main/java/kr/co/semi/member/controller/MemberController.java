@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -110,4 +111,75 @@ public class MemberController {
 		return "redirect:/";
 	}
 
+	
+	/** 로그인페이지 STEP1로 이동
+	 * @return
+	 */
+	@RequestMapping("signup")
+	public String signup() {
+		
+		return "member/signup";
+	}
+	
+	/** 로그인페이지 STEP2로 이동
+	 * @return
+	 */
+	@RequestMapping("signup2")
+	public String signup2() {
+		
+		return "member/signup2";
+	}
+	
+	/** 로그인페이지 STEP3로 이동
+	 * @return
+	 */
+	@RequestMapping("signup3")
+	public String signup3() {
+		
+		return "member/signup3";
+	}
+	
+	/** 회원가입 페이지
+	 * @param inputMember
+	 * @param memberAddress
+	 * @param ra
+	 * @return
+	 */
+	@PostMapping("signupInfo")
+	public String signupInfo(Member inputMember,
+							@RequestParam("memberAddress") String[] memberAddress,
+							RedirectAttributes ra) {
+		
+		// 회원가입 서비스 호출
+		int result = service.signupInfo(inputMember, memberAddress);
+		
+		String path = null;
+		
+		if(result > 0) { // 회원가입 성공
+			path = "signup3";
+		}else {// 회원가입 실패
+			path = "signup2";
+		}
+		
+		return "redirect:"+path;
+	}
+	
+	@ResponseBody
+	@GetMapping("checkEmail")
+	public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
+		
+		return service.checkEmail(memberEmail);
+	}
+	
+	/** 닉네임 중복 검사
+	 * @param memberNickname
+	 * @return 중복 1, 아님 0
+	 */
+	@ResponseBody
+	@GetMapping("checkNickname")
+	public int checkNickname(@RequestParam("memberNickname") String memberNickname) {
+		
+		return service.checkNickname(memberNickname); 
+	}
+	
 }
