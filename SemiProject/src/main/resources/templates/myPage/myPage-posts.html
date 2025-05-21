@@ -3,37 +3,107 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GoStudy 마이페이지</title>
+    <title>GoStudy 마이페이지 게시글</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
+      type="text/css"
+    />
     <style>
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: "Noto Sans KR", sans-serif;
+        font-family: "Apple SD Gothic Neo", sans-serif;
       }
 
       body {
         background-color: #ffffff;
-        width: 1920px;
+        width: 100%;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
       }
 
-      /* 메인 컨텐츠 스타일 */
+      /* 헤더 스타일 */
+      header {
+        width: 100%;
+        border-bottom: 1px solid #dbdae2;
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 5%;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+      }
+
+      .logo img {
+        height: 32px;
+      }
+
+      .nav-menu {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .nav-menu li {
+        position: relative;
+        margin: 0 15px;
+        white-space: nowrap;
+      }
+
+      .nav-menu li a {
+        display: block;
+        padding: 15px 10px;
+        color: #333;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .nav-menu li::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background-color: #3867ff;
+        transition: width 0.3s;
+      }
+
+      .nav-menu li:hover::after {
+        width: 100%;
+      }
+
+      .menu-icon {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      /* 메인 컨텐츠 스타일 - 반응형으로 변경 */
       .main-content {
         width: 100%;
         margin: 50px auto;
         max-width: 1196px;
         min-width: 1120;
         display: flex;
-        gap: 4%;
+        gap: 43px;
         padding-bottom: 50px;
         position: relative;
         justify-content: center;
       }
 
-      /* 사이드바 스타일 */
+      /* 사이드바 스타일 - 반응형으로 변경 */
       .sidebar {
         width: 20%;
         display: flex;
@@ -58,17 +128,16 @@
       .sidebar-menu {
         display: flex;
         flex-direction: column;
-        align-items: center;
         gap: 5px;
       }
 
       .sidebar-menu-item {
         width: 100%;
-        height: 100%;
+        height: 48px;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 0 auto;
+        padding: 0 15px;
         border-radius: 4px;
         cursor: pointer;
         transition: background-color 0.3s, color 0.3s;
@@ -86,18 +155,17 @@
         margin: 5px 0;
       }
 
-      /* 콘텐츠 영역 스타일 */
+      /* 콘텐츠 영역 스타일 - 반응형으로 변경 */
       .content {
-        width: 100%;
-        /* flex: 1; 아직 이해못해서 정의 못함 */
+        width: 80%;
         position: relative;
-        /* margin-right: 10px; */
+        margin: 0 43px;
       }
 
       .content::before {
         content: "";
         position: absolute;
-        left: -2.5%;
+        left: -43px;
         top: 0;
         width: 2px;
         height: calc(100% - 50px);
@@ -106,7 +174,6 @@
 
       .content-section {
         margin-bottom: 50px;
-        width: 100%;
       }
 
       .content-heading {
@@ -122,13 +189,12 @@
         margin-bottom: 30px;
       }
 
-      /* 테이블 스타일 */
+      /* 테이블 스타일 - 반응형으로 변경 */
       .table-header {
         display: flex;
         background-color: #3867ff;
         color: white;
         border-radius: 4px;
-        width: 100%;
         height: 50px;
         align-items: center;
         margin-bottom: 10px;
@@ -136,7 +202,6 @@
       }
 
       .table-row {
-        width: 100%;
         display: flex;
         border: 2px solid #dbdae2;
         border-radius: 4px;
@@ -147,14 +212,13 @@
       }
 
       .col-num {
-        width: 15%;
+        width: 10%;
         text-align: center;
-        /* padding-left: 31px; */
       }
 
       .col-title {
-        width: 40%;
-        /* padding-left: 221px; */
+        width: 30%;
+        padding-left: 30px;
         overflow: hidden;
         text-overflow: ellipsis;
       }
@@ -162,51 +226,40 @@
       .col-author {
         width: 15%;
         text-align: center;
-        /* padding-left: 163px; */
       }
 
       .col-date {
         width: 15%;
         text-align: center;
-        /* padding-left: 73px; */
       }
 
       .col-views {
         width: 15%;
         text-align: center;
-        /* padding-left: 67px; */
       }
 
       .col-likes {
         width: 15%;
         text-align: center;
-        /* padding-left: 59px; */
-        /* padding-right: 42px; */
-      }
-
-      .table-row .col-title {
-        /* padding-left: 88px; */
-        width: 40%;
       }
 
       .col-post-title {
         width: 30%;
-        /* padding-left: 221px; */
+        padding-left: 30px;
         overflow: hidden;
         text-overflow: ellipsis;
       }
 
       .col-comment-text {
-        width: 30%;
-        text-align: center;
+        width: 40%;
+        padding-left: 20px;
         overflow: hidden;
         text-overflow: ellipsis;
       }
 
       .col-comment-date {
-        width: 25%;
+        width: 20%;
         text-align: center;
-        /* padding-left: 110px; */
       }
 
       /* 페이지네이션 스타일 */
@@ -215,7 +268,7 @@
         justify-content: center;
         align-items: center;
         margin-top: 30px;
-        gap: 1px;
+        gap: 5px;
       }
 
       .page-item {
@@ -240,18 +293,177 @@
         font-size: 18px;
         font-weight: 700;
       }
+
+      /* 푸터 스타일 */
+      footer {
+        background-color: #f8f9fa;
+        padding: 30px 0;
+        margin-top: auto;
+      }
+
+      .footer-container {
+        width: 60%;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .footer-logo {
+        margin-bottom: 20px;
+      }
+
+      .footer-logo img {
+        height: 32px;
+      }
+
+      .footer-info {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+        color: #666;
+        font-size: 14px;
+      }
+
+      .footer-info-item {
+        margin: 0 10px;
+      }
+
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 10px;
+        font-size: 12px;
+        color: #888;
+      }
+
+      .footer-link {
+        cursor: pointer;
+      }
+
+      /* 반응형 디자인을 위한 미디어 쿼리 */
+      @media (max-width: 1200px) {
+        .main-content {
+          width: 80%;
+        }
+
+        .footer-container {
+          width: 80%;
+        }
+      }
+
+      @media (max-width: 992px) {
+        .nav-menu {
+          display: none;
+        }
+
+        .main-content {
+          width: 90%;
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: 100%;
+          margin: 0 30;
+        }
+
+        .content {
+          width: 100%;
+        }
+
+        .content::before {
+          display: none;
+        }
+
+        .footer-container {
+          width: 90%;
+        }
+
+        .footer-info {
+          flex-direction: column;
+          gap: 5px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .col-author,
+        .col-views {
+          display: none;
+        }
+
+        .col-title,
+        .col-post-title {
+          width: 40%;
+        }
+
+        .col-comment-text {
+          width: 50%;
+        }
+
+        .col-date,
+        .col-comment-date {
+          width: 30%;
+        }
+
+        .col-likes {
+          width: 20%;
+        }
+      }
+
+      @media (max-width: 576px) {
+        header {
+          padding: 15px 5%;
+        }
+
+        .main-content {
+          width: 95%;
+          margin-top: 30px;
+        }
+
+        .content-heading {
+          font-size: 18px;
+        }
+
+        .col-date {
+          display: none;
+        }
+
+        .col-num {
+          width: 15%;
+        }
+
+        .col-title,
+        .col-post-title {
+          width: 55%;
+        }
+
+        .col-likes {
+          width: 30%;
+        }
+
+        .col-comment-text {
+          width: 60%;
+        }
+
+        .col-comment-date {
+          width: 25%;
+        }
+
+        .pagination {
+          flex-wrap: wrap;
+        }
+      }
     </style>
   </head>
   <body>
+    <!-- 헤더 -->
     <th:block th:replace="~{common/header}"></th:block>
+
     <!-- 메인 컨텐츠 -->
     <div class="main-content">
       <!-- 사이드바 -->
       <div class="sidebar">
-        <div>
-          <h2 class="sidebar-heading">마이페이지</h2>
-          <div class="sidebar-divider"></div>
-        </div>
+        <h2 class="sidebar-heading">마이페이지</h2>
+        <div class="sidebar-divider"></div>
         <div class="sidebar-menu">
           <div class="sidebar-menu-item">프로필</div>
           <div class="sidebar-menu-divider"></div>
@@ -301,39 +513,39 @@
           </div>
 
           <div class="table-row">
-            <div class="col-num">1</div>
-            <div class="col-title">1번째 게시글</div>
+            <div class="col-num">2</div>
+            <div class="col-title">2번째 게시글</div>
             <div class="col-author">유저명</div>
-            <div class="col-date">25.05.09</div>
-            <div class="col-views">202</div>
-            <div class="col-likes">3</div>
+            <div class="col-date">25.05.08</div>
+            <div class="col-views">155</div>
+            <div class="col-likes">7</div>
           </div>
 
           <div class="table-row">
-            <div class="col-num">1</div>
-            <div class="col-title">1번째 게시글</div>
+            <div class="col-num">3</div>
+            <div class="col-title">3번째 게시글</div>
             <div class="col-author">유저명</div>
-            <div class="col-date">25.05.09</div>
-            <div class="col-views">202</div>
-            <div class="col-likes">3</div>
+            <div class="col-date">25.05.07</div>
+            <div class="col-views">87</div>
+            <div class="col-likes">2</div>
           </div>
 
           <div class="table-row">
-            <div class="col-num">1</div>
-            <div class="col-title">1번째 게시글</div>
+            <div class="col-num">4</div>
+            <div class="col-title">4번째 게시글</div>
             <div class="col-author">유저명</div>
-            <div class="col-date">25.05.09</div>
-            <div class="col-views">202</div>
-            <div class="col-likes">3</div>
+            <div class="col-date">25.05.06</div>
+            <div class="col-views">112</div>
+            <div class="col-likes">5</div>
           </div>
 
           <div class="table-row">
-            <div class="col-num">1</div>
-            <div class="col-title">1번째 게시글</div>
+            <div class="col-num">5</div>
+            <div class="col-title">5번째 게시글</div>
             <div class="col-author">유저명</div>
-            <div class="col-date">25.05.09</div>
-            <div class="col-views">202</div>
-            <div class="col-likes">3</div>
+            <div class="col-date">25.05.05</div>
+            <div class="col-views">78</div>
+            <div class="col-likes">1</div>
           </div>
 
           <!-- 페이지네이션 -->
@@ -422,36 +634,30 @@
             <div class="col-num">2</div>
             <div class="col-post-title">2번째 게시글</div>
             <div class="col-comment-text">
-              텍스트는 동그래 말줄임해줍니다...
+              댓글 내용이 길어질 경우 말줄임 처리됩니다
             </div>
-            <div class="col-comment-date">25.05.09 12:33</div>
+            <div class="col-comment-date">25.05.08 10:15</div>
           </div>
 
           <div class="table-row">
             <div class="col-num">3</div>
             <div class="col-post-title">3번째 게시글</div>
-            <div class="col-comment-text">
-              텍스트는 동그래 말줄임해줍니다...
-            </div>
-            <div class="col-comment-date">25.05.09 12:33</div>
+            <div class="col-comment-text">안녕하세요! 반갑습니다.</div>
+            <div class="col-comment-date">25.05.07 16:42</div>
           </div>
 
           <div class="table-row">
             <div class="col-num">4</div>
-            <div class="col-post-title">1번째 게시글</div>
-            <div class="col-comment-text">
-              텍스트는 동그래 말줄임해줍니다...
-            </div>
-            <div class="col-comment-date">25.05.09 12:33</div>
+            <div class="col-post-title">4번째 게시글</div>
+            <div class="col-comment-text">좋은 정보 감사합니다.</div>
+            <div class="col-comment-date">25.05.06 09:27</div>
           </div>
 
           <div class="table-row">
             <div class="col-num">5</div>
             <div class="col-post-title">5번째 게시글</div>
-            <div class="col-comment-text">
-              텍스트는 동그래 말줄임해줍니다...
-            </div>
-            <div class="col-comment-date">25.05.09 12:33</div>
+            <div class="col-comment-text">다음에도 좋은 글 부탁드립니다!</div>
+            <div class="col-comment-date">25.05.05 14:08</div>
           </div>
 
           <!-- 페이지네이션 -->
@@ -500,6 +706,8 @@
         </div>
       </div>
     </div>
+
+    <!-- 푸터 -->
     <th:block th:replace="~{common/footer}"></th:block>
 
     <script>
@@ -526,6 +734,57 @@
             this.classList.add("active");
           });
         });
+
+      // 모바일 메뉴 토글 기능 추가
+      document
+        .querySelector(".menu-icon")
+        .addEventListener("click", function () {
+          const navMenu = document.querySelector(".nav-menu");
+          navMenu.style.display =
+            navMenu.style.display === "flex" ? "none" : "flex";
+
+          if (navMenu.style.display === "flex") {
+            navMenu.style.position = "absolute";
+            navMenu.style.top = "70px";
+            navMenu.style.left = "0";
+            navMenu.style.width = "100%";
+            navMenu.style.flexDirection = "column";
+            navMenu.style.backgroundColor = "#fff";
+            navMenu.style.boxShadow = "0 2px 5px rgba(0,0,0,0.1)";
+            navMenu.style.zIndex = "100";
+
+            document.querySelectorAll(".nav-menu li").forEach((item) => {
+              item.style.margin = "0";
+              item.style.width = "100%";
+              item.style.textAlign = "center";
+              item.style.borderBottom = "1px solid #DBDAE2";
+            });
+          }
+        });
+
+      // 반응형 화면 크기 변경 감지
+      window.addEventListener("resize", function () {
+        const navMenu = document.querySelector(".nav-menu");
+        if (window.innerWidth > 992) {
+          navMenu.style.display = "flex";
+          navMenu.style.position = "absolute";
+          navMenu.style.top = "auto";
+          navMenu.style.left = "50%";
+          navMenu.style.width = "auto";
+          navMenu.style.flexDirection = "row";
+          navMenu.style.backgroundColor = "transparent";
+          navMenu.style.boxShadow = "none";
+
+          document.querySelectorAll(".nav-menu li").forEach((item) => {
+            item.style.margin = "0 15px";
+            item.style.width = "auto";
+            item.style.textAlign = "center";
+            item.style.borderBottom = "none";
+          });
+        } else {
+          navMenu.style.display = "none";
+        }
+      });
     </script>
   </body>
 </html>
