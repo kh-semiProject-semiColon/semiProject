@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>스터디 생성 - GoStudy</title>
+    <link href="/css/study/study-creation.css" rel="stylesheet" />
+    <link href="/css/common/header.css" rel="stylesheet" />
+    <link href="/css/common/footer.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- common/header 추가-->
+    <th:block th:replace="~{common/header}"></th:block>
+
+    <div class="container">
+      <div class="header">
+        <h1 class="title">스터디 생성</h1>
+        <button class="home-btn" onclick="redirectToMain()">메인</button>
+      </div>
+
+      <form id="studyForm" onsubmit="submitForm(event)">
+        <div class="form-container">
+          <!-- 왼쪽 영역 -->
+          <div class="left-section">
+            <!-- 스터디 명 -->
+            <div class="form-group">
+              <label class="form-label" for="studyName">스터디 명</label>
+              <input
+                type="text"
+                id="studyName"
+                name="studyName"
+                class="form-input"
+                placeholder="스터디 명을 입력하세요"
+                required
+              />
+            </div>
+
+            <!-- 최대 인원 -->
+            <div class="form-group">
+              <label class="form-label" for="maxMembers">최대 인원</label>
+              <select
+                id="maxMembers"
+                name="maxMembers"
+                class="form-select"
+                required
+              >
+                <option value="">인원을 선택하세요</option>
+                <option value="2">2명</option>
+                <option value="3">3명</option>
+                <option value="4">4명</option>
+                <option value="5">5명</option>
+                <option value="6">6명</option>
+              </select>
+            </div>
+
+            <!-- 방향성 -->
+            <div class="form-group">
+              <label class="form-label">방향성</label>
+              <div class="radio-group">
+                <div class="radio-item">
+                  <input
+                    type="radio"
+                    id="levelup"
+                    name="direction"
+                    value="레벨업"
+                    required
+                  />
+                  <label for="levelup">레벨업</label>
+                </div>
+                <div class="radio-item">
+                  <input
+                    type="radio"
+                    id="review"
+                    name="direction"
+                    value="복습"
+                  />
+                  <label for="review">복습</label>
+                </div>
+                <div class="radio-item">
+                  <input
+                    type="radio"
+                    id="practice"
+                    name="direction"
+                    value="문제풀이"
+                  />
+                  <label for="practice">문제풀이</label>
+                </div>
+                <div class="radio-item">
+                  <input
+                    type="radio"
+                    id="certification"
+                    name="direction"
+                    value="자격증"
+                  />
+                  <label for="certification">자격증</label>
+                </div>
+                <div class="radio-item">
+                  <input
+                    type="radio"
+                    id="project"
+                    name="direction"
+                    value="프로젝트"
+                  />
+                  <label for="project">프로젝트</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 오른쪽 영역 -->
+          <div class="right-section">
+            <!-- 기간 -->
+            <div class="form-group">
+              <label class="form-label">기간</label>
+              <div class="period-group">
+                <div class="period-item">
+                  <input
+                    type="number"
+                    id="periodMonth"
+                    name="periodMonth"
+                    class="period-input"
+                    min="1"
+                    max="12"
+                    placeholder="1"
+                  />
+                  <input
+                    type="radio"
+                    id="monthOption"
+                    name="periodType"
+                    value="개월"
+                    checked
+                  />
+                  <label for="monthOption">개월</label>
+                </div>
+                <div class="period-item">
+                  <input
+                    type="radio"
+                    id="unlimitedOption"
+                    name="periodType"
+                    value="무기한"
+                  />
+                  <label for="unlimitedOption">무기한</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- 대표사진 -->
+            <div class="form-group">
+              <label class="form-label">대표사진</label>
+              <div class="image-placeholder" id="imagePreview">
+                이미지를 선택해주세요
+              </div>
+              <input
+                type="file"
+                id="profileImage"
+                name="profileImage"
+                accept="image/*"
+                style="margin-top: 10px"
+                onchange="previewImage(event)"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- 스터디 생성하기 버튼 -->
+        <div class="submit-container">
+          <button type="submit" class="submit-btn">스터디 생성하기</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- common/footer 추가-->
+    <th:block th:replace="~{common/footer}"></th:block>
+
+    <script>
+      function redirectToMain() {
+        // 메인 페이지로 리다이렉트
+        window.location.href = "/main"; // 실제 메인 페이지 URL로 변경
+      }
+
+      function previewImage(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("imagePreview");
+
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            preview.innerHTML = `<img src="${e.target.result}" alt="미리보기" style="width: 100%; height: 100%; object-fit: cover;">`;
+          };
+          reader.readAsDataURL(file);
+        } else {
+          preview.innerHTML = "이미지를 선택해주세요";
+        }
+      }
+
+      function submitForm(event) {
+        event.preventDefault();
+
+        // 폼 데이터 수집
+        const formData = new FormData();
+        const form = document.getElementById("studyForm");
+
+        // 기본 데이터 추가
+        formData.append("studyName", form.studyName.value);
+        formData.append("maxMembers", form.maxMembers.value);
+        formData.append("direction", form.direction.value);
+        formData.append("periodType", form.periodType.value);
+
+        // 기간이 개월인 경우 개월 수도 추가
+        if (form.periodType.value === "개월") {
+          formData.append("periodMonth", form.periodMonth.value || 1);
+        }
+
+        // 이미지 파일 추가
+        if (form.profileImage.files[0]) {
+          formData.append("profileImage", form.profileImage.files[0]);
+        }
+
+        // 컨트롤러로 데이터 전송
+        fetch("/api/study/create", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              alert("스터디가 성공적으로 생성되었습니다!");
+              window.location.href = "/main"; // 성공 시 메인페이지로 이동
+            } else {
+              alert("스터디 생성에 실패했습니다: " + data.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("스터디 생성 중 오류가 발생했습니다.");
+          });
+      }
+
+      // 무기한 선택 시 개월 입력 비활성화
+      document.querySelectorAll('input[name="periodType"]').forEach((radio) => {
+        radio.addEventListener("change", function () {
+          const monthInput = document.getElementById("periodMonth");
+          if (this.value === "무기한") {
+            monthInput.disabled = true;
+            monthInput.value = "";
+          } else {
+            monthInput.disabled = false;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

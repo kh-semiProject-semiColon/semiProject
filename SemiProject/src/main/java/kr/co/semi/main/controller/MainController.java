@@ -11,5 +11,10 @@ public class MainController {
 		
 		return "common/main";
 	}
+	
+	@RequestMapping("/studyCreation")
+	public String studyCreation() {
+		return "study/study-creation";
+	}
 
 }
