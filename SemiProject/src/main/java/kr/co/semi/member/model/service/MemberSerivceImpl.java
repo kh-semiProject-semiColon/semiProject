@@ -112,5 +112,11 @@ public class MemberSerivceImpl implements MemberService {
 	public int checkName(Member inputMember) {
 		return mapper.checkName(inputMember);
 	}
+	
+	// 아이디 얻어오기
+@Override
+	public String getId(Member inputMember) {
+		return mapper.getId(inputMember);
+	}
 
 }
