@@ -7,35 +7,35 @@ document.addEventListener("DOMContentLoaded", function () {
   const info = document.querySelector("#myPage-info");
   const posts = document.querySelector("#myPage-posts");
   const change = document.querySelector("#myPage-change");
-  const withdraw = document.querySelector("#myPage-withdraw");
+  const delete1 = document.querySelector("#myPage-delete1");
 
   switch (currentLocation) {
     case "/myPage/info":
       info.classList.add("active");
       posts.classList.remove("active");
       change.classList.remove("active");
-      withdraw.classList.remove("active");
+      delete1.classList.remove("active");
       break;
 
     case "/myPage/posts":
       info.classList.remove("active");
       posts.classList.add("active");
       change.classList.remove("active");
-      withdraw.classList.remove("active");
+      delete1.classList.remove("active");
       break;
 
     case "/myPage/change":
       info.classList.remove("active");
       posts.classList.remove("active");
       change.classList.add("active");
-      withdraw.classList.remove("active");
+      delete1.classList.remove("active");
       break;
 
     case "/myPage/withdraw":
       info.classList.remove("active");
       posts.classList.remove("active");
       change.classList.remove("active");
-      withdraw.classList.add("active");
+      delete1.classList.add("active");
       break;
   }
 });
