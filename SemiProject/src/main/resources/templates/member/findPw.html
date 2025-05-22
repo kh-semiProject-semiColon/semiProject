@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>회원 ID 찾기</title>
-    <link href="/css/member/findIdResult.css" rel="stylesheet" />
+    <link href="/css/member/findPw.css" rel="stylesheet" />
     <link href="/css/main.css" rel="stylesheet" />
     <style>
       * {
@@ -35,12 +35,25 @@
       }
 
       .form-group {
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         display: flex;
         align-items: center;
       }
 
-      label {
+      .form-groupB {
+        display: flex;
+        align-items: center;
+      }
+
+      .labelA {
+        width: 80px;
+        color: #555;
+        font-size: 14px;
+        margin-right: 10px;
+        padding-bottom: 30px;
+      }
+
+      .labelB {
         width: 80px;
         color: #555;
         font-size: 14px;
@@ -53,10 +66,20 @@
         border: 1px solid #ddd;
         border-radius: 15px;
         font-size: 16px;
+        margin-bottom: 30px;
       }
 
-      #memberTel {
-        width: 500px;
+      #memberEmail {
+        width: 400px;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 15px;
+        font-size: 16px;
+        margin-bottom: 30px;
+      }
+
+      #authKey {
+        width: 400px;
         padding: 12px;
         border: 1px solid #ddd;
         border-radius: 15px;
@@ -95,11 +118,11 @@
         <h2 class="sidebar-heading">내 정보 찾기</h2>
         <div class="sidebar-menu-divider"></div>
         <div class="sidebar-menu">
-          <div class="sidebar-menu-item active">
+          <div class="sidebar-menu-item">
             <a th:href="@{/member/findId}">ID 찾기</a>
           </div>
           <div class="sidebar-menu-divider"></div>
-          <div class="sidebar-menu-item">
+          <div class="sidebar-menu-item active">
             <a th:href="@{/member/findPw}">비밀번호 찾기</a>
           </div>
           <div class="sidebar-menu-divider"></div>
@@ -107,22 +130,46 @@
       </div>
       <div style="width: 2px; background-color: #dbdae2"></div>
       <div class="main-content">
-        <h1>ID 찾기</h1>
+        <h1>비밀번호 찾기</h1>
 
-        <div class="result">
-          <p>
-            <span class="nameResult" th:text="${memberName}"></span> 님의
-            아이디는
-            <span class="idResult" th:text="${memberEmail}"></span> 입니다! 좋은
-            스터디 되세요!
-          </p>
-        </div>
+        <form action="/member/modifyPw" method="post">
+          <div class="form-group">
+            <label class="labelA" for="memberName">이름</label>
+            <input
+              name="memberName"
+              type="text"
+              id="memberName"
+              placeholder="이름을 입력하세요"
+            />
+          </div>
 
-        <button class="submit-btn">확인</button>
+          <div class="form-group">
+            <label class="labelA" for="memberEmail">이메일</label>
+            <input
+              name="memberEmail"
+              type="tel"
+              id="memberEmail"
+              placeholder="이메일(아이디)를 입력하세요"
+            />
+            <button id="sendAuthKeyBtn" type="button" class="form-button">
+              인증요청
+            </button>
+          </div>
+
+          <div class="form-groupB">
+            <label class="labelB" for="authKey">인증번호</label>
+            <input id="authKey" name="authKey" type="text" />
+            <button id="checkAuthKeyBtn" type="button" class="form-button">
+              인증확인
+            </button>
+          </div>
+          <span class="signUp-message" id="authKeyMessage"></span>
+          <button class="submit-btn">확인</button>
+        </form>
       </div>
     </div>
 
-    <script src="/js/member/findIdResult.js"></script>
+    <script src="/js/member/findPw.js"></script>
     <th:block th:replace="~{common/footer}"></th:block>
   </body>
 </html>

@@ -1,5 +1,7 @@
 package kr.co.semi.member.model.service;
 
+import java.util.Map;
+
 import kr.co.semi.member.model.dto.Member;
 
 public interface MemberService {
@@ -41,5 +43,7 @@ public interface MemberService {
 	 * @return
 	 */
 	String getId(Member inputMember);
+
+	int checkNM(Map<String, String> map);
 
 }

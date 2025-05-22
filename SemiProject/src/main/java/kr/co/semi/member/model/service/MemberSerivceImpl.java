@@ -1,5 +1,7 @@
 package kr.co.semi.member.model.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -103,20 +105,28 @@ public class MemberSerivceImpl implements MemberService {
 		return mapper.signupInfo(inputMember);
 	}
 	
+	// 닉네임 중복 검사
 	@Override
 	public int checkNickname(String memberNickname) {
 		return mapper.checkNickname(memberNickname);
 	}
 	
+	// ID찾기 일치하는 이름, 전화번호 조회
 	@Override
 	public int checkName(Member inputMember) {
 		return mapper.checkName(inputMember);
 	}
 	
 	// 아이디 얻어오기
-@Override
+	@Override
 	public String getId(Member inputMember) {
 		return mapper.getId(inputMember);
+	}
+	
+	// 입력한 이름, 아이디와 동일한 데이터 조회
+	@Override
+	public int checkNM(Map<String, String> map) {
+		return mapper.checkNM(map);
 	}
 
 }

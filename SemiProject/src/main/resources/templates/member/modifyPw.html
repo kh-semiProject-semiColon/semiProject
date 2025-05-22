@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>회원 ID 찾기</title>
-    <link href="/css/member/findIdResult.css" rel="stylesheet" />
+    <link href="/css/member/modifyPw.css" rel="stylesheet" />
     <link href="/css/main.css" rel="stylesheet" />
     <style>
       * {
@@ -47,7 +47,7 @@
         margin-right: 10px;
       }
 
-      #memberName {
+      #memberPwConfirm {
         width: 300px;
         padding: 12px;
         border: 1px solid #ddd;
@@ -55,7 +55,7 @@
         font-size: 16px;
       }
 
-      #memberTel {
+      #memberPw {
         width: 500px;
         padding: 12px;
         border: 1px solid #ddd;
@@ -109,20 +109,47 @@
       <div class="main-content">
         <h1>ID 찾기</h1>
 
-        <div class="result">
-          <p>
-            <span class="nameResult" th:text="${memberName}"></span> 님의
-            아이디는
-            <span class="idResult" th:text="${memberEmail}"></span> 입니다! 좋은
-            스터디 되세요!
-          </p>
-        </div>
+        <form action="/member/completeModifyResult" method="post">
+          <!-- 비밀번호 -->
+          <div class="form-group">
+            <label for="memberPw" class="form-label"
+              ><span class="required">*</span> 비밀번호</label
+            >
+            <div class="form-input-container">
+              <input
+                id="memberPw"
+                name="memberPw"
+                type="password"
+                class="form-input"
+                placeholder=""
+              />
+            </div>
+          </div>
+          <span class="signUp-message" id="pwMessage"
+            >영어,숫자,특수문자(!,@,#,-,_) 6~20글자 사이로 입력해주세요.</span
+          >
 
-        <button class="submit-btn">확인</button>
+          <!-- 비밀번호 확인 -->
+          <div class="form-group">
+            <label class="form-label"
+              ><span class="required">*</span> 비밀번호 확인</label
+            >
+            <div class="form-input-container">
+              <input
+                id="memberPwConfirm"
+                name="memberPwConfirm"
+                type="password"
+                class="form-input"
+                placeholder="비밀번호를 한번 더 입력해주세요"
+              />
+            </div>
+          </div>
+          <button class="submit-btn">확인</button>
+        </form>
       </div>
     </div>
 
-    <script src="/js/member/findIdResult.js"></script>
+    <script src="/js/member/modifyPw.js"></script>
     <th:block th:replace="~{common/footer}"></th:block>
   </body>
 </html>

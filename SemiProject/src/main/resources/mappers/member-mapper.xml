@@ -49,6 +49,15 @@
 		AND MEMBER_DEL_FL = 'N'
 	</select>
 	
+	<!-- 입력한 이름, 아이디와 동일한 데이터 조회 -->
+	<select id="checkNM">
+		SELECT COUNT(*)
+		FROM "MEMBER"
+		WHERE MEMBER_NAME = #{memberName}
+		AND MEMBER_EMAIL = #{memberEmail}
+		AND MEMBER_DEL_FL = 'N'
+	</select>
+	
 	<!-- 회원가입 -->
 	<insert id="signupInfo">
 		INSERT INTO "MEMBER"
