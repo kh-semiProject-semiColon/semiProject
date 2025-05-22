@@ -19,7 +19,9 @@ public class MainServiceImpl implements MainService {
 	 */
 	@Override
 	public int studyCreation(Study study) {
-		return 0;
+		
+		int result = mapper.studyCreation(study);
+		return result;
 	}
 	
 	

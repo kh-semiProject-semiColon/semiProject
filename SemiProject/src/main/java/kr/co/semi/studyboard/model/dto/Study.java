@@ -22,5 +22,6 @@ public class Study {
 	private String studyDate; //스터디 생성일
 	private int studyType; //스터디 방향성
 	private int studyPeriod; // 스터디운영기간 기본단위:개월 0 종강까지
+	private String studyMainImg;
 	
 }

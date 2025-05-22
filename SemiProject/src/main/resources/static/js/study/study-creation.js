@@ -29,12 +29,13 @@ function submitForm(event) {
   formData.append("studyName", form.studyName.value);
   formData.append("studyMaxCount", form.studyMaxCount.value);
   formData.append("studyType", form.studyType.value);
-  formData.append("periodType", form.periodType.value);
 
-  // 기간이 개월인 경우 개월 수도 추가
-  if (form.periodType.value === "개월") {
-    formData.append("periodMonth", form.periodMonth.value || 1);
+  // 스터디 운영기간에서 "무기한"을 선택한 경우 studyPeriod의 값이 빈 문자열로 들어옴
+  // Study DTO에서는 studyPeriod는 int형으로 정의 되어 있으므로 바꿔주는 과정이 필요
+  if (form.studyPeriod.value === "") {
+    form.studyPeriod.value = 0;
   }
+  formData.append("studyPeriod", form.studyPeriod.value);
 
   // 이미지 파일 추가
   if (form.profileImage.files[0]) {
@@ -48,11 +49,11 @@ function submitForm(event) {
   })
     .then((response) => response.json())
     .then((data) => {
-      if (data.success) {
+      if (data === 1) {
         alert("스터디가 성공적으로 생성되었습니다!");
-        window.location.href = "/main"; // 성공 시 메인페이지로 이동
+        window.location.href = "/"; // 성공 시 메인페이지로 이동
       } else {
-        alert("스터디 생성에 실패했습니다: " + data.message);
+        alert("스터디 생성에 실패했습니다");
       }
     })
     .catch((error) => {
