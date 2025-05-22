@@ -35,20 +35,21 @@
       }
 
       .form-group {
-        margin-bottom: 20px;
         display: flex;
         align-items: center;
+        margin-top: 20px;
       }
 
       label {
-        width: 80px;
+        width: 120px;
         color: #555;
         font-size: 14px;
         margin-right: 10px;
       }
 
       #memberPwConfirm {
-        width: 300px;
+        width: 450px;
+        min-width: 100px;
         padding: 12px;
         border: 1px solid #ddd;
         border-radius: 15px;
@@ -56,7 +57,8 @@
       }
 
       #memberPw {
-        width: 500px;
+        width: 450px;
+        min-width: 100px;
         padding: 12px;
         border: 1px solid #ddd;
         border-radius: 15px;
@@ -95,21 +97,21 @@
         <h2 class="sidebar-heading">내 정보 찾기</h2>
         <div class="sidebar-menu-divider"></div>
         <div class="sidebar-menu">
-          <div class="sidebar-menu-item active">
+          <div class="sidebar-menu-item">
             <a th:href="@{/member/findId}">ID 찾기</a>
           </div>
           <div class="sidebar-menu-divider"></div>
-          <div class="sidebar-menu-item">
-            <a th:href="@{/member/findPw}">비밀번호 찾기</a>
+          <div class="sidebar-menu-item active">
+            <a th:href="@{/member/findPw}">비밀번호 재설정</a>
           </div>
           <div class="sidebar-menu-divider"></div>
         </div>
       </div>
       <div style="width: 2px; background-color: #dbdae2"></div>
       <div class="main-content">
-        <h1>ID 찾기</h1>
+        <h1>비밀번호 재설정</h1>
 
-        <form action="/member/completeModifyResult" method="post">
+        <form action="/member/changePw" method="post">
           <!-- 비밀번호 -->
           <div class="form-group">
             <label for="memberPw" class="form-label"
@@ -121,13 +123,13 @@
                 name="memberPw"
                 type="password"
                 class="form-input"
-                placeholder=""
               />
             </div>
           </div>
           <span class="signUp-message" id="pwMessage"
             >영어,숫자,특수문자(!,@,#,-,_) 6~20글자 사이로 입력해주세요.</span
           >
+          <input type="hidden" name="memberEmail" th:value="${memberEmail}" />
 
           <!-- 비밀번호 확인 -->
           <div class="form-group">
@@ -140,10 +142,10 @@
                 name="memberPwConfirm"
                 type="password"
                 class="form-input"
-                placeholder="비밀번호를 한번 더 입력해주세요"
               />
             </div>
           </div>
+          <span class="signUp-message" id="confirmPwMessage"></span>
           <button class="submit-btn">확인</button>
         </form>
       </div>

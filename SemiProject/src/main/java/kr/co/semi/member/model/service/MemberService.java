@@ -44,6 +44,16 @@ public interface MemberService {
 	 */
 	String getId(Member inputMember);
 
+	/**이름 이메일 동일성 검사
+	 * @param map
+	 * @return
+	 */
 	int checkNM(Map<String, String> map);
+
+	/** 비밀번호 수정
+	 * @param inputMember
+	 * @return
+	 */
+	int changePw(Member inputMember);
 
 }
