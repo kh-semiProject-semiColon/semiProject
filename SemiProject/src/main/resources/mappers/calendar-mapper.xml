@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.co.semi.board.model.mapper.CalendarMapper">
+
+	 <!-- 일정 조회하기 -->
+    <select id="calendarList">
+        SELECT
+            MAIN_CALENDAR_NO AS CALENDAR_NO,
+            MAIN_CALENDAR_TITLE AS TITLE,
+            TO_CHAR(MAIN_START, 'YYYY-MM-DD') AS START1,
+            TO_CHAR("MAIN_END", 'YYYY-MM-DD') AS END,
+            CALENDAR_COLOR AS COLOR
+        FROM MAIN_CALENDAR
+    </select>
+
+    <!-- 일정 저장하기 -->
+    <!-- 저장하고 생성된 no(key) 값을 return 시킨다 -->
+    <insert id="calendarSave"  useGeneratedKeys="true" keyColumn="MAIN_CALENDAR_NO" keyProperty="calendarNo" >
+        INSERT INTO MAIN_CALENDAR(
+            MAIN_CALENDAR_NO,
+            MAIN_CALENDAR_TITLE,
+            "MAIN_START",
+            "MAIN_END",
+            MEMBER_NO,
+            CALENDAR_COLOR
+        ) values (
+                         SEQ_MAIN_CALENDAR_NO.NEXTVAL,
+                         #{title},
+                         TO_DATE(#{start1}, 'YYYY-MM-DD'),
+                         TO_DATE(#{end}, 'YYYY-MM-DD'),
+                         #{memberNo},
+                         #{color}
+                 )
+    </insert>
+
+    <!-- 일정 삭제하기 -->
+    <delete id="calendarDelete">
+        DELETE FROM MAIN_CALENDAR WHERE MAIN_CALENDAR_NO = #{calendarNo}
+    </delete>
+
+
+    <!-- 일정 수정하기 -->
+    <update id="eventUpdate">
+        UPDATE MAIN_CALENDAR SET
+                            MAIN_CALENDAR_TITLE = #{title} ,
+                            "MAIN_START" = TO_DATE(#{start1}, 'YYYY-MM-DD') ,
+                            "MAIN_END" = TO_DATE(#{end}, 'YYYY-MM-DD')
+        WHERE MAIN_CALENDAR_NO = #{calendarNo}
+    </update>
+ 
+</mapper>

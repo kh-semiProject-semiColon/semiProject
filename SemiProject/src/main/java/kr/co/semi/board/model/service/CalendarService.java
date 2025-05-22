@@ -10,7 +10,7 @@ public interface CalendarService {
 
 	void calendarSave(Calendar vo) throws Exception;
 
-	void calendarDelete(String no) throws Exception;
+	void calendarDelete(long calendarNo) throws Exception;
 
 	void eventUpdate(Calendar vo) throws Exception;
 }

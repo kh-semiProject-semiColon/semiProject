@@ -13,7 +13,7 @@ public interface CalendarMapper {
 
 	void calendarSave(Calendar vo);
 
-	void calendarDelete(String no);
+	void calendarDelete(long calendarNo);
 
 	void eventUpdate(Calendar vo);
 }

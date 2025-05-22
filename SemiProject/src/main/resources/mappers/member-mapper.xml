@@ -7,8 +7,11 @@
 		SELECT MEMBER_NO, MEMBER_EMAIL, MEMBER_NICKNAME,
 		MEMBER_PW, MEMBER_TEL, MEMBER_ADDRESS, PROFILE_IMG,
 		AUTHORITY,
-		TO_CHAR(ENROLL_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') ENROLL_DATE
+		TO_CHAR(ENROLL_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') ENROLL_DATE,
+		STUDY_NO,
+		MEMBER_NAME
 		FROM "MEMBER"
+		JOIN STUDY_MEMBER USING(MEMBER_NO)
 		WHERE MEMBER_EMAIL=#{memberEmail}
 		AND MEMBER_DEL_FL = 'N'
 	</select>
@@ -29,8 +32,26 @@
 		AND MEMBER_DEL_FL = 'N'
 	</select>
 	
+	<!-- 아이디 찾기 이름 조회 -->
+	<select id="checkName">
+		SELECT COUNT(*)
+		FROM "MEMBER"
+		WHERE MEMBER_NAME = #{memberName}
+		AND MEMBER_TEL = #{memberTel}
+		AND MEMBER_DEL_FL = 'N'
+	</select>
+	
+	<!-- 아이디 얻어오기 -->
+	<select id="getId">
+		SELECT MEMBER_EMAIL
+		FROM "MEMBER"
+		WHERE MEMBER_NAME = #{memberName}
+		AND MEMBER_TEL = #{memberTel}
+		AND MEMBER_DEL_FL = 'N'
+	</select>
+	
 	<!-- 회원가입 -->
-	<insert id="signup">
+	<insert id="signupInfo">
 		INSERT INTO "MEMBER"
 		VALUES(SEQ_MEMBER_NO.NEXTVAL, 
 					 #{memberEmail},
@@ -41,7 +62,10 @@
 					 NULL,
 					 DEFAULT,
 					 DEFAULT,
-					 DEFAULT
+					 DEFAULT,
+					 DEFAULT,
+					 #{memberIntroduce},
+					 #{memberName}
 		)
 	</insert>
 	
