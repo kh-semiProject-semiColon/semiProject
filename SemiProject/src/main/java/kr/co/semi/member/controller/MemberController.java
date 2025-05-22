@@ -253,6 +253,12 @@ public class MemberController {
 		return result;
 	}
 	
+	
+	/** 비밀번호 찾기 첫페이지(findPw)에서 다음 버튼을 누르고 수정페이지로 넘어감
+	 * @param inputMember input에 입력한 회원 정보를 가져옴
+	 * @param model 가져온 회원 정보 중 아이디를 model에 저장하여 넘김
+	 * @return
+	 */
 	@PostMapping("modifyPw")
 	public String modifyPw(Member inputMember, Model model) {
 		
@@ -260,4 +266,30 @@ public class MemberController {
 		
 		return "/member/modifyPw";
 	}
+	
+	/** 비밀번호 수정
+	 * @param inputMember 입력한 비밀번호와 input/hidden에 저장한 memberEmail값
+	 * @return
+	 */
+	@PostMapping("changePw")
+	public String changePw(Member inputMember) {
+		
+		System.out.println(inputMember.getMemberEmail());
+		System.out.println(inputMember.getMemberPw());
+		
+		String path = "";
+		String message = "";
+		
+		int result = service.changePw(inputMember);
+		
+		if(result == 1) {
+			path = "/member/pwChanged";
+		}else {
+			path = "/";
+			message = "비밀번호 변경에 실패했습니다";
+		}
+		
+		return "/";
+	}
+	
 }
