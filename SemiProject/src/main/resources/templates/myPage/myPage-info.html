@@ -16,31 +16,8 @@
 
     <!-- 메인 콘텐츠 -->
     <div class="main-wrapper">
-      <!-- 사이드바 우선 첫번째에 active 추가합니다. js에 classlist를 넣었으니 꼭 같이 데려가주세요 -->
       <!-- 사이드바 -->
-      <div class="sidebar">
-        <h2 class="sidebar-heading">마이페이지</h2>
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-menu">
-          <div class="sidebar-menu-item active">
-            <a th:href="@{/myPage/info}">프로필</a>
-          </div>
-          <div class="sidebar-menu-divider"></div>
-          <div class="sidebar-menu-item">
-            <a th:href="@{/myPage/posts}">내 게시글/댓글 보기</a>
-          </div>
-          <div class="sidebar-menu-divider"></div>
-          <div class="sidebar-menu-item">
-            <a th:href="@{/myPage/password}">비밀번호 변경</a>
-          </div>
-          <div class="sidebar-menu-divider"></div>
-          <div class="sidebar-menu-item">
-            <a th:href="@{/myPage/withdraw}">회원 탈퇴</a>
-          </div>
-        </div>
-      </div>
-
-      <div style="width: 2px; background-color: #dbdae2"></div>
+      <th:block th:replace="~{myPage/sidebar}"></th:block>
 
       <!-- 프로필 콘텐츠 -->
       <div class="content">
@@ -135,16 +112,19 @@
               <div class="form-group">
                 <label class="form-label">컴퓨터 전공 여부</label>
                 <div class="form-input-container">
+                  <p th:text="${session.loginMember.memberMajor}"></p>
                   <input
                     type="radio"
                     name="major"
-                    th:value="${session.loginMember.memberTel}"
+                    th:checked="${session.loginMember.memberMajor == 'Y'}"
                   />
                   O
+
                   <input
                     type="radio"
                     name="major"
-                    th:value="${session.loginMember.memberTel}"
+                    class="major"
+                    th:checked="${session.loginMember.memberMajor == 'N'}"
                   />
                   X
                 </div>
@@ -195,7 +175,7 @@
                 <div class="form-input-container">
                   <textarea
                     class="bio-input"
-                    th:field="*{memberIntroduce}"
+                    th:text="${session.loginMember.memberIntroduce}"
                   ></textarea>
                 </div>
               </div>
