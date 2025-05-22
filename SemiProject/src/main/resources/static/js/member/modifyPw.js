@@ -85,3 +85,15 @@ memberPwConfirm.addEventListener("input", () => {
   // memberPw가 유효하지 않은 경우는 memberPwConfirm도 유효하지 않아야함
   checkObj.memberPwConfirm = false;
 });
+
+const form = document.querySelector("form");
+
+form.addEventListener("submit", (e) => {
+  e.defaultPrevented();
+  if (!checkObj.memberPw || !checkObj.memberPwConfirm) {
+    alert("재설정할 비밀번호를 제대로 입력하세요.");
+    return;
+  } else {
+    form.submit();
+  }
+});
