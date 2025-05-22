@@ -52,4 +52,10 @@ public interface MemberMapper {
 	 */
 	int checkNM(Map<String, String> map);
 
+	/** 비밀번호 수정
+	 * @param inputMember
+	 * @return
+	 */
+	int changePw(Member inputMember);
+
 }

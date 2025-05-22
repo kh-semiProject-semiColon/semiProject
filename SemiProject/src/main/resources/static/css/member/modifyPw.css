@@ -106,3 +106,21 @@
     width: 96%;
   }
 }
+
+.required {
+  color: red;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.signUp-message {
+  margin-left: 140px;
+  font-size: 13px;
+}
+
+.confirm {
+  color: green;
+}
+.error {
+  color: red;
+}

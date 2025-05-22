@@ -21,8 +21,8 @@ body {
   display: flex;
   font-weight: bold;
   justify-content: center;
+  margin-top: 50px;
   margin-bottom: 50px;
-  padding-top: 50px;
 }
 
 .step {

@@ -252,7 +252,6 @@ checkAuthKeyBtn.addEventListener("click", () => {
       // 1 or 0
       if (result == 0) {
         alert("인증번호가 일치하지 않습니다");
-        checkObj.authKey = false;
         return;
       }
 

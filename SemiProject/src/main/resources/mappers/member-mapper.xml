@@ -59,6 +59,13 @@
 		AND MEMBER_DEL_FL = 'N'
 	</select>
 	
+	<!-- 비밀번호 수정 -->
+	<update id="changePw">
+		UPDATE "MEMBER" SET
+		MEMBER_PW = #{memberPw}
+		WHERE MEMBER_EMAIL = #{memberEmail}
+	</update>
+	
 	<!-- 회원가입 -->
 	<insert id="signupInfo">
 		INSERT INTO "MEMBER"

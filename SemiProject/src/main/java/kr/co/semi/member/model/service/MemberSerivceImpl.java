@@ -129,4 +129,13 @@ public class MemberSerivceImpl implements MemberService {
 		return mapper.checkNM(map);
 	}
 
+	// 비밀번호 수정
+	@Override
+	public int changePw(Member inputMember) {
+		
+		String encPw = bcrypt.encode(inputMember.getMemberPw());
+		inputMember.setMemberPw(encPw);
+		
+		return mapper.changePw(inputMember);
+	}
 }
