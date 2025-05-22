@@ -37,4 +37,11 @@ public interface MemberMapper {
 	 */
 	int checkName(Member inputMember);
 
+	/** 아이디 얻어오기
+	 * @param memberName
+	 * @param memberTel
+	 * @return
+	 */
+	String getId(Member inputMember);
+
 }

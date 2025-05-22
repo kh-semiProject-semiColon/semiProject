@@ -10,7 +10,7 @@ document.querySelectorAll(".sidebar-menu-item").forEach((item) => {
 const form = document.querySelector("form");
 const submitBtn = document.querySelector(".submit-btn");
 const memberName = document.querySelector("#memberName");
-const memberTel = document.querySelector("memberTel");
+const memberTel = document.querySelector("#memberTel");
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -19,7 +19,6 @@ form.addEventListener("submit", (e) => {
   const inputtel = memberTel.value;
 
   if (inputname.trim().length === 0 || inputtel.trim().length === 0) {
-    e.preventDefault();
     alert("찾으려는 회원 정보를 입력하세요");
     return;
   }
@@ -29,6 +28,7 @@ form.addEventListener("submit", (e) => {
     memberTel: inputtel,
   };
 
+  console.log(obj);
   // 이름, 전화번호 중복 검사
   fetch("/member/checkName", {
     method: "POST",
@@ -37,8 +37,8 @@ form.addEventListener("submit", (e) => {
   })
     .then((resp) => resp.text())
     .then((count) => {
+      console.log(count);
       if (count !== "1") {
-        e.preventDefault();
         alert("일치하는 회원 정보가 없습니다.");
         return;
       }
