@@ -12,6 +12,8 @@ const submitBtn = document.querySelector(".submit-btn");
 const memberName = document.querySelector("#memberName");
 const memberTel = document.querySelector("#memberTel");
 
+// 다음으로 버튼 클릭하여 정보 제출 하기전에 alert창을 띄우기 위해
+// preventDefault()를 작성하고 input창에 작성된 값을 DB와 비교한다
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 

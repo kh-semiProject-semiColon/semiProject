@@ -1,5 +1,7 @@
 package kr.co.semi.member.model.service;
 
+import java.util.Map;
+
 import kr.co.semi.member.model.dto.Member;
 
 public interface MemberService {
@@ -41,5 +43,17 @@ public interface MemberService {
 	 * @return
 	 */
 	String getId(Member inputMember);
+
+	/**이름 이메일 동일성 검사
+	 * @param map
+	 * @return
+	 */
+	int checkNM(Map<String, String> map);
+
+	/** 비밀번호 수정
+	 * @param inputMember
+	 * @return
+	 */
+	int changePw(Member inputMember);
 
 }

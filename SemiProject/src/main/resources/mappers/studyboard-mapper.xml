@@ -1,5 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="kr.co.semi.studyboard.model.mapper.StudyBoardMapper">
- 
+
+  <!-- 📋 게시글 목록 조회 -->
+  <select id="selectBoardList" resultType="kr.co.semi.studyboard.model.dto.StudyBoard">
+    SELECT *
+    FROM STUDY_BOARD
+    WHERE STUDY_NO = #{studyNo}
+      <if test="key != null and keyword != null and key != '' and keyword != ''">
+        <choose>
+          <when test="key == 't'">
+            AND STUDY_BOARD_TITLE LIKE '%' || #{keyword} || '%'
+          </when>
+          <when test="key == 'w'">
+            AND MEMBER_NO IN (
+              SELECT MEMBER_NO FROM MEMBER WHERE MEMBER_NICKNAME LIKE '%' || #{keyword} || '%'
+            )
+          </when>
+        </choose>
+      </if>
+    <choose>
+      <when test="sort == 'read'">ORDER BY READ_COUNT DESC</when>
+      <when test="sort == 'like'">ORDER BY (SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_NO = STUDY_BOARD_NO) DESC</when>
+      <otherwise>ORDER BY STUDY_BOARD_WRITE_DATE DESC</otherwise>
+    </choose>
+  </select>
+
+  <!-- 📄 게시글 상세 조회 -->
+  <select id="selectBoardDetail" resultType="kr.co.semi.studyboard.model.dto.StudyBoard">
+    SELECT *
+    FROM STUDY_BOARD
+    WHERE STUDY_BOARD_NO = #{boardNo}
+  </select>
+
 </mapper>

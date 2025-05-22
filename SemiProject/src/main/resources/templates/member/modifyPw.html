@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원 ID 찾기</title>
+    <link href="/css/member/modifyPw.css" rel="stylesheet" />
+    <link href="/css/main.css" rel="stylesheet" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Arial", sans-serif;
+      }
+
+      body {
+        display: flex;
+        min-height: 100vh;
+        background-color: #fff;
+      }
+
+      .main-content {
+        flex: 1;
+        padding: 30px;
+        margin-top: -35px;
+      }
+
+      h1 {
+        font-size: 24px;
+        margin-bottom: 30px;
+        color: #333;
+        border-bottom: 1px solid #dbdae2;
+        padding-bottom: 3px;
+      }
+
+      .form-group {
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+      }
+
+      label {
+        width: 120px;
+        color: #555;
+        font-size: 14px;
+        margin-right: 10px;
+      }
+
+      #memberPwConfirm {
+        width: 450px;
+        min-width: 100px;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 15px;
+        font-size: 16px;
+      }
+
+      #memberPw {
+        width: 450px;
+        min-width: 100px;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 15px;
+        font-size: 16px;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #4e7dff;
+      }
+
+      .submit-btn {
+        background-color: #4e7dff;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 30px;
+        font-size: 16px;
+        cursor: pointer;
+        float: right;
+        transition: background-color 0.3s;
+        margin-top: 100px;
+        width: 100px;
+        height: 50px;
+      }
+
+      .submit-btn:hover {
+        background-color: #3b6ae8;
+      }
+    </style>
+  </head>
+  <body>
+    <th:block th:replace="~{common/headerNude}"></th:block>
+    <div class="main-wrapper">
+      <div class="sidebar">
+        <h2 class="sidebar-heading">내 정보 찾기</h2>
+        <div class="sidebar-menu-divider"></div>
+        <div class="sidebar-menu">
+          <div class="sidebar-menu-item">
+            <a th:href="@{/member/findId}">ID 찾기</a>
+          </div>
+          <div class="sidebar-menu-divider"></div>
+          <div class="sidebar-menu-item active">
+            <a th:href="@{/member/findPw}">비밀번호 재설정</a>
+          </div>
+          <div class="sidebar-menu-divider"></div>
+        </div>
+      </div>
+      <div style="width: 2px; background-color: #dbdae2"></div>
+      <div class="main-content">
+        <h1>비밀번호 재설정</h1>
+
+        <form action="/member/changePw" method="post">
+          <!-- 비밀번호 -->
+          <div class="form-group">
+            <label for="memberPw" class="form-label"
+              ><span class="required">*</span> 비밀번호</label
+            >
+            <div class="form-input-container">
+              <input
+                id="memberPw"
+                name="memberPw"
+                type="password"
+                class="form-input"
+              />
+            </div>
+          </div>
+          <span class="signUp-message" id="pwMessage"
+            >영어,숫자,특수문자(!,@,#,-,_) 6~20글자 사이로 입력해주세요.</span
+          >
+          <input type="hidden" name="memberEmail" th:value="${memberEmail}" />
+
+          <!-- 비밀번호 확인 -->
+          <div class="form-group">
+            <label class="form-label"
+              ><span class="required">*</span> 비밀번호 확인</label
+            >
+            <div class="form-input-container">
+              <input
+                id="memberPwConfirm"
+                name="memberPwConfirm"
+                type="password"
+                class="form-input"
+              />
+            </div>
+          </div>
+          <span class="signUp-message" id="confirmPwMessage"></span>
+          <button class="submit-btn">확인</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="/js/member/modifyPw.js"></script>
+    <th:block th:replace="~{common/footer}"></th:block>
+  </body>
+</html>
