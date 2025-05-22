@@ -32,9 +32,9 @@
           </div>
           </div>
 
-        <div class="write-button-container" th:if="${session.user != null}">
+        <div class="write-button-container" th:if="${session.loginMember.memberEmail != null}">
           <button class="write-button">글쓰기</button>
-        /div>
+        </div>
 
 
         <!-- 페이지 네이션 -->
