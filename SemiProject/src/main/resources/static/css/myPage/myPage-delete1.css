@@ -1,0 +1,230 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+body {
+  background-color: #ffffff;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 반응형 컨테이너 */
+.container {
+  display: flex;
+  width: calc(100% - 724px); /* 362px * 2 */
+  margin: 50px 362px;
+  position: relative;
+  border-radius: 10px;
+}
+
+/* 사이드바 스타일 */
+.sidebar {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 30px 15px;
+  border-right: 2px solid #dbdae2;
+}
+
+.sidebar-heading {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.sidebar-divider {
+  width: 100%;
+  height: 2px;
+  background-color: #dbdae2;
+  margin-bottom: 20px;
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+}
+
+.sidebar-menu-item {
+  width: 100%;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar-menu-item:hover {
+  background-color: #3867ff;
+  color: #ffffff;
+}
+
+.sidebar-menu-item.active {
+  background-color: #3867ff;
+  color: #ffffff;
+}
+
+.sidebar-menu-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #dbdae2;
+  margin: 5px 0;
+}
+
+/* 회원탈퇴 콘텐츠 스타일 */
+.content {
+  width: 80%;
+  padding: 30px;
+  position: relative;
+}
+
+.content-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.content-divider {
+  width: 100%;
+  height: 2px;
+  background-color: #dbdae2;
+  margin-bottom: 30px;
+}
+
+.content-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 180px; /* 버튼 공간 확보 */
+}
+
+.lock-icon {
+  width: 381px;
+  height: 381px;
+  opacity: 0.2;
+}
+
+.password-info {
+  font-size: 18px;
+  margin-top: 50px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.password-input {
+  width: 500px;
+  height: 40px;
+  border: 1px solid #dbdae2;
+  border-radius: 15px;
+  padding: 0 15px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.password-validation {
+  width: 500px;
+  height: 20px;
+  font-size: 14px;
+  color: #ff3838;
+  visibility: hidden;
+}
+
+.password-validation.error {
+  visibility: visible;
+}
+
+.password-validation.success {
+  color: #3867ff;
+  visibility: visible;
+}
+
+.confirm-button {
+  width: 114px;
+  height: 51px;
+  background-color: #3867ff;
+  color: #ffffff;
+  border: none;
+  border-radius: 1000px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+}
+
+.confirm-button:hover {
+  background-color: #2d52cc;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1440px) {
+  .container {
+    width: 80%;
+    margin: 50px 10%;
+  }
+
+  .footer-content {
+    width: 80%;
+    margin: 0 10%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .container {
+    width: 90%;
+    margin: 50px 5%;
+  }
+
+  .password-input,
+  .password-validation {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .lock-icon {
+    width: 300px;
+    height: 300px;
+  }
+
+  .footer-content {
+    width: 90%;
+    margin: 0 5%;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    width: 95%;
+    margin: 50px 2.5%;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 2px solid #dbdae2;
+    padding: 20px;
+  }
+
+  .content {
+    width: 100%;
+  }
+
+  .lock-icon {
+    width: 200px;
+    height: 200px;
+  }
+}
