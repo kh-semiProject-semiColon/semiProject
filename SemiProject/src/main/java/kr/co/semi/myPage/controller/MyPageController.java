@@ -34,6 +34,7 @@ public class MyPageController {
 		String memberAddress = loginMember.getMemberAddress();
 		String memberIntroduce = loginMember.getMemberIntroduce();
 		
+
 		if (memberAddress != null) {
 		    String[] arr = memberAddress.split("\\^\\^\\^");
 
@@ -49,6 +50,7 @@ public class MyPageController {
 		    model.addAttribute("postcode", postcode);
 		    model.addAttribute("address", address);
 		    model.addAttribute("detailAddress", detailAddress);
+
 		}
 		
 		return "myPage/myPage-info";

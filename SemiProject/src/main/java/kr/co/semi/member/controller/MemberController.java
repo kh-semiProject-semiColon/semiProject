@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -193,7 +194,10 @@ public class MemberController {
 	
 	@ResponseBody
 	@PostMapping("checkName")
-	public int checkName(Member inputMember) {
+	public int checkName(@RequestBody Member inputMember) {
+		
+		System.out.println(inputMember.getMemberName());
+		System.out.println(inputMember.getMemberTel());
 		
 		int result = service.checkName(inputMember);
 		
@@ -201,10 +205,12 @@ public class MemberController {
 	}
 	
 	@PostMapping("findIdResult")
-	public String findIdResult(@RequestParam String memberName, @RequestParam String memberTel, Model model) {
+	public String findIdResult(Member inputMember, Model model) {
 		
-		model.addAttribute("memberName", memberName);
-		model.addAttribute("memberTel", memberTel);
+		String memberEmail = service.getId(inputMember);
+		
+		model.addAttribute("memberName", inputMember.getMemberName());
+		model.addAttribute("memberEmail",memberEmail);
 		
 		return "/member/findIdResult";
 	}
