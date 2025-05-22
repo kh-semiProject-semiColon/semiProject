@@ -1,41 +1,44 @@
 // 공통 작동 js -------------------------------------
 // 사이드바 메뉴 활성화
-const currentLocation = location.pathname; // 현재 페이지 url
+// location.pathname는 /myPage/info를 다운받습니다
+document.addEventListener("DOMContentLoaded", function () {
+  const currentLocation = location.pathname; // 현재 페이지 url
 
-const info = document.querySelector("#myPage-info");
-const posts = document.querySelector("#myPage-posts");
-const change = document.querySelector("#myPage-change");
-const withdraw = document.querySelector("#myPage-withdraw");
+  const info = document.querySelector("#myPage-info");
+  const posts = document.querySelector("#myPage-posts");
+  const change = document.querySelector("#myPage-change");
+  const withdraw = document.querySelector("#myPage-withdraw");
 
-switch (currentLocation) {
-  case "/myPage/info":
-    info.classList.add("active");
-    posts.classList.remove("active");
-    change.classList.remove("active");
-    withdraw.classList.remove("active");
-    break;
+  switch (currentLocation) {
+    case "/myPage/info":
+      info.classList.add("active");
+      posts.classList.remove("active");
+      change.classList.remove("active");
+      withdraw.classList.remove("active");
+      break;
 
-  case "/myPage/posts":
-    info.classList.remove("active");
-    posts.classList.add("active");
-    change.classList.remove("active");
-    withdraw.classList.remove("active");
-    break;
+    case "/myPage/posts":
+      info.classList.remove("active");
+      posts.classList.add("active");
+      change.classList.remove("active");
+      withdraw.classList.remove("active");
+      break;
 
-  case "/myPage/change":
-    info.classList.remove("active");
-    posts.classList.remove("active");
-    change.classList.add("active");
-    withdraw.classList.remove("active");
-    break;
+    case "/myPage/change":
+      info.classList.remove("active");
+      posts.classList.remove("active");
+      change.classList.add("active");
+      withdraw.classList.remove("active");
+      break;
 
-  case "/myPage/withdraw":
-    info.classList.remove("active");
-    posts.classList.remove("active");
-    change.classList.remove("active");
-    withdraw.classList.add("active");
-    break;
-}
+    case "/myPage/withdraw":
+      info.classList.remove("active");
+      posts.classList.remove("active");
+      change.classList.remove("active");
+      withdraw.classList.add("active");
+      break;
+  }
+});
 
 // 프로필 조회 js --------------------------------------------------
 document.addEventListener("DOMContentLoaded", function () {

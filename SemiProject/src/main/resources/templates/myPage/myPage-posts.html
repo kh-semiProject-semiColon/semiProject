@@ -18,6 +18,10 @@
     <!-- 메인 컨텐츠 -->
     <div class="main-content">
       <!-- 사이드바 -->
+
+      <!-- 사이드바에 색깔을 넣고 싶은 상자에 class = "" 여기다가 띄어쓰기 하고 active를 추가하세요
+       .active 라는 css를 넣었기에 class 값 중 active가 들어가면 무조건 색깔이 들어가니 주의해주세요!
+       js에서 사이드 바에 대한 이야기도 적어놨습니다.  -->
       <div class="sidebar">
         <h2 class="sidebar-heading">마이페이지</h2>
         <div class="sidebar-divider"></div>
@@ -25,7 +29,7 @@
           <div class="sidebar-menu-item" id="myPage-info">
             <a th:href="@{/myPage/info}">프로필</a>
           </div>
-          <div class="sidebar-menu-divider active"></div>
+          <div class="sidebar-menu-divider"></div>
           <div class="sidebar-menu-item" id="myPage-posts">
             <a th:href="@{/myPage/posts}">내 게시글/댓글 보기</a>
           </div>

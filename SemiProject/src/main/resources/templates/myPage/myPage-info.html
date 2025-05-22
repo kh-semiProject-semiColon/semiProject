@@ -16,24 +16,25 @@
 
     <!-- 메인 콘텐츠 -->
     <div class="main-wrapper">
+      <!-- 사이드바 우선 첫번째에 active 추가합니다. js에 classlist를 넣었으니 꼭 같이 데려가주세요 -->
       <!-- 사이드바 -->
       <div class="sidebar">
         <h2 class="sidebar-heading">마이페이지</h2>
         <div class="sidebar-divider"></div>
         <div class="sidebar-menu">
-          <div class="sidebar-menu-item" id="myPage-info">
+          <div class="sidebar-menu-item active">
             <a th:href="@{/myPage/info}">프로필</a>
           </div>
           <div class="sidebar-menu-divider"></div>
-          <div class="sidebar-menu-item" id="myPage-posts">
+          <div class="sidebar-menu-item">
             <a th:href="@{/myPage/posts}">내 게시글/댓글 보기</a>
           </div>
           <div class="sidebar-menu-divider"></div>
-          <div class="sidebar-menu-item" id="myPage-change">
-            <a th:href="@{/myPage/change}">비밀번호 변경</a>
+          <div class="sidebar-menu-item">
+            <a th:href="@{/myPage/password}">비밀번호 변경</a>
           </div>
           <div class="sidebar-menu-divider"></div>
-          <div class="sidebar-menu-item" id="myPage-withdraw">
+          <div class="sidebar-menu-item">
             <a th:href="@{/myPage/withdraw}">회원 탈퇴</a>
           </div>
         </div>
