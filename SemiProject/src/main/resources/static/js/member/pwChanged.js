@@ -47,7 +47,7 @@ memberPw.addEventListener("input", (e) => {
     return;
   }
 
-  // 4) 입력 받은 비밀번호 정규식 검사
+  // 4) 입력 받은 비밀번호 정규식 검사 진행
 
   const regExp = /^[a-zA-Z0-9!@#_-]{6,20}$/;
 
@@ -84,12 +84,4 @@ memberPwConfirm.addEventListener("input", () => {
 
   // memberPw가 유효하지 않은 경우는 memberPwConfirm도 유효하지 않아야함
   checkObj.memberPwConfirm = false;
-});
-
-document.querySelector(".submit-btn").addEventListener("click", () => {
-  fetch("/member/changePw", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(obj), // obj라는 JS 객체를 JSON으로 변경
-  });
 });
