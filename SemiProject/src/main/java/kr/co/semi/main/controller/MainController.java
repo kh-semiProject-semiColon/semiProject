@@ -5,14 +5,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.semi.main.service.MainService;
+import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.studyboard.model.dto.Study;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
+@SessionAttributes("loginMember")
 public class MainController {
 	
 	@Autowired
@@ -37,9 +41,13 @@ public class MainController {
 	 */
 	@PostMapping("/study/create")
 	@ResponseBody
-	public int stduyCreation(Study study, RedirectAttributes ra) {
-		log.info(study.toString());
-		int result = service.studyCreation(study);
+	public int stduyCreation(Study study, RedirectAttributes ra,@SessionAttribute("loginMember") Member loginMember) {
+		if(loginMember == null) {
+			String message = "로그인 후 이용해주세요";
+			ra.addFlashAttribute(message);
+			return -1;
+		}
+		int result = service.studyCreation(study, loginMember.getMemberNo());
 		return result;
 	}
 
