@@ -39,6 +39,9 @@ public class MyPageController {
 			
 			model.addAttribute("postcode", arr[0]);
 			model.addAttribute("address", arr[1]);
+			// 테이블 안에 주소컬럼은 notnull값이 아니므로 3개의 부분이 모두 존재하지 않을 가능성 있음
+			// 따라서 조건을 나누어, null이 아닌경우, 두번째 배열(arr[1])까지만 존재할 경우, 세번재 배열 모두 존재할 경우를
+			// 고려해야 함
 			model.addAttribute("detailAddress", arr[2]);
 		}
 		return "myPage/myPage-info";
