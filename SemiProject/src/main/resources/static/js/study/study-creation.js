@@ -54,6 +54,7 @@ function submitForm(event) {
         window.location.href = "/"; // 성공 시 메인페이지로 이동
       } else {
         alert("스터디 생성에 실패했습니다");
+        window.location.href = "/"; // 실패 시 메인페이지로 이동 후 alert 따로 컨트롤러에서 요청
       }
     })
     .catch((error) => {

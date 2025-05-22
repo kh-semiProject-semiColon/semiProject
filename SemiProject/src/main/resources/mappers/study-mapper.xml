@@ -7,5 +7,18 @@
 		INSERT INTO STUDY
 		VALUES(SEQ_STUDY_NO.NEXTVAL, #{studyName}, DEFAULT, #{studyMaxCount}, DEFAULT, #{studyType}, #{studyPeriod}, #{studyMainImg})
 	</insert>
+	
+	<!-- 스터디 번호 조회 -->
+	<select id="studyNo">
+		SELECT STUDY_NO
+		FROM STUDY
+		WHERE STUDY_NAME = #{studyName}
+	</select>
+	
+	<!-- 스터디-멤버 테이블에 적용과 동시에 리더 지정 -->
+	<insert id="studyMember">
+		INSERT INTO STUDY_MEMBER
+		VALUES(#{studyNo}, #{memberNo}, 'Y')
+	</insert>
  
 </mapper>

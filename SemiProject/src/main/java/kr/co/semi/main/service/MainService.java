@@ -6,8 +6,9 @@ public interface MainService {
 
 	/** 스터디 생성 서비스
 	 * @param study
+	 * @param memberNo 
 	 * @return
 	 */
-	int studyCreation(Study study); 
+	int studyCreation(Study study, int memberNo); 
 
 } 
