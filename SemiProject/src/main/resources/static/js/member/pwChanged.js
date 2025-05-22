@@ -47,7 +47,7 @@ memberPw.addEventListener("input", (e) => {
     return;
   }
 
-  // 4) 입력 받은 비밀번호 정규식 검사
+  // 4) 입력 받은 비밀번호 정규식 검사 진행
 
   const regExp = /^[a-zA-Z0-9!@#_-]{6,20}$/;
 

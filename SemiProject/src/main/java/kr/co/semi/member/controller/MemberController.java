@@ -289,7 +289,14 @@ public class MemberController {
 			message = "비밀번호 변경에 실패했습니다";
 		}
 		
-		return "/";
+		return "redirect:"+path;
 	}
 	
+	/** 비밀번호 수정 완료 페이지로 이동
+	 * @return
+	 */
+	@GetMapping("pwChanged")
+	public String pwChanged() {
+		return "/member/pwChanged";
+	}
 }

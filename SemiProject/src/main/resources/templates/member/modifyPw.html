@@ -102,14 +102,14 @@
           </div>
           <div class="sidebar-menu-divider"></div>
           <div class="sidebar-menu-item active">
-            <a th:href="@{/member/findPw}">비밀번호 수정</a>
+            <a th:href="@{/member/findPw}">비밀번호 재설정</a>
           </div>
           <div class="sidebar-menu-divider"></div>
         </div>
       </div>
       <div style="width: 2px; background-color: #dbdae2"></div>
       <div class="main-content">
-        <h1>비밀번호 찾기</h1>
+        <h1>비밀번호 재설정</h1>
 
         <form action="/member/changePw" method="post">
           <!-- 비밀번호 -->
@@ -129,7 +129,7 @@
           <span class="signUp-message" id="pwMessage"
             >영어,숫자,특수문자(!,@,#,-,_) 6~20글자 사이로 입력해주세요.</span
           >
-          <input type="hidden" name="memberEmail" value="${memberEmail}" />
+          <input type="hidden" name="memberEmail" th:value="${memberEmail}" />
 
           <!-- 비밀번호 확인 -->
           <div class="form-group">
