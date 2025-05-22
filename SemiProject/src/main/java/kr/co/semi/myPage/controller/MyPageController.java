@@ -34,13 +34,23 @@ public class MyPageController {
 		String memberAddress = loginMember.getMemberAddress();
 		String memberIntroduce = loginMember.getMemberIntroduce();
 		
-		if(memberAddress != null) {
-			String[] arr = memberAddress.split("\\^\\^\\^");
-			
-			model.addAttribute("postcode", arr[0]);
-			model.addAttribute("address", arr[1]);
-			model.addAttribute("detailAddress", arr[2]);
+		if (memberAddress != null) {
+		    String[] arr = memberAddress.split("\\^\\^\\^");
+
+		    // 초기화
+		    String postcode = null;
+		    String address = null;
+		    String detailAddress = null;
+
+		    if (arr.length > 0) postcode = arr[0];
+		    if (arr.length > 1) address = arr[1];
+		    if (arr.length > 2) detailAddress = arr[2];
+
+		    model.addAttribute("postcode", postcode);
+		    model.addAttribute("address", address);
+		    model.addAttribute("detailAddress", detailAddress);
 		}
+		
 		return "myPage/myPage-info";
 	}
 	
