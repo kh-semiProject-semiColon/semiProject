@@ -9,7 +9,7 @@ $(document).ready(function () {
     slotMaxTime: "23:59",
     customButtons: {
       colorPickerButton: {
-        text: "색상",
+        text: "학사일정",
         click: function () {}, // 클릭 없어도 OK
       },
     },
@@ -20,10 +20,10 @@ $(document).ready(function () {
     },
     initialView: "dayGridMonth",
     displayEventTime: false,
-    editable: true,
-    selectable: true,
-    eventStartEditable: true,
-    eventDurationEditable: true,
+    editable: authority == 1,
+    selectable: authority == 1,
+    eventStartEditable: authority == 1,
+    eventDurationEditable: authority == 1,
     navLinks: true,
     nowIndicator: true,
     dayMaxEvents: 2,
@@ -67,6 +67,9 @@ $(document).ready(function () {
     },
 
     eventClick: function (arg) {
+      if (authority != 1) {
+        return; // 삭제 로직 실행 X
+      }
       if (confirm("선택한 일정을 삭제하시겠습니까?")) {
         $.ajax({
           type: "DELETE",
@@ -94,32 +97,32 @@ $(document).ready(function () {
   });
 
   calendar.render();
-
-  // 버튼 렌더링 후 select 삽입
-  setTimeout(() => {
-    const btn = document.querySelector(".fc-colorPickerButton-button");
-    if (btn && !document.getElementById("colorPicker")) {
-      const select = document.createElement("select");
-      select.id = "colorPicker";
-      select.style.marginLeft = "10px";
-      select.style.height = "26px";
-      select.innerHTML = `
+  if (authority == 1) {
+    // 버튼 렌더링 후 select 삽입
+    setTimeout(() => {
+      const btn = document.querySelector(".fc-colorPickerButton-button");
+      if (btn && !document.getElementById("colorPicker")) {
+        const select = document.createElement("select");
+        select.id = "colorPicker";
+        select.style.marginLeft = "10px";
+        select.style.height = "26px";
+        select.innerHTML = `
         <option value="#3788d8">파랑</option>
         <option value="#28a745">초록</option>
         <option value="#dc3545">빨강</option>
         <option value="#ffc107">노랑</option>
         <option value="#25272B">검정</option>
       `;
-      btn.innerHTML = ""; // 기존 텍스트 제거
-      btn.appendChild(select);
+        btn.innerHTML = ""; // 기존 텍스트 제거
+        btn.appendChild(select);
 
-      // 색상 변경 이벤트
-      select.addEventListener("change", function () {
-        selectedColor = this.value;
-      });
-    }
-  }, 100); // 약간의 지연 후 삽입
-
+        // 색상 변경 이벤트
+        select.addEventListener("change", function () {
+          selectedColor = this.value;
+        });
+      }
+    }, 100); // 약간의 지연 후 삽입
+  }
   function updateEvent(arg) {
     let event = {
       title: arg.event.title,
