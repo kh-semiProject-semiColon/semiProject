@@ -1,3 +1,42 @@
+// 공통 작동 js -------------------------------------
+// 사이드바 메뉴 활성화
+const currentLocation = location.pathname; // 현재 페이지 url
+
+const info = document.querySelector("#myPage-info");
+const posts = document.querySelector("#myPage-posts");
+const change = document.querySelector("#myPage-change");
+const withdraw = document.querySelector("#myPage-withdraw");
+
+switch (currentLocation) {
+  case "/myPage/info":
+    info.classList.add("active");
+    posts.classList.remove("active");
+    change.classList.remove("active");
+    withdraw.classList.remove("active");
+    break;
+
+  case "/myPage/posts":
+    info.classList.remove("active");
+    posts.classList.add("active");
+    change.classList.remove("active");
+    withdraw.classList.remove("active");
+    break;
+
+  case "/myPage/change":
+    info.classList.remove("active");
+    posts.classList.remove("active");
+    change.classList.add("active");
+    withdraw.classList.remove("active");
+    break;
+
+  case "/myPage/withdraw":
+    info.classList.remove("active");
+    posts.classList.remove("active");
+    change.classList.remove("active");
+    withdraw.classList.add("active");
+    break;
+}
+
 // 프로필 조회 js --------------------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
   const removeImageBtn = document.querySelector(".remove-image");
@@ -64,16 +103,6 @@ document.addEventListener("DOMContentLoaded", function () {
     execDaumPostcode();
   });
 
-  // 사이드바 메뉴 활성화
-  document.querySelectorAll(".sidebar-menu-item").forEach((item) => {
-    item.addEventListener("click", function () {
-      document.querySelectorAll(".sidebar-menu-item").forEach((i) => {
-        i.classList.remove("active");
-      });
-      this.classList.add("active");
-    });
-  });
-
   // 반응형 메뉴 토글
   const menuButton = document.querySelector(".menu-button");
   const navMenu = document.querySelector(".nav-menu");
@@ -81,4 +110,66 @@ document.addEventListener("DOMContentLoaded", function () {
   menuButton.addEventListener("click", function () {
     navMenu.style.display = navMenu.style.display === "flex" ? "none" : "flex";
   });
+});
+
+// 페이지네이션 js --------------------------------------------------
+
+// 페이지네이션 활성화
+document
+  .querySelectorAll(".pagination .page-item:not(.arrow)")
+  .forEach((item) => {
+    item.addEventListener("click", function () {
+      document.querySelectorAll(".pagination .page-item").forEach((i) => {
+        i.classList.remove("active");
+      });
+      this.classList.add("active");
+    });
+  });
+
+// 모바일 메뉴 토글 기능 추가
+document.querySelector(".menu-icon").addEventListener("click", function () {
+  const navMenu = document.querySelector(".nav-menu");
+  navMenu.style.display = navMenu.style.display === "flex" ? "none" : "flex";
+
+  if (navMenu.style.display === "flex") {
+    navMenu.style.position = "absolute";
+    navMenu.style.top = "70px";
+    navMenu.style.left = "0";
+    navMenu.style.width = "100%";
+    navMenu.style.flexDirection = "column";
+    navMenu.style.backgroundColor = "#fff";
+    navMenu.style.boxShadow = "0 2px 5px rgba(0,0,0,0.1)";
+    navMenu.style.zIndex = "100";
+
+    document.querySelectorAll(".nav-menu li").forEach((item) => {
+      item.style.margin = "0";
+      item.style.width = "100%";
+      item.style.textAlign = "center";
+      item.style.borderBottom = "1px solid #DBDAE2";
+    });
+  }
+});
+
+// 반응형 화면 크기 변경 감지
+window.addEventListener("resize", function () {
+  const navMenu = document.querySelector(".nav-menu");
+  if (window.innerWidth > 992) {
+    navMenu.style.display = "flex";
+    navMenu.style.position = "absolute";
+    navMenu.style.top = "auto";
+    // navMenu.style.left = "50%";
+    navMenu.style.width = "auto";
+    navMenu.style.flexDirection = "row";
+    navMenu.style.backgroundColor = "transparent";
+    navMenu.style.boxShadow = "none";
+
+    document.querySelectorAll(".nav-menu li").forEach((item) => {
+      item.style.margin = "0 15px";
+      item.style.width = "auto";
+      item.style.textAlign = "center";
+      item.style.borderBottom = "none";
+    });
+  } else {
+    navMenu.style.display = "none";
+  }
 });
