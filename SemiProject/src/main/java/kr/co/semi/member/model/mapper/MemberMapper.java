@@ -1,5 +1,7 @@
 package kr.co.semi.member.model.mapper;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.semi.member.model.dto.Member;
@@ -43,5 +45,11 @@ public interface MemberMapper {
 	 * @return
 	 */
 	String getId(Member inputMember);
+
+	/** 입력한 이름, 아이디와 동일한 데이터 조회
+	 * @param inputMember
+	 * @return
+	 */
+	int checkNM(Map<String, String> map);
 
 }

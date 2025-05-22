@@ -1,0 +1,192 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+body {
+  background-color: white;
+}
+
+.container {
+  width: calc(100% - 1200px);
+  margin-top: 50px;
+  margin: 0 auto;
+  max-width: 900px;
+  min-width: 500px;
+}
+
+.step-container {
+  display: flex;
+  font-weight: bold;
+  justify-content: center;
+  margin-bottom: 50px;
+  padding-top: 50px;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: lighter;
+}
+
+/* STEP1: 왼쪽 둥글고 오른쪽 화살표 */
+.step1 {
+  width: 700px;
+  height: 50px;
+  background-color: #4aa7ff;
+  color: white;
+  padding: 12px 24px;
+  min-width: 140px;
+  text-align: center;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 30px) 0,
+    100% 50%,
+    calc(100% - 30px) 100%,
+    0 100%,
+    0 50%
+  );
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+  z-index: 3;
+}
+
+/* STEP2: 왼쪽 오목 / 오른쪽 화살표 */
+.step2 {
+  width: 700px;
+  height: 50px;
+  position: relative;
+  background: #dbdae2;
+  padding: 10px 40px; /* 좌우 공간 확보 */
+  font-weight: 600;
+  text-align: center;
+  min-width: 120px;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 30px) 0,
+    100% 50%,
+    calc(100% - 30px) 100%,
+    0 100%,
+    0 50%
+  );
+}
+
+/* 왼쪽 안쪽 뾰족 */
+.step2::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 100%;
+  background-color: white;
+  border: none;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+/* STEP3: 왼쪽 오목 / 오른쪽 둥글게 마무리 */
+.step3 {
+  width: 700px;
+  height: 50px;
+  position: relative;
+  background: #dbdae2;
+  color: #444;
+  padding-left: 40px;
+  padding-right: 30px;
+  font-weight: 600;
+  text-align: center;
+  min-width: 120px;
+  border-color: none;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+}
+
+/* 왼쪽 안쪽 뾰족 */
+.step3::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 100%;
+  background-color: white;
+  border: none;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+/* 약관 섹션 */
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 8px;
+}
+
+.section-title h3 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.terms-box {
+  background-color: white;
+  border-radius: 15px;
+  padding: 10px;
+  margin-bottom: 25px;
+  border: 1px solid #e1e1e1;
+  max-height: 200px;
+  overflow-y: auto;
+  line-height: 1.5;
+  font-size: 14px;
+  color: #555;
+}
+
+.agreement {
+  display: flex;
+  align-items: center;
+}
+
+.agreement label {
+  margin-left: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 15px;
+}
+
+/* 버튼 스타일 */
+.btn-container {
+  text-align: right;
+  margin-top: 30px;
+}
+
+.btn-next {
+  background-color: #3867ff;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-next:hover {
+  background-color: #2563eb;
+}
+
+.agreeAll {
+  display: flex;
+  justify-content: right;
+}
+
+.agreeAll label {
+  margin-left: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 15px;
+}
