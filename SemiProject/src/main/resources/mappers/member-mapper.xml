@@ -77,7 +77,7 @@
 					 DEFAULT,
 					 DEFAULT,
 					 DEFAULT,
-					 DEFAULT,
+					 #{memberMajor},
 					 #{memberIntroduce},
 					 #{memberName}
 		)

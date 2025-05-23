@@ -20,6 +20,7 @@
 		INSERT INTO STUDY_MEMBER
 		VALUES(#{studyNo}, #{memberNo}, 'Y')
 	</insert>
+
 	
 	<!-- 스터디명 중복검사 -->
 	<select id="studyNameConfirm">
@@ -28,4 +29,5 @@
 		WHERE STUDY_NAME = #{studyName}
 	</select>
  
+
 </mapper>
