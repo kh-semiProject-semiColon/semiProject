@@ -102,9 +102,8 @@ public class MyPageController {
 	}
 
 	@PostMapping("info")
-	public String updateInfo( Member inputMember,
-	        @SessionAttribute("loginMember") Member loginMember,
-	        RedirectAttributes ra) {
+	public String updateInfo(Member inputMember, @SessionAttribute("loginMember") Member loginMember,
+			RedirectAttributes ra) {
 
 		// 수정되었다는 알림 메세지 띄우는 변수
 		String message = null;
@@ -112,7 +111,7 @@ public class MyPageController {
 		inputMember.setMemberNo(loginMember.getMemberNo());
 		inputMember.setMemberName(loginMember.getMemberName());
 		log.info(inputMember.toString());
-		
+
 		// 회원정보 수정 메서드
 		int result = service.updateInfo(inputMember);
 

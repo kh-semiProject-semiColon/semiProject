@@ -1,10 +1,3 @@
-const profileForm = document.querySelector(".profile-image-container");
-const selectBtn = document.querySelector(".image-select-btn");
-
-selectBtn.addEventListener("click", () => {
-  File;
-});
-
 // 프로필 조회 js --------------------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
   const removeImageBtn = document.querySelector(".remove-image");
@@ -78,4 +71,8 @@ document.addEventListener("DOMContentLoaded", function () {
   menuButton.addEventListener("click", function () {
     navMenu.style.display = navMenu.style.display === "flex" ? "none" : "flex";
   });
+});
+
+submitBtn.addEventListener("click", () => {
+  meth;
 });
