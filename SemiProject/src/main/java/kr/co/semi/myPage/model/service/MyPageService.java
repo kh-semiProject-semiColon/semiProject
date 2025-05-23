@@ -12,6 +12,9 @@ public interface MyPageService {
 
     // update문 메서드
 	int updateInfo(Member inputMember);
+
+	// 비밀번호 조회하러 가는 길
+	int changePw(Map<String, String> paramMap, int memberNo);
     
     
 

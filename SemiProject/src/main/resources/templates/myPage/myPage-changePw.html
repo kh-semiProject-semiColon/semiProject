@@ -9,11 +9,11 @@
       href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
       type="text/css"
     />
-
-    <link rel="stylesheet" href="/css/myPage/myPage-changePw.css" />
-    <link rel="stylesheet" href="/css/common/header.css" />
+    <link rel="stylesheet" href="/css/myPage/myPage-style.css" />
     <link rel="stylesheet" href="/css/common/footer.css" />
+    <link rel="stylesheet" href="/css/common/header.css" />
     <link rel="stylesheet" href="/css/myPage/sidebar.css" />
+    <link rel="stylesheet" href="/css/myPage/myPage-changePw.css" />
   </head>
   <body>
     <th:block th:replace="~{common/header}"></th:block>
@@ -29,20 +29,25 @@
         <h2 class="section-title">비밀번호 변경</h2>
         <div class="section-divider"></div>
 
-        <form th:action="@{/mypage/change-password}" method="post">
+        <form th:action="@{/myPage/changePw}" method="post">
           <div class="form-group">
             <label class="form-label">현재 비밀번호</label>
-            <input type="password" class="form-input" required />
+            <input
+              type="password"
+              class="form-input"
+              name="originPw"
+              required
+            />
           </div>
 
           <div class="form-group">
             <label class="form-label">새 비밀번호</label>
-            <input type="password" class="form-input" required />
+            <input type="password" class="form-input" name="newPw" required />
           </div>
 
           <div class="form-group">
             <label class="form-label">비밀번호 확인</label>
-            <input type="password" class="form-input" required />
+            <input type="password" class="form-input" name="newPw2" required />
           </div>
 
           <button type="submit" class="submit-button">변경하기</button>

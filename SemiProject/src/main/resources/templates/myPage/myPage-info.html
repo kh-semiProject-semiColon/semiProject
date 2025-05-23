@@ -9,11 +9,11 @@
       href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
       type="text/css"
     />
-    <link rel="stylesheet" href="/css/myPage/myPage-info.css" />
     <link rel="stylesheet" href="/css/myPage/myPage-style.css" />
     <link rel="stylesheet" href="/css/common/footer.css" />
     <link rel="stylesheet" href="/css/common/header.css" />
     <link rel="stylesheet" href="/css/myPage/sidebar.css" />
+    <link rel="stylesheet" href="/css/myPage/myPage-info.css" />
   </head>
   <body>
     <th:block th:replace="~{common/header}"></th:block>
@@ -134,6 +134,7 @@
                   <input
                     type="radio"
                     name="memberMajor"
+                    class="major"
                     value="N"
                     th:checked="${memberMajor == 'N'}"
                   />

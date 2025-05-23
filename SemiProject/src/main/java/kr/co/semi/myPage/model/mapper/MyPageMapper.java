@@ -15,6 +15,12 @@ public interface MyPageMapper {
 
 	// 업데이트 해주는 구문
 	int updateInfo(Member inputMember);
+
+	// 원래 비밀번호 조회하러 가는 길
+	String selectPw(int memberNo);
+
+	// 비밀번호 변경하러 가는 메서드
+	int changePw(Map<String, String> paramMap);
 	
 
 

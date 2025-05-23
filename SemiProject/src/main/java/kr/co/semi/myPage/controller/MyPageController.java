@@ -120,6 +120,8 @@ public class MyPageController {
 			loginMember.setMemberTel(loginMember.getMemberTel());
 			loginMember.setMemberAddress(inputMember.getMemberAddress());
 
+			info(loginMember, ra, loginMember);
+
 			message = "회원 정보 수정 성공!";
 		} else {
 
@@ -128,6 +130,35 @@ public class MyPageController {
 
 		ra.addFlashAttribute("message", message);
 		return "redirect:info";
+	}
+
+	// 비밀번호 변경하는 post 메소드
+	@PostMapping("changePw")
+	public String changePw(@RequestParam Map<String, String> paramMap,
+			@SessionAttribute("loginMember") Member loginMember, RedirectAttributes ra) {
+
+		// 로그인한 회원 번호
+		int memberNo = loginMember.getMemberNo();
+
+		// 현재, 새로운 비밀번호, 비밀번호 확인, 회원번호를 서비스로 전달
+		int result = service.changePw(paramMap, memberNo);
+
+		String path = null;
+		String message = null;
+
+		if (result > 0) { // 변경 성공 시
+			message = "비밀번호가 변경되었습니다.";
+			path = "/";
+
+		} else {
+			// 변경 실패 시
+			message = "비밀번호 변경에 실패했습니다.";
+			path = "/myPage/changePw";
+		}
+
+		ra.addFlashAttribute("message", message);
+
+		return "redirect:" + path;
 	}
 
 }
