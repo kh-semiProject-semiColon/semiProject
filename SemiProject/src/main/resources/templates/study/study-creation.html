@@ -23,20 +23,40 @@
           <!-- 왼쪽 영역 -->
           <div class="left-section">
             <!-- 스터디 명 -->
-            <div class="form-group">
+            <div class="form-group studyName">
               <label class="form-label" for="studyName">스터디 명</label>
               <input
                 type="text"
                 id="studyName"
                 name="studyName"
                 class="form-input"
-                placeholder="스터디 명을 입력하세요"
+                placeholder="스터디 명을 입력하세요(10글자 이내)"
                 required
               />
+              <button
+                type="button"
+                class="studyNameConfirm"
+                style="
+                  height: 40px;
+                  margin-left: 10px;
+                  border-radius: 20px;
+                  background-color: #4aa7ff;
+                  color: white;
+                  border: none;
+                  width: 85px;
+                  cursor: pointer;
+                "
+              >
+                중복확인
+              </button>
             </div>
+            <span id="studyNameConfirmSpan" style="margin-left: 10px"></span>
 
             <!-- 최대 인원 -->
-            <div class="form-group">
+            <div
+              class="form-group"
+              style="margin-bottom: 30px; margin-top: 15px"
+            >
               <label class="form-label" for="maxMembers">최대 인원</label>
               <select
                 id="maxMembers"
@@ -54,7 +74,7 @@
             </div>
 
             <!-- 방향성 -->
-            <div class="form-group">
+            <div class="form-group" style="margin-bottom: 45px">
               <label class="form-label">방향성</label>
               <div class="radio-group">
                 <div class="radio-item">
@@ -100,7 +120,7 @@
           <!-- 오른쪽 영역 -->
           <div class="right-section">
             <!-- 기간 -->
-            <div class="form-group">
+            <div class="form-group" style="margin-bottom: 45px">
               <label class="form-label">기간</label>
               <div class="period-group">
                 <div class="period-item">
@@ -135,7 +155,7 @@
             </div>
 
             <!-- 대표사진 -->
-            <div class="form-group">
+            <div class="form-group" style="margin-bottom: 45px">
               <label class="form-label">대표사진</label>
               <div class="image-placeholder" id="imagePreview">
                 이미지를 선택해주세요

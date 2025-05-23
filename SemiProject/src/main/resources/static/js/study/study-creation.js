@@ -18,8 +18,54 @@ function previewImage(event) {
   }
 }
 
+// 중복검사 후 바뀌는 스터디명을 알아채기 위한 플래그
+let flag = false;
+
+// 스터디명 중복검사
+document.querySelector(".studyNameConfirm").addEventListener("click", () => {
+  const studyName = document.getElementById("studyName");
+  const studyNameConfirm = document.getElementById("studyNameConfirmSpan");
+  if (studyName.value.trim().length == 0) {
+    alert("스터디명을 입력해 주세요");
+    return;
+  }
+  fetch("/study/confirm", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ studyName: studyName.value }),
+  })
+    .then((resp) => resp.text())
+    .then((result) => {
+      if (parseInt(result) > 0) {
+        studyNameConfirm.textContent = "중복된 스터디명 입니다.";
+        studyNameConfirm.style.color = "red";
+        studyNameConfirm.style.fontSize = "14px";
+        flag = false;
+      } else {
+        studyNameConfirm.textContent = "사용 가능한 스터디명 입니다.";
+        studyNameConfirm.style.color = "green";
+        studyNameConfirm.style.fontSize = "14px";
+        flag = true;
+      }
+    });
+});
+
+// 중복검사 후 달라진 스터디명에 대한 재 중복검사 요청
+document.querySelector("#studyName").addEventListener("input", () => {
+  if (flag == true) {
+    const studyNameConfirm = document.getElementById("studyNameConfirmSpan");
+    console.log("바꾼다!바꾼다!");
+    studyNameConfirm.textContent = "";
+    flag = false;
+  }
+});
+
 function submitForm(event) {
   event.preventDefault();
+  if (flag === false) {
+    alert("스터디명 중복검사를 해주세요");
+    return;
+  }
 
   // 폼 데이터 수집
   const formData = new FormData();
