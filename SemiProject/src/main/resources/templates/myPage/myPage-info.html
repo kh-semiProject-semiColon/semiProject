@@ -51,9 +51,9 @@
           <div class="info-section">
             <h3 class="info-header">내정보</h3>
             <form
-              th:action="@{/profile/update}"
+              th:action="info"
               method="post"
-              th:object="${loginMember}"
+              name="myPageFrm"
               class="info-form"
             >
               <!-- 이름 입력 -->
@@ -61,6 +61,7 @@
                 <label class="form-label">이름</label>
                 <div class="form-input-container">
                   <input
+                    disabled
                     type="text"
                     class="form-input"
                     name="memberName"
@@ -89,12 +90,16 @@
                 <label class="form-label">이메일</label>
                 <div class="form-input-container">
                   <input
-                    disabled
+                    type="hidden"
+                    name="memberEmail"
+                    th:value="${session.loginMember.memberEmail}"
+                  />
+                  <input
                     type="email"
                     class="form-input"
                     name="memberEmail"
                     th:value="${session.loginMember.memberEmail}"
-                    required
+                    disabled
                   />
                 </div>
               </div>
@@ -108,6 +113,7 @@
                     class="form-input"
                     name="memberTel"
                     th:value="${session.loginMember.memberTel}"
+                    required
                   />
                 </div>
               </div>
@@ -116,19 +122,19 @@
               <div class="form-group">
                 <label class="form-label">컴퓨터 전공 여부</label>
                 <div class="form-input-container">
-                  <p th:text="${session.loginMember.memberMajor}"></p>
                   <input
                     type="radio"
-                    name="major"
-                    th:checked="${session.loginMember.memberMajor == 'Y'}"
+                    name="memberMajor"
+                    value="Y"
+                    th:checked="${memberMajor == 'Y'}"
                   />
                   O
 
                   <input
                     type="radio"
-                    name="major"
-                    class="major"
-                    th:checked="${session.loginMember.memberMajor == 'N'}"
+                    name="memberMajor"
+                    value="N"
+                    th:checked="${memberMajor == 'N'}"
                   />
                   X
                 </div>
@@ -179,7 +185,8 @@
                 <div class="form-input-container">
                   <textarea
                     class="bio-input"
-                    th:text="${session.loginMember.memberIntroduce}"
+                    name="memberIntroduce"
+                    th:text="${memberIntroduce}"
                   ></textarea>
                 </div>
               </div>
@@ -196,6 +203,6 @@
     <!-- 다음 주소 API 추가 -->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-    <script src="/js/myPage/myPage.js"></script>
+    <script src="/js/myPage/myPage-info.js"></script>
   </body>
 </html>

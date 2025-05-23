@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.semi.myPage.model.mapper.MyPageMapper">
+
+	<!-- 일정 조회하기 -->
+	<select id="selectMember">
+		SELECT MEMBER_MAJOR, MEMBER_INTRODUCE, PROFILE_IMG
+		FROM MEMBER
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+
+	<update id="updateInfo">
+		UPDATE "MEMBER" SET
+		MEMBER_NAME = #{memberName},
+		MEMBER_NICKNAME = #{memberNickname},
+		MEMBER_TEL = #{memberTel},
+		MEMBER_MAJOR = #{memberMajor},
+		MEMBER_ADDRESS = #{memberAddress},
+		MEMBER_INTRODUCE = #{memberIntroduce}
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+
+</mapper>

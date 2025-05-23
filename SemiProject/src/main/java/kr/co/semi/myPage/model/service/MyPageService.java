@@ -7,6 +7,13 @@ import kr.co.semi.member.model.dto.Member;
 
 public interface MyPageService {
 
-	Map<Member, String> selectMember(int memberNo);
+	// memberIntroduce, memberMajor 가져오는 메서드
+    Member selectMember(int memberNo);
+
+    // update문 메서드
+	int updateInfo(Member inputMember);
+    
+    
+
 
 }
