@@ -9,11 +9,11 @@
       href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
       type="text/css"
     />
-    <link rel="stylesheet" href="/css/myPage/myPage-info.css" />
     <link rel="stylesheet" href="/css/myPage/myPage-style.css" />
     <link rel="stylesheet" href="/css/common/footer.css" />
     <link rel="stylesheet" href="/css/common/header.css" />
     <link rel="stylesheet" href="/css/myPage/sidebar.css" />
+    <link rel="stylesheet" href="/css/myPage/myPage-info.css" />
   </head>
   <body>
     <th:block th:replace="~{common/header}"></th:block>
@@ -82,6 +82,7 @@
                     th:value="${session.loginMember.memberNickname}"
                     required
                   />
+                  <span class="span" id="emailMessage">닉네임머시기.</span>
                 </div>
               </div>
 
@@ -133,6 +134,7 @@
                   <input
                     type="radio"
                     name="memberMajor"
+                    class="major"
                     value="N"
                     th:checked="${memberMajor == 'N'}"
                   />
@@ -204,5 +206,6 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
     <script src="/js/myPage/myPage-info.js"></script>
+    <script src="/js/myPage/myPage.js"></script>
   </body>
 </html>

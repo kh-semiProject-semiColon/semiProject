@@ -11,7 +11,6 @@
 
 	<update id="updateInfo">
 		UPDATE "MEMBER" SET
-		MEMBER_NAME = #{memberName},
 		MEMBER_NICKNAME = #{memberNickname},
 		MEMBER_TEL = #{memberTel},
 		MEMBER_MAJOR = #{memberMajor},
@@ -20,4 +19,15 @@
 		WHERE MEMBER_NO = #{memberNo}
 	</update>
 
+	<select id="selectPw">
+		SELECT MEMBER_PW
+		FROM "MEMBER"
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+
+	<update id="changePw">
+	UPDATE "MEMBER" SET
+	MEMBER_PW = #{encPw}
+	WHERE MEMBER_NO = #{memberNo}
+	</update>
 </mapper>
