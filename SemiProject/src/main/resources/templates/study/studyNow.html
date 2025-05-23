@@ -55,7 +55,7 @@
 
                 <!-- 본문 영역 -->
                 <div class="card-content">
-                  <div>
+                  <div class="card-content">
                     <h2 class="card-title" th:text="*{studyName}">
                       모코콩의 파티
                     </h2>
@@ -73,22 +73,22 @@
                       <li>
                          스터디 생성일 : <span th:text="*{studyDate}"></span>
                       </li>
-                      <li> 기간 : <span th:text="*{studyPeriod}"></span></li>
+                      <li> 기간 : <span th:text="*{studyPeriod}+'개월'"></span></li>
                     </ul>
                   </div>
 
-                  <!-- 구분선 -->
-                  <div class="card-divider"></div>
 
-                  <!-- 하단 정보 -->
-                  <div class="card-footer">
-                    <div>
-                      <img src="" class="leader-icon" />
-                      <span class="leader-text">Team Leader</span>
-                      <span class="leader-nickname">모코콩</span>
-                    </div>
-                    <div class="member-count">3/5명</div>
+                </div>
+                <!-- 하단 정보 -->
+                <div class="card-footer">
+                  <div>
+                    <img th:unless="*{studyMainImg}"
+                    th:src="#{user.default.image}"
+                    alt="대표 이미지" class="leader-icon" />
+                    <span class="leader-text">Team Leader</span>
+                    <span class="leader-nickname">모코콩</span>
                   </div>
+                  <div th:text="${memberCount[study.studyNo]} + '/' +${study.studyMaxCount}" class="member-count">3/5명</div>
                 </div>
               </div>
             </div>
@@ -97,7 +97,7 @@
 
         <div
           class="write-button-container"
-          th:if="${session.loginMember.memberEmail != null}"
+          th:if="${session.loginMember != null and session.loginMember.memberEmail != null}">
         >
           <button class="write-button">글쓰기</button>
         </div>
