@@ -42,6 +42,15 @@ public class MainServiceImpl implements MainService {
 		
 		return result;
 	}
+
+	/**
+	 * 스터디명 중복 검사
+	 */
+	@Override
+	public int studyNameConfirm(String studyName) {
+		int studyNameConfirm = mapper.studyNameConfirm(studyName);
+		return studyNameConfirm;
+	}
 	
 	
 
