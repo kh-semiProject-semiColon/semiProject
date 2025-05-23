@@ -20,7 +20,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.member.model.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
-import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 @RequestMapping("member")
