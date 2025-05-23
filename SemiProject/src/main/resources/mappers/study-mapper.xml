@@ -20,5 +20,5 @@
 		INSERT INTO STUDY_MEMBER
 		VALUES(#{studyNo}, #{memberNo}, 'Y')
 	</insert>
- 
+
 </mapper>

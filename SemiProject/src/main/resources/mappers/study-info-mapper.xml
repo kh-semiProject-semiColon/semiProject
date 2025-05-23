@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.co.semi.studyboard.model.mapper.StudyMapper">
+
+ 	<!-- 모든 스터디 조회 -->
+ 	<select id="selectAllStudy">
+ 		SELECT STUDY_NO ,STUDY_NAME, STUDY_MAX_COUNT, STUDY_TYPE, TO_CHAR(STUDY_DATE, 'YYYY.MM.DD') AS STUDY_DATE, STUDY_PERIOD, STUDY_MAIN_IMG
+ 		FROM "STUDY"
+ 		WHERE STUDY_DEL_FL = 'N'
+ 	</select>
+ 	
+ 	
+ 	<!-- 팀장인 스터디원 조회 -->
+ 	<select id="selectCap">
+ 		SELECT STUDY_NO, MEMBER_NO
+ 		FROM "STUDY_MEMBER"
+ 		WHERE STUDY_CAP = 'Y'
+ 	</select>
+ 	
+ 	<!-- 스터디 회원 수 조회 -->
+ 	<select id="countMember">
+ 		SELECT 
+		    STUDY_NO,
+		    COUNT(MEMBER_NO) AS MEMBER_COUNT
+		FROM 
+		    STUDY_MEMBER
+		GROUP BY 
+		    STUDY_NO
+ 	</select>
+</mapper>

@@ -1,0 +1,244 @@
+body {
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  background-color: #fff;
+  margin: 0px;
+}
+
+.main {
+  margin: 50px 0px 100px 0px;
+  display: flex;
+}
+
+.side {
+  width: 18.85%;
+}
+
+/* 메인 본문 */
+main {
+  width: 62.3%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* border: solid 1px #3867ff; */
+}
+
+/* 제목 */
+.titleContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.board-title {
+  font-family: "Apple SD Gothic Neo", serif;
+  font-weight: 700;
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+/* 밑줄 */
+.board-title-underline {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 2px;
+  background-color: #dbdae2;
+  margin-bottom: 50px;
+}
+
+/* 게시글 카드 컨테이너 */
+.board-container {
+  display: flex;
+  flex-wrap: wrap; /* 여러 줄로 감싸기 */
+  gap: 20px; /* 카드 사이 간격 */
+  justify-content: flex-start;
+  width: 100%;
+}
+
+/* 카드 스타일 */
+.card {
+  flex: 0 1 calc(25% - 15px); /* 기본 : 한 줄에 4개 */
+  width: 277px;
+  height: 401px;
+  background-color: white;
+  box-shadow: 0px 4px 10px rgba(219, 218, 226, 0.95);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, border 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  border: 2px solid #3867ff;
+  cursor: pointer;
+}
+
+.card-image-container {
+  height: 180px;
+  background-color: #ddd;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.card-info-list {
+  list-style: none;
+  padding: 0;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.card-divider {
+  height: 1px;
+  background-color: #dbdae2;
+  margin: 8px 0;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #333;
+}
+
+.leader-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.leader-text {
+  color: #3867ff;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.leader-nickname {
+  font-weight: 500;
+}
+
+.member-count {
+  font-weight: 600;
+  color: #333;
+}
+
+/* 페이지네이션 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  gap: 8px;
+}
+
+.pagination button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: #444;
+}
+
+.pagination .active {
+  font-weight: bold;
+  color: #6366f1;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border: none;
+  background-color: #eee;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.pagination button:hover {
+  background-color: #ddd;
+}
+
+.pagination .active {
+  background-color: #3867ff;
+  color: white;
+}
+
+/* 검색창 */
+.search-container {
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* 둘 사이 간격 */
+  margin-top: 105px;
+}
+
+.search-category {
+  width: 10%;
+  height: 50px;
+  border: 2px solid #3867ff;
+  border-radius: 15px;
+  font-size: 16px;
+  padding-left: 10px;
+  font-family: "Apple SD Gothic Neo", sans-serif; /* 원하는 폰트로 변경 */
+  font-weight: 500;
+}
+
+.search-input {
+  width: 60%;
+  height: 50px;
+  border: 2px solid #3867ff;
+  border-radius: 9999px; /* full 라운드 */
+  font-size: 16px;
+  padding: 0 20px;
+  font-family: "Apple SD Gothic Neo", sans-serif; /* 본문 텍스트 */
+  font-weight: 500;
+}
+
+/* 반응형 카드 개수 조절 */
+
+/* 화면 너비 1100px 이하 : 한 줄에 3개 */
+@media (max-width: 1100px) {
+  .card {
+    flex: 0 1 calc(33.333% - 13.33px);
+  }
+}
+
+/* 화면 너비 768px 이하 : 한 줄에 2개 */
+@media (max-width: 768px) {
+  .card {
+    flex: 0 1 calc(50% - 10px);
+  }
+}
+
+/* 화면 너비 480px 이하 : 한 줄에 1개 (전체 폭) */
+@media (max-width: 480px) {
+  .card {
+    flex: 0 1 100%;
+  }
+}
