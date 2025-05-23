@@ -210,7 +210,6 @@ form.addEventListener("submit", (e) => {
           break;
         case "authKey":
           str = "이메일 인증번호 입력이 완료되지 않았습니다.";
-          break;
       }
       console.log(checkObj);
       alert(str);
@@ -219,6 +218,6 @@ form.addEventListener("submit", (e) => {
 
       return;
     }
-    form.submit();
   }
+  form.submit();
 });
