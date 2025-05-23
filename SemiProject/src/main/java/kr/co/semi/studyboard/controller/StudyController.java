@@ -1,6 +1,8 @@
 package kr.co.semi.studyboard.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,7 +42,17 @@ public class StudyController {
     	
     	List<Study> capMember = service.selectCap();
     	
-    	List<Study> memberCount = service.countMember();
+    	List<Study> countMember = service.countMember();
+    	
+    	Map<Integer, Integer> memberCount = new HashMap();
+    	
+    	for(Study s : countMember) {
+    		
+    		int studyNo = s.getStudyNo();
+    		int studyMemberCount = s.getMemberCount();
+    		
+    		memberCount.put(studyNo, studyMemberCount);
+    	}
     	
     	model.addAttribute("study",study);
     	model.addAttribute("cap",capMember);
