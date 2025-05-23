@@ -89,11 +89,10 @@ memberPwConfirm.addEventListener("input", () => {
 const form = document.querySelector("form");
 
 form.addEventListener("submit", (e) => {
-  e.defaultPrevented();
+  e.preventDefault();
   if (!checkObj.memberPw || !checkObj.memberPwConfirm) {
-    alert("재설정할 비밀번호를 제대로 입력하세요.");
+    alert("유효한 비밀번호 형식이 아닙니다.");
     return;
-  } else {
-    form.submit();
   }
+  form.submit();
 });
