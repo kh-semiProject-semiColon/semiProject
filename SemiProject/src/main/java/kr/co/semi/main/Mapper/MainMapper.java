@@ -25,5 +25,11 @@ public interface MainMapper {
 	 * @param map
 	 * @return
 	 */
-	int studyMember(Map<String, Object> map); 
+	int studyMember(Map<String, Object> map);
+
+	/** 스터디명 중복검사
+	 * @param studyName
+	 * @return
+	 */
+	int studyNameConfirm(String studyName); 
 }
