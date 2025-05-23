@@ -8,34 +8,99 @@
       href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
       type="text/css"
     />
-    <link rel="stylesheet" th:href="@{/css/hire/hireBoard.css}" />
+        <link href="/css/common/header.css" rel="stylesheet" />
+       <link href="/css/common/footer.css" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/study/studyNow.css}" />
   </head>
   <body>
     <!-- hearder -->
     <th:block th:replace="~{common/header}"></th:block>
 
     <!-- 게시판 본문 -->
-    <div class="hire">
+    <div class="main">
       <div class="side"></div>
       <main>
         <div class="titleContainer">
-          <div class="board-title">구인 게시판</div>
+          <div class="board-title">스터디 현황</div>
           <div class="board-title-underline"></div>
         </div>
 
         <div class="board-container">
-          <div class="cards-grid" id="cardContainer">
-          <div class="card" th:each="post : ${postList}">
-            <!-- <h3 th:text="${post.title}">제목</h3>
-            <p th:text="${post.author}">작성자</p>
-            <p th:text="${post.summary}">내용 요약</p> -->
-          </div>
-          </div>
+          <th:block th:if="${#lists.isEmpty(study)}">
+            <tr>
+              <th:block>게시글이 존재하지 않습니다.</th:block>
+            </tr>
+          </th:block>
 
-        <div class="write-button-container" th:if="${session.loginMember.memberEmail != null}">
-          <button class="write-button">글쓰기</button>
+          <!-- 게시글이 존재할 때 -->
+          <th:block th:unless="${#lists.isEmpty(study)}">
+            <div
+              class="main-content"
+              th:each="study, iterStat : ${study}"
+              th:object="${study}"
+            >
+              <!-- 카드 -->
+              <div class="card">
+                <!-- 이미지 영역 -->
+                <div class="card-image-container">
+                  <img
+                    th:unless="*{studyMainImg}"
+                    th:src="#{user.default.image}"
+                    alt="대표 이미지"
+                    class="card-image"
+                  >
+                  <img th:if="*{studyMainImg}"
+                        th:src="*{studyMainImg}" >
+                </div>
+
+                <!-- 본문 영역 -->
+                <div class="card-content">
+                  <div>
+                    <h2 class="card-title" th:text="*{studyName}">
+                      모코콩의 파티
+                    </h2>
+                    <ul class="card-info-list">
+                      <li>
+                         방향성 :
+                        <th:block th:switch="*{studyType}">
+                          <span th:case="1">레벨업</span>
+                          <span th:case="2">복습</span>
+                          <span th:case="3">문제풀이</span>
+                          <span th:case="4">자격증</span>
+                          <span th:case="5">프로젝트</span>
+                        </th:block>
+                      </li>
+                      <li>
+                         스터디 생성일 : <span th:text="*{studyDate}"></span>
+                      </li>
+                      <li> 기간 : <span th:text="*{studyPeriod}"></span></li>
+                    </ul>
+                  </div>
+
+                  <!-- 구분선 -->
+                  <div class="card-divider"></div>
+
+                  <!-- 하단 정보 -->
+                  <div class="card-footer">
+                    <div>
+                      <img src="" class="leader-icon" />
+                      <span class="leader-text">Team Leader</span>
+                      <span class="leader-nickname">모코콩</span>
+                    </div>
+                    <div class="member-count">3/5명</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </th:block>
         </div>
 
+        <div
+          class="write-button-container"
+          th:if="${session.loginMember.memberEmail != null}"
+        >
+          <button class="write-button">글쓰기</button>
+        </div>
 
         <!-- 페이지 네이션 -->
         <!-- <div class="pagination">
@@ -50,13 +115,22 @@
           <button th:if="${currentPage < totalPages}" th:onclick="|location.href='@{/hire(page=${currentPage + 1})}'|">&raquo;</button>
         </div> -->
 
-
         <div class="search-container">
           <select class="search-category" name="category">
-          <option value="title" th:selected="${category == 'title'}">제목</option>
-          <option value="author" th:selected="${category == 'author'}">작성자</option>
+            <option value="title" th:selected="${category == 'title'}">
+              제목
+            </option>
+            <option value="author" th:selected="${category == 'author'}">
+              작성자
+            </option>
           </select>
-           <input type="text" class="search-input" name="keyword" th:value="${keyword}" placeholder="검색" />
+          <input
+            type="text"
+            class="search-input"
+            name="keyword"
+            th:value="${keyword}"
+            placeholder="검색"
+          />
         </div>
       </main>
       <div class="side"></div>
@@ -66,7 +140,7 @@
     <th:block th:replace="~{common/footer}"></th:block>
 
     <script src="/js/hire/hireBoard.js"></script>
-    
+
     <script src="/js/hire/boardDetail.js"></script>
   </body>
 </html>

@@ -1,5 +1,7 @@
 package kr.co.semi.studyboard.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,14 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import jakarta.servlet.http.HttpSession;
-import kr.co.semi.member.controller.MemberController;
+import kr.co.semi.studyboard.model.dto.Study;
+import kr.co.semi.studyboard.model.service.StudyService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RequestMapping("study")
 @Slf4j
 @SessionAttributes({"loginMember"})
 @Controller
+@RequiredArgsConstructor
 public class StudyController {
+	
+	private final StudyService service;
 
     @GetMapping("/study/info/{studyNo}")
     public String infoPage(@PathVariable int studyNo, HttpSession session, Model model) {
@@ -27,7 +34,18 @@ public class StudyController {
     
     
     @GetMapping("studyNow")
-    public String studyNow() {
+    public String studyNow(Model model) {
+    	
+    	List<Study> study = service.selectAllStudy();
+    	
+    	List<Study> capMember = service.selectCap();
+    	
+    	List<Study> memberCount = service.countMember();
+    	
+    	model.addAttribute("study",study);
+    	model.addAttribute("cap",capMember);
+    	model.addAttribute("memberCount", memberCount);
+    	
     	return"study/studyNow";
     }
     
