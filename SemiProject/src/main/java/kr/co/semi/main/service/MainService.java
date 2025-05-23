@@ -9,6 +9,12 @@ public interface MainService {
 	 * @param memberNo 
 	 * @return
 	 */
-	int studyCreation(Study study, int memberNo); 
+	int studyCreation(Study study, int memberNo);
+
+	/** 스터디명 중복 검사
+	 * @param studyName
+	 * @return
+	 */
+	int studyNameConfirm(String studyName); 
 
 } 
