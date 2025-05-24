@@ -28,30 +28,28 @@ public class MyPageServiceImpl implements MyPageService {
 	}
 
 	public int updateInfo(Member inputMember) {
-	    String rawAddress = inputMember.getMemberAddress();
+		String rawAddress = inputMember.getMemberAddress();
 
-	    if (rawAddress != null && !rawAddress.trim().isEmpty()) {
+		if (rawAddress != null && !rawAddress.trim().isEmpty()) {
 
-	        // 쉼표로 된 형식이 들어왔다면 분리해서 처리
-	        String[] parts = rawAddress.split(",");
+			// 쉼표로 된 형식이 들어왔다면 분리해서 처리
+			String[] parts = rawAddress.split(",");
 
-	        // 최대 3개의 주소 파트를 안전하게 추출
-	        String postcode = parts.length > 0 ? parts[0].trim() : "";
-	        String address = parts.length > 1 ? parts[1].trim() : "";
-	        String detailAddress = parts.length > 2 ? parts[2].trim() : "";
+			// 최대 3개의 주소 파트를 안전하게 추출
+			String postcode = parts.length > 0 ? parts[0].trim() : "";
+			String address = parts.length > 1 ? parts[1].trim() : "";
+			String detailAddress = parts.length > 2 ? parts[2].trim() : "";
 
-	        // `^^^` 구분자로 다시 join
-	        String combined = String.join("^^^", 
-	            postcode != null ? postcode : "", 
-	            address != null ? address : "", 
-	            detailAddress != null ? detailAddress : "");
+			// `^^^` 구분자로 다시 join
+			String combined = String.join("^^^", postcode != null ? postcode : "", address != null ? address : "",
+					detailAddress != null ? detailAddress : "");
 
-	        inputMember.setMemberAddress(combined);
-	    } else {
-	        inputMember.setMemberAddress(null);
-	    }
+			inputMember.setMemberAddress(combined);
+		} else {
+			inputMember.setMemberAddress(null);
+		}
 
-	    return mapper.updateInfo(inputMember);
+		return mapper.updateInfo(inputMember);
 	}
 
 	@Override
@@ -71,24 +69,23 @@ public class MyPageServiceImpl implements MyPageService {
 		String newPw2 = paramMap.get("newPw2");
 
 		if (newPw.equals(newPw2)) {
-			// 새 비밀번호를 암호화(bcrypt.encode(평문) > 암호화된 비밀번호 반환)
-			String encPw = bcrypt.encode(paramMap.get("newPw"));
+			// 기존 비밀번호와 새 비밀번호 평문-암호화 비교
+			if (bcrypt.matches(newPw, originPw)) {
+				return 0; // 기존 비밀번호와 같으면 변경 안 함
+			}
 
-			// DB에 업데이트
-			// SQL 전달 해야하는 데이터 2개 (암호화한 새 비번 encPw, 회원번호 memberNo)
-			// -> mapper에 전달할 수 있는 전달인자는 단 1개..
-			// -> 묶어서 전달 (paramMap 재활용)
+			String encPw = bcrypt.encode(newPw);
+
 			paramMap.put("encPw", encPw);
-			paramMap.put("memberNo", memberNo + ""); // 1 + "" => 문자열
+			paramMap.put("memberNo", String.valueOf(memberNo));
 
 		}
-
 		return mapper.changePw(paramMap);
 	}
 
 	@Override
 	public boolean checkPassword(int memberNo, String inputPw) {
-	    String encryptedPw = mapper.selectPw(memberNo);
-	    return bcrypt.matches(inputPw, encryptedPw);
+		String encryptedPw = mapper.selectPw(memberNo);
+		return bcrypt.matches(inputPw, encryptedPw);
 	}
 }
