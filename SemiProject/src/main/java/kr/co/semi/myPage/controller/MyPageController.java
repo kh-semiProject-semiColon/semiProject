@@ -172,4 +172,13 @@ public class MyPageController {
 		return "myPage/myPage-delete3";
 	}
 
+	@PostMapping("delete3")
+	public String delete3(@SessionAttribute("loginMember") Member loginMember) {
+
+		
+		
+		return "myPage/myPage-delete3";
+	}
+	
+	
 }

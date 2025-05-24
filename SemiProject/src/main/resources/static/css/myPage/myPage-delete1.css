@@ -1,17 +1,3 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Noto Sans KR", sans-serif;
-}
-
-body {
-  background-color: #ffffff;
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
 
 /* 반응형 컨테이너 */
 .container {
@@ -22,24 +8,10 @@ body {
   border-radius: 10px;
 }
 
-/* 회원탈퇴 콘텐츠 스타일 */
-.content {
-  width: 80%;
-  padding: 30px;
-  position: relative;
-}
-
 .content-title {
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 5px;
-}
-
-.content-divider {
-  width: 100%;
-  height: 2px;
-  background-color: #dbdae2;
-  margin-bottom: 30px;
 }
 
 .content-main {
@@ -51,9 +23,9 @@ body {
 }
 
 .lock-icon {
-  width: 381px;
-  height: 381px;
-  opacity: 0.2;
+  width: 200px;
+  height: 200px;
+  opacity: 0.1%;
 }
 
 .password-info {
@@ -110,7 +82,8 @@ body {
 }
 
 .locked {
-  width: 381px;
-  height: 381px;
-  opacity: 50%;
+  margin-top: 30px;
+  width: 200px;
+  height: 200px;
+  opacity: 20%;
 }
