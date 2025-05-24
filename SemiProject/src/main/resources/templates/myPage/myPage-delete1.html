@@ -27,25 +27,20 @@
         <h1 class="content-title">회원탈퇴</h1>
         <div class="content-divider"></div>
         <div class="content-main">
-          <svg
-            class="lock-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
+         	<img class="locked" src="/images/locked.png"  alt="잠금" />
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
           </svg>
           <p class="password-info">
             비밀번호를 입력해야 입장할 수 있는 페이지입니다.
           </p>
-          <input
+          <form action="/myPage/delete2"
+          method="post"
+          name="delete">
+            <input
             type="password"
             class="password-input"
+            name="memberPw"
             id="password"
             placeholder="비밀번호를 입력하세요"
           />
@@ -55,9 +50,13 @@
         </div>
         <button class="confirm-button" id="confirm-button">확인</button>
       </div>
+
+
+          </form>
+      
     </div>
 
     <th:block th:replace="~{common/footer}"></th:block>
-    <script src="/js/myPage/myPage.js"></script>
+    <script src="/js/myPage/myPage-delete.js"></script>
   </body>
 </html>

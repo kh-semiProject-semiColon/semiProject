@@ -108,3 +108,9 @@ body {
 .confirm-button:hover {
   background-color: #2d52cc;
 }
+
+.locked {
+  width: 381px;
+  height: 381px;
+  opacity: 50%;
+}

@@ -1,11 +1,14 @@
 package kr.co.semi.myPage.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -64,40 +67,7 @@ public class MyPageController {
 		return "myPage/myPage-info";
 	}
 
-	// 게시글 상세주소로 옮기는 메서드 (단순 forward)
-	@GetMapping("posts")
-	public String posts() {
-		return "myPage/myPage-posts";
-	}
-
-	// 비밀번호 변경으로 옮기는 메서드 (단순 forward)
-	@GetMapping("changePw")
-	public String changePw() {
-
-		return "myPage/myPage-changePw";
-	}
-
-	// 삭제하기 전 비밀번호 확인 보안 (단순 forward)
-	@GetMapping("delete1")
-	public String delete1() {
-
-		return "myPage/myPage-delete1";
-	}
-
-	// 삭제 경고창이 뜨는 페이지 (단순 forward)
-	@GetMapping("delete2")
-	public String delete2() {
-
-		return "myPage/myPage-delete2";
-	}
-
-	// 삭제하는 페이지로 옮기는 메서드 (단순 forward)
-	@GetMapping("delete3")
-	public String delete3() {
-
-		return "myPage/myPage-delete3";
-	}
-
+	// 회원정보 수정 메서드
 	@PostMapping("info")
 	public String updateInfo(Member inputMember, @SessionAttribute("loginMember") Member loginMember,
 			RedirectAttributes ra) {
@@ -129,7 +99,14 @@ public class MyPageController {
 		return "redirect:info";
 	}
 
-	// 비밀번호 변경하는 post 메소드
+	// 비밀번호 변경으로 옮기는 메서드 (단순 forward)
+	@GetMapping("changePw")
+	public String changePw() {
+
+		return "myPage/myPage-changePw";
+	}
+
+	// 비밀번호 변경하는 post 메소드 (위에 단순 forward는 get으로 처리했습니다.)
 	@PostMapping("changePw")
 	public String changePw(@RequestParam Map<String, String> paramMap,
 			@SessionAttribute("loginMember") Member loginMember, RedirectAttributes ra) {
@@ -156,6 +133,43 @@ public class MyPageController {
 		ra.addFlashAttribute("message", message);
 
 		return "redirect:" + path;
+	}
+
+	// 게시글 상세주소로 옮기는 메서드 (단순 forward)
+	@GetMapping("posts")
+	public String posts() {
+		return "myPage/myPage-posts";
+	}
+
+	@GetMapping("delete1")
+	public String delete1() {
+
+		return "/myPage/myPage-delete1";
+	}
+
+	
+	@PostMapping("delete2")
+	public String delete2(@SessionAttribute("loginMember") Member loginMember,
+	                      @RequestParam("memberPw") String inputPw,
+	                      RedirectAttributes ra) {
+
+	    int memberNo = loginMember.getMemberNo();
+
+	    boolean isPwMatch = service.checkPassword(memberNo, inputPw);
+
+	    if (!isPwMatch) {
+	        ra.addFlashAttribute("message", "비밀번호가 일치하지 않습니다.");
+	        return "redirect:/myPage/delete1";
+	    }
+
+	    return "myPage/myPage-delete2";
+	}
+
+	// 삭제하는 페이지로 옮기는 메서드 (단순 forward)
+	@GetMapping("delete3")
+	public String delete3() {
+
+		return "myPage/myPage-delete3";
 	}
 
 }
