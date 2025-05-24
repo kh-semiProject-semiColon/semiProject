@@ -1,0 +1,71 @@
+ /* 탈퇴 사유 선택 영역 */
+ .withdrawal-reason-section {
+  margin-bottom: 30px;
+}
+
+.withdrawal-reason-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.reason-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.reason-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reason-radio {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #3867ff;
+}
+
+.reason-label {
+  font-size: 14px;
+  color: #495057;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+/* 기타 사유 입력 영역 */
+.other-reason-section {
+  margin-top: 20px;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+.other-reason-section.active {
+  opacity: 1;
+}
+
+.other-reason-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 15px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.3s;
+}
+
+.other-reason-textarea:focus {
+  outline: none;
+  border-color: #3867ff;
+}
+
+.other-reason-textarea:disabled {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+}
