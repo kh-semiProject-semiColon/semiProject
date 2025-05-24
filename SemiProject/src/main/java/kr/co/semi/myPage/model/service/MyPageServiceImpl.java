@@ -68,7 +68,7 @@ public class MyPageServiceImpl implements MyPageService {
 
 		// 2. 같을 경우 비밀번호 확인과도 비교
 		String newPw = paramMap.get("newPw");
-		String newPw2 = paramMap.get("newPw");
+		String newPw2 = paramMap.get("newPw2");
 
 		if (newPw.equals(newPw2)) {
 			// 새 비밀번호를 암호화(bcrypt.encode(평문) > 암호화된 비밀번호 반환)
