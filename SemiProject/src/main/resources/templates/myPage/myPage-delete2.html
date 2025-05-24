@@ -12,9 +12,10 @@
 <body> 
     
     <th:block th:replace="~{common/header}"></th:block>
-    <!-- 사이드바 -->
-     <th:block th:replace="~{myPage/sidebar}"></th:block>
+    
     <div class="main-wrapper">
+        <!-- 사이드바 -->
+     <th:block th:replace="~{myPage/sidebar}"></th:block>
         <!-- 메인 콘텐츠 -->
         <div class="content">
             <div class="content-section">
@@ -43,7 +44,7 @@
     </div>
     <th:block th:replace="~{common/footer}"></th:block>
     
-    <!-- <script>
+    <script>
         // 체크박스 상태에 따른 버튼 활성화/비활성화
         const agreementCheck = document.getElementById('agreementCheck');
         const withdrawalBtn = document.getElementById('withdrawalBtn');
@@ -54,12 +55,12 @@
 
         // 탈퇴 버튼 클릭 이벤트
         withdrawalBtn.addEventListener('click', function() {
-            if (confirm('정말로 회원탈퇴를 진행하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
-                alert('회원탈퇴가 완료되었습니다.');
-                // 실제로는 서버로 탈퇴 요청을 보냄
-                // window.location.href = '/logout';
-            }
+         
+            
+                window.location.href = '/myPage/delete3';
+            
         });
-    </script> -->
+    </script>
+<script src="/js/myPage/myPage.js"></script>
 </body>
 </html>

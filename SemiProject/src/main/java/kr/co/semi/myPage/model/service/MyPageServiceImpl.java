@@ -27,21 +27,31 @@ public class MyPageServiceImpl implements MyPageService {
 		return (Member) mapper.selectMember(memberNo);
 	}
 
-	@Override
 	public int updateInfo(Member inputMember) {
+	    String rawAddress = inputMember.getMemberAddress();
 
-		// 입력된 주소가 있을 경우
-		if (!inputMember.getMemberAddress().equals(",,")) {
+	    if (rawAddress != null && !rawAddress.trim().isEmpty()) {
 
-			String address = String.join("^^^", inputMember.getMemberAddress());
-			inputMember.setMemberAddress(address);
+	        // 쉼표로 된 형식이 들어왔다면 분리해서 처리
+	        String[] parts = rawAddress.split(",");
 
-		} else {
-			// 없을 경우
-			inputMember.setMemberAddress(null);
-		}
+	        // 최대 3개의 주소 파트를 안전하게 추출
+	        String postcode = parts.length > 0 ? parts[0].trim() : "";
+	        String address = parts.length > 1 ? parts[1].trim() : "";
+	        String detailAddress = parts.length > 2 ? parts[2].trim() : "";
 
-		return mapper.updateInfo(inputMember);
+	        // `^^^` 구분자로 다시 join
+	        String combined = String.join("^^^", 
+	            postcode != null ? postcode : "", 
+	            address != null ? address : "", 
+	            detailAddress != null ? detailAddress : "");
+
+	        inputMember.setMemberAddress(combined);
+	    } else {
+	        inputMember.setMemberAddress(null);
+	    }
+
+	    return mapper.updateInfo(inputMember);
 	}
 
 	@Override
