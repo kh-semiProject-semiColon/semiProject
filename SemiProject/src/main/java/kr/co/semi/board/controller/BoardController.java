@@ -48,4 +48,10 @@ public class BoardController {
 		
 		return "hire/boardDetail";
 	}
+	
+	@GetMapping("write")
+	public String writeHireBoard() {
+		
+		return "hire/hireWrite";
+	}
 }

@@ -26,12 +26,14 @@
         <div class="board-container">
           <div class="cards-grid" id="cardContainer">
             <a class="card" th:each="hire : ${hireList}" th:object="${hire}"
-              th:href="@{/hire/{hireNo}(
+              th:href="@{/board/detail/{hireNo}(hireNo=*{hireNo})}">
+
+              <!-- (
                   hireNo=*{hireNo}, 
                   cp=${pagination.currentPage}, 
                   key=${param.key}, 
                   query=${param.query}
-              )}">
+              ) -->
               
               <!-- 스터디 메인 이미지 -->
               <img src="*{studyMainImg}" class="card-image" />
@@ -56,7 +58,8 @@
 
         <!-- 글쓰기 버튼 -->
         <div class="write-button-container" th:if="${session.loginMember}">
-          <button class="write-button">글쓰기</button>
+          <button class="writeBtn">글쓰기</button>
+        </div>
         </div>
 
 
