@@ -1,0 +1,189 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+}
+
+body {
+  background-color: #ffffff;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 메인 래퍼 - 고정 마진 362px */
+.main-wrapper {
+  display: flex;
+  flex: 1;
+  margin: 50px 362px;
+  max-width: calc(100% - 724px);
+  padding-bottom: 50px;
+  position: relative;
+  justify-content: flex-start;
+  min-width: 800px;
+}
+
+/* 콘텐츠 영역 */
+.content {
+  width: 80%;
+  background-color: white;
+  margin: 0 43px;
+  position: relative;
+}
+
+.content::before {
+  content: "";
+  position: absolute;
+  left: -43px;
+  top: 0;
+  width: 2px;
+  height: calc(100% - 50px);
+  background-color: #dbdae2;
+}
+
+.content-section {
+  max-width: 900px;
+  margin-bottom: 30px;
+}
+
+.content-heading {
+  font-size: 22px;
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ddd;
+}
+
+/* 회원탈퇴 안내 박스 */
+.withdrawal-notice {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 30px;
+  margin-bottom: 30px;
+  line-height: 1.8;
+  color: #495057;
+}
+
+.withdrawal-notice p {
+  margin-bottom: 15px;
+}
+
+.withdrawal-notice p:last-child {
+  margin-bottom: 0;
+}
+
+/* 동의 체크박스 영역 */
+.agreement-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 30px 0;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.agreement-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.agreement-label {
+  font-size: 14px;
+  color: #495057;
+  cursor: pointer;
+}
+
+/* 탈퇴 버튼 */
+.withdrawal-btn {
+  padding: 12px 30px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  float: right;
+  margin-top: 20px;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.withdrawal-btn:hover {
+  background-color: #c82333;
+}
+
+.withdrawal-btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1440px) {
+  .main-wrapper {
+      margin: 0 10%;
+      width: 80%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .main-wrapper {
+      width: 80%;
+  }
+}
+
+@media (max-width: 992px) {
+  .main-wrapper {
+      flex-direction: column;
+      margin: 0 5%;
+      width: 90%;
+  }
+
+  .sidebar {
+      width: 100%;
+      padding: 0 10px;
+  }
+
+  .content {
+      width: 100%;
+      padding: 20px;
+  }
+
+  .content::before {
+      display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .withdrawal-notice {
+      padding: 20px;
+  }
+
+  .content-heading {
+      font-size: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-wrapper {
+      width: 95%;
+      margin-top: 30px;
+  }
+
+  .content-heading {
+      font-size: 18px;
+  }
+
+  .withdrawal-notice {
+      padding: 15px;
+      font-size: 14px;
+  }
+
+  .withdrawal-btn {
+      width: 100%;
+      margin-top: 15px;
+      float: none;
+  }
+}
