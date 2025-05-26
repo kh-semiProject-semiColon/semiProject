@@ -1,8 +1,10 @@
 package kr.co.semi.myPage.model.service;
 
+import java.util.List;
 import java.util.Map;
 
 import kr.co.semi.member.model.dto.Member;
+
 
 public interface MyPageService {
 
@@ -20,6 +22,9 @@ public interface MyPageService {
 
 	// 회원 탈퇴 메서드
 	int deleteMember(int memberNo);
+
+//	// 보드 리스트 들고 오는 메서드
+//	List<Board> selectBoard(int memberNo);
 
 
 }
