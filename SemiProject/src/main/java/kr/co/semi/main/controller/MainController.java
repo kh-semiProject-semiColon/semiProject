@@ -47,7 +47,7 @@ public class MainController {
 	    }
 	    
 	    // 미니 스터디 현황을 위한 스터디 리스트 가져오기
-	    List<Study> studyList = stdService.selectAllStudy(); // 스터디 리스트 조회
+	    List<Study> studyList = stdService.selectMainStudy(); // 스터디 리스트 조회
 	    
 	    model.addAttribute("studyList", studyList); // 모델에 추가
 		
