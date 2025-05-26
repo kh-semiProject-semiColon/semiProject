@@ -14,9 +14,9 @@ public interface StudyCalendarMapper {
 
 	void calendarSave(Calendar vo);
 
-	void calendarDelete(String no);
+	void calendarDelete(long no);
 
 	void eventUpdate(Calendar vo);
 
-	int bringStudyNo(int memberNo);
+	Integer bringStudyNo(int memberNo);
 }
