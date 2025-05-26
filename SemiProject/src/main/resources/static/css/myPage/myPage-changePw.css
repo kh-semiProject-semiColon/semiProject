@@ -97,3 +97,17 @@
   clear: both;
 }
 
+.span {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #666;
+}
+
+/* 메세지 색상 지정 */
+.confirm {
+  color: green;
+}
+.error {
+  color: red;
+}
