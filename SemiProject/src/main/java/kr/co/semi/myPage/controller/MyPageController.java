@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpSession;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.myPage.model.service.MyPageService;
 import lombok.extern.slf4j.Slf4j;
@@ -174,13 +175,16 @@ public class MyPageController {
 	}
 
 	@PostMapping("delete3")
-	public String delete3(@SessionAttribute("loginMember") Member loginMember) {
-		
-		int response = service.deleteMember(loginMember.getMemberNo());
-		
-		
-		return "myPage/myPage-delete3";
+	public String delete3(@SessionAttribute("loginMember") Member loginMember,
+	                      HttpSession session) {
+
+	    int response = service.deleteMember(loginMember.getMemberNo());
+
+	    if (response > 0) {
+	        // 세션 무효화 (로그아웃 처리)
+	        session.invalidate();
+	    }
+
+	    return "myPage/myPage-delete3"; // 탈퇴 완료 페이지
 	}
-	
-	
 }
