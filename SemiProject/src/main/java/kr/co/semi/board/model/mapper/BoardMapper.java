@@ -51,5 +51,12 @@ public interface BoardMapper {
 	 */
 	int getSearchCount(Map<String, Object> paramMap);
 
+	/** 검색 조건을 포함한 삭제되지 않은 공지 글
+	 * @param paramMap
+	 * @param rowBounds
+	 * @return
+	 */
+	List<Announce> selectSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
+
 
 }

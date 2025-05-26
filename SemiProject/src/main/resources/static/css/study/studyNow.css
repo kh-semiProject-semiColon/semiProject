@@ -259,11 +259,11 @@ main {
 }
 
 .arrow {
+  text-decoration: none;
   color: #3867ff;
   font-weight: bolder;
   font-size: 20px;
   font-weight: 700;
-  text-decoration-line: none;
 }
 
 /* 글쓰기 버튼 */
