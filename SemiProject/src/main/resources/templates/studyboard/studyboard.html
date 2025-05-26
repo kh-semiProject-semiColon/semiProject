@@ -1,30 +1,35 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GoStudy - 캘린더</title>
+    <title>GoStudy 마이페이지 게시글</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
       type="text/css"
     />
-    <link rel="stylesheet" href="/css/studyboard/style.css" />
+    <link rel="stylesheet" href="/css/studyBoard/posts.css" />
+    <link rel="stylesheet" href="/css/studyBoard/style.css" />
     <link rel="stylesheet" href="/css/common/footer.css" />
     <link rel="stylesheet" href="/css/common/header.css" />
-    <link rel="stylesheet" href="/css/studyboard/sidebar.css" />
+    <link rel="stylesheet" href="/css/studyBoard/sidebar.css" />
   </head>
   <body>
+    <!-- 헤더 -->
     <th:block th:replace="~{common/header}"></th:block>
 
-    <!-- 메인 콘텐츠 -->
-
+    <!-- 메인 컨텐츠 -->
     <div class="main-content">
       <!-- 사이드바 -->
-      <th:block th:replace="~{studyboard/sidebar}"></th:block>
+
+      <!-- 상자를 구분하기 위해 id를 추가했습니다. 
+       id 추가 후 js 코드에서 사이드 바를 참고해주세요! -->
+      <th:block th:replace="~{studyBoard/sidebar}"></th:block>
 
       <!-- 콘텐츠 영역 -->
       <div class="content">
+		
         <!-- 내 게시글 섹션 -->
         <div class="content-section">
           <h2 class="content-heading">내 게시글</h2>
@@ -59,87 +64,12 @@
             <div class="col-likes">3</div>
           </div>
 
-          <!-- 페이지네이션 -->
-          <div class="pagination">
-            <a
-              href="#"
-              class="page-item arrow"
-              th:if="${currentPage > 1}"
-              th:href="@{/mypage/posts(page=1)}"
-              >&#x300A;</a
-            >
-            <a
-              href="#"
-              class="page-item arrow"
-              th:if="${currentPage > 1}"
-              th:href="@{/mypage/posts(page=${currentPage - 1})}"
-              >&#x3008;</a
-            >
+		  
+		          </div>
 
-            <a href="#" class="page-item active">1</a>
-            <a href="#" class="page-item">2</a>
-            <a href="#" class="page-item">3</a>
-            <a href="#" class="page-item">4</a>
-            <a href="#" class="page-item">5</a>
-            <a href="#" class="page-item">6</a>
-            <a href="#" class="page-item">7</a>
-            <a href="#" class="page-item">8</a>
-            <a href="#" class="page-item">9</a>
-            <a href="#" class="page-item">10</a>
+       
 
-            <a
-              href="#"
-              class="page-item arrow"
-              th:if="${currentPage < totalPages}"
-              th:href="@{/mypage/posts(page=${currentPage + 1})}"
-              >&#x3009;</a
-            >
-            <a
-              href="#"
-              class="page-item arrow"
-              th:if="${currentPage < totalPages}"
-              th:href="@{/mypage/posts(page=${totalPages})}"
-              >&#x300B;</a
-            >
-          </div>
-        </div>
-
-        <!-- 내 댓글 섹션 -->
-        <div class="content-section">
-          <h2 class="content-heading">내 댓글</h2>
-          <div class="content-divider"></div>
-
-          <!-- 내 댓글 테이블 헤더 -->
-          <div class="table-header">
-            <div class="col-num">글번호</div>
-            <div class="col-post-title">게시글 제목</div>
-            <div class="col-comment-text">댓글내용</div>
-            <div class="col-comment-date">작성일</div>
-          </div>
-
-          <!-- 댓글 목록 -->
-          <div class="table-row" th:each="comment : ${comments}">
-            <div class="col-num" th:text="${comment.id}">1</div>
-            <div class="col-post-title" th:text="${comment.postTitle}">
-              1번째 게시글
-            </div>
-            <div class="col-comment-text" th:text="${comment.content}">
-              텍스트는 동그래 말줄임해줍니다...
-            </div>
-            <div class="col-comment-date" th:text="${comment.createdAt}">
-              25.05.09 12:33
-            </div>
-          </div>
-
-          <!-- 댓글 예시 데이터 (실제로는 타임리프로 반복 처리) -->
-          <div class="table-row">
-            <div class="col-num">1</div>
-            <div class="col-post-title">1번째 게시글</div>
-            <div class="col-comment-text">
-              텍스트는 동그래 말줄임해줍니다...
-            </div>
-            <div class="col-comment-date">25.05.09 12:33</div>
-          </div>
+         
 
           <!-- 페이지네이션 -->
           <div class="pagination">
@@ -191,6 +121,6 @@
     <!-- 푸터 -->
     <th:block th:replace="~{common/footer}"></th:block>
 
-    <script src="/js/studyboard/studyboard-posts.js"></script>
+    <script src="/js/myPage/myPage.js"></script>
   </body>
 </html>

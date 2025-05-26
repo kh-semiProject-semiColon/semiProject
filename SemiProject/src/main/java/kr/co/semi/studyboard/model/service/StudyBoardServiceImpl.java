@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.co.semi.studyboard.model.dto.Study;
 import kr.co.semi.studyboard.model.dto.StudyBoard;
 import kr.co.semi.studyboard.model.mapper.StudyBoardMapper;
 import lombok.RequiredArgsConstructor;
@@ -46,5 +47,16 @@ public class StudyBoardServiceImpl implements StudyBoardService {
     @Override
     public StudyBoard getBoardDetail(int boardNo) {
         return mapper.selectBoardDetail(boardNo);
+    }
+    
+    /**
+	 * 📋 스터디 ID로 스터디 정보 조회
+	 * @param studyNo 스터디 번호
+	 * @return 해당 스터디 객체
+	 */
+    @Override
+    public Study selectStudyById(int studyNo) {
+    	// TODO Auto-generated method stub
+    	return null;
     }
 }
