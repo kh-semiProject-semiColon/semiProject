@@ -1,33 +1,41 @@
-// 게시글 목록 + 검색 + 정렬 + 페이징
-document.addEventListener("DOMContentLoaded", () => {
-  loadPage(1);
+// 공통 작동 js -------------------------------------
+// 사이드바 메뉴 활성화
+// location.pathname는 /myPage/info를 다운받습니다
+document.addEventListener("DOMContentLoaded", function () {
+  const currentLocation = location.pathname; // 현재 페이지 url
 
-  const keywordInput = document.getElementById("searchKeyword");
-  if (keywordInput) keywordInput.addEventListener("input", () => loadPage(1));
+  const info = document.querySelector("#myPage-info");
+  const posts = document.querySelector("#myPage-posts");
+  const change = document.querySelector("#myPage-change");
+  const delete1 = document.querySelector("#myPage-delete");
 
-  const sortSelect = document.getElementById("sortOption");
-  if (sortSelect) sortSelect.addEventListener("change", () => loadPage(1));
+  switch (currentLocation) {
+    case "/myPage/info":
+      info.classList.add("active");
+      posts.classList.remove("active");
+      change.classList.remove("active");
+      delete1.classList.remove("active");
+      break;
+
+    case "/myPage/posts":
+      info.classList.remove("active");
+      posts.classList.add("active");
+      change.classList.remove("active");
+      delete1.classList.remove("active");
+      break;
+
+    case "/myPage/changePw":
+      info.classList.remove("active");
+      posts.classList.remove("active");
+      change.classList.add("active");
+      delete1.classList.remove("active");
+      break;
+
+    case "/myPage/delete1":
+      info.classList.remove("active");
+      posts.classList.remove("active");
+      change.classList.remove("active");
+      delete1.classList.add("active");
+      break;
+  }
 });
-
-function loadPage(page) {
-  const studyNo = document.getElementById("selectedStudyNo")?.value || 0;
-  const key = document.getElementById("searchKey")?.value || "";
-  const keyword = document.getElementById("searchKeyword")?.value || "";
-  const sort = document.getElementById("sortOption")?.value || "new";
-
-  fetch(`/studyBoard/list/${studyNo}?page=${page}&key=${key}&keyword=${keyword}&sort=${sort}`)
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("board-list-container").innerHTML = html;
-      attachPaginationEvents();
-    });
-}
-
-function attachPaginationEvents() {
-  document.querySelectorAll(".pagination-link").forEach(link => {
-    link.addEventListener("click", e => {
-      e.preventDefault();
-      loadPage(e.target.dataset.page);
-    });
-  });
-}

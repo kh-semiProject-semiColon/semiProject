@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GoStudy - 캘린더</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="/css/studyboard/style.css" />
+    <link rel="stylesheet" href="/css/common/footer.css" />
+    <link rel="stylesheet" href="/css/common/header.css" />
+    <link rel="stylesheet" href="/css/studyboard/sidebar.css" />
+  </head>
+  <body>
+    <th:block th:replace="~{common/header}"></th:block>
+    <!-- 메인 콘텐츠 -->
+	
+    <div class="main-wrapper">
+        <!-- 사이드바 -->
+      <th:block th:replace="~{studyboard/sidebar}"></th:block>
+
+        <!-- 캘린더 부분 -->
+        
+ <th:block th:replace="~{common/footer}"></th:block>
+    
+</body>
+</html>
