@@ -9,9 +9,9 @@ const changePwMessage = document.querySelector("#changePwMessage");
 const changeConfirmMessage = document.querySelector("#changeConfirmMessage");
 
 const checkObj = {
-  "originPw": false,
-  "newPw": false,
-  "newPwConfirm": false
+  originPw: false,
+  newPw: false,
+  newPwConfirm: false,
 };
 
 const regExp = /^[a-zA-Z0-9!@#_-]{2,100}$/;
