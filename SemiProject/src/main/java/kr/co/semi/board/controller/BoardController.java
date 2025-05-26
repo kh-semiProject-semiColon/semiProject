@@ -27,6 +27,8 @@ public class BoardController {
 	
 	@Autowired
 	private HireBoardService service;
+	@Autowired
+	private BoardService bService;
 
 	/** 구인 게시판 조회 
 	 * @return

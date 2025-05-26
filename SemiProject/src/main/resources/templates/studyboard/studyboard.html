@@ -9,195 +9,188 @@
       href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
       type="text/css"
     />
-    <link rel="stylesheet" href="/css/studyboard/studyboard-style.css" />
+    <link rel="stylesheet" href="/css/studyboard/style.css" />
     <link rel="stylesheet" href="/css/common/footer.css" />
     <link rel="stylesheet" href="/css/common/header.css" />
     <link rel="stylesheet" href="/css/studyboard/sidebar.css" />
   </head>
   <body>
     <th:block th:replace="~{common/header}"></th:block>
-    
-	
-	<!-- 메인 콘텐츠 -->
-	
+
+    <!-- 메인 콘텐츠 -->
+
     <div class="main-content">
-        <!-- 사이드바 -->
+      <!-- 사이드바 -->
       <th:block th:replace="~{studyboard/sidebar}"></th:block>
 
-        
+      <!-- 콘텐츠 영역 -->
+      <div class="content">
+        <!-- 내 게시글 섹션 -->
+        <div class="content-section">
+          <h2 class="content-heading">내 게시글</h2>
 
-		      <!-- 콘텐츠 영역 -->
-		      <div class="content">
-		        <!-- 내 게시글 섹션 -->
-		        <div class="content-section">
-		          <h2 class="content-heading">내 게시글</h2>
+          <!-- 게시글 테이블 헤더 -->
+          <div class="table-header">
+            <div class="col-num">글번호</div>
+            <div class="col-title">제목</div>
+            <div class="col-author">작성자</div>
+            <div class="col-date">작성일</div>
+            <div class="col-views">조회수</div>
+            <div class="col-likes">좋아요</div>
+          </div>
 
-		          <!-- 게시글 테이블 헤더 -->
-		          <div class="table-header">
-		            <div class="col-num">글번호</div>
-		            <div class="col-title">제목</div>
-		            <div class="col-author">작성자</div>
-		            <div class="col-date">작성일</div>
-		            <div class="col-views">조회수</div>
-		            <div class="col-likes">좋아요</div>
-		          </div>
+          <!-- 게시글 목록 -->
+          <div class="table-row" th:each="post : ${posts}">
+            <div class="col-num" th:text="${post.id}">1</div>
+            <div class="col-title" th:text="${post.title}">1번째 게시글</div>
+            <div class="col-author" th:text="${post.author}">유저명</div>
+            <div class="col-date" th:text="${post.createdAt}">25.05.09</div>
+            <div class="col-views" th:text="${post.viewCount}">202</div>
+            <div class="col-likes" th:text="${post.likeCount}">3</div>
+          </div>
 
-		          <!-- 게시글 목록 -->
-		          <div class="table-row" th:each="post : ${posts}">
-		            <div class="col-num" th:text="${post.id}">1</div>
-		            <div class="col-title" th:text="${post.title}">1번째 게시글</div>
-		            <div class="col-author" th:text="${post.author}">유저명</div>
-		            <div class="col-date" th:text="${post.createdAt}">25.05.09</div>
-		            <div class="col-views" th:text="${post.viewCount}">202</div>
-		            <div class="col-likes" th:text="${post.likeCount}">3</div>
-		          </div>
+          <!-- 게시글 예시 데이터 (실제로는 타임리프로 반복 처리) -->
+          <div class="table-row">
+            <div class="col-num">1</div>
+            <div class="col-title">1번째 게시글</div>
+            <div class="col-author">유저명</div>
+            <div class="col-date">25.05.09</div>
+            <div class="col-views">202</div>
+            <div class="col-likes">3</div>
+          </div>
 
-		          <!-- 게시글 예시 데이터 (실제로는 타임리프로 반복 처리) -->
-		          <div class="table-row">
-		            <div class="col-num">1</div>
-		            <div class="col-title">1번째 게시글</div>
-		            <div class="col-author">유저명</div>
-		            <div class="col-date">25.05.09</div>
-		            <div class="col-views">202</div>
-		            <div class="col-likes">3</div>
-		          </div>
+          <!-- 페이지네이션 -->
+          <div class="pagination">
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${currentPage > 1}"
+              th:href="@{/mypage/posts(page=1)}"
+              >&#x300A;</a
+            >
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${currentPage > 1}"
+              th:href="@{/mypage/posts(page=${currentPage - 1})}"
+              >&#x3008;</a
+            >
 
-		          <!-- 페이지네이션 -->
-		          <div class="pagination">
-		            <a
-		              href="#"
-		              class="page-item arrow"
-		              th:if="${currentPage > 1}"
-		              th:href="@{/mypage/posts(page=1)}"
-		              >&#x300A;</a
-		            >
-		            <a
-		              href="#"
-		              class="page-item arrow"
-		              th:if="${currentPage > 1}"
-		              th:href="@{/mypage/posts(page=${currentPage - 1})}"
-		              >&#x3008;</a
-		            >
+            <a href="#" class="page-item active">1</a>
+            <a href="#" class="page-item">2</a>
+            <a href="#" class="page-item">3</a>
+            <a href="#" class="page-item">4</a>
+            <a href="#" class="page-item">5</a>
+            <a href="#" class="page-item">6</a>
+            <a href="#" class="page-item">7</a>
+            <a href="#" class="page-item">8</a>
+            <a href="#" class="page-item">9</a>
+            <a href="#" class="page-item">10</a>
 
-		            <a href="#" class="page-item active">1</a>
-		            <a href="#" class="page-item">2</a>
-		            <a href="#" class="page-item">3</a>
-		            <a href="#" class="page-item">4</a>
-		            <a href="#" class="page-item">5</a>
-		            <a href="#" class="page-item">6</a>
-		            <a href="#" class="page-item">7</a>
-		            <a href="#" class="page-item">8</a>
-		            <a href="#" class="page-item">9</a>
-		            <a href="#" class="page-item">10</a>
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${currentPage < totalPages}"
+              th:href="@{/mypage/posts(page=${currentPage + 1})}"
+              >&#x3009;</a
+            >
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${currentPage < totalPages}"
+              th:href="@{/mypage/posts(page=${totalPages})}"
+              >&#x300B;</a
+            >
+          </div>
+        </div>
 
-		            <a
-		              href="#"
-		              class="page-item arrow"
-		              th:if="${currentPage < totalPages}"
-		              th:href="@{/mypage/posts(page=${currentPage + 1})}"
-		              >&#x3009;</a
-		            >
-		            <a
-		              href="#"
-		              class="page-item arrow"
-		              th:if="${currentPage < totalPages}"
-		              th:href="@{/mypage/posts(page=${totalPages})}"
-		              >&#x300B;</a
-		            >
-		          </div>
-		        </div>
+        <!-- 내 댓글 섹션 -->
+        <div class="content-section">
+          <h2 class="content-heading">내 댓글</h2>
+          <div class="content-divider"></div>
 
-		        <!-- 내 댓글 섹션 -->
-		        <div class="content-section">
-		          <h2 class="content-heading">내 댓글</h2>
-		          <div class="content-divider"></div>
+          <!-- 내 댓글 테이블 헤더 -->
+          <div class="table-header">
+            <div class="col-num">글번호</div>
+            <div class="col-post-title">게시글 제목</div>
+            <div class="col-comment-text">댓글내용</div>
+            <div class="col-comment-date">작성일</div>
+          </div>
 
-		          <!-- 내 댓글 테이블 헤더 -->
-		          <div class="table-header">
-		            <div class="col-num">글번호</div>
-		            <div class="col-post-title">게시글 제목</div>
-		            <div class="col-comment-text">댓글내용</div>
-		            <div class="col-comment-date">작성일</div>
-		          </div>
+          <!-- 댓글 목록 -->
+          <div class="table-row" th:each="comment : ${comments}">
+            <div class="col-num" th:text="${comment.id}">1</div>
+            <div class="col-post-title" th:text="${comment.postTitle}">
+              1번째 게시글
+            </div>
+            <div class="col-comment-text" th:text="${comment.content}">
+              텍스트는 동그래 말줄임해줍니다...
+            </div>
+            <div class="col-comment-date" th:text="${comment.createdAt}">
+              25.05.09 12:33
+            </div>
+          </div>
 
-		          <!-- 댓글 목록 -->
-		          <div class="table-row" th:each="comment : ${comments}">
-		            <div class="col-num" th:text="${comment.id}">1</div>
-		            <div class="col-post-title" th:text="${comment.postTitle}">
-		              1번째 게시글
-		            </div>
-		            <div class="col-comment-text" th:text="${comment.content}">
-		              텍스트는 동그래 말줄임해줍니다...
-		            </div>
-		            <div class="col-comment-date" th:text="${comment.createdAt}">
-		              25.05.09 12:33
-		            </div>
-		          </div>
+          <!-- 댓글 예시 데이터 (실제로는 타임리프로 반복 처리) -->
+          <div class="table-row">
+            <div class="col-num">1</div>
+            <div class="col-post-title">1번째 게시글</div>
+            <div class="col-comment-text">
+              텍스트는 동그래 말줄임해줍니다...
+            </div>
+            <div class="col-comment-date">25.05.09 12:33</div>
+          </div>
 
-		          <!-- 댓글 예시 데이터 (실제로는 타임리프로 반복 처리) -->
-		          <div class="table-row">
-		            <div class="col-num">1</div>
-		            <div class="col-post-title">1번째 게시글</div>
-		            <div class="col-comment-text">
-		              텍스트는 동그래 말줄임해줍니다...
-		            </div>
-		            <div class="col-comment-date">25.05.09 12:33</div>
-		          </div>
+          <!-- 페이지네이션 -->
+          <div class="pagination">
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${commentCurrentPage > 1}"
+              th:href="@{/mypage/comments(page=1)}"
+              >&#x300A;</a
+            >
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${commentCurrentPage > 1}"
+              th:href="@{/mypage/comments(page=${commentCurrentPage - 1})}"
+              >&#x3008;</a
+            >
 
-		         
+            <a href="#" class="page-item active">1</a>
+            <a href="#" class="page-item">2</a>
+            <a href="#" class="page-item">3</a>
+            <a href="#" class="page-item">4</a>
+            <a href="#" class="page-item">5</a>
+            <a href="#" class="page-item">6</a>
+            <a href="#" class="page-item">7</a>
+            <a href="#" class="page-item">8</a>
+            <a href="#" class="page-item">9</a>
+            <a href="#" class="page-item">10</a>
 
-		          <!-- 페이지네이션 -->
-		          <div class="pagination">
-		            <a
-		              href="#"
-		              class="page-item arrow"
-		              th:if="${commentCurrentPage > 1}"
-		              th:href="@{/mypage/comments(page=1)}"
-		              >&#x300A;</a
-		            >
-		            <a
-		              href="#"
-		              class="page-item arrow"
-		              th:if="${commentCurrentPage > 1}"
-		              th:href="@{/mypage/comments(page=${commentCurrentPage - 1})}"
-		              >&#x3008;</a
-		            >
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${commentCurrentPage < commentTotalPages}"
+              th:href="@{/mypage/comments(page=${commentCurrentPage + 1})}"
+              >&#x3009;</a
+            >
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${commentCurrentPage < commentTotalPages}"
+              th:href="@{/mypage/comments(page=${commentTotalPages})}"
+              >&#x300B;</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
 
-		            <a href="#" class="page-item active">1</a>
-		            <a href="#" class="page-item">2</a>
-		            <a href="#" class="page-item">3</a>
-		            <a href="#" class="page-item">4</a>
-		            <a href="#" class="page-item">5</a>
-		            <a href="#" class="page-item">6</a>
-		            <a href="#" class="page-item">7</a>
-		            <a href="#" class="page-item">8</a>
-		            <a href="#" class="page-item">9</a>
-		            <a href="#" class="page-item">10</a>
+    <!-- 푸터 -->
+    <th:block th:replace="~{common/footer}"></th:block>
 
-		            <a
-		              href="#"
-		              class="page-item arrow"
-		              th:if="${commentCurrentPage < commentTotalPages}"
-		              th:href="@{/mypage/comments(page=${commentCurrentPage + 1})}"
-		              >&#x3009;</a
-		            >
-		            <a
-		              href="#"
-		              class="page-item arrow"
-		              th:if="${commentCurrentPage < commentTotalPages}"
-		              th:href="@{/mypage/comments(page=${commentTotalPages})}"
-		              >&#x300B;</a
-		            >
-		          </div>
-		        </div>
-		      </div>
-		    </div>
-
-		    <!-- 푸터 -->
-		    <th:block th:replace="~{common/footer}"></th:block>
-		
-
-    
- <script src="/js/studyboard/studyboard-posts.js"></script>
-</body>
+    <script src="/js/studyboard/studyboard-posts.js"></script>
+  </body>
 </html>
