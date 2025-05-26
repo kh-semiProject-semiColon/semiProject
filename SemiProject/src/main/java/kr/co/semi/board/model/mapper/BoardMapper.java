@@ -59,4 +59,6 @@ public interface BoardMapper {
 	List<Announce> selectSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
 
 
+	
+
 }
