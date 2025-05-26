@@ -12,6 +12,7 @@
       href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
       type="text/css"
     />
+    
     <script th:inline="javascript">
       const authority = Number(
         /*[[${session.loginMember != null ? session.loginMember.authority : 0}]]*/ 0
@@ -118,6 +119,7 @@
                         margin-left: auto;
                         text-decoration: none;
                         border-bottom: 1px solid #25272b;
+                        color: #25272b;
                       "
                       class="find-idPw"
                       >회원가입</a
@@ -249,53 +251,51 @@
       </div>
 
       <!-- Study Status Section -->
-       <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-<div class="study-status-section">
-  <div class="study-status-card">
-    <div class="study-status-info">
-      <h3 class="study-status-title">레모나 스터디 현황</h3>
-      <ul class="study-status-details">
-        <li>방향성 : 과배업</li>
-        <li>생성일 : 2025.05.12</li>
-        <li>운영기간 : 3개월</li>
-        <li>진행 : 3 / 5 명</li>
-      </ul>
+<div style="display: flex; justify-content: space-between; width: 100%;">
+  
+  <!-- 슬라이드 영역 -->
+  <div class="carousel-wrapper" style="width: 65%;">
+    <div class="carousel-container">
+      <div class="carousel" id="studyCarousel">
+        <div class="study-status-card" th:each="study : ${studyList}">
+          <div class="study-status-info">
+            <h3 class="study-status-title" th:text="${study.studyName} + ' 스터디 현황'">스터디 이름</h3>
+            <ul class="study-status-details">
+              <li>방향성 :&nbsp; 
+                <span th:switch="${study.studyType}">
+                  <span th:case="1"> 레벨업</span>
+                  <span th:case="2"> 복습</span>
+                  <span th:case="3"> 문제풀이</span>
+                  <span th:case="4"> 자격증</span>
+                  <span th:case="5"> 프로젝트</span>
+                </span>
+              </li>
+              <li>생성일 :&nbsp;<span th:text="${study.studyDate}"> 2025.05.12</span></li>
+              <li>운영기간 :&nbsp;
+                <span th:if="${study.studyPeriod == 0}"> 무기한</span>
+                <span th:unless="${study.studyPeriod == 0}" th:text="${study.studyPeriod + '개월'}"></span>
+              </li>
+              <li>인원 :&nbsp;<span th:text="${study.memberCount}">3</span> / <span th:text="${study.studyMaxCount}">5</span> 명</li>
+            </ul>
+          </div>
+          <img src="/images/studyMain.gif" alt="스터디 이미지" class="study-status-image" />
+        </div>
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-control prev" onclick="prevSlide()">‹</button>
+        <button class="carousel-control next" onclick="nextSlide()">›</button>
+      </div>
     </div>
-    <img src="/images/studyMain.gif" alt="스터디 이미지" class="study-status-image" />
-    <div class="carousel-controls">
-  <button class="carousel-control prev">‹</button>
-  <button class="carousel-control next">›</button>
-</div>
+  </div>
 
+  <!-- 아이콘 영역 -->
+  <div style="width: 30%; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+    <a href="https://github.com/" target="_blank"><img src="/images/git.png" style="width: 130px;"></a>
+    <a href="https://velog.io/" target="_blank"><img src="/images/velog.png" style="width: 130px;"></a>
+    <a href="https://drive.google.com/drive/home" target="_blank"><img src="/images/google.png" style="width: 130px;"></a>
+    <a href="https://zoom.us/j/6624238118?pwd=..." target="_blank"><img src="/images/zoom.png" style="width: 130px;"></a>
   </div>
-  <div style="display: flex; width: 35%; align-items: center; justify-content: center; padding-left: 70px;">
-    <div style="margin-right: 30px;">
-    <div>
-    <a href="https://github.com/" target="_blank">
-      <img src="/images/git.png"  style="width: 130px;">
-    </a>
-    </div>
-    <div>
-    <a href="drive.google.com" target="_blank"  >
-      <img src="/images/google.png" style="width: 130px;">
-    </a>
-    </div>
-    </div>
-    <div>
-    <div>
-    <a href="https://velog.io/" target="_blank">
-      <img src="/images/velog.png" style="width: 130px;">
-    </a>
-    </div>
-    <div>
-    <a href="https://zoom.us/j/6624238118?pwd=WHVkb0lZU3RDTHFSalUyT3dxTno4dz09" target="_blank">
-      <img src="/images/zoom.png" style="width: 130px;">
-    </a>
-    </div>
-  </div>
-  </div>
-</div>
-</div>
+
 </div>
 
       
@@ -314,25 +314,10 @@
             alert("오늘 날짜로 이동합니다.");
           });
         }
-
-        // Carousel controls
-        const prevBtn = document.querySelector(".carousel-control.prev");
-        const nextBtn = document.querySelector(".carousel-control.next");
-
-        if (prevBtn && nextBtn) {
-          prevBtn.addEventListener("click", function () {
-            // 이전 스터디 보기 (실제 구현 시)
-            alert("이전 스터디로 이동합니다.");
-          });
-
-          nextBtn.addEventListener("click", function () {
-            // 다음 스터디 보기 (실제 구현 시)
-            alert("다음 스터디로 이동합니다.");
-          });
-        }
       });
     </script>
     <!-- 학사일정 캘린더 js추가-->
     <script src="/js/cal.js"></script>
+    <script src="/js/study/studyslider.js"></script>
   </body>
 </html>

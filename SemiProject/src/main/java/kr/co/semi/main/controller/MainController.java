@@ -1,7 +1,10 @@
 package kr.co.semi.main.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,9 +13,12 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import kr.co.semi.main.service.MainService;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.studyboard.model.dto.Study;
+import kr.co.semi.studyboard.model.service.StudyService;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -23,12 +29,32 @@ public class MainController {
 	@Autowired
 	private MainService service;
 	
+	@Autowired
+	private StudyService stdService;
+	
 	
 	@RequestMapping("/")
-	public String mainPage() {
+	public String mainPage(HttpServletRequest request, Model model) {
+		
+		HttpSession session = request.getSession(false);
+
+	    if (session != null) {
+	        String message = (String) session.getAttribute("message");
+	        if (message != null) {
+	            model.addAttribute("message", message); // request scope에 넣음
+	            session.removeAttribute("message");     // 1회용 메시지니까 제거
+	        }
+	    }
+	    
+	    // 미니 스터디 현황을 위한 스터디 리스트 가져오기
+	    List<Study> studyList = stdService.selectAllStudy(); // 스터디 리스트 조회
+	    
+	    model.addAttribute("studyList", studyList); // 모델에 추가
 		
 		return "common/main";
 	}
+	
+	
 	
 	@RequestMapping("/studyCreation")
 	public String studyCreation() {
