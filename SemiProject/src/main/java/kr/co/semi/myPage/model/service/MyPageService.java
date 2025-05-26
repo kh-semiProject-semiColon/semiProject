@@ -1,5 +1,7 @@
 package kr.co.semi.myPage.model.service;
 
+import java.util.Map;
+
 import kr.co.semi.member.model.dto.Member;
 
 public interface MyPageService {

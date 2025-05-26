@@ -230,30 +230,54 @@ nav a:hover::after {
   height: 120px;
   border-radius: 100%;
 }
-
+/* 전체 레이아웃을 나누는 컨테이너 */
 .study-status-section {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
+  align-items: flex-start;
   width: 100%;
   margin: 40px 0;
+  gap: 40px; /* 캐러셀과 아이콘 사이 간격 */
 }
 
+/* 캐러셀 전체 감싸는 래퍼 */
+.carousel-wrapper {
+  width: 65%; /* 왼쪽 슬라이드 영역 */
+  position: relative;
+}
+
+/* 슬라이드 영역 컨테이너 */
+.carousel-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* 슬라이드 전체 */
+.carousel {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
+  gap: 0;
+}
+
+/* 슬라이드 카드 한 장 */
 .study-status-card {
+  flex: 0 0 100%; /* 반드시 100%로 고정 */
+  box-sizing: border-box;
+  padding: 30px 40px;
   border: 2px solid #3867ff;
   border-radius: 10px;
-  padding: 30px 40px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center; /* 글+이미지 가운데 정렬 */
-  gap: 40px; /* 글과 이미지 사이 간격 */
-  position: relative;
-  width: 65%;
-  box-sizing: border-box;
+  background-color: white;
+  min-width: 100%;
 }
 
+/* 텍스트 정보 */
 .study-status-info {
-  flex-shrink: 0;
-  margin-right: 70px;
+  flex: 1;
 }
 
 .study-status-title {
@@ -267,11 +291,13 @@ nav a:hover::after {
   padding: 0;
   margin: 0;
 }
+
 .study-status-details li {
   margin-bottom: 10px;
   display: flex;
   align-items: center;
 }
+
 .study-status-details li::before {
   content: "•";
   color: #4285f4;
@@ -279,6 +305,7 @@ nav a:hover::after {
   font-weight: bold;
 }
 
+/* 이미지 */
 .study-status-image {
   width: 300px;
   height: 200px;
@@ -286,6 +313,7 @@ nav a:hover::after {
   border-radius: 5px;
 }
 
+/* 좌우 버튼 */
 .carousel-controls {
   position: absolute;
   top: 50%;
@@ -293,19 +321,36 @@ nav a:hover::after {
   right: 0;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 0 15px;
   transform: translateY(-50%);
-  pointer-events: none; /* 버튼만 클릭 가능하도록 */
+  padding: 0 20px;
+  pointer-events: none; /* 버튼 외의 요소 클릭 방지 */
 }
 
 .carousel-control {
   background: none;
   border: none;
-  font-size: 28px;
+  font-size: 32px;
   color: #3867ff;
   cursor: pointer;
   pointer-events: auto;
+}
+
+/* 오른쪽 아이콘 묶음 */
+.icon-links {
+  width: 30%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.icon-links img {
+  width: 120px;
+  transition: transform 0.2s ease;
+}
+
+.icon-links img:hover {
+  transform: scale(1.05);
 }
 
 footer {
