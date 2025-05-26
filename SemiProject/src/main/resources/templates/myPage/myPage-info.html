@@ -1,148 +1,217 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>GoStudy - 프로필</title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
-		type="text/css" />
-	<link rel="stylesheet" href="/css/myPage/myPage-style.css" />
-	<link rel="stylesheet" href="/css/common/footer.css" />
-	<link rel="stylesheet" href="/css/common/header.css" />
-	<link rel="stylesheet" href="/css/myPage/sidebar.css" />
-	<link rel="stylesheet" href="/css/myPage/myPage-info.css" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GoStudy - 프로필</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="/css/myPage/myPage-style.css" />
+    <link rel="stylesheet" href="/css/common/footer.css" />
+    <link rel="stylesheet" href="/css/common/header.css" />
+    <link rel="stylesheet" href="/css/myPage/sidebar.css" />
+    <link rel="stylesheet" href="/css/myPage/myPage-info.css" />
+  </head>
+  <body>
+    <th:block th:replace="~{common/header}"></th:block>
 
-<body>
-	<th:block th:replace="~{common/header}"></th:block>
+    <!-- 메인 콘텐츠 -->
+    <div class="main-wrapper">
+      <!-- 사이드바 -->
+      <th:block th:replace="~{myPage/sidebar}"></th:block>
 
-	<!-- 메인 콘텐츠 -->
-	<div class="main-wrapper">
-		<!-- 사이드바 -->
-		<th:block th:replace="~{myPage/sidebar}"></th:block>
+      <!-- 프로필 콘텐츠 -->
+      <div class="content">
+        <div class="content-section">
+          <h2 class="content-header">프로필</h2>
+          
+          <form
+            th:action="info"
+            method="post"
+            name="myPageFrm"
+            class="info-form"
+          >
+          <!-- 프로필 이미지 섹션 -->
+          <div class="profile-section">
+            <div class="profile-image-container">
+              <!-- user가 null이 아니고 profileImage가 존재할 때 -->
+              <img
+                th:if="${loginMember != null and loginMember.profileImg != null}"
+                th:src="@{${loginMember.profileImg}}"
+              />
 
-		<!-- 프로필 콘텐츠 -->
-		<div class="content">
-			<div class="content-section">
-				<h2 class="content-header">프로필</h2>
+              <!-- user가 null이거나 profileImage가 없을 때 기본 이미지 -->
+              <img
+                th:if="${loginMember == null or loginMember.profileImg == null}"
+                th:src="@{/images/default-profile.png}"
+              />
+              <button type="button" class="remove-image">X</button>
+            </div>
+            <button type="button" class="image-select-btn">이미지 선택</button>
+          </div>
 
-				<form th:action="info" method="post" name="myPageFrm" class="info-form">
-					<!-- 프로필 이미지 섹션 -->
-					<div class="profile-section">
-						<div class="profile-image-container">
-							<!-- user가 null이 아니고 profileImage가 존재할 때 -->
-							<img th:if="${loginMember != null and loginMember.profileImg != null}"
-								th:src="@{${loginMember.profileImg}}" />
+          <!-- 내정보 섹션 -->
+          <div class="info-section">
+            <h3 class="info-header">내정보</h3>
+            <div class="content-divider"></div>
+              <!-- 이름 입력 -->
+              <div class="form-group">
+                <label class="form-label">이름</label>
+                <div class="form-input-container">
+                  <input
+                    disabled
+                    type="text"
+                    class="form-input"
+                    name="memberName"
+                    th:value="${session.loginMember.memberName}"
+                    required
+                  />
+                </div>
+              </div>
 
-							<!-- user가 null이거나 profileImage가 없을 때 기본 이미지 -->
-							<img th:if="${loginMember == null or loginMember.profileImg == null}"
-								th:src="@{/images/default-profile.png}" />
-							<button class="remove-image">X</button>
-						</div>
-						<button class="image-select-btn">이미지 선택</button>
-					</div>
+              <!-- 닉네임 입력 -->
+              <div class="form-group">
+                <label class="form-label">닉네임</label>
+                <div class="form-input-container">
+                  <input
+                    type="text"
+                    class="form-input"
+                    name="memberNickname"
+                    th:value="${session.loginMember.memberNickname}"
+                    required
+                  />
+                  <span class="span" id="nickNameMessage"
+                    >10글자 이내로 작성해주세요!</span
+                  >
+                </div>
+              </div>
 
-					<!-- 내정보 섹션 -->
-					<div class="info-section">
-						<h3 class="info-header">내정보</h3>
-						<div class="content-divider"></div>
-						<!-- 이름 입력 -->
-						<div class="form-group">
-							<label class="form-label">이름</label>
-							<div class="form-input-container">
-								<input disabled type="text" class="form-input" name="memberName"
-									th:value="${session.loginMember.memberName}" required />
-							</div>
-						</div>
+              <!-- 이메일 입력 -->
+              <div class="form-group">
+                <label class="form-label">이메일</label>
+                <div class="form-input-container">
+                  <input
+                    type="hidden"
+                    name="memberEmail"
+                    th:value="${session.loginMember.memberEmail}"
+                  />
+                  <input
+                    type="email"
+                    class="form-input"
+                    name="memberEmail"
+                    th:value="${session.loginMember.memberEmail}"
+                    disabled
+                  />
+                </div>
+              </div>
 
-						<!-- 닉네임 입력 -->
-						<div class="form-group">
-							<label class="form-label">닉네임</label>
-							<div class="form-input-container">
-								<input type="text" class="form-input" name="memberNickname"
-									th:value="${session.loginMember.memberNickname}" required />
-								<span class="span" id="nickNameMessage">10글자 이내로 작성해주세요!</span>
-							</div>
-						</div>
+              <!-- 전화번호 입력 -->
+              <div class="form-group">
+                <label class="form-label">전화번호</label>
+                <div class="form-input-container">
+                  <input
+                    type="tel"
+                    class="form-input"
+                    name="memberTel"
+                    th:value="${session.loginMember.memberTel}"
+                    required
+                  />
+                  <span class="span" id="TelMessage"></span>
+                </div>
+              </div>
 
-						<!-- 이메일 입력 -->
-						<div class="form-group">
-							<label class="form-label">이메일</label>
-							<div class="form-input-container">
-								<input type="hidden" name="memberEmail" th:value="${session.loginMember.memberEmail}" />
-								<input type="email" class="form-input" name="memberEmail"
-									th:value="${session.loginMember.memberEmail}" disabled />
-							</div>
-						</div>
+              <!-- 컴퓨터 전공 여부 -->
+              <div class="form-group">
+                <label class="form-label">컴퓨터 전공 여부</label>
+                <div class="form-input-container">
+                  <input
+                    type="radio"
+                    name="memberMajor"
+                    value="Y"
+                    th:checked="${memberMajor == 'Y'}"
+                  />
+                  O
 
-						<!-- 전화번호 입력 -->
-						<div class="form-group">
-							<label class="form-label">전화번호</label>
-							<div class="form-input-container">
-								<input type="tel" class="form-input" name="memberTel"
-									th:value="${session.loginMember.memberTel}" required />
-								<span class="span" id="TelMessage"></span>
-							</div>
-						</div>
+                  <input
+                    type="radio"
+                    name="memberMajor"
+                    class="major"
+                    value="N"
+                    th:checked="${memberMajor == 'N'}"
+                  />
+                  X
+                </div>
+              </div>
 
-						<!-- 컴퓨터 전공 여부 -->
-						<div class="form-group">
-							<label class="form-label">컴퓨터 전공 여부</label>
-							<div class="form-input-container">
-								<input type="radio" name="memberMajor" value="Y" th:checked="${memberMajor == 'Y'}" />
-								O
+              <!-- 주소 입력 -->
+              <div class="form-group">
+                <label class="form-label">주소</label>
+                <div class="address-container">
+                  <div class="address-row">
+                    <input
+                      type="text"
+                      name="memberAddress"
+                      placeholder="우편번호"
+                      id="postcode"
+                      class="form-input"
+                      th:value="${postcode}"
+                    />
 
-								<input type="radio" name="memberMajor" class="major" value="N"
-									th:checked="${memberMajor == 'N'}" />
-								X
-							</div>
-						</div>
+                    <button type="button" class="address-search">검색</button>
+                  </div>
+                  <div class="address-row">
+                    <input
+                      type="text"
+                      name="memberAddress"
+                      placeholder="도로명/지번 주소"
+                      id="address"
+                      class="form-input"
+                      th:value="${address}"
+                    />
+                  </div>
+                  <div class="address-row">
+                    <input
+                      type="text"
+                      name="memberAddress"
+                      placeholder="상세주소"
+                      id="detailAddress"
+                      class="form-input"
+                      th:value="${detailAddress}"
+                    />
+                  </div>
+                </div>
+              </div>
 
-						<!-- 주소 입력 -->
-						<div class="form-group">
-							<label class="form-label">주소</label>
-							<div class="address-container">
-								<div class="address-row">
-									<input type="text" name="memberAddress" placeholder="우편번호" id="postcode"
-										class="form-input" th:value="${postcode}" />
+              <!-- 자기소개 입력 -->
+              <div class="form-group">
+                <label class="form-label">자기소개</label>
+                <div class="form-input-container">
+                  <textarea
+                    class="bio-input"
+                    name="memberIntroduce"
+                    th:text="${memberIntroduce}"
+                  ></textarea>
+                </div>
+              </div>
 
-									<button type="button" class="address-search">검색</button>
-								</div>
-								<div class="address-row">
-									<input type="text" name="memberAddress" placeholder="도로명/지번 주소" id="address"
-										class="form-input" th:value="${address}" />
-								</div>
-								<div class="address-row">
-									<input type="text" name="memberAddress" placeholder="상세주소" id="detailAddress"
-										class="form-input" th:value="${detailAddress}" />
-								</div>
-							</div>
-						</div>
+              <!-- 제출 버튼 -->
+              <button type="submit" class="submit-btn">수정하기</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <th:block th:replace="~{common/footer}"></th:block>
 
-						<!-- 자기소개 입력 -->
-						<div class="form-group">
-							<label class="form-label">자기소개</label>
-							<div class="form-input-container">
-								<textarea class="bio-input" name="memberIntroduce"
-									th:text="${memberIntroduce}"></textarea>
-							</div>
-						</div>
+    <!-- 다음 주소 API 추가 -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-						<!-- 제출 버튼 -->
-						<button type="submit" class="submit-btn">수정하기</button>
-				</form>
-			</div>
-		</div>
-	</div>
-	</div>
-	<th:block th:replace="~{common/footer}"></th:block>
-
-	<!-- 다음 주소 API 추가 -->
-	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
-	<script src="/js/myPage/myPage-info.js"></script>
-	<script src="/js/myPage/sidebar.js"></script>
-</body>
-
+    <script src="/js/myPage/myPage-info.js"></script>
+    <script src="/js/myPage/sidebar.js"></script>
+  </body>
 </html>
+
