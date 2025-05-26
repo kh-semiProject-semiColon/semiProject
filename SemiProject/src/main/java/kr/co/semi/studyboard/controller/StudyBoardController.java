@@ -1,11 +1,17 @@
 package kr.co.semi.studyboard.controller;
 
+import java.security.Provider.Service;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.co.semi.studyboard.model.dto.Study;
 import kr.co.semi.studyboard.model.service.StudyBoardService;
+import kr.co.semi.studyboard.model.service.StudyService;
 
 /**
  * 🎯 StudyBoardController
@@ -17,7 +23,7 @@ import kr.co.semi.studyboard.model.service.StudyBoardService;
 public class StudyBoardController {
 
 	@Autowired
-    private StudyBoardService studyBoardService;
+    private StudyBoardService service;
     
     @GetMapping("calendar")
     public String studyBoardCalendar() {
@@ -44,7 +50,10 @@ public class StudyBoardController {
     }
     
     @GetMapping("rulecontent")
-    public String studyBoardrulecontent() {
+    public String studyBoardrulecontent(@RequestParam("studyNo") int studyNo, Model model) {
+    	
+    	Study study = service.selectStudyById(studyNo);
+        model.addAttribute("study", study); // ✅ 필수
     	return "studyBoard/rulecontent";
     }
 
