@@ -4,8 +4,11 @@
 
  	<!-- 모든 스터디 조회 -->
  	<select id="selectAllStudy">
- 		SELECT STUDY_NO ,STUDY_NAME, STUDY_MAX_COUNT, STUDY_TYPE, TO_CHAR(STUDY_DATE, 'YYYY.MM.DD') AS STUDY_DATE, STUDY_PERIOD, STUDY_MAIN_IMG
- 		FROM "STUDY"
+ 		SELECT STUDY_NO ,STUDY_NAME, STUDY_MAX_COUNT, STUDY_TYPE, TO_CHAR(STUDY_DATE, 'YYYY.MM.DD') AS STUDY_DATE, STUDY_PERIOD, STUDY_MAIN_IMG, 
+ 		(SELECT COUNT(*)
+ 		FROM STUDY_MEMBER SM
+ 		WHERE SM.STUDY_NO = S.STUDY_NO) AS MEMBER_COUNT
+ 		FROM "STUDY" S
  		WHERE STUDY_DEL_FL = 'N'
  	</select>
  	
@@ -17,14 +20,4 @@
  		WHERE STUDY_CAP = 'Y'
  	</select>
  	
- 	<!-- 스터디 회원 수 조회 -->
- 	<select id="countMember">
- 		SELECT 
-		    STUDY_NO,
-		    COUNT(MEMBER_NO) AS MEMBER_COUNT
-		FROM 
-		    STUDY_MEMBER
-		GROUP BY 
-		    STUDY_NO
- 	</select>
 </mapper>
