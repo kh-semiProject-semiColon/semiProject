@@ -190,9 +190,8 @@ public class MyPageController {
 	    int result = service.deleteMember(loginMember.getMemberNo());
 
 	    if (result > 0) {
-	        session.invalidate();
 	        ra.addFlashAttribute("message", "탈퇴 처리가 되었습니다.");
-	        return "redirect:/"; // 리디렉션 처리
+	        return "/member/logout"; // 리디렉션 처리
 	    }
 
 	    ra.addFlashAttribute("message", "서버 에러가 발생했습니다. 다시 시도해주세요.");
