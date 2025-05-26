@@ -17,12 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import kr.co.semi.board.model.dto.Calendar;
+import kr.co.semi.board.model.dto.StudyCalendar;
 import kr.co.semi.board.model.service.StudyCalendarService;
 import kr.co.semi.member.model.dto.Member;
 
@@ -32,7 +31,7 @@ import kr.co.semi.member.model.dto.Member;
 public class StudyCalendarController {
 	
 	private static final ZoneId KST_ZONE = ZoneId.of("Asia/Seoul");
-	private static final DateTimeFormatter KST_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	private static final DateTimeFormatter KST_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	@Autowired
 	private StudyCalendarService service;
@@ -57,16 +56,17 @@ public class StudyCalendarController {
     }
     
     @PostMapping("/calendarSave")
-    public Calendar calendarSave(@RequestBody Map<String, Object> map,
+    public StudyCalendar calendarSave(@RequestBody Map<String, Object> map,
         						@SessionAttribute(value = "loginMember", required = false) Member loginMember) throws Exception {
         
         if (loginMember == null) {
             throw new IllegalStateException("로그인이 필요합니다."); // 또는 테스트 시 더미 데이터 설정 가능
         }
 
-        Calendar vo = new Calendar();
+        StudyCalendar vo = new StudyCalendar();
         vo.setTitle((String) map.get("title"));
         vo.setColor((String)map.get("color"));
+        vo.setStudyNo(loginMember.getStudyNo());
 
         // start 날짜 파싱
         if (map.get("start") != null) {
@@ -108,7 +108,7 @@ public class StudyCalendarController {
     @PutMapping("/eventUpdate/{no}")
     public String eventUpdate(@PathVariable String no, @RequestBody Map<String, Object> map) {
         try {
-        	Calendar vo = new Calendar();
+        	StudyCalendar vo = new StudyCalendar();
             vo.setCalendarNo(Long.valueOf(no));
             vo.setTitle((String) map.get("title"));
 
