@@ -64,8 +64,62 @@
             <div class="col-likes">3</div>
           </div>
 
-		  
-		          </div>
+          <!-- 페이지네이션 -->
+          <div class="pagination">
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${currentPage > 1}"
+              th:href="@{/mypage/posts(page=1)}"
+              >&#x300A;</a
+            >
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${currentPage > 1}"
+              th:href="@{/mypage/posts(page=${currentPage - 1})}"
+              >&#x3008;</a
+            >
+
+            <a href="#" class="page-item active">1</a>
+            <a href="#" class="page-item">2</a>
+            <a href="#" class="page-item">3</a>
+            <a href="#" class="page-item">4</a>
+            <a href="#" class="page-item">5</a>
+            <a href="#" class="page-item">6</a>
+            <a href="#" class="page-item">7</a>
+            <a href="#" class="page-item">8</a>
+            <a href="#" class="page-item">9</a>
+            <a href="#" class="page-item">10</a>
+
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${currentPage < totalPages}"
+              th:href="@{/mypage/posts(page=${currentPage + 1})}"
+              >&#x3009;</a
+            >
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${currentPage < totalPages}"
+              th:href="@{/mypage/posts(page=${totalPages})}"
+              >&#x300B;</a
+            >
+          </div>
+        </div>
+
+        <!-- 내 댓글 섹션 -->
+        <div class="content-section">
+          <h2 class="content-heading">내 댓글</h2>
+
+          <!-- 내 댓글 테이블 헤더 -->
+          <div class="table-header">
+            <div class="col-num">글번호</div>
+            <div class="col-post-title">게시글 제목</div>
+            <div class="col-comment-text">댓글내용</div>
+            <div class="col-comment-date">작성일</div>
+          </div>
 
        
 
@@ -121,6 +175,6 @@
     <!-- 푸터 -->
     <th:block th:replace="~{common/footer}"></th:block>
 
-    <script src="/js/myPage/myPage.js"></script>
+    <script src="/js/studyBoard/sidebar.js"></script>
   </body>
 </html>

@@ -1,5 +1,6 @@
 package kr.co.semi.myPage.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,6 +142,14 @@ public class MyPageController {
 	public String posts() {
 		return "myPage/myPage-posts";
 	}
+	
+//	@PostMapping("posts")
+//	public String posts(@SessionAttribute("loginMember") Member loginMember,
+//						Model model, Board board) {
+//		
+//	List<Board> boardList = service.selectBoard(loginMember.getMemberNo());	
+//	
+//	}
 
 	@GetMapping("delete1")
 	public String delete1() {
@@ -174,17 +183,20 @@ public class MyPageController {
 		return "myPage/myPage-delete3";
 	}
 
-	@PostMapping("delete3")
+	@PostMapping("/delete3")
 	public String delete3(@SessionAttribute("loginMember") Member loginMember,
-	                      HttpSession session) {
+	                      HttpSession session, RedirectAttributes ra) {
 
-	    int response = service.deleteMember(loginMember.getMemberNo());
+	    int result = service.deleteMember(loginMember.getMemberNo());
 
-	    if (response > 0) {
-	        // 세션 무효화 (로그아웃 처리)
-	        session.invalidate();
+	    if (result > 0) {
+	        ra.addFlashAttribute("message", "탈퇴 처리가 되었습니다.");
+	        return "/member/logout"; // 리디렉션 처리
 	    }
 
-	    return "myPage/myPage-delete3"; // 탈퇴 완료 페이지
+	    ra.addFlashAttribute("message", "서버 에러가 발생했습니다. 다시 시도해주세요.");
+	    return "redirect:/delete1"; // 실패 시도 역시 리디렉션
 	}
+
+
 }

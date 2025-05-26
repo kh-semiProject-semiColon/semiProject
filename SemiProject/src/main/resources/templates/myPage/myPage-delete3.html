@@ -112,9 +112,12 @@
             </div>
           </div>
 
-          <button class="submit-btn" id="withdrawalBtn" disabled>
-            회원탈퇴
-          </button>
+          <form id="withdrawalForm" action="/member/logout" method="post">
+            <button class="submit-btn" id="withdrawalBtn" disabled>
+              회원탈퇴
+            </button>
+          </form>
+
           <div style="clear: both"></div>
         </div>
       </div>
@@ -173,45 +176,31 @@
       }
 
       // 탈퇴 버튼 클릭 이벤트
-      withdrawalBtn.addEventListener("click", function () {
+      withdrawalBtn.addEventListener("click", function (e) {
         const selectedReason = document.querySelector(
           'input[name="withdrawalReason"]:checked'
         );
-        let reasonText = selectedReason.value;
+        let reasonText = selectedReason?.value;
+
+        if (!reasonText) {
+          alert("탈퇴 사유를 선택해주세요.");
+          e.preventDefault();
+          return;
+        }
 
         if (reasonText === "기타 사항") {
           reasonText = otherReasonText.value.trim();
         }
 
-        if (
-          confirm(
-            `탈퇴 사유: ${reasonText}\n\n정말로 회원탈퇴를 진행하시겠습니까? 이 작업은 되돌릴 수 없습니다.`
-          )
-        ) {
-          fetch("/myPage/delete3", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded", // form 데이터 전송 형식
-              // Spring Security CSRF 토큰이 필요하면 여기에 추가
-              //'X-CSRF-TOKEN': '토큰값'
-            },
-            body: `withdrawalReason=${encodeURIComponent(reasonText)}`,
-          })
-            .then((response) => {
-              if (response.redirected) {
-                window.location.href = response.url; // 리다이렉트가 있을 경우 이동
-              } else if (response.ok) {
-                alert("회원탈퇴가 완료되었습니다.");
-                window.location.href = "/"; // 직접 리다이렉트
-              } else {
-                alert("오류가 발생했습니다.");
-              }
-            })
-            .catch((error) => {
-              console.error(error);
-              alert("서버와 통신 중 오류가 발생했습니다.");
-            });
+        const confirmed = confirm(
+          `탈퇴 사유: ${reasonText}\n\n정말로 회원탈퇴를 진행하시겠습니까? 이 작업은 되돌릴 수 없습니다.`
+        );
+
+        if (!confirmed) {
+          e.preventDefault(); // 탈퇴 중지
         }
+
+        // 확인된 경우 form 그대로 제출됨
       });
     </script>
     <script src="/js/myPage/sidebar.js"></script>
