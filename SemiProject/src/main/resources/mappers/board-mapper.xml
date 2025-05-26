@@ -40,20 +40,84 @@
 	<!-- 조건에 맞으면서 삭제되지 않은 스터디 수 -->
  	<select id="getSearchCount">
  		SELECT COUNT(*)
- 		FROM "ANNOUNCE"
+ 		FROM "ANNOUNCEMENT"
+ 		
+ 		<!--작성자 검색인 경우-->
+		<if test='key=="w"'>
+			JOIN "MEMBER" USING(MEMBER_NO)
+		</if>
  		WHERE ANNOUNCE_DEL_FL = 'N'
+ 		
  		<choose>
- 			<!-- 스터디 이름 검색인 경우 key값 t-->
+ 			<!-- 공지사항 제목 검색인 경우 key값 t-->
  			<when test='key=="t"'>
- 				AND STUDY_NAME LIKE '%' || #{query} || '%'
+ 				AND ANNOUNCE_NAME LIKE '%' || #{query} || '%'
  			</when>
  			
- 			<!-- 스터디 방향성 검색 -->
+ 			<!-- 공지사항 내용 -->
  			<when test='key=="c"'>
- 				AND STUDY_TYPE = #{query}
+ 				AND ANNOUNCE_CONTENT LIKE '%' || #{query} || '%'
  			</when>
+ 			
+ 			<!-- 제목+내용 검색인 경우 key 값 "tc"-->
+			<when test='key=="tc"'>
+				AND (ANNOUNCE_NAME LIKE '%' || #{query} || '%'
+				OR ANNOUNCE_CONTENT LIKE '%' || #{query} || '%')
+			</when>
+			
+			<!-- 작성자 검색인 경우 key 값 "w"-->
+			<otherwise>
+				AND MEMBER_NICKNAME LIKE '%'||#{query}||'%'
+			</otherwise>
  		</choose>
  	</select>
 
+
+		<!-- 조건에 맞으면서 삭제되지 않은 스터디 수 -->
+ 	<select id="selectSearchList">
+ 		SELECT ANNOUNCE_NO, ANNOUNCE_NAME, ANNOUNCE_COUNT, MEMBER_NICKNAME,
+
+		<![CDATA[
+		CASE
+			
+			WHEN SYSDATE - ANNOUNCE_DATE < 1 / 24 / 60
+			THEN FLOOR((SYSDATE - ANNOUNCE_DATE) * 24 * 60 * 60) || '초 전'
+			
+			WHEN SYSDATE - ANNOUNCE_DATE < 1 /24
+			THEN FLOOR((SYSDATE - ANNOUNCE_DATE) * 24 * 60)|| '분 전'
+			
+			WHEN SYSDATE - ANNOUNCE_DATE < 1
+			THEN FLOOR((SYSDATE - ANNOUNCE_DATE) * 24) || '시간 전'
+		ELSE TO_CHAR(ANNOUNCE_DATE, 'YYYY-MM-DD')
+		END ANNOUNCE_DATE
+		]]>
+		FROM "ANNOUNCEMENT" B
+		JOIN "MEMBER" M ON(B.MEMBER_NO = M.MEMBER_NO)
+		WHERE B.ANNOUNCE_DEL_FL ='N'
+
+ 		<choose>
+ 			<!-- 공지사항 제목 검색인 경우 key값 t-->
+ 			<when test='key=="t"'>
+ 				AND ANNOUNCE_NAME LIKE '%' || #{query} || '%'
+ 			</when>
+ 			
+ 			<!-- 공지사항 내용 -->
+ 			<when test='key=="c"'>
+ 				AND ANNOUNCE_CONTENT LIKE '%' || #{query} || '%'
+ 			</when>
+ 			
+ 			<!-- 제목+내용 검색인 경우 key 값 "tc"-->
+			<when test='key=="tc"'>
+				AND (ANNOUNCE_NAME LIKE '%' || #{query} || '%'
+				OR ANNOUNCE_CONTENT LIKE '%' || #{query} || '%')
+			</when>
+			
+			<!-- 작성자 검색인 경우 key 값 "w"-->
+			<otherwise>
+				AND MEMBER_NICKNAME LIKE '%'||#{query}||'%'
+			</otherwise>
+ 		</choose>
+ 			ORDER BY ANNOUNCE_NO DESC
+ 	</select>
 
 </mapper>

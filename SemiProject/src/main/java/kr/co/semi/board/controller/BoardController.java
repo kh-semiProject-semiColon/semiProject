@@ -7,12 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import kr.co.semi.board.model.dto.HireInfo;
 import kr.co.semi.board.model.service.BoardService;
@@ -98,4 +97,48 @@ public class BoardController {
 //		return "redirect:/board/hire";
 //	}
 //	
+	
+	@GetMapping("announce")
+	public String announce(Model model,
+    		@RequestParam(value="cp", required=false, defaultValue ="1") int cp, 
+    		@RequestParam Map<String, Object> paramMap) {
+		
+    	Map<String, Object> map = null;
+    	
+    	if(paramMap.get("key") == null) {
+    		
+    		map = bService.selectAllAnnounce(cp);
+    	}else {
+    		map = bService.searchList(paramMap, cp);
+    	}
+    	
+    	model.addAttribute("announce",map.get("announce"));
+    	model.addAttribute("pagination", map.get("pagination"));
+		
+		return "board/announce";
+	}
+	
+	@GetMapping("{boardCode:[0-9]+}")
+	public String boardList(Model model,
+			@PathVariable("boardCode") int boardCode,
+			@RequestParam(value="cp", required=false, defaultValue ="1") int cp, 
+			@RequestParam Map<String, Object> paramMap) {
+		
+		Map<String, Object> map = null;
+		
+		if(paramMap.get("key") == null) {
+			
+			map = bService.selectAllAnnounce(cp);
+		}else {
+			map = bService.searchList(paramMap, cp);
+		}
+		
+		model.addAttribute("announce",map.get("announce"));
+		model.addAttribute("pagination", map.get("pagination"));
+		
+		return "board/announce";
+	}
+	
+	
+	
 }

@@ -8,10 +8,6 @@ a {
   color: black;
 }
 
-a:hover {
-  text-decoration: underline;
-}
-
 .board-list {
   /* display: flex; */
   width: 1000px;
