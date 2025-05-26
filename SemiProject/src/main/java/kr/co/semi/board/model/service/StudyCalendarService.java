@@ -7,13 +7,30 @@ import kr.co.semi.member.model.dto.Member;
 
 public interface StudyCalendarService {
 
+	/** 스터디 전용 캘린더 일정 조회
+	 * @param loginMember
+	 * @return
+	 * @throws Exception
+	 */
 	List<Calendar> StudyCalendarList(Member loginMember) throws Exception;
 	
+	/** 스터디 전용 캘린더 일정 저장
+	 * @param vo
+	 * @throws Exception
+	 */
 	void calendarSave(Calendar vo) throws Exception;
 
-	void calendarDelete(String no) throws Exception;
+	/** 스터디 전용 캘린더 일정 삭제
+	 * @param calendarNo
+	 * @throws Exception
+	 */
+	void calendarDelete(long calendarNo) throws Exception;
 
 	void eventUpdate(Calendar vo) throws Exception;
 
+	/** 해당 멤버의 스터디넘버를 가져옴
+	 * @param memberNo
+	 * @return
+	 */
 	int bringStudyNo(int memberNo);
 }

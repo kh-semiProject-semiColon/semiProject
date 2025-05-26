@@ -7,6 +7,7 @@ body {
 .hire {
   margin: 50px 0px 100px 0px;
   display: flex;
+  
 }
 
 .side {
@@ -145,7 +146,7 @@ a:active {
   padding: 0;
 }
 
-.write-button {
+.writeBtn {
   font-family: AppleSDGothicNeoB00;
   width: 131.73px;
   height: 51px;
@@ -155,10 +156,11 @@ a:active {
   border-radius: 9999px; /* ✅ full round */
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color #4AA7FF;
 
   padding: 0;
-  margin-top: 50px;
+  margin-top: 30px;
+  margin-bottom: 50px;
 }
 
 /* 페이지네이션 */
@@ -191,7 +193,7 @@ a:active {
 
 /* 검색창 */
 .search-container {
-  width: 60%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -200,7 +202,7 @@ a:active {
 }
 
 .search-category {
-  width: 10%;
+  width: 8%;
   height: 50px;
   border: 2px solid #3867ff;
   border-radius: 15px;
@@ -211,7 +213,7 @@ a:active {
 }
 
 .search-input {
-  width: 60%;
+  width: 30%;
   height: 50px;
   border: 2px solid #3867ff;
   border-radius: 9999px; /* full 라운드 */

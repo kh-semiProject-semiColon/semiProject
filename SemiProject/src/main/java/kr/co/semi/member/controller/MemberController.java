@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import kr.co.semi.board.model.service.StudyCalendarService;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.member.model.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,9 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService service;
+	
+	@Autowired
+	private StudyCalendarService studyCalendarService;
 	
 	/*
 	 * [로그인]
@@ -57,11 +61,19 @@ public class MemberController {
 		// 로그인 서비스 호출
 		Member loginMember = service.login(inputMember);
 		
+		
 		// 로그인 실패 시
 		if(loginMember == null) {
 			ra.addFlashAttribute("message", "이메일 또는 비밀번호가 일치하지 않습니다.");
 		} else {
 			// 로그인 성공 시
+			if(studyCalendarService.bringStudyNo(loginMember.getMemberNo()) == 0) {
+				// 스터디가 없는 회원은 스터디 넘버를 0으로 설정
+				loginMember.setStudyNo(0);
+			}else {
+				
+				loginMember.setStudyNo(studyCalendarService.bringStudyNo(loginMember.getMemberNo()));
+			}
 			
 			// session scope에 loginMember 추가
 			model.addAttribute("loginMember", loginMember);

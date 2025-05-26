@@ -1,5 +1,6 @@
 package kr.co.semi.myPage.model.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,14 @@ public class MyPageServiceImpl implements MyPageService {
 		return mapper.updateInfo(inputMember);
 	}
 
+//	@Override
+//	public List<Board> selectBoard(int memberNo) {
+//		
+//		
+//		return null;
+//	}
+//	
+	
 	@Override
 	public int changePw(Map<String, String> paramMap, int memberNo) {
 

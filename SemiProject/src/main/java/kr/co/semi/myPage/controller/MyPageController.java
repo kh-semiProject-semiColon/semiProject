@@ -1,5 +1,6 @@
 package kr.co.semi.myPage.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpSession;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.myPage.model.service.MyPageService;
 import lombok.extern.slf4j.Slf4j;
@@ -140,6 +142,14 @@ public class MyPageController {
 	public String posts() {
 		return "myPage/myPage-posts";
 	}
+	
+//	@PostMapping("posts")
+//	public String posts(@SessionAttribute("loginMember") Member loginMember,
+//						Model model, Board board) {
+//		
+//	List<Board> boardList = service.selectBoard(loginMember.getMemberNo());	
+//	
+//	}
 
 	@GetMapping("delete1")
 	public String delete1() {
@@ -173,14 +183,20 @@ public class MyPageController {
 		return "myPage/myPage-delete3";
 	}
 
-	@PostMapping("delete3")
-	public String delete3(@SessionAttribute("loginMember") Member loginMember) {
-		
-		int response = service.deleteMember(loginMember.getMemberNo());
-		
-		
-		return "myPage/myPage-delete3";
+	@PostMapping("/delete3")
+	public String delete3(@SessionAttribute("loginMember") Member loginMember,
+	                      HttpSession session, RedirectAttributes ra) {
+
+	    int result = service.deleteMember(loginMember.getMemberNo());
+
+	    if (result > 0) {
+	        ra.addFlashAttribute("message", "탈퇴 처리가 되었습니다.");
+	        return "/member/logout"; // 리디렉션 처리
+	    }
+
+	    ra.addFlashAttribute("message", "서버 에러가 발생했습니다. 다시 시도해주세요.");
+	    return "redirect:/delete1"; // 실패 시도 역시 리디렉션
 	}
-	
-	
+
+
 }

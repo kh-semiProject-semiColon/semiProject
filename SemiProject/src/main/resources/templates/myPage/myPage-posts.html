@@ -54,8 +54,8 @@
           </div>
 
           <!-- 게시글 예시 데이터 (실제로는 타임리프로 반복 처리) -->
-          <div class="table-row">
-            <div class="col-num">1</div>
+          <div class="table-row" th:each="boardList : ${application.boardList}">
+            <div class="col-num" th:text="${}">1</div>
             <div class="col-title">1번째 게시글</div>
             <div class="col-author">유저명</div>
             <div class="col-date">25.05.09</div>
@@ -195,6 +195,6 @@
     <th:block th:replace="~{common/footer}"></th:block>
 
     <script src="/js/myPage/sidebar.js"></script>
-    <script src="/css/myPage/myPage-posts.js"></script>
+    <script src="/js/myPage/myPage-posts.js"></script>
   </body>
 </html>

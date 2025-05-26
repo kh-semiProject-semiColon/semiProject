@@ -1,5 +1,6 @@
 package kr.co.semi.studyboard.model.service;
 
+import kr.co.semi.studyboard.model.dto.Study;
 import kr.co.semi.studyboard.model.dto.StudyBoard;
 
 import java.util.List;
@@ -29,4 +30,10 @@ public interface StudyBoardService {
      * @return 게시글 상세 객체
      */
     StudyBoard getBoardDetail(int boardNo);
+
+	/**  모든 스터디 조회
+	 * @param studyNo
+	 * @return
+	 */
+	Study selectStudyById(int studyNo);
 }
