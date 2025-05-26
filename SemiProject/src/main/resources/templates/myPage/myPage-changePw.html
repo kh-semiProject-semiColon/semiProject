@@ -19,62 +19,59 @@
     <th:block th:replace="~{common/header}"></th:block>
     <!-- 메인 콘텐츠 -->
     <div class="main-wrapper">
-        <!-- 사이드바 -->
+      <!-- 사이드바 -->
       <th:block th:replace="~{myPage/sidebar}"></th:block>
 
-        <!-- Password Change Form -->
-        <div class="content">
-            <h2 class="section-title">비밀번호 변경</h2>
+      <!-- Password Change Form -->
+      <div class="content">
+        <h2 class="section-title">비밀번호 변경</h2>
 
-            <form action="/myPage/changePw" method="post" class="clearfix">
-                <div class="form-group">
-                    <label class="form-label">현재 비밀번호</label>
-                    <div class="password-input-container">
-                        <input
-                            type="password"
-                            class="form-input"
-                            name="originPw"
-                            id="originPw"
-                            required
-                        />
-                     
-                    </div>
-                </div>
+        <form action="/myPage/changePw" method="post" class="clearfix">
+          <div class="form-group">
+            <label class="form-label">현재 비밀번호</label>
+            <div class="password-input-container">
+              <input
+                type="password"
+                class="form-input"
+                name="originPw"
+                id="originPw"
+                required
+              />
+            </div>
+          </div>
 
-                <div class="form-group">
-                    <label class="form-label">새 비밀번호</label>
-                    <div class="password-input-container">
-                        <input 
-                            type="password" 
-                            class="form-input" 
-                            name="newPw" 
-                            id="newPw"
-                            required 
-                        />
-                      
-                    </div>
-                </div>
+          <div class="form-group">
+            <label class="form-label">새 비밀번호</label>
+            <div class="password-input-container">
+              <input
+                type="password"
+                class="form-input"
+                name="newPw"
+                id="newPw"
+                required
+              />
+            </div>
+          </div>
 
-                <div class="form-group">
-                    <label class="form-label">비밀번호 확인</label>
-                    <div class="password-input-container">
-                        <input 
-                            type="password" 
-                            class="form-input" 
-                            name="newPw2" 
-                            id="newPw2"
-                            required 
-                        />
-                    
-                    </div>
-                </div>
+          <div class="form-group">
+            <label class="form-label">비밀번호 확인</label>
+            <div class="password-input-container">
+              <input
+                type="password"
+                class="form-input"
+                name="newPw2"
+                id="newPw2"
+                required
+              />
+            </div>
+          </div>
 
-                <button type="submit" class="submit-button">변경하기</button>
-            </form>
-        </div>
+          <button type="submit" class="submit-button">변경하기</button>
+        </form>
+      </div>
     </div>
- <th:block th:replace="~{common/footer}"></th:block>
-    
- <script src="/js/myPage/myPage.js"></script>
-</body>
+    <th:block th:replace="~{common/footer}"></th:block>
+
+    <script src="/js/myPage/sidebar.js"></script>
+  </body>
 </html>
