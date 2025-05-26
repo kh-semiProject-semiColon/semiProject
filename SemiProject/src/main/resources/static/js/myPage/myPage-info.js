@@ -1,9 +1,76 @@
 // 프로필 조회 js --------------------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
+  // 닉네임 input창 요소
+  const memberNickname = document.querySelector("[name=memberNickname]");
+  // 닉네임 span 요소
+  const nickNameMessage = document.querySelector("#nickNameMessage");
+  // 전화번호 input창 요소
+  const memberTel = document.querySelector("[name=memberTel]");
+  // 전화번호 span 요소
+  const TelMessage = document.querySelector("#TelMessage");
+
+  // 프로필 사진 x버튼 (삭제)
   const removeImageBtn = document.querySelector(".remove-image");
-  const profileImage = document.querySelector(".profile-image");
+
+  // 이미지 선택 버튼
   const imageSelectBtn = document.querySelector(".image-select-btn");
-  const submitBtn = document.querySelector(".submit-btn");
+
+  // 주소 검색 버튼 기능
+  const addressSearchBtn = document.querySelector(".address-search");
+
+  // ------------------------------------------------- 닉네임 유효 검사
+  memberNickname.addEventListener("input", (e) => {
+    const inputNickname = e.target.value;
+
+    // 입력 안 한 경우
+    if (inputNickname.trim().length === 0) {
+      nickNameMessage.innerText = "한글,영어,숫자로만 2~10글자";
+      nickNameMessage.classList.remove("confirm", "error");
+      memberNickname.value = "";
+      return;
+    }
+
+    // 2) 정규식 검사
+    const regExp = /^[가-힣\w\d]{2,10}$/;
+
+    if (!regExp.test(inputNickname)) {
+      //유효하지 않은 경우
+      nickNameMessage.innerText = "유효하지 않은 닉네임 형식입니다.";
+      nickNameMessage.classList.add("error");
+      nickNameMessage.classList.remove("confirm");
+      return;
+    }
+
+    nickNameMessage.innerText = "사용가능한 닉네임입니다.";
+    nickNameMessage.classList.add("confirm");
+    nickNameMessage.classList.remove("error");
+  });
+
+  // ------------------------------------------------- 핸드폰 유효성검사
+
+  memberTel.addEventListener("input", (e) => {
+    const inputTel = e.target.value;
+
+    if (inputTel.trim().length === 0) {
+      TelMessage.innerText = "전화번호를 입력해주세요.(- 제외)";
+      TelMessage.classList.remove("error", "confirm");
+      TelMessage.value = "";
+      return;
+    }
+
+    const regExp = /^01[0-9]{1}[0-9]{3,4}[0-9]{4}$/;
+
+    if (!regExp.test(inputTel)) {
+      TelMessage.innerText = "유효하지 않은 전화번호 형식입니다.";
+      TelMessage.classList.add("error");
+      TelMessage.classList.remove("confirm");
+      return;
+    }
+
+    TelMessage.innerText = "유효한 전화번호 형식입니다.";
+    TelMessage.classList.remove("error");
+    TelMessage.classList.add("confirm");
+  });
 
   // 이미지 제거 기능
   removeImageBtn.addEventListener("click", function () {
@@ -57,22 +124,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }).open();
   }
 
-  // 검색 버튼 기능
-  const addressSearchBtn = document.querySelector(".address-search");
-
   addressSearchBtn.addEventListener("click", () => {
     execDaumPostcode();
   });
 
-  // 반응형 메뉴 토글
-  const menuButton = document.querySelector(".menu-button");
-  const navMenu = document.querySelector(".nav-menu");
+  // // 반응형 메뉴 토글
+  // const menuButton = document.querySelector(".menu-button");
+  // const navMenu = document.querySelector(".nav-menu");
 
-  menuButton.addEventListener("click", function () {
-    navMenu.style.display = navMenu.style.display === "flex" ? "none" : "flex";
-  });
-});
-
-submitBtn.addEventListener("click", () => {
-  meth;
+  // menuButton.addEventListener("click", function () {
+  //   navMenu.style.display = navMenu.style.display === "flex" ? "none" : "flex";
+  // });
 });

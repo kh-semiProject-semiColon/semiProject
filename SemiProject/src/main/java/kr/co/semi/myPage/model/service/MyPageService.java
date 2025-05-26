@@ -18,5 +18,8 @@ public interface MyPageService {
 	// 비밀번호 변경하러 가는 메서드
 	int changePw(Map<String, String> paramMap, int memberNo);
 
+	// 회원 탈퇴 메서드
+	int deleteMember(int memberNo);
+
 
 }

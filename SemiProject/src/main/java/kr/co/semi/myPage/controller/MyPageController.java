@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpSession;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.myPage.model.service.MyPageService;
 import lombok.extern.slf4j.Slf4j;
@@ -84,7 +85,7 @@ public class MyPageController {
 
 		if (result > 0) {
 			loginMember.setMemberNickname(inputMember.getMemberNickname());
-			loginMember.setMemberTel(loginMember.getMemberTel());
+			loginMember.setMemberTel(inputMember.getMemberTel());
 			loginMember.setMemberAddress(inputMember.getMemberAddress());
 
 			info(loginMember, ra, loginMember);
@@ -158,8 +159,9 @@ public class MyPageController {
 	    boolean isPwMatch = service.checkPassword(memberNo, inputPw);
 
 	    if (!isPwMatch) {
+	    	
 	        ra.addFlashAttribute("message", "비밀번호가 일치하지 않습니다.");
-	        return "redirect:/myPage/delete1";
+	        return "redirect:/myPage/delete1";  // message alert를 사용하려면 redirect를 사용해야 한다!
 	    }
 
 	    return "myPage/myPage-delete2";
@@ -173,12 +175,16 @@ public class MyPageController {
 	}
 
 	@PostMapping("delete3")
-	public String delete3(@SessionAttribute("loginMember") Member loginMember) {
+	public String delete3(@SessionAttribute("loginMember") Member loginMember,
+	                      HttpSession session) {
 
-		
-		
-		return "myPage/myPage-delete3";
+	    int response = service.deleteMember(loginMember.getMemberNo());
+
+	    if (response > 0) {
+	        // 세션 무효화 (로그아웃 처리)
+	        session.invalidate();
+	    }
+
+	    return "myPage/myPage-delete3"; // 탈퇴 완료 페이지
 	}
-	
-	
 }

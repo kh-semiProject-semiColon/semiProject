@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.co.semi.board.model.dto.HireInfo;
 import kr.co.semi.board.model.dto.Pagination;
 import kr.co.semi.board.model.mapper.BoardMapper;
+import kr.co.semi.member.model.dto.Member;
+import kr.co.semi.studyboard.model.dto.Study;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -66,4 +68,12 @@ public class HireBoardServiceImpl implements HireBoardService{
 		
 		return map;
 	}
+	
+	// 가입한 스터디 조회
+	@Override
+	public List<Study> showStudySelect(int memberNo) {
+		
+		return mapper.showStudySelect(memberNo);
+	}
+
 }

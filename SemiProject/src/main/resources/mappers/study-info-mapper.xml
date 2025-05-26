@@ -4,8 +4,11 @@
 
  	<!-- 모든 스터디 조회 -->
  	<select id="selectAllStudy">
- 		SELECT STUDY_NO ,STUDY_NAME, STUDY_MAX_COUNT, STUDY_TYPE, TO_CHAR(STUDY_DATE, 'YYYY.MM.DD') AS STUDY_DATE, STUDY_PERIOD, STUDY_MAIN_IMG
- 		FROM "STUDY"
+ 		SELECT STUDY_NO ,STUDY_NAME, STUDY_MAX_COUNT, STUDY_TYPE, TO_CHAR(STUDY_DATE, 'YYYY.MM.DD') AS STUDY_DATE, STUDY_PERIOD, STUDY_MAIN_IMG, 
+ 		(SELECT COUNT(*)
+ 		FROM STUDY_MEMBER SM
+ 		WHERE SM.STUDY_NO = S.STUDY_NO) AS MEMBER_COUNT
+ 		FROM "STUDY" S
  		WHERE STUDY_DEL_FL = 'N'
  	</select>
  	
@@ -17,14 +20,63 @@
  		WHERE STUDY_CAP = 'Y'
  	</select>
  	
- 	<!-- 스터디 회원 수 조회 -->
- 	<select id="countMember">
- 		SELECT 
-		    STUDY_NO,
-		    COUNT(MEMBER_NO) AS MEMBER_COUNT
-		FROM 
-		    STUDY_MEMBER
-		GROUP BY 
-		    STUDY_NO
+ 	<!-- 해제되지 않은 스터디 개수 조회(스터디 현황에 표시될 스터디 개수)-->
+ 	<select id="getStudyCount">
+ 		SELECT COUNT(*)
+ 		FROM "STUDY"
+ 		WHERE STUDY_DEL_FL = 'N'
  	</select>
+ 	
+ 	
+ 	<!-- 조건에 맞으면서 삭제되지 않은 스터디 수 -->
+ 	<select id="getSearchCount">
+ 		SELECT COUNT(*)
+ 		FROM "STUDY"
+ 		WHERE STUDY_DEL_FL = 'N'
+ 		<choose>
+ 			<!-- 스터디 이름 검색인 경우 key값 t-->
+ 			<when test='key=="t"'>
+ 				AND STUDY_NAME LIKE '%' || #{query} || '%'
+ 			</when>
+ 			
+ 			<!-- 스터디 방향성 검색 -->
+ 			<when test='key=="c"'>
+ 				AND STUDY_TYPE = #{query}
+ 			</when>
+ 		</choose>
+ 	</select>
+ 	
+ 	<!-- 검색 조건에 부합하는 스터디 조회-->
+ 	<select id="selectSearchList">
+  		SELECT STUDY_NO ,STUDY_NAME, STUDY_MAX_COUNT, STUDY_TYPE, TO_CHAR(STUDY_DATE, 'YYYY.MM.DD') AS STUDY_DATE, STUDY_PERIOD, STUDY_MAIN_IMG, 
+ 		(SELECT COUNT(*)
+ 		FROM STUDY_MEMBER SM
+ 		WHERE SM.STUDY_NO = S.STUDY_NO) AS MEMBER_COUNT
+ 		FROM "STUDY" S
+ 		WHERE STUDY_DEL_FL = 'N'
+ 		
+ 		<choose>
+ 			<!-- 스터디 이름 검색인 경우 key값 t-->
+ 			<when test='key=="t"'>
+ 				AND STUDY_NAME LIKE '%' || #{query} || '%'
+ 			</when>
+ 			
+ 			<!-- 스터디 방향성 검색 -->
+ 			<when test='key=="c"'>
+ 				AND STUDY_TYPE = #{query}
+ 			</when>
+ 		</choose>
+ 	</select>
+ 	
+ 	 	<!-- 모든 스터디 조회 -->
+ 	<select id="selectMainStudy">
+ 		SELECT STUDY_NO ,STUDY_NAME, STUDY_MAX_COUNT, STUDY_TYPE, TO_CHAR(STUDY_DATE, 'YYYY.MM.DD') AS STUDY_DATE, STUDY_PERIOD, STUDY_MAIN_IMG, 
+ 		(SELECT COUNT(*)
+ 		FROM STUDY_MEMBER SM
+ 		WHERE SM.STUDY_NO = S.STUDY_NO) AS MEMBER_COUNT
+ 		FROM "STUDY" S
+ 		WHERE STUDY_DEL_FL = 'N'
+ 	</select>
+ 	
+ 	
 </mapper>

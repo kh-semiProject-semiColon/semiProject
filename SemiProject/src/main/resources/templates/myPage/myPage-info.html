@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,7 +28,13 @@
       <div class="content">
         <div class="content-section">
           <h2 class="content-header">프로필</h2>
-
+          
+          <form
+            th:action="info"
+            method="post"
+            name="myPageFrm"
+            class="info-form"
+          >
           <!-- 프로필 이미지 섹션 -->
           <div class="profile-section">
             <div class="profile-image-container">
@@ -42,20 +49,15 @@
                 th:if="${loginMember == null or loginMember.profileImg == null}"
                 th:src="@{/images/default-profile.png}"
               />
-              <button class="remove-image">X</button>
+              <button type="button" class="remove-image">X</button>
             </div>
-            <button class="image-select-btn">이미지 선택</button>
+            <button type="button" class="image-select-btn">이미지 선택</button>
           </div>
 
           <!-- 내정보 섹션 -->
           <div class="info-section">
             <h3 class="info-header">내정보</h3>
-            <form
-              th:action="info"
-              method="post"
-              name="myPageFrm"
-              class="info-form"
-            >
+            <div class="content-divider"></div>
               <!-- 이름 입력 -->
               <div class="form-group">
                 <label class="form-label">이름</label>
@@ -82,7 +84,9 @@
                     th:value="${session.loginMember.memberNickname}"
                     required
                   />
-                  <span class="span" id="emailMessage">닉네임머시기.</span>
+                  <span class="span" id="nickNameMessage"
+                    >10글자 이내로 작성해주세요!</span
+                  >
                 </div>
               </div>
 
@@ -116,7 +120,7 @@
                     th:value="${session.loginMember.memberTel}"
                     required
                   />
-                  <span class="span" id="emailMessage">닉네임머시기.</span>
+                  <span class="span" id="TelMessage"></span>
                 </div>
               </div>
 
@@ -207,6 +211,7 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
     <script src="/js/myPage/myPage-info.js"></script>
-    <script src="/js/myPage/myPage.js"></script>
+    <script src="/js/myPage/sidebar.js"></script>
   </body>
 </html>
+
