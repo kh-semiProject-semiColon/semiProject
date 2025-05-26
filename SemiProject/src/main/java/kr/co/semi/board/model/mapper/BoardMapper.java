@@ -52,4 +52,6 @@ public interface BoardMapper {
 	int getSearchCount(Map<String, Object> paramMap);
 
 
+	
+
 }

@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import kr.co.semi.board.model.dto.HireInfo;
+import kr.co.semi.board.model.service.BoardService;
 import kr.co.semi.board.model.service.HireBoardService;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.studyboard.model.dto.Study;
