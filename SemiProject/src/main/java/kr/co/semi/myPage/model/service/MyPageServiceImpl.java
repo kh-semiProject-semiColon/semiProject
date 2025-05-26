@@ -66,9 +66,9 @@ public class MyPageServiceImpl implements MyPageService {
 
 		// 2. 같을 경우 비밀번호 확인과도 비교
 		String newPw = paramMap.get("newPw");
-		String newPw2 = paramMap.get("newPw2");
+		String newPwConfirm = paramMap.get("newPwConfirm");
 
-		if (newPw.equals(newPw2)) {
+		if (newPw.equals(newPwConfirm)) {
 			// 기존 비밀번호와 새 비밀번호 평문-암호화 비교
 			if (bcrypt.matches(newPw, originPw)) {
 				return 0; // 기존 비밀번호와 같으면 변경 안 함
@@ -88,4 +88,10 @@ public class MyPageServiceImpl implements MyPageService {
 		String encryptedPw = mapper.selectPw(memberNo);
 		return bcrypt.matches(inputPw, encryptedPw);
 	}
+	
+	@Override
+	public int deleteMember(int memberNo) {
+		return mapper.deleteMember(memberNo);
+	}
+	
 }
