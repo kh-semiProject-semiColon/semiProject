@@ -84,7 +84,7 @@ public class MyPageController {
 
 		if (result > 0) {
 			loginMember.setMemberNickname(inputMember.getMemberNickname());
-			loginMember.setMemberTel(loginMember.getMemberTel());
+			loginMember.setMemberTel(inputMember.getMemberTel());
 			loginMember.setMemberAddress(inputMember.getMemberAddress());
 
 			info(loginMember, ra, loginMember);
@@ -158,8 +158,9 @@ public class MyPageController {
 	    boolean isPwMatch = service.checkPassword(memberNo, inputPw);
 
 	    if (!isPwMatch) {
+	    	
 	        ra.addFlashAttribute("message", "비밀번호가 일치하지 않습니다.");
-	        return "redirect:/myPage/delete1";
+	        return "redirect:/myPage/delete1";  // message alert를 사용하려면 redirect를 사용해야 한다!
 	    }
 
 	    return "myPage/myPage-delete2";
