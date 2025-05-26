@@ -1,4 +1,3 @@
-
 /* 반응형 컨테이너 */
 .container {
   display: flex;
@@ -62,7 +61,7 @@
   visibility: visible;
 }
 
-.confirm-button {
+.confirmBtn {
   width: 100px;
   height: 51px;
   background-color: #3867ff;
@@ -87,4 +86,3 @@
   height: 200px;
   opacity: 20%;
 }
-

@@ -21,6 +21,9 @@ public interface MyPageMapper {
 
 	// 비밀번호 변경하러 가는 메서드
 	int changePw(Map<String, String> paramMap);
+
+	// 회원탈퇴 메서드
+	int deleteMember(int memberNo);
 	
 
 

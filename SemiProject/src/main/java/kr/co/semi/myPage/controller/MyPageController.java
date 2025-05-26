@@ -175,7 +175,8 @@ public class MyPageController {
 
 	@PostMapping("delete3")
 	public String delete3(@SessionAttribute("loginMember") Member loginMember) {
-
+		
+		int response = service.deleteMember(loginMember.getMemberNo());
 		
 		
 		return "myPage/myPage-delete3";
