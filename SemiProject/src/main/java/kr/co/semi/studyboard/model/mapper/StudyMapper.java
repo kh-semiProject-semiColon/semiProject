@@ -20,12 +20,4 @@ public interface StudyMapper {
 	List<Study> selectCap();
 
 
-	/** 스터디 회원 수 조회
-	 * @return
-	 */
-	List<Study> countMember();
-
-
-
-
 }

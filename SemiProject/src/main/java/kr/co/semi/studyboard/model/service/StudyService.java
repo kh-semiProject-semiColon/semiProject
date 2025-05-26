@@ -16,9 +16,5 @@ public interface StudyService {
 	 */
 	List<Study> selectCap();
 
-	/** 스터디 당 스터드원 수 조회
-	 * @return
-	 */
-	List<Study> countMember();
 
 }
