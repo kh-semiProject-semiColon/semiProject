@@ -12,8 +12,10 @@ function nextSlide() {
   const totalSlides = document.querySelectorAll(".study-status-card").length;
   if (currentIndex < totalSlides - 1) {
     currentIndex++;
-    updateSlide();
+  } else {
+    currentIndex = 0; // 마지막 슬라이드면 처음으로
   }
+  updateSlide();
 }
 
 function prevSlide() {
@@ -22,3 +24,6 @@ function prevSlide() {
     updateSlide();
   }
 }
+
+// 자동으로 다음 슬라이드로 이동
+setInterval(nextSlide, 4000);
