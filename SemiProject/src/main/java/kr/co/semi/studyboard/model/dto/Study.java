@@ -17,7 +17,6 @@ public class Study {
 	private int studyType;
 	private int studyPeriod;
 	private String studyMainImg;
-	
 
 	// 스터디 팀장 여부를 확인하기 위해 추가
 	private String studyCap;

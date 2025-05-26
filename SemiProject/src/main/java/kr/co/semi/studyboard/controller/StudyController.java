@@ -42,21 +42,9 @@ public class StudyController {
     	
     	List<Study> capMember = service.selectCap();
     	
-    	List<Study> countMember = service.countMember();
-    	
-    	Map<Integer, Integer> memberCount = new HashMap();
-    	
-    	for(Study s : countMember) {
-    		
-    		int studyNo = s.getStudyNo();
-    		int studyMemberCount = s.getMemberCount();
-    		
-    		memberCount.put(studyNo, studyMemberCount);
-    	}
     	
     	model.addAttribute("study",study);
     	model.addAttribute("cap",capMember);
-    	model.addAttribute("memberCount", memberCount);
     	
     	return"study/studyNow";
     }

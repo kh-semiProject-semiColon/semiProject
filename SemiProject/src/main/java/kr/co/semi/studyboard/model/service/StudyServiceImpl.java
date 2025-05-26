@@ -19,6 +19,8 @@ public class StudyServiceImpl implements StudyService{
 		// 모든 스터디 조회
 	@Override
 	public List<Study> selectAllStudy() {
+		
+		
 		return mapper.selectAllStudy();
 	}
 	
@@ -28,9 +30,4 @@ public class StudyServiceImpl implements StudyService{
 		return mapper.selectCap();
 	}
 
-	// 스터디 회원 수 조회
-	@Override
-	public List<Study> countMember() {
-		return mapper.countMember();
-	}
 }
