@@ -37,6 +37,23 @@
 		ORDER BY ANNOUNCE_NO DESC
 	</select>
 
+	<!-- 조건에 맞으면서 삭제되지 않은 스터디 수 -->
+ 	<select id="getSearchCount">
+ 		SELECT COUNT(*)
+ 		FROM "ANNOUNCE"
+ 		WHERE ANNOUNCE_DEL_FL = 'N'
+ 		<choose>
+ 			<!-- 스터디 이름 검색인 경우 key값 t-->
+ 			<when test='key=="t"'>
+ 				AND STUDY_NAME LIKE '%' || #{query} || '%'
+ 			</when>
+ 			
+ 			<!-- 스터디 방향성 검색 -->
+ 			<when test='key=="c"'>
+ 				AND STUDY_TYPE = #{query}
+ 			</when>
+ 		</choose>
+ 	</select>
 
 
 </mapper>

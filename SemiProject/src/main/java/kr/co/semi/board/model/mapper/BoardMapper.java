@@ -41,4 +41,11 @@ public interface BoardMapper {
 	 */
 	List<Announce> selectAllAnnounce(RowBounds rowBounds);
 
+	/** 검색 조건을 포함한 삭제되지 않은 공지글 개수
+	 * @param paramMap
+	 * @return
+	 */
+	int getSearchCount(Map<String, Object> paramMap);
+
+
 }
