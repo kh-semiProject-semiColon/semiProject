@@ -34,5 +34,14 @@
 	 WHERE HIRE_DEL_FL = 'N'
 	 ORDER BY HIRE_NO DESC
 	</select>
+	
+	<!-- 내 스터디 조회 -->
+	<select id="showStudySelect">
+	 SELECT S.*
+	 FROM STUDY_MEMBER SM
+	 JOIN STUDY S ON SM.STUDY_NO = S.STUDY_NO
+	 WHERE SM.MEMBER_NO = #{memberNo}
+	 AND S.STUDY_DEL_FL = 'N'
+	</select>
 
 </mapper>
