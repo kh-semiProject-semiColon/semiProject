@@ -41,7 +41,12 @@ dependencies {
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+
+	
+
 	implementation 'org.jsoup:jsoup:1.15.3'
+
 }
 
 tasks.named('test') {

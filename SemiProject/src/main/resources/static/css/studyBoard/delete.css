@@ -1,0 +1,310 @@
+/* 스터디 탈퇴 전용 스타일 */
+.withdrawal-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.withdrawal-notice {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 40px 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.character-icon {
+  margin-bottom: 20px;
+}
+
+.character-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.notice-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.notice-description {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.notice-description p {
+  margin-bottom: 5px;
+}
+
+.withdrawal-form {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.study-info {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 6px;
+  margin-bottom: 25px;
+}
+
+.study-info h4 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.info-item {
+  display: flex;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #555;
+  min-width: 80px;
+}
+
+.info-value {
+  color: #333;
+  margin-left: 10px;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #dbdae2;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  resize: vertical;
+  transition: border-color 0.3s;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: #3867ff;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.radio-item input[type="radio"] {
+  margin-right: 8px;
+}
+
+.checkbox-group {
+  margin-top: 20px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.checkbox-item input[type="checkbox"] {
+  margin-right: 10px;
+  margin-top: 2px;
+}
+
+.withdrawal-info {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 6px;
+  margin-bottom: 25px;
+}
+
+.withdrawal-info h4 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.withdrawal-info ul {
+  list-style: none;
+  padding: 0;
+}
+
+.withdrawal-info li {
+  padding: 5px 0;
+  color: #666;
+  font-size: 14px;
+  position: relative;
+  padding-left: 15px;
+}
+
+.withdrawal-info li:before {
+  content: "•";
+  color: #3867ff;
+  position: absolute;
+  left: 0;
+}
+
+.leader-options {
+  margin-top: 30px;
+}
+
+.leader-options h4 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.option-card {
+  background-color: white;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 25px;
+  margin-bottom: 20px;
+  transition: border-color 0.3s;
+}
+
+.option-card:hover {
+  border-color: #3867ff;
+}
+
+.option-header h5 {
+  color: #333;
+  margin: 0 0 15px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.option-content p {
+  margin: 0 0 10px 0;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.option-note {
+  color: #666 !important;
+  font-size: 13px !important;
+  margin-left: 10px;
+}
+
+.option-note.warning {
+  color: #dc3545 !important;
+}
+
+.option-actions {
+  margin-top: 20px;
+}
+
+.btn-primary {
+  background-color: #3867ff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2c52ed;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.button-group {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.btn {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  min-width: 120px;
+}
+
+.btn-cancel {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background-color: #5a6268;
+}
+
+.btn-withdrawal {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-withdrawal:hover:not(:disabled) {
+  background-color: #c0392b;
+}
+
+.btn-withdrawal:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .withdrawal-container {
+    padding: 0 15px;
+  }
+
+  .withdrawal-form {
+    padding: 20px;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .info-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .info-value {
+    margin-left: 0;
+    margin-top: 5px;
+  }
+}

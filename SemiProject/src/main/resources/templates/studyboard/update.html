@@ -3,30 +3,392 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GoStudy - 캘린더</title>
+    <title>GoStudy - 스터디 정보 수정</title>
     <link
+      <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
       type="text/css"
     />
-    <link rel="stylesheet" href="/css/studyboard/studyboard-style.css" />
+    <link rel="stylesheet" href="/css/studyBoard/style.css" />
+    <link rel="stylesheet" href="/css/studyBoard/study-info.css" />
     <link rel="stylesheet" href="/css/common/footer.css" />
     <link rel="stylesheet" href="/css/common/header.css" />
-    <link rel="stylesheet" href="/css/studyboard/sidebar.css" />
-    <link rel="stylesheet" href="/css/studyboard/studyboard-changePw.css" />
+    <link rel="stylesheet" href="/css/studyBoard/sidebar.css" />
+    <link rel="stylesheet" href="/css/studyBoard/update.css" />
   </head>
   <body>
+    <!-- 헤더 -->
     <th:block th:replace="~{common/header}"></th:block>
-    <!-- 메인 콘텐츠 -->
-	
-    <div class="main-wrapper">
-        <!-- 사이드바 -->
-      <th:block th:replace="~{studyboard/sidebar}"></th:block>
 
-        <!-- 캘린더 부분 -->
-        
- <th:block th:replace="~{common/footer}"></th:block>
-    
- <script src="/js/myPage/myPage.js"></script>
-</body>
+    <!-- 메인 컨텐츠 -->
+    <div class="main-content">
+      <!-- 사이드바 -->
+      <th:block th:replace="~{studyBoard/sidebar}"></th:block>
+
+      <!-- 콘텐츠 영역 -->
+      <div class="content">
+        <!-- 스터디 정보 수정 섹션 -->
+        <div class="content-section">
+          <h2 class="content-heading">
+            <span
+              th:text="${study.studyCap == 'Y'} ? '스터디 정보 수정' : '스터디 정보'"
+            >
+              스터디 정보
+            </span>
+          </h2>
+
+          <div class="study-info-container">
+            <!-- 팀장용 수정 폼 -->
+            <form
+              th:if="${study.studyCap == 'Y'}"
+              id="studyUpdateForm"
+              class="study-form"
+              enctype="multipart/form-data"
+            >
+              <input type="hidden" name="studyNo" th:value="${study.studyNo}" />
+
+              <div class="form-layout">
+                <!-- 좌측: 폼 입력 영역 -->
+                <div class="form-left">
+                  <!-- 스터디명 -->
+                  <div class="form-group">
+                    <label for="studyName" class="form-label">스터디명</label>
+                    <input
+                      type="text"
+                      id="studyName"
+                      name="studyName"
+                      class="form-input"
+                      th:value="${study.studyName}"
+                      maxlength="20"
+                      required
+                    />
+                    <span class="input-note">
+                      최대 20자까지 입력 가능합니다.
+                    </span>
+                  </div>
+
+                  <!-- 최대 인원 -->
+                  <div class="form-group">
+                    <label for="studyMaxCount" class="form-label">
+                      최대 인원
+                    </label>
+                    <input
+                      type="number"
+                      id="studyMaxCount"
+                      name="studyMaxCount"
+                      class="form-input"
+                      th:value="${study.studyMaxCount}"
+                      min="1"
+                      required
+                    />
+                    <span class="input-note">
+                      현재 <span th:text="${study.memberCount}">5</span>명이
+                      참여 중입니다.
+                    </span>
+                  </div>
+
+                  <!-- 방향성 -->
+                  <div class="form-group">
+                    <label class="form-label">방향성</label>
+                    <div class="radio-group">
+                      <label class="radio-item">
+                        <input
+                          type="radio"
+                          name="studyType"
+                          value="1"
+                          th:checked="${study.studyType == 1}"
+                        />
+                        <span>📚 백엔드</span>
+                      </label>
+                      <label class="radio-item">
+                        <input
+                          type="radio"
+                          name="studyType"
+                          value="2"
+                          th:checked="${study.studyType == 2}"
+                        />
+                        <span>🎨 복습</span>
+                      </label>
+                      <label class="radio-item">
+                        <input
+                          type="radio"
+                          name="studyType"
+                          value="3"
+                          th:checked="${study.studyType == 3}"
+                        />
+                        <span>📱 문제풀이</span>
+                      </label>
+                      <label class="radio-item">
+                        <input
+                          type="radio"
+                          name="studyType"
+                          value="4"
+                          th:checked="${study.studyType == 4}"
+                        />
+                        <span>🤝 자격증</span>
+                      </label>
+                      <label class="radio-item">
+                        <input
+                          type="radio"
+                          name="studyType"
+                          value="5"
+                          th:checked="${study.studyType == 5}"
+                        />
+                        <span>🚀 프로젝트</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- 운영 기간 -->
+                  <div class="form-group">
+                    <label for="studyPeriod" class="form-label">
+                      운영 기간
+                    </label>
+                    <select
+                      id="studyPeriod"
+                      name="studyPeriod"
+                      class="form-select"
+                    >
+                      <option value="0" th:selected="${study.studyPeriod == 0}">
+                        종강까지
+                      </option>
+                      <option value="1" th:selected="${study.studyPeriod == 1}">
+                        1개월
+                      </option>
+                      <option value="2" th:selected="${study.studyPeriod == 2}">
+                        2개월
+                      </option>
+                      <option value="3" th:selected="${study.studyPeriod == 3}">
+                        3개월
+                      </option>
+                      <option value="4" th:selected="${study.studyPeriod == 4}">
+                        4개월
+                      </option>
+                      <option value="5" th:selected="${study.studyPeriod == 5}">
+                        5개월
+                      </option>
+                      <option value="6" th:selected="${study.studyPeriod == 6}">
+                        6개월
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- 우측: 대표 이미지 영역 -->
+                <div class="form-right">
+                  <div class="image-section">
+                    <label class="form-label">대표 이미지</label>
+                    <div class="image-upload-area">
+                      <div class="image-preview" id="imagePreview">
+                        <div
+                          class="current-image"
+                          th:if="${study.studyMainImg}"
+                        >
+                          <img
+                            th:src="@{${study.studyMainImg}}"
+                            alt="현재 스터디 이미지"
+                            class="study-image"
+                            id="currentImage"
+                          />
+                        </div>
+                        <div
+                          class="default-image"
+                          th:unless="${study.studyMainImg}"
+                          id="defaultImage"
+                        >
+                          <div class="character-placeholder">
+                            <div
+                              style="
+                                width: 150px;
+                                height: 150px;
+                                background-color: #e9ecef;
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: #666;
+                                font-size: 48px;
+                              "
+                            >
+                              👤
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="upload-controls">
+                        <input
+                          type="file"
+                          id="imageFile"
+                          name="imageFile"
+                          accept="image/*"
+                          style="display: none"
+                        />
+                        <button
+                          type="button"
+                          class="btn btn-secondary btn-small"
+                          onclick="document.getElementById('imageFile').click()"
+                        >
+                          이미지 선택
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-outline btn-small"
+                          onclick="removeImage()"
+                        >
+                          이미지 삭제
+                        </button>
+                      </div>
+                      <p class="upload-note">
+                        JPG, PNG 파일만 업로드 가능합니다. (최대 5MB)
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 버튼 그룹 -->
+              <div class="button-group">
+                <button
+                  type="button"
+                  class="btn btn-cancel"
+                  onclick="history.back()"
+                >
+                  취소
+                </button>
+                <button type="submit" class="btn btn-primary">수정</button>
+              </div>
+            </form>
+
+            <!-- 일반 멤버용 조회 화면 -->
+            <div th:unless="${study.studyCap == 'Y'}" class="study-view">
+              <div class="view-layout">
+                <!-- 좌측: 스터디 정보 -->
+                <div class="view-left">
+                  <!-- 스터디명 -->
+                  <div class="info-group">
+                    <label class="info-label">스터디명</label>
+                    <div class="info-value" th:text="${study.studyName}">
+                      레모나 스터디
+                    </div>
+                  </div>
+
+                  <!-- 최대 인원 -->
+                  <div class="info-group">
+                    <label class="info-label">최대 인원</label>
+                    <div class="info-value">
+                      <span th:text="${study.studyMaxCount}">8</span>명
+                    </div>
+                  </div>
+
+                  <!-- 현재 참여 인원 -->
+                  <div class="info-group">
+                    <label class="info-label">현재 인원</label>
+                    <div class="info-value">
+                      <span th:text="${study.memberCount}">5</span>명
+                    </div>
+                  </div>
+
+                  <!-- 방향성 -->
+                  <div class="info-group">
+                    <label class="info-label">방향성</label>
+                    <div class="info-value">
+                      <span th:switch="${study.studyType}">
+                        <span th:case="1">📚 백엔드</span>
+                        <span th:case="2">🎨 복습</span>
+                        <span th:case="3">📱 문제풀이</span>
+                        <span th:case="4">🤝 자격증</span>
+                        <span th:case="5">🚀 프로젝트</span>
+                        <span th:case="*">-</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- 운영 기간 -->
+                  <div class="info-group">
+                    <label class="info-label">운영 기간</label>
+                    <div class="info-value">
+                      <span th:switch="${study.studyPeriod}">
+                        <span th:case="0">종강까지</span>
+                        <span th:case="1">1개월</span>
+                        <span th:case="2">2개월</span>
+                        <span th:case="3">3개월</span>
+                        <span th:case="4">4개월</span>
+                        <span th:case="5">5개월</span>
+                        <span th:case="6">6개월</span>
+                        <span th:case="*">-</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- 생성일 -->
+                  <div class="info-group">
+                    <label class="info-label">생성일</label>
+                    <div
+                      class="info-value"
+                      th:text="${#temporals.format(study.studyDate, 'yyyy-MM-dd')}"
+                    >
+                      2025-05-27
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 우측: 대표 이미지 -->
+                <div class="view-right">
+                  <div class="image-display">
+                    <label class="info-label">대표 이미지</label>
+                    <div class="image-container">
+                      <div th:if="${study.studyMainImg}">
+                        <img
+                          th:src="@{${study.studyMainImg}}"
+                          alt="스터디 대표 이미지"
+                          class="study-image-display"
+                        />
+                      </div>
+                      <div
+                        th:unless="${study.studyMainImg}"
+                        class="default-display"
+                      >
+                        <img
+                          src="/images/character.png"
+                          alt="기본 이미지"
+                          class="character-display"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 성공/에러 알림 모달 -->
+    <div id="alertModal" class="modal" style="display: none">
+      <div class="modal-content alert-modal">
+        <div class="modal-header">
+          <h3 id="alertTitle">알림</h3>
+        </div>
+        <div class="modal-body">
+          <p id="alertMessage">메시지가 표시됩니다.</p>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-primary" onclick="closeAlert()">
+            확인
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 오버레이 -->
+    <div id="modalOverlay" class="modal-overlay" style="display: none"></div>
+
+    <!-- 푸터 -->
+    <th:block th:replace="~{common/footer}"></th:block>
+
+    <script src="/js/studyBoard/update.js"></script>
+  </body>
 </html>
