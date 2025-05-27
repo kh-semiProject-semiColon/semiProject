@@ -98,35 +98,4 @@ public class EditBoardController {
 	}
 
 	
-	@PostMapping("/uploadImage")
-    public String uploadImage(@RequestParam("file") MultipartFile file) {
-        try {
-            // 파일 이름 구성
-            String originalName = file.getOriginalFilename();
-            String savedName = UUID.randomUUID() + getExtension(originalName);
-            String fullPath = uploadDir + savedName;
-
-            // 저장
-            File dest = new File(fullPath);
-            if (!dest.getParentFile().exists()) dest.getParentFile().mkdirs();
-            file.transferTo(dest);
-
-            // DB 저장
-            Image image = new Image();
-            image.setOriginalName(originalName);
-            image.setSavedName(savedName);
-            image.setImagePath(imagePathPrefix + savedName);
-            imageRepository.save(image);
-
-            // 에디터 삽입용 이미지 경로 반환
-            return imagePathPrefix + savedName;
-
-        } catch (IOException e) {
-            throw new RuntimeException("이미지 업로드 실패", e);
-        }
-    }
-
-    private String getExtension(String filename) {
-        return filename.substring(filename.lastIndexOf("."));
-    }
 }
