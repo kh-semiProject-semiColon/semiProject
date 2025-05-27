@@ -109,7 +109,7 @@ public class BoardController {
     		
     		map = bService.selectAllAnnounce(cp);
     	}else {
-    		map = bService.searchList(paramMap, cp);
+    		map = bService.searchAnnounceList(paramMap, cp);
     	}
     	
     	model.addAttribute("announce",map.get("announce"));
@@ -128,15 +128,17 @@ public class BoardController {
 		
 		if(paramMap.get("key") == null) {
 			
-			map = bService.selectAllAnnounce(cp);
+			map = bService.selectBoardList(boardCode,cp);
 		}else {
+			paramMap.put("boardCode", boardCode);
 			map = bService.searchList(paramMap, cp);
 		}
 		
-		model.addAttribute("announce",map.get("announce"));
+		model.addAttribute("boardList",map.get("boardList"));
 		model.addAttribute("pagination", map.get("pagination"));
+		model.addAttribute("boardCodeNo", boardCode);
 		
-		return "board/announce";
+		return "board/boardList";
 	}
 	
 	
