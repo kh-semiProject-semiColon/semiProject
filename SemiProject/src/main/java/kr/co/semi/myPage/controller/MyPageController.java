@@ -1,6 +1,5 @@
 package kr.co.semi.myPage.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.servlet.http.HttpSession;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.myPage.model.service.MyPageService;
 import lombok.extern.slf4j.Slf4j;
@@ -142,7 +141,7 @@ public class MyPageController {
 	public String posts() {
 		return "myPage/myPage-posts";
 	}
-	
+
 //	@PostMapping("posts")
 //	public String posts(@SessionAttribute("loginMember") Member loginMember,
 //						Model model, Board board) {
@@ -157,23 +156,21 @@ public class MyPageController {
 		return "/myPage/myPage-delete1";
 	}
 
-	
 	@PostMapping("delete2")
-	public String delete2(@SessionAttribute("loginMember") Member loginMember,
-	                      @RequestParam("memberPw") String inputPw,
-	                      RedirectAttributes ra) {
+	public String delete2(@SessionAttribute("loginMember") Member loginMember, @RequestParam("memberPw") String inputPw,
+			RedirectAttributes ra) {
 
-	    int memberNo = loginMember.getMemberNo();
+		int memberNo = loginMember.getMemberNo();
 
-	    boolean isPwMatch = service.checkPassword(memberNo, inputPw);
+		boolean isPwMatch = service.checkPassword(memberNo, inputPw);
 
-	    if (!isPwMatch) {
-	    	
-	        ra.addFlashAttribute("message", "비밀번호가 일치하지 않습니다.");
-	        return "redirect:/myPage/delete1";  // message alert를 사용하려면 redirect를 사용해야 한다!
-	    }
+		if (!isPwMatch) {
 
-	    return "myPage/myPage-delete2";
+			ra.addFlashAttribute("message", "비밀번호가 일치하지 않습니다.");
+			return "redirect:/myPage/delete1"; // message alert를 사용하려면 redirect를 사용해야 한다!
+		}
+
+		return "myPage/myPage-delete2";
 	}
 
 	// 삭제하는 페이지로 옮기는 메서드 (단순 forward)
@@ -184,19 +181,27 @@ public class MyPageController {
 	}
 
 	@PostMapping("/delete3")
-	public String delete3(@SessionAttribute("loginMember") Member loginMember,
-	                      HttpSession session, RedirectAttributes ra) {
+	public String delete3(@SessionAttribute("loginMember") Member loginMember, SessionStatus status,
+			RedirectAttributes ra) {
 
-	    int result = service.deleteMember(loginMember.getMemberNo());
+		int result = service.deleteMember(loginMember.getMemberNo());
 
-	    if (result > 0) {
-	        ra.addFlashAttribute("message", "탈퇴 처리가 되었습니다.");
-	        return "/member/logout"; // 리디렉션 처리
-	    }
+		String message = null;
+		String path = null;
 
-	    ra.addFlashAttribute("message", "서버 에러가 발생했습니다. 다시 시도해주세요.");
-	    return "redirect:/delete1"; // 실패 시도 역시 리디렉션
+		if (result > 0) {
+			message = "탈퇴 되었습니다.";
+			path = "/";
+
+			status.setComplete(); // 세션 완료 시킴 (로그아웃)
+
+		} else {
+			message = "서버 에러가 발생했습니다. 다시 시도해주세요.";
+			path = "/myPage/delete1";
+
+		}
+
+		ra.addFlashAttribute("message", message);
+		return "redirect:" + path;
 	}
-
-
 }
