@@ -22,12 +22,12 @@ public class HireInfo {
 	private String dayCanJoin;				// 요일 정보
 	private int hireCount;					// 현재 모집 인원
 	private String hireTitle;				// 게시글 제목
-		
 	private int memberNo;					// 회원고유번호
+	private int studyNo;					// 스터디 고유 번호
+		
 	private String  memberNickName;			// 회원 닉네임 (member 테이블 조인)
 	private String profileImg;				// 프로필 이미지
 	
-	private int studyNo;					// 스터디 고유 번호
 	
 	private int commentCount;				// 댓글수
 	

@@ -202,7 +202,7 @@ input[type="radio"]:checked {
   font-size: 14px;
 }
 
-input[name="day"] {
+input[name="dayCanJoin"] {
   /* 모든 기본 스타일 완전 제거 */
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
@@ -222,13 +222,13 @@ input[name="day"] {
 }
 
 /* 체크된 상태 */
-input[name="day"]:checked {
+input[name="dayCanJoin"]:checked {
   border: 6px solid #3867ff !important;
   background: white !important; /* 흰색 배경 유지 */
 }
 
 /* 체크된 상태의 내부 점 */
-input[name="day"]:checked::after {
+input[name="dayCanJoin"]:checked::after {
   content: "";
   width: 8px;
   height: 8px;

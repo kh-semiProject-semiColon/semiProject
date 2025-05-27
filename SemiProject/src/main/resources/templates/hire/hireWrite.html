@@ -16,7 +16,7 @@
       <h2 class="form-title">구인 게시글 작성</h2>
       <div class="divider"></div>
 
-      <form action="/hire/write"
+      <form action="/board/write"
             method="POST"  class="hireWrite" id="hireWriteFrm">
         <div class="form-section">
           <input
@@ -31,10 +31,6 @@
         <h3 class="form-title">내용 작성</h3>
         <div class="divider"></div>
 
-        <script th:if="${message != null}">
-          alert([[${message}]]);
-        </script>
-
         <div class="two-columns">
           <div class="column">
             <div class="form-group">
@@ -42,9 +38,8 @@
                 <label class="form-label">스터디 명</label>
                 <div class="form-input-area">
                   <select name="studyNo">
-                    <option selected disabled>스터디를 선택하세요</option>
                     <th:block th:each="study : ${study}">
-                      <option th:value="${study.studyNo}"
+                      <option selected disabled th:value="${study.studyNo}"
                               th:text="${study.studyName}"
                               th:data-studyMaxCount="${study.studyMaxCount}"
                               th:data-studyType="${study.studyType}"
@@ -60,7 +55,7 @@
                 <label class="form-label">모집 인원</label>
                 <div class="form-input-area">
                   <div class="input-group">
-                    <input type="text" class="small-input" name="studyMaxCount" disabled/>
+                    <input type="text" class="small-input" name="studyMaxCount"/>
                     <span class="span-text">명</span>
                   </div>
                 </div>
@@ -142,31 +137,31 @@
                   <div class="radio-days">
                     <div class="days-grid">
                       <div class="radio-item">
-                        <input type="checkbox" name="day" id="day-mon" value="월"/>
+                        <input type="checkbox" name="dayCanJoin" id="day-mon" value="월"/>
                         <label class="radio-label" for="day-mon">월요일</label>
                       </div>
                       <div class="radio-item">
-                        <input type="checkbox" name="day" id="day-tue" value="화"/>
+                        <input type="checkbox" name="dayCanJoin" id="day-tue" value="화"/>
                         <label class="radio-label" for="day-tue">화요일</label>
                       </div>
                       <div class="radio-item">
-                        <input type="checkbox" name="day" id="day-wed" value="수"/>
+                        <input type="checkbox" name="dayCanJoin" id="day-wed" value="수"/>
                         <label class="radio-label" for="day-wed">수요일</label>
                       </div>
                       <div class="radio-item">
-                        <input type="checkbox" name="day" id="day-thu" value="목"/>
+                        <input type="checkbox" name="dayCanJoin" id="day-thu" value="목"/>
                         <label class="radio-label" for="day-thu">목요일</label>
                       </div>
                       <div class="radio-item">
-                        <input type="checkbox" name="day" id="day-fri" value="금"/>
+                        <input type="checkbox" name="dayCanJoin" id="day-fri" value="금"/>
                         <label class="radio-label" for="day-fri">금요일</label>
                       </div>
                       <div class="radio-item">
-                        <input type="checkbox" name="day" id="day-sat" value="토"/>
+                        <input type="checkbox" name="dayCanJoin" id="day-sat" value="토"/>
                         <label class="radio-label" for="day-sat">토요일</label>
                       </div>
                       <div class="radio-item">
-                        <input type="checkbox" name="day" id="day-sun" value="일"/>
+                        <input type="checkbox" name="dayCanJoin" id="day-sun" value="일"/>
                         <label class="radio-label" for="day-sun">일요일</label>
                       </div>
                     </div>
@@ -181,7 +176,7 @@
           <div class="form-row">
             <label class="form-label">내용</label>
             <div class="form-input-area" style="width: 100%">
-              <textarea placeholder="내용을 입력하세요."></textarea>
+              <textarea name="hireContent" placeholder="내용을 입력하세요."></textarea>
             </div>
           </div>
         </div>
