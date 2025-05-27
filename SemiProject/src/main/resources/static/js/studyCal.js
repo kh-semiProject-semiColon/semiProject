@@ -3,7 +3,7 @@ $(document).ready(function () {
 
   let calendarTag = $("#calendar");
   let calendar = new FullCalendar.Calendar(calendarTag[0], {
-    height: "550px",
+    contentHeight: "auto",
     expandRows: true,
     slotMinTime: "00:00",
     slotMaxTime: "23:59",

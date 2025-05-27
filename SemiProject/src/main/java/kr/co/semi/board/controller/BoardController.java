@@ -24,6 +24,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.semi.board.model.dto.Board;
+import kr.co.semi.board.model.dto.HireInfo;
 import kr.co.semi.board.model.service.BoardService;
 import kr.co.semi.board.model.service.HireBoardService;
 import kr.co.semi.member.model.dto.Member;
