@@ -85,6 +85,12 @@ public interface BoardMapper {
 	 */
 	List<Board> selectBoardSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
 
+	/** 구인 게시글 작성
+	 * @param inputHire
+	 * @return
+	 */
+	int writeHireBoardInsert(HireInfo inputHire);
+
 
 	
 

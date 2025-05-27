@@ -76,4 +76,9 @@ public class HireBoardServiceImpl implements HireBoardService{
 		return mapper.showStudySelect(memberNo);
 	}
 
+	// 구인 게시글 작성
+	@Override
+	public int writeHireBoardInsert(HireInfo inputHire) {
+		return mapper.writeHireBoardInsert(inputHire);
+	}
 }

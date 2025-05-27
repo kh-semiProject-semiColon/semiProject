@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -60,6 +62,7 @@ public class BoardController {
 		return "hire/boardDetail";
 	}
 	
+	// 구인 게시글 작성 페이지로 이동
 	@GetMapping("write")
 	public String writeHireBoard(@SessionAttribute("loginMember") Member loginMember,
 			  					  Model model,
@@ -86,17 +89,36 @@ public class BoardController {
 		return path;
 	}
 	
-//	@PostMapping("write")
-//	public String writehireBoardInsert(@ModelAttribute HireInfo inputHire,
-//									   @SessionAttribute("loginMember") Member loginMember,
-//									   RedirectAttributes ra
-//									   ) {
-//		
-//		
-//		
-//		return "redirect:/board/hire";
-//	}
-//	
+	// 구인 게시글 업로드
+	@PostMapping("write")
+	public String writeHireBoardInsert(@ModelAttribute HireInfo inputHire,
+									   @SessionAttribute("loginMember") Member loginMember,
+									   RedirectAttributes ra
+									   )throws Exception {
+		
+		inputHire.setMemberNo(loginMember.getMemberNo());
+		
+		int hireNo = service.writeHireBoardInsert(inputHire);
+		
+		String path = null;
+		String message = null;
+		
+		if(hireNo > 0) {
+			message = "게시글이 작성되었습니다!";
+			path = "/board/hire"; //+ hireNo;
+			
+		} else {
+			
+			path = "/board/hire";
+			message = "게시글 작성 실패";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+		
+	}
+	
 	
 	@GetMapping("announce")
 	public String announce(Model model,
@@ -140,6 +162,7 @@ public class BoardController {
 		
 		return "board/boardList";
 	}
+	
 	
 	
 	

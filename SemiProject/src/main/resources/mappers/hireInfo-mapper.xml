@@ -43,5 +43,17 @@
 	 WHERE SM.MEMBER_NO = #{memberNo}
 	 AND S.STUDY_DEL_FL = 'N'
 	</select>
+	
+	<!-- 구인 게시글 작성 -->
+  	<insert id="writeHireBoardInsert" useGeneratedKeys="true" parameterType="HireInfo">
+
+ 		<selectKey order="BEFORE" resultType="_int" keyProperty="hireNo">
+ 			SELECT SEQ_BOARD_NO.NEXTVAL FROM DUAL
+ 		</selectKey>
+ 			INSERT INTO "HIRE_INFO"
+ 			VALUES(#{hireNo}, DEFAULT, DEFAULT,
+ 			DEFAULT, #{memberNo}, DEFAULT, #{hireContent},
+ 			#{studyNo}, #{dayCanJoin}, #{hireCount}, #{hireTitle})
+  	</insert>
 
 </mapper>
