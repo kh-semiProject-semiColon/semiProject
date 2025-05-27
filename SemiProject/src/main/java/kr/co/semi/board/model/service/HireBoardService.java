@@ -21,6 +21,11 @@ public interface HireBoardService {
 	// 구인 게시글 작성
 	int writeHireBoardInsert(HireInfo inputHire);
 
+	// 
+	HireInfo selectOne(Map<String, Integer> map);
+
+	int updateReadCount(int hireNo);
+
 	
 
 }

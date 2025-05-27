@@ -81,4 +81,16 @@ public class HireBoardServiceImpl implements HireBoardService{
 	public int writeHireBoardInsert(HireInfo inputHire) {
 		return mapper.writeHireBoardInsert(inputHire);
 	}
+	
+	@Override
+	public HireInfo selectOne(Map<String, Integer> map) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public int updateReadCount(int hireNo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
