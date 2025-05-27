@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import kr.co.semi.member.model.dto.Member;
+import kr.co.semi.studyboard.model.dto.Study;
 import kr.co.semi.studyboard.model.dto.StudyBoard;
 
 /**
@@ -15,19 +17,6 @@ import kr.co.semi.studyboard.model.dto.StudyBoard;
 @Mapper
 public interface StudyBoardMapper {
 
-    /**
-     * 📋 게시글 목록 조회
-     */
-    List<StudyBoard> selectBoardList(
-        @Param("studyNo") int studyNo,
-        @Param("key") String key,
-        @Param("keyword") String keyword,
-        @Param("sort") String sort,
-        @Param("page") int page
-    );
 
-    /**
-     * 📄 게시글 상세 조회
-     */
-    StudyBoard selectBoardDetail(@Param("boardNo") int boardNo);
+	Study studyInfo(Member loginMember);
 }

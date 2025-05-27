@@ -18,6 +18,7 @@
   padding: 4px 12px;
   border-radius: 12px;
   align-self: flex-start;
+  display: inline-block;
 }
 
 .study-title {
@@ -44,7 +45,13 @@
   line-height: 1.6;
   color: #333;
   font-size: 15px;
-  word-break: break-all;
+  word-break: break-word;
+  white-space: pre-wrap;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #3867ff;
+  min-height: 100px;
 }
 
 .no-rules {
@@ -52,10 +59,18 @@
   color: #666;
   font-size: 16px;
   padding: 60px 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 2px dashed #dbdae2;
+}
+
+.no-rules p {
+  margin: 0;
 }
 
 .leader-actions {
   text-align: right;
+  margin-top: 20px;
 }
 
 .btn {
@@ -65,7 +80,14 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .btn-primary {
@@ -73,8 +95,10 @@
   color: white;
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   background-color: #2c52ed;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(56, 103, 255, 0.3);
 }
 
 .btn-cancel {
@@ -83,8 +107,39 @@
   margin-right: 10px;
 }
 
-.btn-cancel:hover {
+.btn-cancel:hover:not(:disabled) {
   background-color: #5a6268;
+  transform: translateY(-1px);
+}
+
+/* 로딩 상태 */
+.btn.loading {
+  position: relative;
+  color: transparent;
+}
+
+.btn.loading::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid transparent;
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* 모달 스타일 */
@@ -96,16 +151,29 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.show {
+  opacity: 1;
 }
 
 .modal {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0.9);
   z-index: 1000;
   width: 90%;
   max-width: 600px;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.modal.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .modal-content {
@@ -113,6 +181,8 @@
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   overflow: hidden;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .modal-header {
@@ -122,6 +192,9 @@
   padding: 20px 25px;
   background-color: #f8f9fa;
   border-bottom: 1px solid #dee2e6;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .modal-header h3 {
@@ -135,10 +208,14 @@
   color: #666;
   cursor: pointer;
   line-height: 1;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 
 .close:hover {
   color: #333;
+  background-color: #e9ecef;
 }
 
 .rule-form {
@@ -164,17 +241,74 @@
   font-size: 14px;
   font-family: "Apple SD Gothic Neo", sans-serif;
   resize: vertical;
-  transition: border-color 0.3s;
+  transition: all 0.3s ease;
+  min-height: 120px;
+  box-sizing: border-box;
 }
 
 .form-textarea:focus {
   outline: none;
   border-color: #3867ff;
+  box-shadow: 0 0 0 3px rgba(56, 103, 255, 0.1);
+}
+
+.form-textarea::placeholder {
+  color: #999;
+}
+
+/* 글자 수 카운터 */
+.char-count {
+  text-align: right;
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+}
+
+.char-count.over-limit {
+  color: #dc3545;
 }
 
 .modal-actions {
   text-align: right;
   margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #dee2e6;
+}
+
+/* 성공/에러 메시지 */
+.alert {
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+}
+
+.alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.alert-error {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+/* 애니메이션 */
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* 반응형 */
@@ -190,6 +324,7 @@
 
   .modal-content {
     margin: 20px 0;
+    max-height: 95vh;
   }
 
   .rule-form {
@@ -203,5 +338,49 @@
   .btn {
     padding: 8px 16px;
     font-size: 13px;
+  }
+
+  .leader-actions {
+    text-align: center;
+  }
+
+  .rules-content {
+    min-height: 300px;
+  }
+
+  .rule-text {
+    padding: 15px;
+    font-size: 14px;
+  }
+
+  .no-rules {
+    padding: 40px 20px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .study-title {
+    font-size: 18px;
+  }
+
+  .study-category {
+    font-size: 12px;
+    padding: 3px 10px;
+  }
+
+  .modal-actions {
+    text-align: center;
+  }
+
+  .btn-cancel {
+    margin-right: 0;
+    margin-bottom: 10px;
+    display: block;
+    width: 100%;
+  }
+
+  .btn-primary {
+    width: 100%;
   }
 }

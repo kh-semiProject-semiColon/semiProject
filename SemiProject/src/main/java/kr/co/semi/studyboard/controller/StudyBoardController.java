@@ -1,17 +1,16 @@
 package kr.co.semi.studyboard.controller;
 
-import java.security.Provider.Service;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
+import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.studyboard.model.dto.Study;
 import kr.co.semi.studyboard.model.service.StudyBoardService;
-import kr.co.semi.studyboard.model.service.StudyService;
 
 /**
  * 🎯 StudyBoardController
@@ -19,6 +18,7 @@ import kr.co.semi.studyboard.model.service.StudyService;
  * 🔗 연동 구조: studyboardList.html, studyboardDetail.html 등과 연결됨
  */
 @Controller
+@SessionAttributes("loginMember")
 @RequestMapping("studyBoard")
 public class StudyBoardController {
 
@@ -44,15 +44,16 @@ public class StudyBoardController {
     public String studyBoardDelete() {
     	return "studyBoard/delete";
     }
+    
     @GetMapping("delete1")
     public String studyBoardDelete1() {
     	return "studyBoard/delete1";
     }
     
     @GetMapping("rulecontent")
-    public String studyBoardrulecontent(@RequestParam("studyNo") int studyNo, Model model) {
+    public String studyBoardrulecontent(@SessionAttribute("loginMember") Member loginMember, Model model) {
     	
-    	Study study = service.selectStudyById(studyNo);
+    	Study study = service.studyInfo(loginMember);
         model.addAttribute("study", study); // ✅ 필수
     	return "studyBoard/rulecontent";
     }

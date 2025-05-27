@@ -1,5 +1,6 @@
 package kr.co.semi.studyboard.model.service;
 
+import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.studyboard.model.dto.Study;
 import kr.co.semi.studyboard.model.dto.StudyBoard;
 
@@ -12,28 +13,10 @@ import java.util.List;
  */
 public interface StudyBoardService {
 
-    /**
-     * 📋 게시글 목록 조회
-     *
-     * @param studyNo  스터디 번호
-     * @param key      검색 키 (제목/작성자 등)
-     * @param keyword  검색어
-     * @param sort     정렬 기준
-     * @param page     현재 페이지
-     * @return 조건에 맞는 게시글 리스트
-     */
-    List<StudyBoard> getBoardList(int studyNo, String key, String keyword, String sort, int page);
-
-    /**
-     * 📄 게시글 상세 조회
-     * @param boardNo 게시글 번호
-     * @return 게시글 상세 객체
-     */
-    StudyBoard getBoardDetail(int boardNo);
 
 	/**  모든 스터디 조회
-	 * @param studyNo
+	 * @param loginMember
 	 * @return
 	 */
-	Study selectStudyById(int studyNo);
+	Study studyInfo(Member loginMember);
 }

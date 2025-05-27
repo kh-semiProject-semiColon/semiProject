@@ -5,35 +5,17 @@
 
 <mapper namespace="kr.co.semi.studyboard.model.mapper.StudyBoardMapper">
 
-  <!-- 📋 게시글 목록 조회 -->
-  <select id="selectBoardList" resultType="kr.co.semi.studyboard.model.dto.StudyBoard">
-    SELECT *
-    FROM STUDY_BOARD
-    WHERE STUDY_NO = #{studyNo}
-      <if test="key != null and keyword != null and key != '' and keyword != ''">
-        <choose>
-          <when test="key == 't'">
-            AND STUDY_BOARD_TITLE LIKE '%' || #{keyword} || '%'
-          </when>
-          <when test="key == 'w'">
-            AND MEMBER_NO IN (
-              SELECT MEMBER_NO FROM MEMBER WHERE MEMBER_NICKNAME LIKE '%' || #{keyword} || '%'
-            )
-          </when>
-        </choose>
-      </if>
-    <choose>
-      <when test="sort == 'read'">ORDER BY READ_COUNT DESC</when>
-      <when test="sort == 'like'">ORDER BY (SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_NO = STUDY_BOARD_NO) DESC</when>
-      <otherwise>ORDER BY STUDY_BOARD_WRITE_DATE DESC</otherwise>
-    </choose>
-  </select>
-
-  <!-- 📄 게시글 상세 조회 -->
-  <select id="selectBoardDetail" resultType="kr.co.semi.studyboard.model.dto.StudyBoard">
-    SELECT *
-    FROM STUDY_BOARD
-    WHERE STUDY_BOARD_NO = #{boardNo}
-  </select>
+<!-- 스터디 정보 조회 -->
+<select id="studyInfo">
+SELECT S.STUDY_NO, S.STUDY_NAME, S.STUDY_DEL_FL,
+       S.STUDY_MAX_COUNT, S.STUDY_DATE, S.STUDY_TYPE,
+       S.STUDY_PERIOD, S.STUDY_MAIN_IMG,
+       R.RULE_CONTENT, M.STUDY_CAP
+FROM STUDY S
+JOIN STUDY_RULE R ON S.STUDY_NO = R.STUDY_NO
+JOIN STUDY_MEMBER M ON S.STUDY_NO = M.STUDY_NO
+WHERE S.STUDY_NO = #{studyNo}
+AND M.MEMBER_NO = #{memberNo} 
+</select>
 
 </mapper>

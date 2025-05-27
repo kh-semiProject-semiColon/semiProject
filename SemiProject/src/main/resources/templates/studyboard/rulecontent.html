@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GoStudy - 캘린더</title>
+    <title>GoStudy - 내규</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
@@ -17,7 +17,7 @@
   </head>
 
   <body>
-    <!-- 헤더 -->
+     <!-- 헤더 -->
     <th:block th:replace="~{common/header}"></th:block>
 
     <!-- 메인 컨텐츠 -->
@@ -32,130 +32,91 @@
           <!-- 헤더 부분 -->
           <div class="study-header">
             <div class="study-title-section">
-              <span class="study-category" th:text="${study.category}"
-                >스터디그룹</span
-              >
+              <span class="study-category" th:text="${study.studyName}">스터디그룹</span>
               <h1 class="study-title">
-                <span th:text="${study.name}">OOO</span>스터디 내규
+                <span th:text="${study.studyName}">스터디명</span> 내규
               </h1>
             </div>
           </div>
 
           <!-- 내규 내용 -->
           <div class="rules-content">
-            <!-- 동적으로 내규 항목들을 표시 -->
-            <div th:each="rule, iterStat : ${study.rules}" class="rule-item">
-              <div class="rule-text" th:utext="${rule.content}">
-                나는 스터디그룹의 나는 스터디그룹의 나는 스터디그룹의 나는
-                스터디그룹의 나는 스터디그룹의 나는 스터디그룹의 나는
-                스터디그룹의 나는 스터디그룹의 나는 스터디그룹의 나는
-                스터디그룹의 나는 스터디그룹의 나는 스터디그룹의 나는
-                스터디그룹의 나는 스터디그룹의 나는 스터디그룹의 나는
-                스터디그룹의 나는 스터디그룹의 나는 스터디그룹의 나는
-                스터디그룹의 나는 스터디그룹의
-              </div>
+            <!-- 내규가 있는 경우 -->
+            <div th:if="${study.ruleContent != null and !#strings.isEmpty(study.ruleContent)}" 
+                 class="rule-text" 
+                 th:utext="${study.ruleContent}">
+              스터디 내규 내용
             </div>
 
             <!-- 내규가 없는 경우 -->
-            <div th:if="${#lists.isEmpty(study.rules)}" class="no-rules">
+            <div th:if="${study.ruleContent == null or #strings.isEmpty(study.ruleContent)}" 
+                 class="no-rules">
               <p>아직 등록된 내규가 없습니다.</p>
             </div>
           </div>
 
           <!-- 팀장인 경우에만 표시되는 버튼 -->
-          <div th:if="${isLeader}" class="leader-actions">
+          <div th:if="${study.studyCap == 'Y'}" class="leader-actions">
             <button
               type="button"
               class="btn btn-primary"
               onclick="openRuleModal()"
+              th:text="${study.ruleContent != null and !#strings.isEmpty(study.ruleContent)} ? '수정' : '등록'"
             >
               등록
             </button>
           </div>
-        </div>
       </div>
     </div>
 
     <!-- 내규 등록/수정 모달 (팀장용) -->
-    <div th:if="${isLeader}" id="ruleModal" class="modal" style="display: none">
+    <div th:if="${study.studyCap == 'Y'}" id="ruleModal" class="modal" style="display: none">
       <div class="modal-content">
         <div class="modal-header">
-          <h3>스터디 내규 등록</h3>
+          <h3 th:text="${study.ruleContent != null and !#strings.isEmpty(study.ruleContent)} ? '스터디 내규 수정' : '스터디 내규 등록'">
+            스터디 내규 등록
+          </h3>
           <span class="close" onclick="closeRuleModal()">&times;</span>
         </div>
-        <form
-          th:action="@{/study/{studyId}/rules(studyId=${study.id})}"
-          method="post"
-          class="rule-form"
-        >
-          <!-- CSRF 토큰 -->
-          <input
-            type="hidden"
-            th:name="${_csrf.parameterName}"
-            th:value="${_csrf.token}"
-          />
+        
+        <form id="ruleForm" class="rule-form">
+          <input type="hidden" name="studyNo" th:value="${study.studyNo}" />
 
           <div class="form-group">
             <label for="ruleContent" class="form-label">내규 내용</label>
             <textarea
               id="ruleContent"
-              name="content"
+              name="ruleContent"
               class="form-textarea"
               placeholder="스터디 내규를 입력해주세요"
               rows="10"
               required
+              th:text="${study.ruleContent}"
             ></textarea>
+            <div class="char-count">
+              <span id="charCount">0</span> / 4000
+            </div>
           </div>
 
           <div class="modal-actions">
-            <button
-              type="button"
-              class="btn btn-cancel"
-              onclick="closeRuleModal()"
-            >
+            <button type="button" class="btn btn-cancel" onclick="closeRuleModal()">
               취소
             </button>
-            <button type="submit" class="btn btn-primary">등록</button>
+            <button type="submit" class="btn btn-primary" 
+                    th:text="${study.ruleContent != null and !#strings.isEmpty(study.ruleContent)} ? '수정' : '등록'">
+              등록
+            </button>
           </div>
-        </form>
+        </form>  
       </div>
     </div>
 
-    <!-- 오버레이 -->
-    <div
-      id="modalOverlay"
-      class="modal-overlay"
-      style="display: none"
-      onclick="closeRuleModal()"
-    ></div>
-
-    <!-- 푸터 -->
     <th:block th:replace="~{common/footer}"></th:block>
+  
 
-    <!-- JavaScript -->
-    <script>
-      // 모달 열기
-      function openRuleModal() {
-        document.getElementById("ruleModal").style.display = "block";
-        document.getElementById("modalOverlay").style.display = "block";
-        document.body.style.overflow = "hidden";
-      }
+   <!-- 오버레이 -->
+    <div id="modalOverlay" class="modal-overlay" style="display: none" onclick="closeRuleModal()"></div>
 
-      // 모달 닫기
-      function closeRuleModal() {
-        document.getElementById("ruleModal").style.display = "none";
-        document.getElementById("modalOverlay").style.display = "none";
-        document.body.style.overflow = "auto";
-        // 폼 초기화
-        document.getElementById("ruleContent").value = "";
-      }
-
-      // ESC 키로 모달 닫기
-      document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape") {
-          closeRuleModal();
-        }
-      });
-    </script>
+  <script src="/js/studyBoard/rulecontent.js"></script>
   </body>
 </html>

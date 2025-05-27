@@ -3,30 +3,241 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GoStudy - 캘린더</title>
+    <title>GoStudy - 스터디 탈퇴</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
       type="text/css"
     />
-    <link rel="stylesheet" href="/css/studyboard/studyboard-style.css" />
+    <link rel="stylesheet" href="/css/studyBoard/style.css" />
+    <link rel="stylesheet" href="/css/studyBoard/withdrawal.css" />
     <link rel="stylesheet" href="/css/common/footer.css" />
     <link rel="stylesheet" href="/css/common/header.css" />
-    <link rel="stylesheet" href="/css/studyboard/sidebar.css" />
-    <link rel="stylesheet" href="/css/studyboard/studyboard-changePw.css" />
+    <link rel="stylesheet" href="/css/studyBoard/sidebar.css" />
+    <link rel="stylesheet" href="/css/studyBoard/delete.css" />
   </head>
   <body>
+    <!-- 헤더 -->
     <th:block th:replace="~{common/header}"></th:block>
-    <!-- 메인 콘텐츠 -->
-	
-    <div class="main-wrapper">
-        <!-- 사이드바 -->
-      <th:block th:replace="~{studyboard/sidebar}"></th:block>
 
-        <!-- 캘린더 부분 -->
-        
- <th:block th:replace="~{common/footer}"></th:block>
-    
- <script src="/js/myPage/myPage.js"></script>
-</body>
+    <!-- 메인 컨텐츠 -->
+    <div class="main-content">
+      <!-- 사이드바 -->
+      <th:block th:replace="~{studyBoard/sidebar}"></th:block>
+
+      <!-- 콘텐츠 영역 -->
+      <div class="content">
+        <!-- 스터디 탈퇴 섹션 -->
+        <div class="content-section">
+          <h2 class="content-heading">스터디 탈퇴</h2>
+
+          <div class="withdrawal-container">
+            <!-- 안내 메시지 -->
+            <div class="withdrawal-notice">
+              <div class="character-icon">
+                <img
+                  src="/images/character.png"
+                  alt="캐릭터"
+                  class="character-img"
+                />
+              </div>
+              <h3 class="notice-title">스터디를 탈퇴하시겠습니까?</h3>
+              <div class="notice-description">
+                <p>
+                  스터디를 탈퇴하면 해당 스터디 게시판의 이용이 제한 수
+                  있습니다.
+                </p>
+                <p>그래도 정말로 탈퇴하시겠습니까?</p>
+              </div>
+            </div>
+
+            <!-- 일반 멤버 탈퇴 폼 -->
+            <div th:if="${!isLeader}" class="member-withdrawal">
+              <form
+                th:action="@{/study/{studyNo}/withdrawal(studyNo=${study.studyNo})}"
+                method="post"
+                class="withdrawal-form"
+              >
+                <!-- CSRF 토큰 -->
+                <input
+                  type="hidden"
+                  th:name="${_csrf.parameterName}"
+                  th:value="${_csrf.token}"
+                />
+
+                <!-- 스터디 정보 -->
+                <div class="study-info">
+                  <h4>탈퇴할 스터디 정보</h4>
+                  <div class="info-item">
+                    <span class="info-label">스터디명:</span>
+                    <span class="info-value" th:text="${study.studyName}"
+                      >Java 스터디</span
+                    >
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">가입일:</span>
+                    <span
+                      class="info-value"
+                      th:text="${#temporals.format(memberJoinDate, 'yyyy-MM-dd')}"
+                      >2025-05-27</span
+                    >
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">현재 멤버:</span>
+                    <span class="info-value">
+                      <span th:text="${study.currentMemberCount}">5</span>명 /
+                      <span th:text="${study.studyMaxCount}">10</span>명
+                    </span>
+                  </div>
+                </div>
+
+                <!-- 탈퇴 동의 체크박스 -->
+                <div class="form-group">
+                  <div class="checkbox-group">
+                    <label class="checkbox-item">
+                      <input
+                        type="checkbox"
+                        id="agreeWithdrawal"
+                        name="agreeWithdrawal"
+                        required
+                      />
+                      <span class="checkmark"></span>
+                      <span
+                        >스터디 탈퇴에 대한 안내사항을 모두 확인하였으며, 이에
+                        동의합니다.</span
+                      >
+                    </label>
+                  </div>
+                </div>
+
+                <!-- 안내사항 -->
+                <div class="withdrawal-info">
+                  <h4>탈퇴 시 안내사항</h4>
+                  <ul>
+                    <li>
+                      스터디 탈퇴 시 해당 스터디의 모든 권한이 삭제됩니다.
+                    </li>
+                    <li>
+                      작성하신 게시글과 댓글은 삭제되지 않으며, 익명으로
+                      처리됩니다.
+                    </li>
+                    <li>탈퇴 후 동일한 스터디에 재가입이 가능합니다.</li>
+                  </ul>
+                </div>
+
+                <!-- 버튼 그룹 -->
+                <div class="button-group">
+                  <button
+                    type="button"
+                    class="btn btn-cancel"
+                    onclick="history.back()"
+                  >
+                    취소
+                  </button>
+                  <button type="submit" class="btn btn-withdrawal">탈퇴</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- 팀장 탈퇴 안내 -->
+            <div th:if="${isLeader}" class="leader-withdrawal">
+              <!-- 스터디 정보 -->
+              <div class="study-info">
+                <h4>현재 스터디 정보</h4>
+                <div class="info-item">
+                  <span class="info-label">스터디명:</span>
+                  <span class="info-value" th:text="${study.studyName}"
+                    >Java 스터디</span
+                  >
+                </div>
+                <div class="info-item">
+                  <span class="info-label">팀장 역할:</span>
+                  <span class="info-value">현재 회원님이 팀장입니다</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">현재 멤버:</span>
+                  <span class="info-value">
+                    <span th:text="${study.currentMemberCount}">5</span>명 /
+                    <span th:text="${study.studyMaxCount}">10</span>명
+                  </span>
+                </div>
+              </div>
+
+              <!-- 팀장 탈퇴 옵션 -->
+              <div class="leader-options">
+                <h4>팀장 탈퇴 옵션</h4>
+
+                <!-- 옵션 1: 팀장 위임 -->
+                <div class="option-card">
+                  <div class="option-header">
+                    <h5>👥 팀장 권한 위임 후 탈퇴</h5>
+                  </div>
+                  <div class="option-content">
+                    <p>
+                      다른 멤버에게 팀장 권한을 위임한 후 스터디에서 탈퇴합니다.
+                    </p>
+                    <p class="option-note">• 스터디는 계속 유지됩니다</p>
+                    <p class="option-note">
+                      • 새로운 팀장이 스터디를 운영합니다
+                    </p>
+                  </div>
+                  <div class="option-actions">
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      onclick="location.href='/study/' + [[${study.studyNo}]] + '/transfer-leadership'"
+                    >
+                      팀장 위임하기
+                    </button>
+                  </div>
+                </div>
+
+                <!-- 옵션 2: 스터디 해체 -->
+                <div class="option-card">
+                  <div class="option-header">
+                    <h5>🗑️ 스터디 해체</h5>
+                  </div>
+                  <div class="option-content">
+                    <p>스터디를 완전히 해체하고 모든 멤버가 탈퇴됩니다.</p>
+                    <p class="option-note warning">
+                      • 스터디가 완전히 삭제됩니다
+                    </p>
+                    <p class="option-note warning">
+                      • 모든 멤버가 자동으로 탈퇴됩니다
+                    </p>
+                    <p class="option-note warning">• 되돌릴 수 없습니다</p>
+                  </div>
+                  <div class="option-actions">
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      onclick="confirmStudyDeletion()"
+                    >
+                      스터디 해체하기
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 버튼 그룹 -->
+              <div class="button-group">
+                <button
+                  type="button"
+                  class="btn btn-cancel"
+                  onclick="history.back()"
+                >
+                  취소
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 푸터 -->
+    <th:block th:replace="~{common/footer}"></th:block>
+
+    <script src="/js/studyBoard/delete.js"></script>
+  </body>
 </html>
