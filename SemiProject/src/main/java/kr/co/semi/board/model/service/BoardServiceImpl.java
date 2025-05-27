@@ -91,24 +91,21 @@ public class BoardServiceImpl implements BoardService{
 		// 1번째 : SQL에 전달할 파라미터
 		// 2번째 : RowBounds 객체
 		// 파라미터로 전달할 값 없을 경우 null이라도 전달
-<<<<<<< HEAD
+
 		List<Announce> announce = mapper.selectAnnounceSearchList(paramMap, rowBounds);
-=======
-//		List<Announce> announce = mapper.selectSearchList(paramMap, rowBounds);
->>>>>>> a5780d4d2885c897268705fe0cbd605f26de6a27
 		
 		// 4. 목록 조회 결과 + Pagination 객체를 Map으로 묶음
 		Map<String, Object> map = new HashMap();
 		
 		map.put("pagination", pagination);
-//		map.put("announce", announce);
+		map.put("announce", announce);
 		
 		return map;
 	}
 	
 	
-	@Override
-	public Map<String, Object> selectBoardList(int boardCode, int cp) {
+		@Override
+		public Map<String, Object> selectBoardList(int boardCode, int cp) {
 		// 1. 지정된 게시판(boardCode) 에서 삭제되지 않은 게시글 수를 조회
 				// 삭제되지 않은 게시글 수를 조회
 				int listCount = mapper.getBoardListCount(boardCode);
