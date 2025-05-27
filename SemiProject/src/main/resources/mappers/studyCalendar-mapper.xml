@@ -3,12 +3,12 @@
 <mapper namespace="kr.co.semi.board.model.mapper.StudyCalendarMapper">
 
 	 <!-- 일정 조회하기 -->
-    <select id="studyCalendarList">
+    <select id="StudyCalendarList">
         SELECT
             CALENDAR_NO,
             CALENDAR_TITLE AS TITLE,
-            TO_CHAR(MAIN_START, 'YYYY-MM-DD') AS START1,
-            TO_CHAR("MAIN_END", 'YYYY-MM-DD') AS END,
+            TO_CHAR("START", 'YYYY-MM-DD') AS START1,
+            TO_CHAR("END", 'YYYY-MM-DD') AS END,
             CALENDAR_COLOR AS COLOR
         FROM STUDY_CALENDAR
         WHERE STUDY_NO = #{studyNo}
@@ -16,7 +16,7 @@
 
     <!-- 일정 저장하기 -->
     <!-- 저장하고 생성된 no(key) 값을 return 시킨다 -->
-    <insert id="studyCalendarSave"  useGeneratedKeys="true" keyColumn="MAIN_CALENDAR_NO" keyProperty="calendarNo" >
+    <insert id="calendarSave"  useGeneratedKeys="true" keyColumn="CALENDAR_NO" keyProperty="calendarNo" >
         INSERT INTO STUDY_CALENDAR(
             CALENDAR_NO,
             CALENDAR_TITLE,
@@ -37,18 +37,18 @@
     </insert>
 
     <!-- 일정 삭제하기 -->
-    <delete id="studyCalendarDelete">
-        DELETE FROM STUDY_CALENDAR WHERE STUDY_CALENDAR_NO = #{calendarNo}
+    <delete id="calendarDelete">
+        DELETE FROM STUDY_CALENDAR WHERE CALENDAR_NO = #{calendarNo}
     </delete>
 
 
     <!-- 일정 수정하기 -->
     <update id="eventUpdate">
-        UPDATE MAIN_CALENDAR SET
-                            MAIN_CALENDAR_TITLE = #{title} ,
-                            "MAIN_START" = TO_DATE(#{start1}, 'YYYY-MM-DD') ,
-                            "MAIN_END" = TO_DATE(#{end}, 'YYYY-MM-DD')
-        WHERE MAIN_CALENDAR_NO = #{calendarNo}
+        UPDATE STUDY_CALENDAR SET
+                            CALENDAR_TITLE = #{title} ,
+                            "START" = TO_DATE(#{start1}, 'YYYY-MM-DD') ,
+                            "END" = TO_DATE(#{end}, 'YYYY-MM-DD')
+        WHERE CALENDAR_NO = #{calendarNo}
     </update>
     
     <!-- 특정 멤버의 스터디 번호 가져오기 -->
