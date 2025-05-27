@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import kr.co.semi.common.intercepter.LoginInterceptor;
+import kr.co.semi.common.interceptor.LoginInterceptor;
 
 // 인터셉터가 어떤 요청을 가로챌지 설정하는 클래스
 

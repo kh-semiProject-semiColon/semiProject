@@ -1,4 +1,4 @@
-package kr.co.semi.common.intercepter;
+package kr.co.semi.common.interceptor;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 
