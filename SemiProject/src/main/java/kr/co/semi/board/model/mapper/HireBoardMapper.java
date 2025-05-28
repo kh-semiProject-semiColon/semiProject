@@ -58,4 +58,16 @@ public interface HireBoardMapper {
 	 * @return
 	 */
 	Study selectStudyNo(int studyNo);
+
+	/** 구인 게시글 수정
+	 * @param inputHire
+	 * @return
+	 */
+	int hireUpdate(HireInfo inputHire);
+
+	/** 구인 게시글 삭제
+	 * @param map
+	 * @return
+	 */
+	int hireDelete(Map<String, Integer> map);
 }

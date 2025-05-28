@@ -102,4 +102,23 @@ public class HireBoardServiceImpl implements HireBoardService{
 	public Study selectStudyNo(int studyNo) {
 		return mapper.selectStudyNo(studyNo);
 	}
+	
+	// 구인 게시글 업데이트
+	@Override
+	public int hireUpdate(HireInfo inputHire) {
+
+		// 1. 게시글 부분(제목/내용) 수정
+		int result = mapper.hireUpdate(inputHire);
+		
+		// 수정 실패 시 바로 리턴
+		if(result == 0) return 0;
+		
+		return result;
+	}
+	
+	// 구인 게시글 삭제
+	@Override
+	public int hireDelete(Map<String, Integer> map) {
+		return mapper.hireDelete(map);
+	}
 }

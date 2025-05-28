@@ -84,4 +84,21 @@
 	 AND STUDY_NO = #{studyNo}
 	</select>
 	
+	  <!-- 게시글 부분 수정 -->
+	  <update id="hireUpdate">
+	  	UPDATE "HIRE_INFO" SET
+	  	HIRE_TITLE = #{hireTitle},
+	  	HIRE_CONTENT = #{hireContent}
+	  	WHERE HIRE_NO = #{hireNo}
+	  	AND MEMBER_NO = #{memberNo}
+	  </update>
+	  
+	  <!-- 게시글 삭제 -->
+	    <update id="hireDelete">
+		  	UPDATE "HIRE_INFO" SET
+		  	BOARD_DEL_FL = 'Y'
+		  	WHERE BOARD_NO = #{hireNo}
+		  	AND MEMBER_NO = #{memberNo}
+		  </update>
+	
 </mapper>
