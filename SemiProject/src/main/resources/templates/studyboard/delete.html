@@ -59,11 +59,11 @@
                 class="withdrawal-form"
               >
                 <!-- CSRF 토큰 -->
-                <input
+                <!-- <input
                   type="hidden"
                   th:name="${_csrf.parameterName}"
                   th:value="${_csrf.token}"
-                />
+                /> -->
 
                 <!-- 스터디 정보 -->
                 <div class="study-info">
@@ -74,14 +74,7 @@
                       >Java 스터디</span
                     >
                   </div>
-                  <div class="info-item">
-                    <span class="info-label">가입일:</span>
-                    <span
-                      class="info-value"
-                      th:text="${#temporals.format(memberJoinDate, 'yyyy-MM-dd')}"
-                      >2025-05-27</span
-                    >
-                  </div>
+
                   <div class="info-item">
                     <span class="info-label">현재 멤버:</span>
                     <span class="info-value">

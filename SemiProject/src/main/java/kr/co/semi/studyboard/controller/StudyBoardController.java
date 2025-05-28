@@ -181,7 +181,12 @@ public class StudyBoardController {
                                   Model model) {
         try {
             Study study = service.getStudyInfo(loginMember);
-            
+            if(service.isStudyLeader(loginMember.getMemberNo())) {
+            	model.addAttribute("isLeader", true);
+            } else {
+            	
+            	model.addAttribute("isLeader", false);
+            }
             if (study == null) {
                 log.warn("존재하지 않는 스터디 또는 권한 없음 - studyNo: {}, memberNo: {}", 
                         study, loginMember.getMemberNo());

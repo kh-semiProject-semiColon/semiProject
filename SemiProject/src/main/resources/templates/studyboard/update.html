@@ -323,15 +323,12 @@
                   </div>
 
                   <!-- 생성일 -->
-                  <!-- <div class="info-group">
-                    <label class="info-label">생성일</label>
-                    <div
-                      class="info-value"
-                      th:text="${#temporals.format(study.studyDate, 'yyyy-MM-dd')}"
-                    >
+                  <div class="info-group">
+                    <label class="info-label">스터디 개설일</label>
+                    <div class="info-value" th:text="${study.studyDate}">
                       2025-05-27
                     </div>
-                  </div>-->
+                  </div>
                 </div>
 
                 <!-- 우측: 대표 이미지 -->
