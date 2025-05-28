@@ -37,6 +37,7 @@
 	WHERE MEMBER_NO = #{memberNo}
 	</update>
 	
+	
 	<resultMap id="boardResultMap" type="kr.co.semi.board.model.dto.Board">
 		<result property="boardNo" column="boardNo" />
 		<result property="boardTitle" column="boardTitle" />

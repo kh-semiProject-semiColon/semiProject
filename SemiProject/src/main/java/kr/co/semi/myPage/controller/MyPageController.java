@@ -145,11 +145,7 @@ public class MyPageController {
 	public String posts(@SessionAttribute("loginMember") Member loginMember, Model model, Board board,
 			RedirectAttributes ra) {
 
-		List<Board> boardList = service.selectBoard(loginMember.getMemberNo());
-	
-		System.out.println("boardList is null? " + (boardList == null));
-		System.out.println("boardList is empty? " + (boardList != null && boardList.isEmpty()));
-		
+		List<Board> boardList = service.selectBoard(loginMember.getMemberNo());		
 
 		if (boardList == null || boardList.isEmpty()) {
 			ra.addAttribute("message", "작성한 게시글이 없습니다.");
@@ -193,6 +189,7 @@ public class MyPageController {
 		return "myPage/myPage-delete3";
 	}
 
+	// 삭제 진행 중 메세지 출력 -> 메인페이지로 이동
 	@PostMapping("/delete3")
 	public String delete3(@SessionAttribute("loginMember") Member loginMember, SessionStatus status,
 			RedirectAttributes ra) {
@@ -215,6 +212,7 @@ public class MyPageController {
 		}
 
 		ra.addFlashAttribute("message", message);
+		log.info(message);
 		return "redirect:" + path;
 	}
 
