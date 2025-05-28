@@ -53,8 +53,6 @@ public class BoardServiceImpl implements BoardService{
 		// 두번째 매개변수 : RowBounds 객체 전달
 		List<Announce> announce = mapper.selectAllAnnounce(rowBounds);
 		
-		System.out.println(announce);
-		
 		
 		// 4. 목록 조회 결과 + Pagination 객체를 Map으로 묵어서 반환
 		Map<String, Object> map = new HashMap<>();
@@ -134,7 +132,6 @@ public class BoardServiceImpl implements BoardService{
 				// 두번째 매개변수 : RowBounds 객체 전달
 				List<Board> boardList = mapper.selectBoardList(boardCode, rowBounds);
 				
-				log.debug("boardList 결과 : {}", pagination.getListCount());
 				
 				// 4. 목록 조회 결과 + Pagination 객체를 Map으로 묵어서 반환
 				Map<String, Object> map = new HashMap<>();
@@ -183,6 +180,26 @@ public class BoardServiceImpl implements BoardService{
 		map.put("boardList", boardList);
 		
 		return map;
+	}
+	
+	@Override
+	public Board selectOne(Map<String, Integer> map) {
+		return mapper.selectOne(map);
+	}
+	
+	@Override
+	public int updateReadCount(int boardNo) {
+		
+		// 1. 조회수 1 증가 (UPDATE)
+		int result = mapper.updateReadCount(boardNo);
+		
+		// 2. 현재 조회 수 조회
+		if(result>0) {
+			return mapper.selectReadCount(boardNo);
+		}
+		
+		// 실패한 경우 -1 반환
+		return -1;
 	}
 	
 	

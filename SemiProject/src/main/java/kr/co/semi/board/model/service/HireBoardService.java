@@ -3,6 +3,7 @@ package kr.co.semi.board.model.service;
 import java.util.List;
 import java.util.Map;
 
+import kr.co.semi.board.model.dto.Board;
 import kr.co.semi.board.model.dto.HireInfo;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.studyboard.model.dto.Study;
@@ -20,6 +21,9 @@ public interface HireBoardService {
 
 	// 구인 게시글 작성
 	int writeHireBoardInsert(HireInfo inputHire);
+
+
+
 
 	
 
