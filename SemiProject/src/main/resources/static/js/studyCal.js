@@ -16,7 +16,7 @@ $(document).ready(function () {
     headerToolbar: {
       left: "prevYear,prev,next,nextYear today",
       center: "title",
-      right: "dayGridMonth",
+      right: "dayGridMonth listMonth",
     },
     initialView: "dayGridMonth",
     displayEventTime: false,

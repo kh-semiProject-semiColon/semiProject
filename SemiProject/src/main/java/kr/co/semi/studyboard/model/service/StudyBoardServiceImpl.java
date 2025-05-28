@@ -134,32 +134,6 @@ public class StudyBoardServiceImpl implements StudyBoardService {
         }
     }
 
-    @Override
-    public Map<String, Object> getMyComments(int studyNo, int memberNo, int page) {
-        try {
-            int limit = 10;
-            int offset = (page - 1) * limit;
-            
-            List<StudyComment> comments = mapper.getMyComments(studyNo, memberNo, offset, limit);
-            
-            Map<String, Object> result = new HashMap<>();
-            result.put("comments", comments);
-            result.put("currentPage", page);
-            result.put("limit", limit);
-            
-            log.info("내 댓글 조회 - studyNo: {}, memberNo: {}, page: {}, count: {}", 
-                    studyNo, memberNo, page, comments.size());
-            
-            return result;
-        } catch (Exception e) {
-            log.error("내 댓글 조회 중 오류 발생 - studyNo: {}, memberNo: {}, page: {}", 
-                     studyNo, memberNo, page, e);
-            throw new RuntimeException("댓글 조회 중 오류가 발생했습니다.", e);
-        }
-    }
-
- 
-
 
     @Override
     public int getCurrentMemberCount(int studyNo) {
