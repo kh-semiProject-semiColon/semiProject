@@ -38,10 +38,6 @@ public interface StudyBoardMapper {
     List<StudyBoard> getMyPosts(@Param("studyNo") int studyNo, @Param("memberNo") int memberNo, 
                                @Param("offset") int offset, @Param("limit") int limit);
     
-    // 내 댓글 조회
-    List<StudyComment> getMyComments(@Param("studyNo") int studyNo, @Param("memberNo") int memberNo,
-                                    @Param("offset") int offset, @Param("limit") int limit);
-    
         
     // 현재 멤버 수 조회
     int getCurrentMemberCount(@Param("studyNo") int studyNo);

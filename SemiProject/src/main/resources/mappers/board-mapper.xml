@@ -18,7 +18,14 @@
 			 ofType   : List(컬렉션)의 제네릭(타입제한) 지정
 		 -->
 		
-		
+		<!-- 해당 게시글 댓글 목록 조회 후 필드에 저장 -->
+		<collection 
+		property="commentList"
+		select="selectCommentList"
+		column="BOARD_NO"
+		javaType="java.util.ArrayList"
+		ofType="Comment"
+		/>
 
 	</resultMap>
 
@@ -307,4 +314,42 @@
 		FROM "BOARD"
 		WHERE BOARD_NO = #{boardNo}
 	</select>
+	
+		<!-- 게시글 좋아요 체크 -->
+	<insert id="insertBoardLike">
+		INSERT INTO "BOARD_LIKE"
+		VALUES(#{boardNo}, #{memberNo})
+	</insert>
+	
+	<!-- 게시글 좋아요 해제 -->
+	<delete id="deleteBoardLike">
+		DELETE FROM "BOARD_LIKE"
+		WHERE MEMBER_NO = #{memberNo}
+		AND BOARD_NO = #{boardNo}
+	</delete>
+	
+	<!-- 게시글 좋아요 개수 조회 -->
+	<select id="selectLikeCount">
+		SELECT COUNT(*) FROM "BOARD_LIKE"
+		WHERE BOARD_NO = #{boardNo}
+	</select>
+	
+	<!-- 상세 조회한 게시글의 댓글 목록 조회 -->
+	<select id="selectCommentList" resultType="Comment">
+		SELECT LEVEL, C.* FROM
+		(SELECT COMMENT_NO, COMMENT_CONTENT,
+		    TO_CHAR(COMMENT_WRITTEN_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') COMMENT_WRITTEN_DATE,
+		    BOARD_NO, MEMBER_NO, MEMBER_NICKNAME, PROFILE_IMG, PARENT_COMMENT_NO, COMMENT_DEL_FL
+		FROM "COMMENT"
+		JOIN MEMBER USING(MEMBER_NO)
+		WHERE BOARD_NO = #{boardNo}) C
+		WHERE COMMENT_DEL_FL = 'N'
+		OR 0 != (SELECT COUNT(*) FROM "COMMENT" SUB
+					WHERE SUB.PARENT_COMMENT_NO = C.COMMENT_NO
+					AND COMMENT_DEL_FL = 'N')
+		START WITH PARENT_COMMENT_NO IS NULL
+		CONNECT BY PRIOR COMMENT_NO = PARENT_COMMENT_NO
+		ORDER SIBLINGS BY COMMENT_NO
+	</select>
+	
 </mapper>

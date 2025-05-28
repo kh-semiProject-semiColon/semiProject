@@ -31,6 +31,7 @@ public interface HireBoardService {
 	// 구인 스터디 조회
 	Study selectStudyNo(int studyNo);
 
+
 	
 
 }

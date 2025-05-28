@@ -72,11 +72,9 @@ public class StudyBoardController {
             }
             
             Map<String, Object> postData = service.getMyPosts(loginMember.getStudyNo(), loginMember.getMemberNo(), page);
-            Map<String, Object> commentData = service.getMyComments(loginMember.getStudyNo(), loginMember.getMemberNo(), page);
             
             model.addAttribute("study", study);
             model.addAttribute("posts", postData.get("posts"));
-            model.addAttribute("comments", commentData.get("comments"));
             model.addAttribute("currentPage", page);
             model.addAttribute("studyNo", loginMember.getStudyNo());
             
@@ -180,20 +178,20 @@ public class StudyBoardController {
      */
     @GetMapping("delete")
     public String studyBoardDelete(@SessionAttribute("loginMember") Member loginMember,
-                                 @RequestParam("studyNo") int studyNo, Model model) {
+                                  Model model) {
         try {
             Study study = service.getStudyInfo(loginMember);
+            
             if (study == null) {
                 log.warn("존재하지 않는 스터디 또는 권한 없음 - studyNo: {}, memberNo: {}", 
-                        studyNo, loginMember.getMemberNo());
+                        study, loginMember.getMemberNo());
                 return "redirect:/study/studyNow";
             }
             
             model.addAttribute("study", study);
-            model.addAttribute("studyNo", studyNo);
             
             log.info("스터디 탈퇴 페이지 접근 - studyNo: {}, memberNo: {}, isLeader: {}", 
-                    studyNo, loginMember.getMemberNo(), study.isLeader());
+                    study, loginMember.getMemberNo(), study.isLeader());
             
         } catch (Exception e) {
             log.error("스터디 탈퇴 페이지 오류", e);
@@ -241,7 +239,7 @@ public class StudyBoardController {
     // ============================================
     
     /**
-     * 스터디 해체 페이지
+     * 스터디 탈퇴 페이지
      */
     @GetMapping("delete1")
     public String studyBoardDelete1(@SessionAttribute("loginMember") Member loginMember,

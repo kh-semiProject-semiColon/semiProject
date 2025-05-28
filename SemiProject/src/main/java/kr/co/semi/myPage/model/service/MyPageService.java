@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.co.semi.board.model.dto.Board;
+import kr.co.semi.board.model.dto.Pagination;
 import kr.co.semi.member.model.dto.Member;
 
 
@@ -30,6 +31,7 @@ public interface MyPageService {
 	// 댓글 리스트 들고 오는 메서드
 	List<Map<String, String>> selectComment(int memberNo);
 
+	
 
 
 }

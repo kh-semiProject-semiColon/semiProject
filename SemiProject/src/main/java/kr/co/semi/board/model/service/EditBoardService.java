@@ -1,6 +1,7 @@
 package kr.co.semi.board.model.service;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,6 +15,20 @@ public interface EditBoardService {
 	 * @return
 	 */
 	int boardInsert(Board inputBoard);
+
+	/** 게시글 삭제
+	 * @param map
+	 * @return
+	 */
+	int boardDelete(Map<String, Integer> map);
+
+	/** 게시글 수정
+	 * @param inputBoard
+	 * @param deleteOrderList
+	 * @return
+	 */
+	int boardUpdate(Board inputBoard) throws Exception;
+
 
 
 

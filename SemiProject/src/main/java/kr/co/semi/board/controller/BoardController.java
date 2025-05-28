@@ -38,8 +38,8 @@ public class BoardController {
 	
 	@Autowired
 	private BoardService bService;
-
 	
+	// 현황 게시판 이동
 	@GetMapping("announce")
 	public String announce(Model model,
     		@RequestParam(value="cp", required=false, defaultValue ="1") int cp, 
@@ -60,6 +60,7 @@ public class BoardController {
 		return "board/announce";
 	}
 	
+	// 자유,질문 게시판 이동
 	@GetMapping("{boardCode:[0-9]+}")
 	public String boardList(Model model,
 			@PathVariable("boardCode") int boardCode,
@@ -222,14 +223,14 @@ public class BoardController {
 		return path;
 	}
 	
-//	/** 게시글 좋아요 체크/해제
-//	 * @return
-//	 */
-//	@PostMapping("like")
-//	@ResponseBody
-//	public int boardLike(@RequestBody Map<String, Integer> map) {
-//		
-//		return service.boardLike(map);
-//	}
+	/** 게시글 좋아요 체크/해제
+	 * @return
+	 */
+	@PostMapping("like")
+	@ResponseBody
+	public int boardLike(@RequestBody Map<String, Integer> map) {
+		
+		return bService.boardLike(map);
+	}
 	
 }
