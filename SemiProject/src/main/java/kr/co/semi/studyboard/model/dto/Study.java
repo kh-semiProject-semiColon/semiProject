@@ -1,34 +1,75 @@
 package kr.co.semi.studyboard.model.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Study {
     
-    // 기본 스터디 정보 (STUDY 테이블)
-    private int studyNo;
-    private String studyName;
-    private String studyDelFl;
-    private int studyMaxCount;
-    private String studyDate;        // Date 타입으로 변경 권장
-    private int studyType;
-    private int studyPeriod;
-    private String studyMainImg;
+    // STUDY 테이블 컬럼
+    private int studyNo;           // STUDY_NO
+    private String studyName;      // STUDY_NAME
+    private String studyDelFl;     // STUDY_DEL_FL
+    private int studyMaxCount;     // STUDY_MAX_COUNT
+    private String studyDate;      // STUDY_DATE (String으로 변경)
+    private int studyType;         // STUDY_TYPE
+    private int studyPeriod;       // STUDY_PERIOD
+    private String studyMainImg;   // STUDY_MAIN_IMG
     
-    // 스터디 규칙 (STUDY_RULE 테이블)
-    private String ruleContent;
+    // STUDY_RULE 테이블 컬럼 (JOIN)
+    private String ruleContent;    // RULE_CONTENT
     
-    // 스터디 멤버 관련 (STUDY_MEMBER 테이블)
-    private String studyCap;       // 팀장 여부
-    private int memberNo;          // 현재 사용자의 회원번호
-    private int memberCount;       // 현재 스터디 참여 인원수
+    // STUDY_MEMBER 테이블 컬럼 (JOIN)
+    private String studyCap;       // STUDY_CAP (팀장 여부 Y/N)
+    private String MemberCount;    // 스케줄은 MemberCount로 받아옴
+    private int memberNo;          // MEMBER_NO
     
-    // 추가로 고려할 수 있는 필드들
-    private String memberNickname; // 팀장 닉네임 (조인 시 사용)
-    private boolean isLeader;      // 현재 사용자가 팀장인지 여부
-    private boolean isMember;      // 현재 사용자가 멤버인지 여부
+    // 추가 필드들 (계산 또는 JOIN으로 가져올 데이터)
+    private String memberNickname; // MEMBER.MEMBER_NICKNAME
+    private int currentMemberCount; // COUNT로 계산
+    private String memberJoinDate; // 실제로는 STUDY_MEMBER에 JOIN_DATE 컬럼이 없음 (String으로 변경)
+    
+    // ========================================
+    // 🔥 이 메서드가 누락되어 있었습니다!
+    // ========================================
+    /**
+     * 팀장 여부 확인 메서드
+     * @return studyCap이 'Y'이면 true, 아니면 false
+     */
+    public boolean isLeader() {
+        return "Y".equals(this.studyCap);
+    }
+    
+    // 스터디 타입 텍스트 변환
+    public String getStudyTypeText() {
+        switch(this.studyType) {
+            case 1: return "백엔드";
+            case 2: return "복습";
+            case 3: return "문제풀이";
+            case 4: return "자격증";
+            case 5: return "프로젝트";
+            default: return "기타";
+        }
+    }
+    
+    // 스터디 기간 텍스트 변환
+    public String getStudyPeriodText() {
+        switch(this.studyPeriod) {
+            case 0: return "종강까지";
+            case 1: return "1개월";
+            case 2: return "2개월";
+            case 3: return "3개월";
+            case 4: return "4개월";
+            case 5: return "5개월";
+            case 6: return "6개월";
+            default: return "미정";
+        }
+    }
+
+
 }
