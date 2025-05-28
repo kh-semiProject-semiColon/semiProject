@@ -84,49 +84,10 @@ SELECT * FROM (
     FROM STUDY_BOARD SB
     JOIN MEMBER M ON SB.MEMBER_NO = M.MEMBER_NO
     WHERE SB.STUDY_NO = #{studyNo} 
-    AND SB.MEMBER_NO = #{memberNo}
     AND SB.STUDY_BOARD_DEL_FL = 'N'
 ) WHERE RN > #{offset} AND RN <= #{offset} + #{limit}
 ]]>
 </select>
-
-<!-- 내가 작성한 스터디 댓글 조회 -->
-<select id="getMyComments" resultType="StudyComment">
-<![CDATA[
-SELECT * FROM (
-    SELECT SC.STUDY_COMMENT_NO, SC.STUDY_COMMENT_CONTENT, 
-           TO_CHAR(SC.STUDY_COMMENT_DATE, 'YYYY-MM-DD') AS STUDY_COMMENT_DATE,
-           SB.STUDY_BOARD_TITLE,
-           M.MEMBER_NICKNAME,
-           ROW_NUMBER() OVER (ORDER BY SC.STUDY_COMMENT_DATE DESC) AS RN
-    FROM STUDY_COMMENT SC
-    JOIN STUDY_BOARD SB ON SC.STUDY_BOARD_NO = SB.STUDY_BOARD_NO
-    JOIN MEMBER M ON SC.MEMBER_NO = M.MEMBER_NO
-    WHERE SB.STUDY_NO = #{studyNo}
-    AND SC.MEMBER_NO = #{memberNo}
-    AND SC.STUDY_COMMENT_DEL_FL = 'N'
-) WHERE RN > #{offset} AND RN <= #{offset} + #{limit}
-]]>
-</select>
-
-<!-- 스터디 스케줄 조회 -->
-<select id="getStudySchedules" resultType="StudyCalendar">
-SELECT CALENDAR_NO, CALENDAR_TITLE, 
-       TO_CHAR("START", 'YYYY-MM-DD') AS "START", 
-       TO_CHAR("END", 'YYYY-MM-DD') AS "END", 
-       STUDY_NO, SC.MEMBER_NO,
-       M.MEMBER_NICKNAME
-FROM STUDY_CALENDAR SC
-JOIN MEMBER M ON SC.MEMBER_NO = M.MEMBER_NO
-WHERE STUDY_NO = #{studyNo}
-ORDER BY "START" ASC
-</select>
-
-<!-- 스케줄 등록 -->
-<insert id="insertSchedule">
-INSERT INTO STUDY_CALENDAR (CALENDAR_NO, CALENDAR_TITLE, "START", "END", STUDY_NO, MEMBER_NO)
-VALUES (SEQ_STUDY_CALENDAR.NEXTVAL, #{title}, TO_DATE(#{startDate}, 'YYYY-MM-DD'), TO_DATE(#{endDate}, 'YYYY-MM-DD'), #{studyNo}, #{memberNo})
-</insert>
 
 <!-- 현재 스터디 멤버 수 조회 -->
 <select id="getCurrentMemberCount" resultType="int">

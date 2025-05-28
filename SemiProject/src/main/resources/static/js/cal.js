@@ -16,7 +16,7 @@ $(document).ready(function () {
     headerToolbar: {
       left: "prevYear,prev,next,nextYear today",
       center: "title",
-      right: "colorPickerButton dayGridMonth",
+      right: "colorPickerButton dayGridMonth listMonth",
     },
     initialView: "dayGridMonth",
     displayEventTime: false,

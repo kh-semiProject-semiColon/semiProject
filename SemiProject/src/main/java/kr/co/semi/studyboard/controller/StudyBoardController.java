@@ -72,11 +72,9 @@ public class StudyBoardController {
             }
             
             Map<String, Object> postData = service.getMyPosts(loginMember.getStudyNo(), loginMember.getMemberNo(), page);
-            Map<String, Object> commentData = service.getMyComments(loginMember.getStudyNo(), loginMember.getMemberNo(), page);
             
             model.addAttribute("study", study);
             model.addAttribute("posts", postData.get("posts"));
-            model.addAttribute("comments", commentData.get("comments"));
             model.addAttribute("currentPage", page);
             model.addAttribute("studyNo", loginMember.getStudyNo());
             

@@ -32,9 +32,6 @@ public interface StudyBoardService {
     // 내 게시글 조회
     Map<String, Object> getMyPosts(int studyNo, int memberNo, int page);
     
-    // 내 댓글 조회
-    Map<String, Object> getMyComments(int studyNo, int memberNo, int page);
-        
     // 현재 멤버 수 조회
     int getCurrentMemberCount(int studyNo);
     
