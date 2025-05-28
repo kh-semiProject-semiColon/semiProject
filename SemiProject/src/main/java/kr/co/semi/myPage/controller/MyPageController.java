@@ -87,6 +87,8 @@ public class MyPageController {
 			@RequestParam("profileImg") MultipartFile profileImg,
 			RedirectAttributes ra) throws Exception {
 
+		// 로그인한 회원의 번호 얻어오기
+		int memberNo = loginMember.getMemberNo();
 		
 		// 수정되었다는 알림 메세지 띄우는 변수
 		String message = null;
@@ -95,7 +97,7 @@ public class MyPageController {
 		inputMember.setMemberName(loginMember.getMemberName());
 
 		// 회원정보 수정 메서드
-		int result = service.updateInfo(inputMember);
+		int result = service.updateInfo(inputMember, profileImg);
 
 		if (result > 0) {
 			loginMember.setMemberNickname(inputMember.getMemberNickname());
