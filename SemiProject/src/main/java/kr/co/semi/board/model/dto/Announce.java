@@ -23,6 +23,7 @@ public class Announce {
 		
 	private int memberNo;					// 회원고유번호
 	private String memberNickname;			// 회원 닉네임
-	
+	private String profileImg;				// 프로필 이미지
+
 	
 }

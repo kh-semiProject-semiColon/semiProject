@@ -127,6 +127,24 @@ public interface BoardMapper {
 	 */
 	int selectLikeCount(Integer integer);
 
+	/** 공지사항 상세조회
+	 * @param map
+	 * @return
+	 */
+	Announce announceOne(Map<String, Integer> map);
+
+	/** 공지사항 조회수 올리기
+	 * @param announceNo
+	 * @return
+	 */
+	int updateAnnounceCount(int announceNo);
+
+	/** 공지사항 조회수 조회
+	 * @param announceNo
+	 * @return
+	 */
+	int selectAnnounceCount(int announceNo);
+
 
 	
 

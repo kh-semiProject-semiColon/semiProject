@@ -169,7 +169,6 @@ public class EditBoardController {
 				model.addAttribute("board", board);
 				
 			}
-			System.out.println(path);
 			return path;
 		}
 	   

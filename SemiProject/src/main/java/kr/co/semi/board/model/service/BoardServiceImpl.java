@@ -187,9 +187,13 @@ public class BoardServiceImpl implements BoardService{
 		
 		Board result = mapper.selectOne(map);
 		
-		System.out.println(result);
 		
 		return result;
+	}
+	
+	@Override
+	public Announce announceOne(Map<String, Integer> map) {
+		return mapper.announceOne(map);
 	}
 	
 	@Override
@@ -206,6 +210,21 @@ public class BoardServiceImpl implements BoardService{
 		// 실패한 경우 -1 반환
 		return -1;
 	}
+	
+	@Override
+	public int updateAnnounceCount(int announceNo) {
+		// 1. 조회수 1 증가 (UPDATE)
+		int result = mapper.updateAnnounceCount(announceNo);
+		
+		// 2. 현재 조회 수 조회
+		if(result>0) {
+			return mapper.selectAnnounceCount(announceNo);
+		}
+		
+		// 실패한 경우 -1 반환
+		return -1;
+	}
+	
 	
 	@Override
 	public int boardLike(Map<String, Integer> map) {
