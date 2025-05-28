@@ -148,7 +148,6 @@ public class MyPageController {
 		List<Board> boardList = service.selectBoard(loginMember.getMemberNo());		
 
 		if (boardList == null || boardList.isEmpty()) {
-			ra.addAttribute("message", "작성한 게시글이 없습니다.");
 			model.addAttribute("boardList", new ArrayList<>()); // 빈 리스트라도 전달
 		} else {
 			model.addAttribute("boardList", boardList);
@@ -212,7 +211,6 @@ public class MyPageController {
 		}
 
 		ra.addFlashAttribute("message", message);
-		log.info(message);
 		return "redirect:" + path;
 	}
 
