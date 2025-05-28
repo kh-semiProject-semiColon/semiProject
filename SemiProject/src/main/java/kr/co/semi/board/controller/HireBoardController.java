@@ -85,7 +85,7 @@ public class HireBoardController {
 					
 					// 새 쿠키 생성 ("readHireNo", [게시글 번호])
 					c = new Cookie("readHireNo", "["+ hireNo + "]");
-					result = service.updateReadCount(hireNo);
+					result = service.updateHireReadCount(hireNo);
 					
 				} else {
 					// "readHireNo"가 쿠키에 있을 때

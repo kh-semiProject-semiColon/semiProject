@@ -1,6 +1,11 @@
 package kr.co.semi.board.model.service;
 
+import java.io.IOException;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import kr.co.semi.board.model.dto.Board;
+import kr.co.semi.board.model.dto.BoardImg;
 
 public interface EditBoardService {
 
@@ -9,5 +14,7 @@ public interface EditBoardService {
 	 * @return
 	 */
 	int boardInsert(Board inputBoard);
+
+
 
 }

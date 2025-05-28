@@ -36,4 +36,95 @@
 	MEMBER_DEL_FL = 'Y'
 	WHERE MEMBER_NO = #{memberNo}
 	</update>
+	
+	<resultMap id="boardResultMap" type="kr.co.semi.board.model.dto.Board">
+		<result property="boardNo" column="boardNo" />
+		<result property="boardTitle" column="boardTitle" />
+		<result property="memberNickname" column="memberNickname" />
+		<result property="boardWriteDate" column="boardWriteDate" />
+		<result property="readCount" column="readCount" />
+		<result property="likeCount" column="likeCount" />
+		<result property="boardCode" column="boardCode" />
+	</resultMap>
+
+	<select id="selectBoard" resultMap="boardResultMap" parameterType="int">
+		SELECT
+		STUDY_BOARD_NO AS boardNo,
+		STUDY_BOARD_TITLE AS boardTitle,
+		MEMBER_NICKNAME AS memberNickname,
+		TO_CHAR(STUDY_BOARD_WRITE_DATE, 'YY.MM.DD') AS boardWriteDate,
+		READ_COUNT AS readCount,
+		LIKE_COUNT AS likeCount,
+		1 AS boardCode
+		FROM (
+		SELECT
+		sb.STUDY_BOARD_NO,
+		sb.STUDY_BOARD_TITLE,
+		m.MEMBER_NICKNAME,
+		sb.STUDY_BOARD_WRITE_DATE,
+		sb.READ_COUNT,
+		COUNT(bl.BOARD_NO) AS LIKE_COUNT
+		FROM STUDY_BOARD sb
+		LEFT JOIN MEMBER m ON sb.MEMBER_NO = m.MEMBER_NO
+		LEFT JOIN BOARD_LIKE bl ON sb.STUDY_BOARD_NO = bl.BOARD_NO
+		WHERE sb.MEMBER_NO = #{memberNo}
+		GROUP BY sb.STUDY_BOARD_NO, sb.STUDY_BOARD_TITLE, m.MEMBER_NICKNAME,
+		sb.STUDY_BOARD_WRITE_DATE, sb.READ_COUNT
+		)
+
+		UNION ALL
+
+		SELECT
+		BOARD_NO AS boardNo,
+		BOARD_TITLE AS boardTitle,
+		MEMBER_NICKNAME AS memberNickname,
+		TO_CHAR(BOARD_WRITE_DATE, 'YY.MM.DD') AS boardWriteDate,
+		READ_COUNT AS readCount,
+		LIKE_COUNT AS likeCount,
+		2 AS boardCode
+		FROM (
+		SELECT
+		b.BOARD_NO,
+		b.BOARD_TITLE,
+		m.MEMBER_NICKNAME,
+		b.BOARD_WRITE_DATE,
+		b.READ_COUNT,
+		COUNT(bl.BOARD_NO) AS LIKE_COUNT
+		FROM BOARD b
+		LEFT JOIN MEMBER m ON b.MEMBER_NO = m.MEMBER_NO
+		LEFT JOIN BOARD_LIKE bl ON b.BOARD_NO = bl.BOARD_NO
+		WHERE b.MEMBER_NO = #{memberNo}
+		GROUP BY b.BOARD_NO, b.BOARD_TITLE, m.MEMBER_NICKNAME,
+		b.BOARD_WRITE_DATE, b.READ_COUNT
+		)
+
+		UNION ALL
+
+		SELECT
+		HIRE_NO AS boardNo,
+		HIRE_TITLE AS boardTitle,
+		MEMBER_NICKNAME AS memberNickname,
+		TO_CHAR(HIRE_DATE, 'YY.MM.DD') AS boardWriteDate,
+		HIRE_READ_COUNT AS readCount,
+		LIKE_COUNT AS likeCount,
+		3 AS boardCode
+		FROM (
+		SELECT
+		h.HIRE_NO,
+		h.HIRE_TITLE,
+		m.MEMBER_NICKNAME,
+		h.HIRE_DATE,
+		h.HIRE_READ_COUNT,
+		COUNT(bl.BOARD_NO) AS LIKE_COUNT
+		FROM HIRE_INFO h
+		LEFT JOIN MEMBER m ON h.MEMBER_NO = m.MEMBER_NO
+		LEFT JOIN BOARD_LIKE bl ON h.MEMBER_NO = bl.MEMBER_NO
+		WHERE h.MEMBER_NO = #{memberNo}
+		GROUP BY h.HIRE_NO, h.HIRE_TITLE, m.MEMBER_NICKNAME, h.HIRE_DATE,
+		h.HIRE_READ_COUNT
+		)
+
+		ORDER BY boardWriteDate DESC
+	</select>
+
 </mapper>

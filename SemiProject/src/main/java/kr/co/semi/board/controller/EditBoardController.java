@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,24 +17,31 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpServletRequest;
 import kr.co.semi.board.model.dto.Board;
 import kr.co.semi.board.model.service.BoardService;
 import kr.co.semi.board.model.service.EditBoardService;
+import kr.co.semi.common.util.Utility;
 import kr.co.semi.member.model.dto.Member;
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("editBoard")
 @RequiredArgsConstructor
+@Configuration
 @PropertySource("classpath:/config.properties")
 public class EditBoardController {
 
 	private final EditBoardService service;
 	private final BoardService bService;
+	
+	@Value("${my.board.temp.folder-path}")
+	private String tempFolderPath;
 	
 	@Value("${my.board.web-path}")
 	private String webPath;
@@ -97,5 +105,21 @@ public class EditBoardController {
 		return "redirect:"+path;
 	}
 
-	
+	   @ResponseBody
+	   @PostMapping("{boardCode:[0-9]+}/uploadImg")
+	   public String uploadSummernoteImage(@RequestParam("image") MultipartFile image,
+	                                       HttpServletRequest req) throws IOException {
+
+	       String imgPath = folderPath; 
+
+	       String imgOriginalName = image.getOriginalFilename();
+	       String imgRename = Utility.fileRename(imgOriginalName);
+
+	       File target = new File(imgPath + imgRename);
+	       image.transferTo(target);
+	       
+	       String imageUrl = req.getContextPath()+ webPath + imgRename;
+	       return imageUrl;
+	   }
+
 }

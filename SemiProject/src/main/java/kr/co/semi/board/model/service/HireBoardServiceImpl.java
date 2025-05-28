@@ -96,7 +96,7 @@ public class HireBoardServiceImpl implements HireBoardService{
 	@Override
 	public int updateHireReadCount(int hireNo) {
 		
-		int result = mapper.updateReadCount(hireNo);
+		int result = hmapper.updateHireReadCount(hireNo);
 		
 		
 		return 0;

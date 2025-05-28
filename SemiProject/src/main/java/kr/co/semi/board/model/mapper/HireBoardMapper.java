@@ -16,5 +16,9 @@ public interface HireBoardMapper {
 	HireInfo selectOne(Map<String, Integer> map);
 
 	
-	
+	/** 구인 게시글 조회수 증가
+	 * @param hireNo
+	 * @return
+	 */
+	int updateHireReadCount(int hireNo);
 }
