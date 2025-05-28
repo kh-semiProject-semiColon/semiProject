@@ -16,7 +16,7 @@ $(document).ready(function () {
     headerToolbar: {
       left: "prevYear,prev,next,nextYear today",
       center: "title",
-      right: "colorPickerButton dayGridMonth",
+      right: "dayGridMonth",
     },
     initialView: "dayGridMonth",
     displayEventTime: false,
@@ -96,12 +96,16 @@ $(document).ready(function () {
   calendar.render();
   // 버튼 렌더링 후 select 삽입
   setTimeout(() => {
-    const btn = document.querySelector(".fc-colorPickerButton-button");
-    if (btn && !document.getElementById("colorPicker")) {
+    if (!document.getElementById("colorPicker")) {
       const select = document.createElement("select");
       select.id = "colorPicker";
       select.style.marginLeft = "10px";
+      select.style.height = "30px";
+      select.style.border = "1px solid #ccc";
       select.style.height = "26px";
+      select.style.padding = "2px 5px";
+      select.style.cursor = "pointer";
+
       select.innerHTML = `
         <option value="#3788d8">파랑</option>
         <option value="#28a745">초록</option>
@@ -109,15 +113,18 @@ $(document).ready(function () {
         <option value="#ffc107">노랑</option>
         <option value="#25272B">검정</option>
       `;
-      btn.innerHTML = ""; // 기존 텍스트 제거
-      btn.appendChild(select);
+      const toolbarRight = document.querySelector(
+        ".fc-header-toolbar .fc-toolbar-chunk:last-child"
+      );
+      if (toolbarRight) {
+        toolbarRight.appendChild(select);
 
-      // 색상 변경 이벤트
-      select.addEventListener("change", function () {
-        selectedColor = this.value;
-      });
+        select.addEventListener("change", function () {
+          selectedColor = this.value;
+        });
+      }
     }
-  }, 100); // 약간의 지연 후 삽입
+  }, 200);
   function updateEvent(arg) {
     let event = {
       title: arg.event.title,
