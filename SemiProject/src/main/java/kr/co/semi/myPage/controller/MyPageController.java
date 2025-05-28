@@ -84,7 +84,7 @@ public class MyPageController {
 		inputMember.setMemberName(loginMember.getMemberName());
 
 		// 회원정보 수정 메서드
-		int result = service.updateInfo(inputMember, null);
+		int result = service.updateInfo(inputMember);
 
 		if (result > 0) {
 			loginMember.setMemberNickname(inputMember.getMemberNickname());

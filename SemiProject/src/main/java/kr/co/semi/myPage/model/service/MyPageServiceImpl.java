@@ -133,10 +133,6 @@ public class MyPageServiceImpl implements MyPageService {
 		return mapper.deleteMember(memberNo);
 	}
 
-	@Override
-	public int updateInfo(Member inputMember, MultipartFile profileImg) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
 	
 }
