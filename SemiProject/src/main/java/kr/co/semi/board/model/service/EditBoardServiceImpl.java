@@ -1,15 +1,15 @@
 package kr.co.semi.board.model.service;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.semi.board.model.dto.Board;
@@ -59,6 +59,25 @@ public class EditBoardServiceImpl implements EditBoardService{
 				
 				return boardNo;
 		}
+	
+	
+	@Override
+	public int boardUpdate(Board inputBoard) throws Exception {
+		
+		// 1. 게시글 부분(제목/내용) 수정
+		int result = mapper.boardUpdate(inputBoard);
+		
+		// 수정 실패 시 바로 리턴
+		if(result == 0) return 0;
+		
+		return result;
+	}
+	
+	// 게시글 삭제 서비스
+	@Override
+	public int boardDelete(Map<String, Integer> map) {
+		return mapper.boardDelete(map);
+	}
 	
 
 }
