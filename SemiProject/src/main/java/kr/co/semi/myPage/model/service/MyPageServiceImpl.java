@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.semi.board.model.dto.Board;
-import kr.co.semi.board.model.dto.Pagination;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.myPage.model.mapper.MyPageMapper;
 
@@ -24,6 +25,12 @@ public class MyPageServiceImpl implements MyPageService {
 
 	@Autowired // 현재 비밀번호와 비교하기 위한 의존성 주입
 	private BCryptPasswordEncoder bcrypt;
+	
+	@Value("${my.profile.web-path}")
+	private String profileWebPath; // /myPage/profile/
+
+	@Value("${my.profile.folder-path}")
+	private String profileFolderPath; // C:/uploadFiles/profile/
 
 	// 전공자 여부, 자기소개 들고오는 메서드
 	@Override
@@ -125,5 +132,7 @@ public class MyPageServiceImpl implements MyPageService {
 	public int deleteMember(int memberNo) {
 		return mapper.deleteMember(memberNo);
 	}
+
+
 	
 }

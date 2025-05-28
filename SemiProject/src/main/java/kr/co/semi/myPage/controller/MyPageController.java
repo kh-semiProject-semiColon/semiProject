@@ -82,7 +82,6 @@ public class MyPageController {
 		// 제출된 수정된 회원 닉네임, 전화번호, 주소에 로그인한 세션넘버를 같이 보내는 과정
 		inputMember.setMemberNo(loginMember.getMemberNo());
 		inputMember.setMemberName(loginMember.getMemberName());
-		log.info(inputMember.toString());
 
 		// 회원정보 수정 메서드
 		int result = service.updateInfo(inputMember);

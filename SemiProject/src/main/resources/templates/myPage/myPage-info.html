@@ -33,11 +33,14 @@
             th:action="info"
             method="post"
             name="myPageFrm"
+            id="profile"
             class="info-form"
+            enctype="multipart/form-data"
           >
           <!-- 프로필 이미지 섹션 -->
           <div class="profile-section">
             <div class="profile-image-container">
+              <input type="file" name="profileImg" accept="image/*" id="profileImg" style="display: none;" />
               <!-- user가 null이 아니고 profileImage가 존재할 때 -->
               <img
                 th:if="${loginMember != null and loginMember.profileImg != null}"
@@ -50,6 +53,7 @@
                 th:src="@{/images/default-profile.png}"
               />
               <button type="button" class="remove-image">X</button>
+              <input type="hidden" name="deleteProfileImage" id="deleteProfileImage" value="false" />
             </div>
             <button type="button" class="image-select-btn">이미지 선택</button>
           </div>
