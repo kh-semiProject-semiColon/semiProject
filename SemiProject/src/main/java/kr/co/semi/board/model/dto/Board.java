@@ -26,6 +26,9 @@ public class Board {
 	private String memberNickname;			// 회원 닉네임
 	private int commentCount;				// 댓글 개수
 	private int likeCount;					// 좋아요 개수
+	private String profileImg;				// 프로필 이미지
+	private List<Comment> commentList;		// 댓글 목록
+	private int likeCheck;					// 좋아요 여부
 	
 	
 }

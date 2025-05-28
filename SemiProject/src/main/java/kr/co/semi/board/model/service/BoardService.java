@@ -2,6 +2,8 @@ package kr.co.semi.board.model.service;
 
 import java.util.Map;
 
+import kr.co.semi.board.model.dto.Board;
+
 public interface BoardService {
 
 	/** 공지사항 가져오기
@@ -30,5 +32,17 @@ public interface BoardService {
 	 * @return
 	 */
 	Map<String, Object> searchList(Map<String, Object> paramMap, int cp);
+
+	/** 게시글 상세조회
+	 * @param map
+	 * @return
+	 */
+	Board selectOne(Map<String, Integer> map);
+
+	/** 조회수 증가
+	 * @param boardNo
+	 * @return
+	 */
+	int updateReadCount(int boardNo);
 
 }
