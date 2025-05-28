@@ -32,6 +32,7 @@ public interface MyPageMapper {
 
 	// 댓글 리스트 들고오는 메서드
 	List<Map<String, String>> selectComment(int memberNo);
+
 	
 
 

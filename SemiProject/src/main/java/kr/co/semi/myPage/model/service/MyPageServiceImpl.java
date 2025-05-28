@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.semi.board.model.dto.Board;
+import kr.co.semi.board.model.dto.Pagination;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.myPage.model.mapper.MyPageMapper;
 
@@ -24,11 +25,13 @@ public class MyPageServiceImpl implements MyPageService {
 	@Autowired // 현재 비밀번호와 비교하기 위한 의존성 주입
 	private BCryptPasswordEncoder bcrypt;
 
+	// 전공자 여부, 자기소개 들고오는 메서드
 	@Override
 	public Member selectMember(int memberNo) {
 		return (Member) mapper.selectMember(memberNo);
 	}
 
+	// 자기 페이지 수정하는 메서드
 	public int updateInfo(Member inputMember) {
 		String rawAddress = inputMember.getMemberAddress();
 
@@ -54,16 +57,27 @@ public class MyPageServiceImpl implements MyPageService {
 		return mapper.updateInfo(inputMember);
 	}
 
+	
+	/** 게시글을 조회, 상세조회하는 메서드
+	 *
+	 */
 	@Override
 	public List<Board> selectBoard(int memberNo) {
 		return mapper.selectBoard(memberNo);
 	}
 	
+	
+	/** 댓글을 조회, 상세조회하는 메서드
+	 *
+	 */
 	@Override
 	public List<Map<String, String>> selectComment(int memberNo) {
 		return mapper.selectComment(memberNo);
 	}
 	
+	/** 비밀번호 변경하는 메서드
+	 * 
+	 */
 	@Override
 	public int changePw(Map<String, String> paramMap, int memberNo) {
 
@@ -95,12 +109,18 @@ public class MyPageServiceImpl implements MyPageService {
 		return mapper.changePw(paramMap);
 	}
 
+	/** 회원탈퇴전 비밀번호가 일치하는지 확인하는 메서드
+	 *
+	 */
 	@Override
 	public boolean checkPassword(int memberNo, String inputPw) {
 		String encryptedPw = mapper.selectPw(memberNo);
 		return bcrypt.matches(inputPw, encryptedPw);
 	}
 	
+	/** 회원 삭제하러 가는 메서즈
+	 *
+	 */
 	@Override
 	public int deleteMember(int memberNo) {
 		return mapper.deleteMember(memberNo);
