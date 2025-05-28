@@ -142,18 +142,19 @@ public class MyPageController {
 
 	// 게시글 상세주소로 옮기는 메서드 (단순 forward)
 	@GetMapping("posts")
-	public String posts(@SessionAttribute("loginMember") Member loginMember, Model model, Board board,
-			RedirectAttributes ra) {
+	public String posts(@SessionAttribute("loginMember") Member loginMember, Model model) {
 
-		List<Board> boardList = service.selectBoard(loginMember.getMemberNo());		
+	    // 게시판 조회
+	    List<Board> boardList = service.selectBoard(loginMember.getMemberNo());
 
-		if (boardList == null || boardList.isEmpty()) {
-			model.addAttribute("boardList", new ArrayList<>()); // 빈 리스트라도 전달
-		} else {
-			model.addAttribute("boardList", boardList);
-		}
+	    // 댓글 조회
+	    List<Map<String, String>> commentList = service.selectComment(loginMember.getMemberNo());
 
-		return "myPage/myPage-posts";
+	    // Null-safe 처리
+	    model.addAttribute("boardList", boardList != null ? boardList : new ArrayList<>());
+	    model.addAttribute("commentList", commentList != null ? commentList : new ArrayList<>());
+
+	    return "myPage/myPage-posts";
 	}
 
 	@GetMapping("delete1")
@@ -162,23 +163,21 @@ public class MyPageController {
 		return "/myPage/myPage-delete1";
 	}
 
-	
 	@PostMapping("delete2")
-	public String delete2(@SessionAttribute("loginMember") Member loginMember,
-	                      @RequestParam("memberPw") String inputPw,
-	                      RedirectAttributes ra) {
+	public String delete2(@SessionAttribute("loginMember") Member loginMember, @RequestParam("memberPw") String inputPw,
+			RedirectAttributes ra) {
 
-	    int memberNo = loginMember.getMemberNo();
+		int memberNo = loginMember.getMemberNo();
 
-	    boolean isPwMatch = service.checkPassword(memberNo, inputPw);
+		boolean isPwMatch = service.checkPassword(memberNo, inputPw);
 
-	    if (!isPwMatch) {
-	    	
-	        ra.addFlashAttribute("message", "비밀번호가 일치하지 않습니다.");
-	        return "redirect:/myPage/delete1";  // message alert를 사용하려면 redirect를 사용해야 한다!
-	    }
+		if (!isPwMatch) {
 
-	    return "myPage/myPage-delete2";
+			ra.addFlashAttribute("message", "비밀번호가 일치하지 않습니다.");
+			return "redirect:/myPage/delete1"; // message alert를 사용하려면 redirect를 사용해야 한다!
+		}
+
+		return "myPage/myPage-delete2";
 	}
 
 	// 삭제하는 페이지로 옮기는 메서드 (단순 forward)

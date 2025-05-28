@@ -102,7 +102,9 @@
 	</select>
 
 	<select id="selectComment">
-		SELECT HIRE_NO, HIRE_TITLE, HIRE_COMMENT_CONTENT, HIRE_COMMENT_DATE
+		SELECT HIRE_NO AS "boardNo", HIRE_TITLE AS "boardTitle",
+		HIRE_COMMENT_CONTENT AS "commentContent", HIRE_COMMENT_DATE AS
+		"commentDate"
 		FROM HIRE_INFO h
 		JOIN HIRE_COMMENT USING(HIRE_NO)
 		WHERE h.MEMBER_NO= #{memberNo}
