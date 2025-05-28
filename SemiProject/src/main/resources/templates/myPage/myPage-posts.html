@@ -44,23 +44,25 @@
           </div>
 
           <!-- 게시글 목록 -->
-          <div class="table-row" th:each="post : ${posts}">
-            <div class="col-num" th:text="${post.id}">1</div>
-            <div class="col-title" th:text="${post.title}">1번째 게시글</div>
-            <div class="col-author" th:text="${post.author}">유저명</div>
-            <div class="col-date" th:text="${post.createdAt}">25.05.09</div>
-            <div class="col-views" th:text="${post.viewCount}">202</div>
-            <div class="col-likes" th:text="${post.likeCount}">3</div>
-          </div>
-
-          <!-- 게시글 예시 데이터 (실제로는 타임리프로 반복 처리) -->
-          <div class="table-row" th:each="boardList : ${application.boardList}">
-            <div class="col-num" th:text="${}">1</div>
-            <div class="col-title">1번째 게시글</div>
-            <div class="col-author">유저명</div>
-            <div class="col-date">25.05.09</div>
-            <div class="col-views">202</div>
-            <div class="col-likes">3</div>
+          <!-- 질문, 자유 게시판 -->
+          <div
+            class="table-row"
+            th:each="board : ${boardList}"
+            th:data-board-no="${board.boardNo}"
+            onclick="testhandler(event)"
+          >
+            <div class="col-num" th:text="${board.boardNo}">1</div>
+            <div class="col-title" th:text="${board.boardTitle}">
+              1번째 게시글
+            </div>
+            <div class="col-author" th:text="${board.memberNickname}">
+              유저명
+            </div>
+            <div class="col-date" th:text="${board.boardWriteDate}">
+              25.05.09
+            </div>
+            <div class="col-views" th:text="${board.readCount}">202</div>
+            <div class="col-likes" th:text="${board.likeCount}">3</div>
           </div>
 
           <!-- 페이지네이션 -->
@@ -193,6 +195,13 @@
 
     <!-- 푸터 -->
     <th:block th:replace="~{common/footer}"></th:block>
+    <script th:inline="javascript">
+      const testhandler = (e) => {
+        const boardNo = e.currentTarget.dataset.boardNo;
+        console.log(e.currentTarget.dataset.boardNo);
+        window.location.href = `/board/detail/${boardNo}`;
+      };
+    </script>
 
     <script src="/js/myPage/sidebar.js"></script>
     <script src="/js/myPage/myPage-posts.js"></script>
