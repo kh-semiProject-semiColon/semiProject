@@ -45,11 +45,17 @@
 
           <!-- 게시글 목록 -->
           <div class="table-row" th:each="post : ${posts}">
-            <div class="col-num" th:text="${post.id}">1</div>
-            <div class="col-title" th:text="${post.title}">1번째 게시글</div>
-            <div class="col-author" th:text="${post.author}">유저명</div>
-            <div class="col-date" th:text="${post.createdAt}">25.05.09</div>
-            <div class="col-views" th:text="${post.viewCount}">202</div>
+            <div class="col-num" th:text="${post.studyBoardNo}">1</div>
+            <div class="col-title" th:text="${post.studyBoardTitle}">
+              1번째 게시글
+            </div>
+            <div class="col-author" th:text="${post.memberNickname}">
+              유저명
+            </div>
+            <div class="col-date" th:text="${post.studyBoardWriteDate}">
+              25.05.09
+            </div>
+            <div class="col-views" th:text="${post.readCount}">202</div>
             <div class="col-likes" th:text="${post.likeCount}">3</div>
           </div>
 
@@ -118,6 +124,22 @@
             <div class="col-post-title">게시글 제목</div>
             <div class="col-comment-text">댓글내용</div>
             <div class="col-comment-date">작성일</div>
+          </div>
+
+          <div class="table-row" th:each="comment : ${comments}">
+            <div class="col-num" th:text="${comment.studyCommentNo}">1</div>
+            <div class="col-post-title" th:text="${comment.studyBoardTitle}">
+              게시글 제목
+            </div>
+            <div
+              class="col-comment-text"
+              th:text="${comment.studyCommentContent}"
+            >
+              댓글내용
+            </div>
+            <div class="col-comment-date" th:text="${comment.studyCommentDate}">
+              작성일
+            </div>
           </div>
 
           <!-- 페이지네이션 -->
