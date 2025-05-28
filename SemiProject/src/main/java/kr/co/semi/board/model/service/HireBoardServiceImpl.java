@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.co.semi.board.model.dto.HireInfo;
 import kr.co.semi.board.model.dto.Pagination;
 import kr.co.semi.board.model.mapper.BoardMapper;
+import kr.co.semi.board.model.mapper.HireBoardMapper;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.studyboard.model.dto.Study;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +21,9 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional(rollbackFor = Exception.class)
 @Slf4j
 public class HireBoardServiceImpl implements HireBoardService{
-
+	
 	@Autowired
-	private BoardMapper mapper;
+	private HireBoardMapper mapper;
 
 	// 구인 게시글 조회
 	@Override
@@ -80,5 +81,25 @@ public class HireBoardServiceImpl implements HireBoardService{
 	@Override
 	public int writeHireBoardInsert(HireInfo inputHire) {
 		return mapper.writeHireBoardInsert(inputHire);
+	}
+	
+	// 구인 게시글 상세 조회
+	@Override
+	public HireInfo selectOne(Map<String, Integer> map) {
+		return mapper.selectOne(map);
+	}
+	
+	// 구인 게시글 조회수 증가
+	@Override
+	public int updateHireReadCount(int hireNo) {
+		
+		return mapper.updateHireReadCount(hireNo);
+		
+	}
+	
+	// 구인 게시글 스터디 조회
+	@Override
+	public Study selectStudyNo(int studyNo) {
+		return mapper.selectStudyNo(studyNo);
 	}
 }

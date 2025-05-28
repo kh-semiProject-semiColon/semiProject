@@ -14,27 +14,6 @@ import kr.co.semi.studyboard.model.dto.Study;
 @Mapper
 public interface BoardMapper {
 
-	/** 게시글 수 조회
-	 * @param hireNo
-	 */
-	int getListCount();
-
-	/** 지정된 페이지 목록 조회
-	 * @param rowBounds
-	 * @return
-	 */
-	List<HireInfo> selecHireBoardList(RowBounds rowBounds);
-
-	/** 검색 서비스
-	 * @param paramMap
-	 * @return
-	 */
-	int getSerchCount(Map<String, Object> paramMap);
-
-	/** 내 스터디 조회
-	 * @return
-	 */
-	List<Study> showStudySelect(int memberNo);
 	/** 삭제되지 않은 공지사항 게시글 개수
 	 * @return
 	 */
@@ -84,12 +63,6 @@ public interface BoardMapper {
 	 * @return
 	 */
 	List<Board> selectBoardSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
-
-	/** 구인 게시글 작성
-	 * @param inputHire
-	 * @return
-	 */
-	int writeHireBoardInsert(HireInfo inputHire);
 
 	/** 게시글 상세조회
 	 * @param map

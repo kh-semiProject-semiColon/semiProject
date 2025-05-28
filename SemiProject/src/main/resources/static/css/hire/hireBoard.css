@@ -61,7 +61,7 @@ main {
 }
 
 .card {
-  height: 401px;
+  width: 100%;
   background-color: white;
   box-shadow: 10px 6px 10px rgba(219, 218, 226, 0.95);
   border-radius: 8px;

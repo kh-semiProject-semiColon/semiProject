@@ -25,7 +25,7 @@ public class HireInfo {
 	private int memberNo;					// 회원고유번호
 	private int studyNo;					// 스터디 고유 번호
 		
-	private String  memberNickName;			// 회원 닉네임 (member 테이블 조인)
+	private String  memberNickname;			// 회원 닉네임 (member 테이블 조인)
 	private String profileImg;				// 프로필 이미지
 	
 	

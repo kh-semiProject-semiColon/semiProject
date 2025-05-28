@@ -22,8 +22,14 @@ public interface HireBoardService {
 	// 구인 게시글 작성
 	int writeHireBoardInsert(HireInfo inputHire);
 
+	// 구인 게시글 상세 조회
+	HireInfo selectOne(Map<String, Integer> map);
 
+	// 조회수 설정 (쿠키)
+	int updateHireReadCount(int hireNo);
 
+	// 구인 스터디 조회
+	Study selectStudyNo(int studyNo);
 
 
 	

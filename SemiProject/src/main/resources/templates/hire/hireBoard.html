@@ -29,41 +29,42 @@
 
         <div class="board-container">
           <div class="cards-grid" id="cardContainer">
-            <a
-              class="card"
-              th:each="hire : ${hireList}"
-              th:object="${hire}"
-              th:href="@{/board/detail/{hireNo}(hireNo=*{hireNo})}"
-            >
-              <!-- (
-                  hireNo=*{hireNo}, 
-                  cp=${pagination.currentPage}, 
-                  key=${param.key}, 
-                  query=${param.query}
-              ) -->
+            <div th:each="hire : ${hireList}" class="card">
+              <a th:href="@{/hire/detail/{hireNo}(hireNo=${hire.hireNo})}">
+                <!-- (
+                    hireNo=*{hireNo}, 
+                    cp=${pagination.currentPage}, 
+                    key=${param.key}, 
+                    query=${param.query}
+                ) -->
 
-              <!-- 스터디 메인 이미지 -->
-              <img src="*{studyMainImg}" class="card-image" />
-              <!-- 내용 -->
-              <div class="card-content">
-                <p class="card-text" th:text="*{hireTitle}">게시글 제목</p>
-                <p class="card-description" th:text="*{hireContent}">내용</p>
+                <!-- 스터디 메인 이미지 -->
+                <img th:src="${hire.studyMainImg}" class="card-image" />
+                <!-- 내용 -->
+                <div class="card-content">
+                  <p class="card-text" th:text="${hire.hireTitle}">
+                    게시글 제목
+                  </p>
+                  <p class="card-description" th:text="${hire.hireContent}">
+                    내용
+                  </p>
 
-                <div class="card-date-con">
-                  <p class="card-date" th:text="*{hireDate}">게시일</p>
+                  <div class="card-date-con">
+                    <p class="card-date" th:text="${hire.hireDate}">게시일</p>
+                  </div>
+
+                  <div class="card-divider"></div>
+
+                  <div class="card-footer">
+                    <span th:text="${hire.memberNickname}">작성자</span>
+
+                    <span th:text="${hire.hireReadCount}">
+                      <i class="fa-regular fa-eye"></i>조회수</span
+                    >
+                  </div>
                 </div>
-
-                <div class="card-divider"></div>
-
-                <div class="card-footer">
-                  <span th:text="*{memberNickName}">작성자</span>
-
-                  <span th:text="*{hireReadCount}">
-                    <i class="fa-regular fa-eye"></i>조회수</span
-                  >
-                </div>
-              </div>
-            </a>
+              </a>
+            </div>
           </div>
 
           <!-- 글쓰기 버튼 -->
@@ -81,11 +82,11 @@
             th:object="${pagination}"
           >
             <!-- 첫 페이지로 이동 -->
-            <li><a th:href="@{/board/hire(cp=1)}">&lt;&lt;</a></li>
+            <li><a th:href="@{/board/board(cp=1)}">&lt;&lt;</a></li>
             <!-- : /board/1?cp=1 -->
 
             <!-- 이전 목록 마지막 번호로 이동 -->
-            <li><a th:href="@{/board/hire(cp=*{prevPage})}">&lt;</a></li>
+            <li><a th:href="@{/hire/board(cp=*{prevPage})}">&lt;</a></li>
 
             <!-- 특정 페이지로 이동 -->
 
@@ -97,17 +98,17 @@
 
               <!-- 보고있지 않은 페이지 -->
               <li th:unless="${i} == *{currentPage}">
-                <a th:href="@{/board/hire(cp=${i})}" th:text="${i}"
+                <a th:href="@{/hire/board(cp=${i})}" th:text="${i}"
                   >이동할 페이지</a
                 >
               </li>
             </th:block>
 
             <!-- 다음 목록 시작 번호로 이동 -->
-            <li><a th:href="@{/board/hire(cp=*{nextPage})}">&gt;</a></li>
+            <li><a th:href="@{/hire/board(cp=*{nextPage})}">&gt;</a></li>
 
             <!-- 끝 페이지로 이동 -->
-            <li><a th:href="@{/board/hire(cp=*{maxPage})}">&gt;&gt;</a></li>
+            <li><a th:href="@{/hire/board(cp=*{maxPage})}">&gt;&gt;</a></li>
           </ul>
 
           <!-- 검색인 경우 -->
@@ -115,7 +116,7 @@
             <!-- 첫 페이지로 이동 -->
             <li>
               <a
-                th:href="@{/board/{hirePage}(hirePage= 'hire', cp=1, key=${param.key}, query=${param.query})}"
+                th:href="@{/hire/{hirePage}(hirePage= 'board', cp=1, key=${param.key}, query=${param.query})}"
                 >&lt;&lt;</a
               >
             </li>
@@ -123,7 +124,7 @@
             <!-- 이전 목록 마지막 번호로 이동 -->
             <li>
               <a
-                th:href="@{/board/{hirePage}(hirePage ='hire', cp=*{prevPage}, key=${param.key}, query=${param.query})}"
+                th:href="@{/hire/{hirePage}(hirePage ='board', cp=*{prevPage}, key=${param.key}, query=${param.query})}"
                 >&lt;</a
               >
             </li>
@@ -141,7 +142,7 @@
               <!-- 보고있지 않은 페이지 -->
               <li th:unless="${i} == *{currentPage}">
                 <a
-                  th:href="@{/board/{hirePage}(hirePage='hire', cp=${i}, key=${param.key}, query=${param.query})}"
+                  th:href="@{/hire/{hirePage}(hirePage='board', cp=${i}, key=${param.key}, query=${param.query})}"
                   th:text="${i}"
                   >이동할 페이지</a
                 >
@@ -158,7 +159,7 @@
             <!-- 다음 목록 시작 번호로 이동 -->
             <li>
               <a
-                th:href="@{/board/{hirePage}(hirePage='hire', cp=*{nextPage}, key=${param.key}, query=${param.query})}"
+                th:href="@{/hire/{hirePage}(hirePage='board', cp=*{nextPage}, key=${param.key}, query=${param.query})}"
                 >&gt;</a
               >
             </li>
@@ -166,7 +167,7 @@
             <!-- 끝 페이지로 이동 -->
             <li>
               <a
-                th:href="@{/board/{hirePage}(hirePage='hire', cp=*{maxPage}, key=${param.key}, query=${param.query})}"
+                th:href="@{/hire/{hirePage}(hirePage='board', cp=*{maxPage}, key=${param.key}, query=${param.query})}"
                 >&gt;&gt;</a
               >
             </li>
@@ -177,7 +178,7 @@
         <!-- 현재 : /board/1 
 				목표 : /board/1?key=w&query=짱구
 			-->
-        <form th:action="@{/board/hire}" method="get" id="boardSearch">
+        <form th:action="@{/hire/board}" method="get" id="boardSearch">
           <div class="search-container">
             <select class="search-category" name="key" id="searchKey">
               <option value="t">제목</option>
