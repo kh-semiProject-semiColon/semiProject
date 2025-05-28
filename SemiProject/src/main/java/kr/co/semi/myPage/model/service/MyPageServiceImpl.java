@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.co.semi.board.model.dto.Board;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.myPage.model.mapper.MyPageMapper;
 
@@ -53,13 +54,10 @@ public class MyPageServiceImpl implements MyPageService {
 		return mapper.updateInfo(inputMember);
 	}
 
-//	@Override
-//	public List<Board> selectBoard(int memberNo) {
-//		
-//		
-//		return null;
-//	}
-//	
+	@Override
+	public List<Board> selectBoard(int memberNo) {
+		return mapper.selectBoard(memberNo);
+	}
 	
 	@Override
 	public int changePw(Map<String, String> paramMap, int memberNo) {

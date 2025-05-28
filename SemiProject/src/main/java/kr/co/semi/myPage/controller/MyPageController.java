@@ -1,5 +1,6 @@
 package kr.co.semi.myPage.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
+import kr.co.semi.board.model.dto.Board;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.myPage.model.service.MyPageService;
 import lombok.extern.slf4j.Slf4j;
@@ -139,17 +141,24 @@ public class MyPageController {
 
 	// 게시글 상세주소로 옮기는 메서드 (단순 forward)
 	@GetMapping("posts")
-	public String posts() {
+	public String posts(@SessionAttribute("loginMember") Member loginMember, Model model, Board board,
+			RedirectAttributes ra) {
+
+		List<Board> boardList = service.selectBoard(loginMember.getMemberNo());
+	
+		System.out.println("boardList is null? " + (boardList == null));
+		System.out.println("boardList is empty? " + (boardList != null && boardList.isEmpty()));
+		
+
+		if (boardList == null || boardList.isEmpty()) {
+			ra.addAttribute("message", "작성한 게시글이 없습니다.");
+			model.addAttribute("boardList", new ArrayList<>()); // 빈 리스트라도 전달
+		} else {
+			model.addAttribute("boardList", boardList);
+		}
+
 		return "myPage/myPage-posts";
 	}
-	
-//	@PostMapping("posts")
-//	public String posts(@SessionAttribute("loginMember") Member loginMember,
-//						Model model, Board board) {
-//		
-//	List<Board> boardList = service.selectBoard(loginMember.getMemberNo());	
-//	
-//	}
 
 	@GetMapping("delete1")
 	public String delete1() {
