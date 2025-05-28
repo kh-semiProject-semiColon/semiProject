@@ -5,29 +5,24 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
-/**
- * 🧾 StudyBoard DTO
- * 📌 STUDY_BOARD 테이블과 매핑되는 데이터 객체
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class StudyBoard {
 
-    private int studyBoardNo;       // 게시글 번호
-    private String studyBoardTitle; // 제목
-    private String studyBoardContent; // 내용
-    private Date studyBoardWriteDate; // 작성일
-    private Date studyBoardUpdateDate; // 수정일
-    private int readCount;          // 조회수
-    private char studyBoardDelFl;   // 삭제 여부
-    private int memberNo;           // 작성자 회원 번호
-    private int studyNo;            // 소속 스터디 번호
+    // STUDY_BOARD 테이블 컬럼들
+    private int studyBoardNo;           // STUDY_BOARD_NO
+    private String studyBoardTitle;     // STUDY_BOARD_TITLE
+    private int memberNo;               // MEMBER_NO
+    private int studyNo;                // STUDY_NO
+    private String studyBoardWriteDate;  // STUDY_BOARD_WRITE_DATE (String으로 변경)
+    private String studyBoardUpdateDate; // STUDY_BOARD_UPDATE_DATE (String으로 변경)
+    private String studyBoardContent;   // STUDY_BOARD_CONTENT
+    private int readCount;              // READ_COUNT
+    private String studyBoardDelFl;     // STUDY_BOARD_DEL_FL
 
-    // 선택적으로 닉네임, 좋아요 수 등도 포함 가능
-    private String memberNickname;  // 작성자 닉네임
-    private int likeCount;          // 좋아요 수
+    // JOIN으로 가져올 추가 정보
+    private String memberNickname;      // MEMBER.MEMBER_NICKNAME
+    private int likeCount;              // 좋아요 기능이 있다면 별도 계산
 }

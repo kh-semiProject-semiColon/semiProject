@@ -125,36 +125,39 @@ document
       );
     }, 2000);
 
-    /* 실제 서버 통신 코드 (주석 처리)
-        fetch(`/study/${formData.get('studyNo')}/info`, {
-          method: 'POST',
-          body: formData
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('서버 응답 오류');
-          }
-          return response.json();
-        })
-        .then(data => {
-          if (data.success) {
-            showAlert('성공', '스터디 정보가 성공적으로 수정되었습니다.', function() {
+    //  실제 서버 통신 코드 (주석 처리)
+    fetch(`/study/${formData.get("studyNo")}/info`, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("서버 응답 오류");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          showAlert(
+            "성공",
+            "스터디 정보가 성공적으로 수정되었습니다.",
+            function () {
               location.reload();
-            });
-          } else {
-            showAlert('오류', data.message || '수정에 실패했습니다.');
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          showAlert('오류', '서버 오류가 발생했습니다.');
-        })
-        .finally(() => {
-          submitBtn.classList.remove('loading');
-          submitBtn.disabled = false;
-          submitBtn.textContent = '수정';
-        });
-        */
+            }
+          );
+        } else {
+          showAlert("오류", data.message || "수정에 실패했습니다.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        showAlert("오류", "서버 오류가 발생했습니다.");
+      })
+      .finally(() => {
+        submitBtn.classList.remove("loading");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "수정";
+      });
   });
 
 // 알림 모달 표시

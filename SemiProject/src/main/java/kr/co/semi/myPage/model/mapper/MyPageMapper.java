@@ -29,6 +29,9 @@ public interface MyPageMapper {
 
 	// 보드 리스트 들고오는 메서드
 	List<Board> selectBoard(int memberNo);
+
+	// 댓글 리스트 들고오는 메서드
+	List<Map<String, String>> selectComment(int memberNo);
 	
 
 
