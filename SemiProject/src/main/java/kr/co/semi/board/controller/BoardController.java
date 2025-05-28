@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import kr.co.semi.board.model.dto.Announce;
 import kr.co.semi.board.model.dto.Board;
 import kr.co.semi.board.model.dto.HireInfo;
 import kr.co.semi.board.model.service.BoardService;
@@ -58,6 +59,137 @@ public class BoardController {
     	model.addAttribute("pagination", map.get("pagination"));
 		
 		return "board/announce";
+	}
+	
+	/** 게시글 상세 조회
+	 * @param boardCode		: 주소에 포함된 게시판 종류 번호 (1,2)
+	 * @param boardNo		: 주소에 포함된 게시글 번호
+	 * 		 (boardCode, boardNo는 Request scope에 저장되어 있음)
+	 * 		-> PathVariable 어노테이션 사용 시 변수 값이 자동으로 request scope에 저장된다		
+	 * @param model			
+	 * @param loginMember	: 로그인 여부와 관련 없이 상세조회는 가능해야 하기 때문에 required=false로 작성
+	 * @param ra
+	 * @return
+	 */
+	@GetMapping("announce/{announceNo:[0-9]+}")
+	public String announceDetail(
+							  @PathVariable("announceNo") int announceNo,
+							  Model model, 
+							  @SessionAttribute(value="loginMember", required=false) Member loginMember,
+							  RedirectAttributes ra,
+							  HttpServletRequest req, // 요청에 담긴 쿠키 얻어오기
+							  HttpServletResponse resp ) { // 새로운 쿠키 만들어서 응답하기
+		
+		// 게시글 상세 조회 서비스 호출
+		
+		// 1) Map으로 전달할 파라미터 묶기
+		Map<String, Integer> map = new HashMap<>();
+		map.put("announceNo", announceNo);
+		
+		// 로그인 상태인 경우에만 memberNo 추가
+		if(loginMember != null) {
+			map.put("memberNo", loginMember.getMemberNo());
+		}
+		
+		// 2) 서비스 호출
+		Announce announce = bService.announceOne(map);
+		
+		String path = null;
+				
+		// 조회 결과가 없는 경우
+		if(announce == null) {
+			path = "redirect:/board/"+ "announce"; // 목록 재요청
+			ra.addFlashAttribute("message", "게시글이 존재하지 않습니다");
+		}else {
+			
+			//-------- 쿠키를 이용한 조회 수 증가 시작 ---------
+			
+			// 비회원 또는 로그인한 회원의 글이 아닌 경우 ( == 작성자를 제외한 나머지)
+			if(loginMember == null || loginMember.getMemberNo() != announce.getAnnounceNo()) {
+				
+				// 요청에 담겨 있는 모든 쿠키 얻어오기
+				Cookie[] cookies = req.getCookies();			
+				
+				Cookie c = null;
+				
+				for(Cookie temp : cookies) {
+					
+					// 요청에 담긴 쿠키에 "readBoardNo"가 존재할 때
+					if(temp.getName().equals("readBoardNo")) {
+						c = temp;
+						break;
+					}
+					
+				}
+				
+				int result = 0; // 조회수 증가 결과를 저장할 변수
+				
+				// "readBoardNo"가 쿠키에 없을 때
+				if(c==null) {
+					
+					// 새 쿠키 생성("readBoardNo", [게시글 번호])
+					c = new Cookie("readBoardNo", "["+announceNo+"]");
+					result = bService.updateAnnounceCount(announceNo);
+					
+				}else {
+				// "readBoardNo"가 쿠키에 있을 때
+				
+					// 현재 게시글을 처음 읽는 경우
+					if(c.getValue().indexOf("["+announceNo+"]") == -1) {
+						
+						// 해당 글 번호를 쿠키에 누적 + 서비스 호출
+						c.setValue(c.getValue() + "["+announceNo+"]"); 
+						// 그냥 "["+announceNo+"]"만 사용하면
+						//기존에 c에 들어가 있던 value들 다 사라지므로 누적을 해야한다
+						result = bService.updateAnnounceCount(announceNo);
+						
+					}
+					
+				}
+				
+				// 조회 수 증가 성공 / 조회 성공 시
+				if(result > 0) {
+					
+					// 기존에 조회된 board의 readCount 값을 result 값으로 다시 세팅
+					announce.setAnnounceCount(result);
+					
+					// 쿠키 적용 경로 설정
+					c.setPath("/");	// "/" 이하 경로 요청 시 쿠키 서버로 전달
+					
+					// 쿠키 수명 지정
+					// 현재 시간을 얻어오기
+					LocalDateTime now = LocalDateTime.now();
+					
+					// 다음날 자정까지 지정
+					LocalDateTime nextDayMidnight = now.plusDays(1)
+													.withHour(0)
+													.withMinute(0)
+													.withSecond(0)
+													.withNano(0);
+					
+					// 현재 시간부터 다음날 자정까지 남은 시간 (초단위)
+					long seconds = Duration.between(now, nextDayMidnight).getSeconds();
+				 
+					// 쿠키 수명 설정
+					c.setMaxAge((int)seconds);
+					
+					resp.addCookie(c); // 응답 객체를 이용해서 클라이언트에게 쿠키 전달
+				}
+				
+				
+				
+			}
+			
+			//-------- 쿠키를 이용한 조회 수 증가 종료 ---------
+			
+			path = "board/announceDetail"; // board.html로 forward
+			
+			// board - 게시글 일반 내용 + imageList + commentList
+			model.addAttribute("announce", announce);
+			
+		}
+		
+		return path;
 	}
 	
 	// 자유,질문 게시판 이동

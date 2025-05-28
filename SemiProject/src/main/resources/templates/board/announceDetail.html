@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>구인 게시판</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
+      type="text/css"
+    />
+    <link href="/css/common/header.css" rel="stylesheet" />
+    <link href="/css/common/footer.css" rel="stylesheet" />
+    <link href="/css/board/boardDetail.css" rel="stylesheet" />
+    <link href="/css/board/comment.css" rel="stylesheet" />
+    <script
+      src="https://kit.fontawesome.com/b789cfa0ae.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <!-- hearder -->
+    <th:block th:replace="~{common/header}"></th:block>
+
+    <!-- 게시판 본문 -->
+    <div class="main">
+      <div class="side"></div>
+      <main>
+        <div class="titleContainer">
+          <div class="board-title">공지사항</div>
+          <div class="board-title-underline"></div>
+        </div>
+
+        <section class="board-detail" th:object="${announce}">
+          <!-- 제목 -->
+          <div>
+            <h1 class="board-title" th:text="*{announceName}">게시글 제목</h1>
+
+            <button id="updateBtn">수정</button>
+            <button id="deleteBtn2">삭제</button>
+          </div>
+
+          <!-- 프로필 + 닉네임 + 작성일 + 조회수 -->
+          <div class="board-header">
+            <div class="board-writer">
+              <!-- 프로필 이미지 -->
+              <!-- 프로필 이미지가 없을 경우 기본 이미지 출력 -->
+              <img th:unless="*{profileImg}" th:src="#{user.default.image}" />
+
+              <!-- 프로필 이미지가 있을 경우 출력-->
+              <img th:if="*{profileImg}" th:src="*{profileImg}" />
+
+              <span th:text="*{memberNickname}">작성자 닉네임</span>
+            </div>
+
+            <div class="board-info">
+              <p><span>작성일</span> [[*{announceDate}]]</p>
+
+              <!-- 수정한 게시글인 경우 -->
+
+              <!-- 참조하는 객체가 있으면 true, 없으면 false -->
+              <p th:if="*{announceUpdateDate}">
+                <span>마지막 수정일</span> [[*{announceUpdateDate}]]
+              </p>
+
+              <p><span>조회수</span> [[*{announceCount}]]</p>
+            </div>
+          </div>
+
+          <!-- 내용 -->
+          <div class="board-content" th:utext="*{announceContent}">내용</div>
+
+
+         
+      </main>
+    </div>
+
+    <!-- footer -->
+    <th:block th:replace="~{common/footer}"></th:block>
+
+    <script th:inline="javascript">
+      // - loginMember가 null 인 경우 null 반환
+      const loginMemberNo =
+        /*[[${session.loginMember?.memberNo}]]*/ "로그인 회원 번호";
+
+      // 현재 게시글 번호를 전역 변수로 저장
+      const announceNo = /*[[${announce.announceNo}]]*/ "게시글 번호";
+
+   
+
+      const userDefaultIamge = /*[[#{user.default.image}]]*/ "기본이미지";
+    </script>
+
+    <script th:inline="javascript">
+      const boardCode = /*[[${boardCode}]]*/ "게시판 코드 번호";
+    </script>
+    <script src="/js/board/announceDetail.js"></script>
+  </body>
+</html>

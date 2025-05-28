@@ -2,6 +2,7 @@ package kr.co.semi.board.model.service;
 
 import java.util.Map;
 
+import kr.co.semi.board.model.dto.Announce;
 import kr.co.semi.board.model.dto.Board;
 
 public interface BoardService {
@@ -51,4 +52,18 @@ public interface BoardService {
 	 */
 	int boardLike(Map<String, Integer> map);
 
+	/** 공지글 상세조회
+	 * @param map
+	 * @return
+	 */
+	Announce announceOne(Map<String, Integer> map);
+
+	/** 공지 조회수 증가
+	 * @param announceNo
+	 * @return
+	 */
+	int updateAnnounceCount(int announceNo);
+
+	
+	
 }

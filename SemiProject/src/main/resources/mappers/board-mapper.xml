@@ -301,6 +301,19 @@
 		AND BOARD_CODE = #{boardCode}
 	</select>
 	
+	<!-- 공지글 상세 조회 -->
+	<select id="announceOne">
+		SELECT ANNOUNCE_NO, ANNOUNCE_NAME, ANNOUNCE_CONTENT, ANNOUNCE_COUNT,
+		MEMBER_NO, MEMBER_NICKNAME, PROFILE_IMG,
+		TO_CHAR(ANNOUNCE_DATE, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') ANNOUNCE_DATE,
+		TO_CHAR(ANNOUNCE_UPDATE_DATE, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') ANNOUNCE_UPDATE_DATE
+		
+		FROM "ANNOUNCEMENT"
+		JOIN "MEMBER" USING(MEMBER_NO)
+		WHERE ANNOUNCE_DEL_FL = 'N'
+		AND ANNOUNCE_NO = #{announceNo}
+	</select>
+	
 	<!-- 조회수 1 증가 -->
 	<update id="updateReadCount">
 		UPDATE "BOARD" SET
@@ -308,11 +321,25 @@
 		WHERE BOARD_NO = #{boardNo}
 	</update>
 	
+	<!-- 공지사항 조회수 1 증가 -->
+	<update id="updateAnnounceCount">
+		UPDATE "ANNOUNCEMENT" SET
+		ANNOUNCE_COUNT = ANNOUNCE_COUNT + 1
+		WHERE ANNOUNCE_NO = #{announceNo}
+	</update>
+	
 	<!-- 조회 수 조회 -->
 	<select id="selectReadCount">
 		SELECT READ_COUNT
 		FROM "BOARD"
 		WHERE BOARD_NO = #{boardNo}
+	</select>
+	
+	<!-- 공지 조회 수 조회 -->
+	<select id="selectAnnounceCount">
+		SELECT ANNOUCE_COUNT
+		FROM "ANNOUNCEMENT"
+		WHERE ANNOUNCE_NO = #{announceNo}
 	</select>
 	
 		<!-- 게시글 좋아요 체크 -->
