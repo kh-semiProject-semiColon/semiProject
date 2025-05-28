@@ -28,6 +28,9 @@ public interface HireBoardService {
 	// 조회수 설정 (쿠키)
 	int updateHireReadCount(int hireNo);
 
+	// 구인 스터디 조회
+	Study selectStudyNo(int studyNo);
+
 	
 
 }

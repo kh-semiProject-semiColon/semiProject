@@ -21,12 +21,9 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional(rollbackFor = Exception.class)
 @Slf4j
 public class HireBoardServiceImpl implements HireBoardService{
-
-	@Autowired
-	private BoardMapper mapper;
 	
 	@Autowired
-	private HireBoardMapper hmapper;
+	private HireBoardMapper mapper;
 
 	// 구인 게시글 조회
 	@Override
@@ -89,16 +86,20 @@ public class HireBoardServiceImpl implements HireBoardService{
 	// 구인 게시글 상세 조회
 	@Override
 	public HireInfo selectOne(Map<String, Integer> map) {
-		return hmapper.selectOne(map);
+		return mapper.selectOne(map);
 	}
 	
 	// 구인 게시글 조회수 증가
 	@Override
 	public int updateHireReadCount(int hireNo) {
 		
-		int result = hmapper.updateHireReadCount(hireNo);
+		return mapper.updateHireReadCount(hireNo);
 		
-		
-		return 0;
+	}
+	
+	// 구인 게시글 스터디 조회
+	@Override
+	public Study selectStudyNo(int studyNo) {
+		return mapper.selectStudyNo(studyNo);
 	}
 }

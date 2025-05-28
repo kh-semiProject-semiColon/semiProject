@@ -1,6 +1,9 @@
-const writeBtn = document.querySelector(".writeBtn")
+document.addEventListener("DOMContentLoaded", () => {
+  const writeBtn = document.querySelector(".writeBtn");
 
-writeBtn.addEventListener("click", () => {
-
-    location.href = '/board/write';
-})
+  if (writeBtn) {
+    writeBtn.addEventListener("click", () => {
+      location.href = "/hire/write";
+    });
+  }
+});

@@ -3,14 +3,18 @@ package kr.co.semi.board.controller;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -20,15 +24,99 @@ import jakarta.servlet.http.HttpServletResponse;
 import kr.co.semi.board.model.dto.HireInfo;
 import kr.co.semi.board.model.service.HireBoardService;
 import kr.co.semi.member.model.dto.Member;
+import kr.co.semi.studyboard.model.dto.Study;
 
 @Controller
-@RequestMapping("hireB")
+@RequestMapping("hire")
 public class HireBoardController {
 
 	@Autowired
 	private HireBoardService service;
 	
-	@GetMapping("{boardNo:[0-9]+}")
+	/** 구인 게시판 조회 
+	 * @return
+	 */
+	@GetMapping("board")
+	public String showHireBoard(@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+							    Model model,
+							    @RequestParam Map<String, Object> paramMap) {
+		
+		Map<String, Object> map = null;
+		
+		if(paramMap.get("key") == null) {
+			map = service.showHireBoard(cp);
+		} else {
+
+			map = service.searchList(paramMap, cp);
+		}
+		
+		model.addAttribute("pagination", map.get("pagination"));
+		model.addAttribute("hireList", map.get("hireList"));
+		
+	
+		return "hire/hireBoard";
+	}
+	
+	// 구인 게시글 작성 페이지로 이동
+	@GetMapping("write")
+	public String writeHireBoard(@SessionAttribute("loginMember") Member loginMember,
+			  					  Model model,
+			  					 RedirectAttributes ra) {
+		String path;
+		
+		int memberNo = loginMember.getMemberNo();
+		
+	    List<Study> studyList = service.showStudySelect(memberNo);
+	    
+	    
+	    if(studyList.isEmpty() || studyList == null) {
+	    	path = "redirect:/hire/board"; // 목록 재요청
+	    	ra.addFlashAttribute("message", "생성된 스터디가 없습니다.");
+	    	
+	    } else {
+	    	
+	    	model.addAttribute("study", studyList);
+	    	path = "hire/hireWrite";
+	    	
+	    }
+	    
+	    
+		return path;
+	}
+	
+	// 구인 게시글 업로드
+	@PostMapping("write")
+	public String writeHireBoardInsert(@ModelAttribute HireInfo inputHire,
+									   @SessionAttribute("loginMember") Member loginMember,
+									   RedirectAttributes ra
+									   )throws Exception {
+		
+		inputHire.setMemberNo(loginMember.getMemberNo());
+		
+		int hireNo = service.writeHireBoardInsert(inputHire);
+		
+		String path = null;
+		String message = null;
+		
+		if(hireNo > 0) {
+			message = "게시글이 작성되었습니다!";
+			path = "/hire/detail" + hireNo;
+			
+		} else {
+			
+			path = "/hire/board";
+			message = "게시글 작성 실패";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+		
+	}
+	
+	
+	// 구인 게시글 상세
+	@GetMapping("detail/{hireNo:[0-9]+}")
 	public String boardDetail(@PathVariable("hireNo") int hireNo,
 							  Model model,
 							  @SessionAttribute(value="loginMember", required = false) Member loginMember,
@@ -41,7 +129,7 @@ public class HireBoardController {
 		
 		// 1) Map으로 전달할 파라미터 묶기
 		Map<String, Integer> map = new HashMap<>();
-		map.put("hireNO", hireNo);
+		map.put("hireNo", hireNo);
 		
 		// 로그인 상태인 경우에만 memeberNo 추가
 		if(loginMember != null) {
@@ -55,7 +143,7 @@ public class HireBoardController {
 		
 		// 조회 결과가 없는 경우
 		if(hireInfo == null) {
-			path = "redirect:/board/hire"; // 목록 재요청
+			path = "redirect:/hire/board"; // 목록 재요청
 			ra.addFlashAttribute("message", "게시글이 존재하지 않습니다");
 			
 		} else {
@@ -132,9 +220,18 @@ public class HireBoardController {
 			/* ---------------------------쿠키를 이용한 조회수 증가 끝--------------------------- */
 			
 			// 조회 결과가 있는 경우
+			
+			// 스터디 정보 조회
+			Study study = service.selectStudyNo(hireInfo.getStudyNo());
+			
+			System.out.println(hireInfo);
+			
+			model.addAttribute("loginMember", loginMember);
+			model.addAttribute("hireInfo", hireInfo);
+			model.addAttribute("study", study);
+			
 			path = "hire/hireDetail";
 			
-			model.addAttribute("hireInfo", hireInfo);
 			
 			}
 		
