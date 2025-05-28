@@ -60,6 +60,11 @@ public class MyPageServiceImpl implements MyPageService {
 	}
 	
 	@Override
+	public List<Map<String, String>> selectComment(int memberNo) {
+		return mapper.selectComment(memberNo);
+	}
+	
+	@Override
 	public int changePw(Map<String, String> paramMap, int memberNo) {
 
 		// 원래 있는 비밀번호와 일치하는 지 조회하기

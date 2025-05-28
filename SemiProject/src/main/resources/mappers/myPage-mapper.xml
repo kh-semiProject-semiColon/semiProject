@@ -26,17 +26,18 @@
 	</select>
 
 	<update id="changePw">
-	UPDATE "MEMBER" SET
-	MEMBER_PW = #{encPw}
-	WHERE MEMBER_NO = #{memberNo}
+		UPDATE "MEMBER" SET
+		MEMBER_PW = #{encPw}
+		WHERE MEMBER_NO = #{memberNo}
 	</update>
-		
+
 	<update id="deleteMember">
-	UPDATE "MEMBER" SET
-	MEMBER_DEL_FL = 'Y'
-	WHERE MEMBER_NO = #{memberNo}
+		UPDATE "MEMBER" SET
+		MEMBER_DEL_FL = 'Y'
+		WHERE MEMBER_NO = #{memberNo}
 	</update>
-	
+
+
 	<resultMap id="boardResultMap" type="kr.co.semi.board.model.dto.Board">
 		<result property="boardNo" column="boardNo" />
 		<result property="boardTitle" column="boardTitle" />
@@ -67,7 +68,7 @@
 		FROM STUDY_BOARD sb
 		LEFT JOIN MEMBER m ON sb.MEMBER_NO = m.MEMBER_NO
 		LEFT JOIN BOARD_LIKE bl ON sb.STUDY_BOARD_NO = bl.BOARD_NO
-		WHERE sb.MEMBER_NO = #{memberNo}
+		WHERE sb.MEMBER_NO = 1
 		GROUP BY sb.STUDY_BOARD_NO, sb.STUDY_BOARD_TITLE, m.MEMBER_NICKNAME,
 		sb.STUDY_BOARD_WRITE_DATE, sb.READ_COUNT
 		)
@@ -93,38 +94,31 @@
 		FROM BOARD b
 		LEFT JOIN MEMBER m ON b.MEMBER_NO = m.MEMBER_NO
 		LEFT JOIN BOARD_LIKE bl ON b.BOARD_NO = bl.BOARD_NO
-		WHERE b.MEMBER_NO = #{memberNo}
+		WHERE b.MEMBER_NO = 1
 		GROUP BY b.BOARD_NO, b.BOARD_TITLE, m.MEMBER_NICKNAME,
 		b.BOARD_WRITE_DATE, b.READ_COUNT
 		)
-
-		UNION ALL
-
-		SELECT
-		HIRE_NO AS boardNo,
-		HIRE_TITLE AS boardTitle,
-		MEMBER_NICKNAME AS memberNickname,
-		TO_CHAR(HIRE_DATE, 'YY.MM.DD') AS boardWriteDate,
-		HIRE_READ_COUNT AS readCount,
-		LIKE_COUNT AS likeCount,
-		3 AS boardCode
-		FROM (
-		SELECT
-		h.HIRE_NO,
-		h.HIRE_TITLE,
-		m.MEMBER_NICKNAME,
-		h.HIRE_DATE,
-		h.HIRE_READ_COUNT,
-		COUNT(bl.BOARD_NO) AS LIKE_COUNT
-		FROM HIRE_INFO h
-		LEFT JOIN MEMBER m ON h.MEMBER_NO = m.MEMBER_NO
-		LEFT JOIN BOARD_LIKE bl ON h.MEMBER_NO = bl.MEMBER_NO
-		WHERE h.MEMBER_NO = #{memberNo}
-		GROUP BY h.HIRE_NO, h.HIRE_TITLE, m.MEMBER_NICKNAME, h.HIRE_DATE,
-		h.HIRE_READ_COUNT
-		)
-
 		ORDER BY boardWriteDate DESC
+	</select>
+
+	<select id="selectComment">
+		SELECT HIRE_NO AS "boardNo", HIRE_TITLE AS "boardTitle",
+		HIRE_COMMENT_CONTENT AS "commentContent", HIRE_COMMENT_DATE AS
+		"commentDate"
+		FROM HIRE_INFO h
+		JOIN HIRE_COMMENT USING(HIRE_NO)
+		WHERE h.MEMBER_NO= #{memberNo}
+		UNION
+		SELECT STUDY_BOARD_NO, STUDY_BOARD_TITLE, STUDY_COMMENT_CONTENT,
+		STUDY_COMMENT_DATE
+		FROM STUDY_BOARD s
+		JOIN STUDY_COMMENT USING(STUDY_BOARD_NO)
+		WHERE s.MEMBER_NO = #{memberNo}
+		UNION
+		SELECT BOARD_NO, BOARD_TITLE, COMMENT_CONTENT, COMMENT_WRITTEN_DATE
+		FROM BOARD b
+		JOIN "COMMENT" USING(BOARD_NO)
+		WHERE b.MEMBER_NO = #{memberNo}
 	</select>
 
 </mapper>
