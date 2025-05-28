@@ -91,6 +91,14 @@ public interface BoardMapper {
 	 */
 	int writeHireBoardInsert(HireInfo inputHire);
 
+	/** 구인 게시글 조회수 증가
+	 * @param hireNo
+	 * @return
+	 */
+	int updateHireReadCount(int hireNo);
+
+
+
 
 	
 

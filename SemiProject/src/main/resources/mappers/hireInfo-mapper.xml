@@ -56,4 +56,24 @@
  			#{studyNo}, #{dayCanJoin}, #{hireCount}, #{hireTitle})
   	</insert>
 
+	<!-- 구인 게시글 상세 조회 -->
+	<select id="selectOne">
+	 SELECT HIRE_NO, HIRE_TITLE, HIRE_CONTENT, STUDY_NO, HIRE_READ_COUNT,
+	 MEMBER_NO, MEMBER_NICKNAME, PROFILE_IMG, MEMBER_NICKNAME, STUDY_NO, DAY_CAN_JOIN, HIRE_COUNT,
+	 TO_CHAR(HIRE_DATE, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') HIRE_DATE,
+	 TO_CHAR(HIRE_UPDATE, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') HIRE_UPDATE,
+	
+	 FROM "HIRE_INFO"
+	 JOIN "MEMBER" USING(MEMBER_NO)
+	 WHERE HIRE_DEL_FL = 'N'
+	 AND HIRE_NO = #{hireNo}
+	</select>
+	
+	<!-- 조회 수 1 증가 -->
+	<update id="updateHireReadCount">
+	 UPDATE "HIRE_INFO" SET
+	 HIRE_READ_COUNT =HIRE_READ_COUNT + 1
+	 WHERE HIRE_NO = #{hireNo}
+	</update>
+	
 </mapper>

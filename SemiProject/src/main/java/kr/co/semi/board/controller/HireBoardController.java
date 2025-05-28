@@ -55,7 +55,7 @@ public class HireBoardController {
 		
 		// 조회 결과가 없는 경우
 		if(hireInfo == null) {
-			path = "redirect:/hire/" + hireNo; // 목록 재요청
+			path = "redirect:/board/hire"; // 목록 재요청
 			ra.addFlashAttribute("message", "게시글이 존재하지 않습니다");
 			
 		} else {
@@ -96,7 +96,7 @@ public class HireBoardController {
 						
 						// 해당 글 번호를 쿠키에 누적 + 서비스 호출
 						c.setValue(c.getValue() + "["+ hireNo + "]");
-						result = service.updateReadCount(hireNo);
+						result = service.updateHireReadCount(hireNo);
 					}
 					
 				}

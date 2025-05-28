@@ -21,10 +21,11 @@ public interface HireBoardService {
 	// 구인 게시글 작성
 	int writeHireBoardInsert(HireInfo inputHire);
 
-	// 
+	// 구인 게시글 상세 조회
 	HireInfo selectOne(Map<String, Integer> map);
 
-	int updateReadCount(int hireNo);
+	// 조회수 설정 (쿠키)
+	int updateHireReadCount(int hireNo);
 
 	
 
