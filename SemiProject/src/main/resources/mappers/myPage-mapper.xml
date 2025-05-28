@@ -148,5 +148,7 @@
 		JOIN "COMMENT" USING(BOARD_NO)
 		WHERE b.MEMBER_NO = #{memberNo}
 	</select>
-
+	
+	
+	
 </mapper>
