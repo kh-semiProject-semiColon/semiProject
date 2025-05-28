@@ -3,20 +3,44 @@ package kr.co.semi.studyboard.model.service;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.studyboard.model.dto.Study;
 import kr.co.semi.studyboard.model.dto.StudyBoard;
+import kr.co.semi.studyboard.model.dto.StudyComment;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
-/**
- * 🎯 StudyBoardService
- * 📌 게시판 기능에 대한 인터페이스 정의
- * 🔗 Controller에서 호출되며, 구현체는 StudyBoardServiceImpl
- */
 public interface StudyBoardService {
 
+    // 스터디 정보 조회 -- 완
+    Study getStudyInfo(Member loginMember);
+    
+    // 스터디 정보 수정
+    int updateStudyInfo(Study study, MultipartFile imageFile);
+    
+    // 스터디 내규 수정
+    boolean updateRule(int studyNo, String ruleContent);
+    
+    // 스터디 탈퇴
+    boolean withdrawMember(int studyNo, int memberNo);
+    
+    // 스터디 해체
+    boolean deleteStudy(int studyNo);
+    
+    // 팀장 권한 확인
+    boolean isStudyLeader(int memberNo);
+    
+    // 내 게시글 조회
+    Map<String, Object> getMyPosts(int studyNo, int memberNo, int page);
+    
+    // 내 댓글 조회
+    Map<String, Object> getMyComments(int studyNo, int memberNo, int page);
+        
+    // 현재 멤버 수 조회
+    int getCurrentMemberCount(int studyNo);
+    
+    // 스터디 멤버 목록 조회 - Controller에서 호출하는 메서드 추가
+    List<Map<String, Object>> getStudyMembers(int studyNo);
 
-	/**  모든 스터디 조회
-	 * @param loginMember
-	 * @return
-	 */
-	Study studyInfo(Member loginMember);
+    // 내규 조회 서비스 
+	String getStudyrule(Member loginMember);
 }
