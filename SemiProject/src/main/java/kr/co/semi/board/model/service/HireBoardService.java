@@ -38,10 +38,13 @@ public interface HireBoardService {
 	int hireDelete(Map<String, Integer> map);
 
 	// 스터디 번호 구하기
-	int getStudyNo(int memberNo);
+	int getStudyNo(int hireNo);
 
 	// 모집인원 구하기
 	int hireCount(int studyNo);
+
+	// 스터디에 멤버 초대하기
+	int memberInvite(Map<String, Integer> map);
 
 
 	

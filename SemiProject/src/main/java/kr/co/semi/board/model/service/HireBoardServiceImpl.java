@@ -134,8 +134,15 @@ public class HireBoardServiceImpl implements HireBoardService{
 		return mapper.hireDelete(map);
 	}
 	
+	// 스터디 번호 구하기
 	@Override
-	public int getStudyNo(int memberNo) {
-		return mapper.getStudyNo(memberNo);
+	public int getStudyNo(int hireNo) {
+		return mapper.getStudyNo(hireNo);
+	}
+	
+	// 스터디 멤버 초대
+	@Override
+	public int memberInvite(Map<String, Integer> map) {
+		return mapper.memberInvite(map);
 	}
 }

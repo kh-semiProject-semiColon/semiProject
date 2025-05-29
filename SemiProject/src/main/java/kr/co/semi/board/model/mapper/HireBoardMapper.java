@@ -75,11 +75,17 @@ public interface HireBoardMapper {
 	 * @param memberNo
 	 * @return
 	 */
-	int getStudyNo(int memberNo);
+	int getStudyNo(int hireNo);
 
 	/** 스터디 현재 인원 구하기
 	 * @param studyNo
 	 * @return
 	 */
 	int hireCount(int studyNo);
+
+	/** 초대하기
+	 * @param map
+	 * @return
+	 */
+	int memberInvite(Map<String, Integer> map);
 }

@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import kr.co.semi.board.model.dto.HireComment;
 import kr.co.semi.board.model.dto.HireInfo;
 import kr.co.semi.board.model.service.HireBoardService;
 import kr.co.semi.member.model.dto.Member;
@@ -403,5 +404,39 @@ public class HireBoardController {
 	ra.addFlashAttribute("message", message);
 	
 	return "redirect:" + path;
+	}
+	
+	//멤버초대 - 초대할때 댓글 사용자 memberNo/ 글번호 불러와야함 초대 버튼은 글 주인만 == 로그인 멤버 같을때 볼 수 있음
+	@PostMapping("invite/{hireNo:[0-9]+}")
+	public String memberInvite(@PathVariable("hireNo") int hireNo,
+							   @ModelAttribute HireComment hireComment,
+							   RedirectAttributes ra,
+							   @SessionAttribute("loginMember") Member loginMember) {
+		
+		String message = null;
+		String path = null;
+		
+		int memberNo = hireComment.getMemberNo();
+		
+		int studyNo = service.getStudyNo(hireNo);
+		
+		Map<String, Integer> map = new HashMap<>();
+		map.put("hireNo", hireNo);
+		map.put("memberNo", memberNo);
+		
+		int result = service.memberInvite(map);
+		
+		if(result > 0) {
+			message = "초대완료";
+
+			
+		} else {
+			message = "초대실패";
+
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "hire/detail" + hireNo;
 	}
 }
