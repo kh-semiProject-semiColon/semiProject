@@ -280,7 +280,9 @@
               <li>인원 :&nbsp;<span th:text="${study.memberCount}">3</span> / <span th:text="${study.studyMaxCount}">5</span> 명</li>
             </ul>
           </div>
-          <img src="/images/studyMain.gif" alt="스터디 이미지" class="study-status-image" />
+          <img th:src="${study.studyMainImg} != null ? @{${study.studyMainImg}} : @{/images/logo.png}" 
+              alt="스터디 이미지" 
+              class="study-status-image" />
         </div>
       </div>
       <div class="carousel-controls">

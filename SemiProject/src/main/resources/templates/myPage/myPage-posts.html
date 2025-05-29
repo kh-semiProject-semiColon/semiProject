@@ -3,11 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GoStudy 마이페이지 게시글</title>
+    <title>GoStudy 마이페이지</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
-      type="text/css"
     />
     <link rel="stylesheet" href="/css/myPage/myPage-posts.css" />
     <link rel="stylesheet" href="/css/myPage/myPage-style.css" />
@@ -15,6 +14,7 @@
     <link rel="stylesheet" href="/css/common/header.css" />
     <link rel="stylesheet" href="/css/myPage/sidebar.css" />
   </head>
+
   <body>
     <!-- 헤더 -->
     <th:block th:replace="~{common/header}"></th:block>
@@ -22,18 +22,15 @@
     <!-- 메인 컨텐츠 -->
     <div class="main-content">
       <!-- 사이드바 -->
-
-      <!-- 상자를 구분하기 위해 id를 추가했습니다. 
-       id 추가 후 js 코드에서 사이드 바를 참고해주세요! -->
       <th:block th:replace="~{myPage/sidebar}"></th:block>
 
       <!-- 콘텐츠 영역 -->
       <div class="content">
-        <!-- 내 게시글 섹션 -->
-        <div class="content-section">
+        <!-- 내 게시글 -->
+        <section class="content-section">
           <h2 class="content-heading">내 게시글</h2>
 
-          <!-- 게시글 테이블 헤더 -->
+          <!-- 테이블 헤더 -->
           <div class="table-header">
             <div class="col-num">글번호</div>
             <div class="col-title">제목</div>
@@ -44,78 +41,63 @@
           </div>
 
           <!-- 게시글 목록 -->
-          <!-- 질문, 자유 게시판 -->
+          <div th:if="${#lists.isEmpty(boardList)}" class="no-data">
+            작성한 게시글이 없습니다.
+          </div>
           <div
             class="table-row"
             th:each="board : ${boardList}"
             th:data-board-no="${board.boardNo}"
             th:data-board-code="${board.boardCode}"
-            onclick="testhandler(event)"
+            onclick="handleBoardClick(event)"
           >
             <div class="col-num" th:text="${board.boardNo}">1</div>
             <div class="col-title" th:text="${board.boardTitle}">
-              1번째 게시글
+              게시글 제목
             </div>
             <div class="col-author" th:text="${board.memberNickname}">
-              유저명
+              작성자
             </div>
-            <div class="col-date" th:text="${board.boardWriteDate}">
-              25.05.09
-            </div>
-            <div class="col-views" th:text="${board.readCount}">202</div>
-            <div class="col-likes" th:text="${board.likeCount}">3</div>
+            <div class="col-date" th:text="${board.boardWriteDate}">작성일</div>
+            <div class="col-views" th:text="${board.readCount}">조회수</div>
+            <div class="col-likes" th:text="${board.likeCount}">좋아요</div>
           </div>
 
           <!-- 페이지네이션 -->
-          <div class="pagination">
-            <a
-              href="#"
-              class="page-item arrow"
-              th:if="${currentPage > 1}"
-              th:href="@{/mypage/posts(page=1)}"
+          <div class="pagination" th:if="${pagination != null}">
+            <a class="page-item arrow" th:href="@{/myPage/posts(cp=1)}"
               >&#x300A;</a
             >
             <a
-              href="#"
               class="page-item arrow"
-              th:if="${currentPage > 1}"
-              th:href="@{/mypage/posts(page=${currentPage - 1})}"
+              th:href="@{/myPage/posts(cp=${pagination.currentPage - 1 > 0 ? pagination.currentPage - 1 : 1})}"
               >&#x3008;</a
             >
-
-            <a href="#" class="page-item active">1</a>
-            <a href="#" class="page-item">2</a>
-            <a href="#" class="page-item">3</a>
-            <a href="#" class="page-item">4</a>
-            <a href="#" class="page-item">5</a>
-            <a href="#" class="page-item">6</a>
-            <a href="#" class="page-item">7</a>
-            <a href="#" class="page-item">8</a>
-            <a href="#" class="page-item">9</a>
-            <a href="#" class="page-item">10</a>
-
             <a
-              href="#"
+              th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"
+              th:href="@{/myPage/posts(cp=${i})}"
+              th:classappend="${i == pagination.currentPage} ? ' active'"
+              class="page-item"
+              th:text="${i}"
+            ></a>
+            <a
               class="page-item arrow"
-              th:if="${currentPage < totalPages}"
-              th:href="@{/mypage/posts(page=${currentPage + 1})}"
+              th:href="@{/myPage/posts(cp=${pagination.currentPage + 1 <= pagination.maxPage ? pagination.currentPage + 1 : pagination.maxPage})}"
               >&#x3009;</a
             >
             <a
-              href="#"
               class="page-item arrow"
-              th:if="${currentPage < totalPages}"
-              th:href="@{/mypage/posts(page=${totalPages})}"
+              th:href="@{/myPage/posts(cp=${pagination.maxPage})}"
               >&#x300B;</a
             >
           </div>
-        </div>
+        </section>
 
-        <!-- 내 댓글 섹션 -->
-        <div class="content-section">
+        <!-- 내 댓글 -->
+        <section class="content-section">
           <h2 class="content-heading">내 댓글</h2>
 
-          <!-- 내 댓글 테이블 헤더 -->
+          <!-- 테이블 헤더 -->
           <div class="table-header">
             <div class="col-num">글번호</div>
             <div class="col-post-title">게시글 제목</div>
@@ -124,101 +106,83 @@
           </div>
 
           <!-- 댓글 목록 -->
+          <div th:if="${#lists.isEmpty(commentList)}" class="no-data">
+            작성한 댓글이 없습니다.
+          </div>
           <div
             class="table-row"
             th:each="comment : ${commentList}"
             th:data-board-no="${comment.boardNo}"
             th:data-board-code="${comment.boardCode}"
-            onclick="testhandler(event)"
+            onclick="handleBoardClick(event)"
           >
             <div class="col-num" th:text="${comment.boardNo}">1</div>
             <div class="col-post-title" th:text="${comment.boardTitle}">
-              1번째 게시글
+              게시글 제목
             </div>
             <div class="col-comment-text" th:text="${comment.commentContent}">
-              텍스트는 동그래 말줄임해줍니다...
+              댓글내용
             </div>
             <div class="col-comment-date" th:text="${comment.commentDate}">
-              25.05.09 12:33
+              작성일
             </div>
           </div>
 
           <!-- 페이지네이션 -->
-          <div class="pagination">
+          <div class="pagination" th:if="${commentPagination != null}">
             <a
-              href="#"
               class="page-item arrow"
-              th:if="${commentCurrentPage > 1}"
-              th:href="@{/mypage/comments(page=1)}"
+              th:href="@{/myPage/posts(cp=1, commentCp=1)}"
               >&#x300A;</a
             >
             <a
-              href="#"
               class="page-item arrow"
-              th:if="${commentCurrentPage > 1}"
-              th:href="@{/mypage/comments(page=${commentCurrentPage - 1})}"
+              th:href="@{/myPage/posts(cp=1, commentCp=${commentPagination.currentPage - 1 > 0 ? commentPagination.currentPage - 1 : 1})}"
               >&#x3008;</a
             >
-
-            <a href="#" class="page-item active">1</a>
-            <a href="#" class="page-item">2</a>
-            <a href="#" class="page-item">3</a>
-            <a href="#" class="page-item">4</a>
-            <a href="#" class="page-item">5</a>
-            <a href="#" class="page-item">6</a>
-            <a href="#" class="page-item">7</a>
-            <a href="#" class="page-item">8</a>
-            <a href="#" class="page-item">9</a>
-            <a href="#" class="page-item">10</a>
-
             <a
-              href="#"
+              th:each="i : ${#numbers.sequence(commentPagination.startPage, commentPagination.endPage)}"
+              th:href="@{/myPage/posts(cp=1, commentCp=${i})}"
+              th:classappend="${i == commentPagination.currentPage} ? ' active'"
+              class="page-item"
+              th:text="${i}"
+            ></a>
+            <a
               class="page-item arrow"
-              th:if="${commentCurrentPage < commentTotalPages}"
-              th:href="@{/mypage/comments(page=${commentCurrentPage + 1})}"
+              th:href="@{/myPage/posts(cp=1, commentCp=${commentPagination.currentPage + 1 <= commentPagination.maxPage ? commentPagination.currentPage + 1 : commentPagination.maxPage})}"
               >&#x3009;</a
             >
             <a
-              href="#"
               class="page-item arrow"
-              th:if="${commentCurrentPage < commentTotalPages}"
-              th:href="@{/mypage/comments(page=${commentTotalPages})}"
+              th:href="@{/myPage/posts(cp=1, commentCp=${commentPagination.maxPage})}"
               >&#x300B;</a
             >
           </div>
-        </div>
+        </section>
       </div>
     </div>
 
     <!-- 푸터 -->
     <th:block th:replace="~{common/footer}"></th:block>
-    <script th:inline="javascript">
-      const testhandler = (e) => {
-        const boardNo = e.currentTarget.dataset.boardNo;
-        const boardCode = e.currentTarget.dataset.boardCode?.trim(); // 공백 방지도 같이
 
-        let boardType;
+    <script th:inline="javascript">
+      const handleBoardClick = (e) => {
+        const boardNo = e.currentTarget.dataset.boardNo;
+        const boardCode = e.currentTarget.dataset.boardCode;
+
+        console.log(boardNo);
+        console.log(boardCode);
 
         switch (boardCode) {
-          case "1":
-          case "2":
-            boardType = "board";
-            window.location.href = `/${boardType}/${boardCode}/${boardNo}?cp=1`;
-            return;
-
-          case "3":
-            boardType = "hire";
+          case "1000":
+            location.href = `/hire/detail/${boardNo}`;
             break;
-
-          case "4":
-            boardType = "study";
+          case "2000":
+            location.href = `/study/detail/${boardNo}`;
             break;
-
           default:
-            boardType = "unknown";
+            location.href = `/board/${boardCode}/${boardNo}`;
         }
-
-        window.location.href = `/${boardType}/detail/${boardNo}`;
       };
     </script>
 
