@@ -18,7 +18,12 @@
         <button class="home-btn" onclick="redirectToMain()">뒤로가기</button>
       </div>
 
-      <form id="studyForm" onsubmit="submitForm(event)">
+      <form
+        id="studyForm"
+        onsubmit="submitForm(event)"
+        enctype="multipart/form-data"
+        method="post"
+      >
         <div class="form-container">
           <!-- 왼쪽 영역 -->
           <div class="left-section">
