@@ -46,8 +46,11 @@ public class MyPageServiceImpl implements MyPageService {
 
 	@Override
 	public int updateInfo(Member inputMember, Member loginMember, MultipartFile profileImg) throws Exception {
+		
 		int result = 0;
+		
 		String updatePath = null;
+		
 		String rename = null;
 
 		// 1. 주소 처리

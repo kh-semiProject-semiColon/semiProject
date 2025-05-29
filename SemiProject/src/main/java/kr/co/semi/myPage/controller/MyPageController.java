@@ -1,7 +1,5 @@
 package kr.co.semi.myPage.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import kr.co.semi.board.model.dto.Board;
+import jakarta.servlet.http.HttpSession;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.myPage.model.service.MyPageService;
 import lombok.extern.slf4j.Slf4j;
@@ -85,6 +83,7 @@ public class MyPageController {
 	@PostMapping("info")
 	public String updateInfo(Member inputMember, @SessionAttribute("loginMember") Member loginMember,
 			@RequestParam("uploadFile") MultipartFile profileImg, @RequestParam("defaultFile") String defaultFile,
+			HttpSession session,
 			RedirectAttributes ra) throws Exception {
 
 		// 로그인한 회원의 번호 얻어오기
@@ -102,7 +101,7 @@ public class MyPageController {
 			inputMember.setProfileImg("/images/default-profile.png");
 			// 빈 파일로 전달 (혹시 서비스에서 null 검사하는 로직 있을 경우 대비)
 			profileImg = null;
-		}
+		} 
 
 		// 회원정보 수정 메서드
 		int result = service.updateInfo(inputMember, loginMember, profileImg);
@@ -111,8 +110,8 @@ public class MyPageController {
 			loginMember.setMemberNickname(inputMember.getMemberNickname());
 			loginMember.setMemberTel(inputMember.getMemberTel());
 			loginMember.setMemberAddress(inputMember.getMemberAddress());
-			loginMember.setProfileImg(inputMember.getProfileImg());
 
+			session.setAttribute("loginMember", loginMember); 
 			message = "회원 정보 수정 성공!";
 
 		} else {
