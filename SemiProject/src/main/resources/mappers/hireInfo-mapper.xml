@@ -117,7 +117,8 @@
 	  	UPDATE "HIRE_INFO" SET
 	  	HIRE_TITLE = #{hireTitle},
 	  	HIRE_CONTENT = #{hireContent},
-	  	HIRE_UPDATE = #{hireUpdate}
+	  	HIRE_UPDATE = SYSDATE,
+	  	DAY_CAN_JOIN = #{dayCanJoin}
 	  	WHERE HIRE_NO = #{hireNo}
 	  	AND MEMBER_NO = #{memberNo}
 	  </update>

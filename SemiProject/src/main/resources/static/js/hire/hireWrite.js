@@ -63,7 +63,7 @@ document
       return;
     }
 
-    const dayCanJoin = checkedDays.join(", ");
+    const dayCanJoin = checkedDays.join(" / ");
 
     // 기존 체크박스 비활성화 (서버 전송 안 되게)
     form

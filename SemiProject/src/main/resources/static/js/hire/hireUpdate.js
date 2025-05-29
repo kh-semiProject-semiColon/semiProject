@@ -38,7 +38,7 @@ const dayCheck = document.querySelectorAll("input[name='day']");
 
 // 요일들 하나의 문자열로 합치기
 // 체크박스 클릭 시 콘솔 출력
-document.querySelectorAll("input[name='dayCanJoin']").forEach((checkbox) => {
+document.querySelectorAll("input[name='dayCanJoin1']").forEach((checkbox) => {
   checkbox.addEventListener("click", () => {
     console.log(`${checkbox.value} 클릭됨`);
   });
@@ -54,7 +54,7 @@ document
 
     // 체크된 요일 수집
     const checkedDays = Array.from(
-      form.querySelectorAll("input[name='dayCanJoin']:checked")
+      form.querySelectorAll("input[name='dayCanJoin1']:checked")
     ).map((cb) => cb.value);
 
     // 예외 처리: 하나도 선택 안 했을 경우 (필요 시)
@@ -63,11 +63,11 @@ document
       return;
     }
 
-    const dayCanJoin = checkedDays.join(", ");
+    const dayCanJoin = checkedDays.join(" / ");
 
     // 기존 체크박스 비활성화 (서버 전송 안 되게)
     form
-      .querySelectorAll("input[name='dayCanJoin']")
+      .querySelectorAll("input[name='dayCanJoin1']")
       .forEach((cb) => (cb.disabled = true));
 
     // 기존 dayCanJoin hidden input이 있으면 제거
@@ -80,6 +80,14 @@ document
     hiddenInput.name = "dayCanJoin";
     hiddenInput.value = dayCanJoin;
     form.appendChild(hiddenInput);
+
+    console.log("dayCanJoin:", dayCanJoin);
+    console.log("form 내용:", new FormData(form));
+
+    const formData = new FormData(form);
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
 
     form.submit(); // 실제 제출
   });
