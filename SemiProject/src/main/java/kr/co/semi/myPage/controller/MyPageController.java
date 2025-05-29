@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.servlet.http.HttpSession;
 import kr.co.semi.board.model.dto.Board;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.myPage.model.service.MyPageService;
@@ -33,7 +33,7 @@ public class MyPageController {
 	private MyPageService service;
 
 	// 회원가입 시 적었던 내용들을 조회할 수 있게 하는 메서드
-	@RequestMapping("info")
+	@GetMapping("info")
 	public String info(@SessionAttribute("loginMember") Member loginMember, Model model, Member member) {
 
 		String memberAddress = loginMember.getMemberAddress();
@@ -72,11 +72,24 @@ public class MyPageController {
 		return "myPage/myPage-info";
 	}
 
-	// 회원정보 수정 메서드
+	
+	 /**회원정보 수정 메서드
+	 * @param inputMember
+	 * @param loginMember
+	 * @param profileImg
+	 * @param ra
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping("info")
-	public String updateInfo(Member inputMember, @SessionAttribute("loginMember") Member loginMember,
-			RedirectAttributes ra) {
+	public String updateInfo(Member inputMember, 
+			@SessionAttribute("loginMember") Member loginMember,
+			@RequestParam("profileImg") MultipartFile profileImg,
+			RedirectAttributes ra) throws Exception {
 
+		// 로그인한 회원의 번호 얻어오기
+		int memberNo = loginMember.getMemberNo();
+		
 		// 수정되었다는 알림 메세지 띄우는 변수
 		String message = null;
 		// 제출된 수정된 회원 닉네임, 전화번호, 주소에 로그인한 세션넘버를 같이 보내는 과정
@@ -84,7 +97,7 @@ public class MyPageController {
 		inputMember.setMemberName(loginMember.getMemberName());
 
 		// 회원정보 수정 메서드
-		int result = service.updateInfo(inputMember);
+		int result = service.updateInfo(inputMember, profileImg);
 
 		if (result > 0) {
 			loginMember.setMemberNickname(inputMember.getMemberNickname());

@@ -40,18 +40,12 @@
           <!-- 프로필 이미지 섹션 -->
           <div class="profile-section">
             <div class="profile-image-container">
-              <input type="file" name="profileImg" accept="image/*" id="profileImg" style="display: none;" />
-              <!-- user가 null이 아니고 profileImage가 존재할 때 -->
               <img
-                th:if="${loginMember != null and loginMember.profileImg != null}"
-                th:src="@{${loginMember.profileImg}}"
+              th:if="${loginMember == null or loginMember.profileImg == null}"
+              th:src="@{/images/default-profile.png}"
+              id="profileImg"
               />
-
-              <!-- user가 null이거나 profileImage가 없을 때 기본 이미지 -->
-              <img
-                th:if="${loginMember == null or loginMember.profileImg == null}"
-                th:src="@{/images/default-profile.png}"
-              />
+              <input type="file" name="imageInput" accept="image/*" id="imageInput" style="display: none;" />
               <button type="button" class="remove-image">X</button>
               <input type="hidden" name="deleteProfileImage" id="deleteProfileImage" value="false" />
             </div>
