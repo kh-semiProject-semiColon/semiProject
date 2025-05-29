@@ -1,8 +1,11 @@
 package kr.co.semi.member.controller;
 
+import java.io.File;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.semi.board.model.service.StudyCalendarService;
+import kr.co.semi.common.util.Utility;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.member.model.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("member")
 @Slf4j
 @SessionAttributes({"loginMember"})
+@PropertySource("classpath:/config.properties")
 public class MemberController {
 	
 	@Autowired
@@ -33,6 +39,9 @@ public class MemberController {
 	
 	@Autowired
 	private StudyCalendarService studyCalendarService;
+	
+	@Value("${my.profile.folder-path}")
+	private String folderPath;
 	
 	/*
 	 * [로그인]
@@ -171,11 +180,14 @@ public class MemberController {
 	 */
 	@PostMapping("signupInfo")
 	public String signupInfo(Member inputMember,
-							@RequestParam("memberAddress") String[] memberAddress
-							) {
+							@RequestParam("memberAddress") String[] memberAddress,
+							@RequestParam("profileImgs") MultipartFile profileImg
+							)throws Exception {
 		
+		String profileResult = service.profile(profileImg, inputMember);
+		
+		int result = service.signupInfo(inputMember, memberAddress, profileResult);
 		// 회원가입 서비스 호출
-		int result = service.signupInfo(inputMember, memberAddress);
 		
 		String path = null;
 		
@@ -311,4 +323,6 @@ public class MemberController {
 	public String pwChanged() {
 		return "/member/pwChanged";
 	}
+	
+	
 }

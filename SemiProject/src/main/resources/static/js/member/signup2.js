@@ -519,3 +519,63 @@ document.querySelector("#submit-btn").addEventListener("click", (e) => {
     }
   }
 });
+
+/* 선택된 이미지 미리보기 관련 요소 모두 얻어오기 */
+
+const preview = document.querySelector(".preview"); // img 태그
+const inputImage = document.querySelector(".inputImage"); // input 태그
+const deleteImage = document.querySelector(".delete-image"); // x버튼
+const defaultSrc = preview.dataset.defaultSrc;
+
+let profile = null; // null로 초기화
+
+/** 미리보기 함수 */
+const updatePreview = (file) => {
+  const maxSize = 1024 * 1024 * 10; // 10MB
+
+  if (file.size > maxSize) {
+    alert("10MB 이하의 이미지만 선택해 주세요");
+
+    if (profile === null) {
+      inputImage.value = ""; // 파일 삭제
+      return;
+    }
+
+    // 이전 파일 복원
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(profile);
+    inputImage.files = dataTransfer.files;
+
+    return;
+  }
+
+  const newImageUrl = URL.createObjectURL(file);
+  preview.src = newImageUrl;
+  profile = file; // 선택된 유효한 파일 저장
+};
+
+// input에 change 이벤트 추가
+inputImage.addEventListener("change", (e) => {
+  const file = e.target.files[0]; // ← 중요 수정
+
+  if (!file) {
+    // 선택 취소된 경우
+    if (profile === null) return;
+
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(profile);
+    inputImage.files = dataTransfer.files;
+    updatePreview(profile);
+    return;
+  }
+
+  // 유효한 파일 선택 시
+  updatePreview(file);
+});
+
+// x 버튼 클릭 시 이미지 제거
+deleteImage.addEventListener("click", () => {
+  preview.src = "/images/what.jpg";
+  inputImage.value = "";
+  profile = null;
+});

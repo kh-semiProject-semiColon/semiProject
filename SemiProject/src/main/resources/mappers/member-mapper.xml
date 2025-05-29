@@ -73,7 +73,7 @@
 					 #{memberNickname},
 					 #{memberTel},
 					 #{memberAddress},
-					 NULL,
+					 #{profileImg},
 					 DEFAULT,
 					 DEFAULT,
 					 DEFAULT,
