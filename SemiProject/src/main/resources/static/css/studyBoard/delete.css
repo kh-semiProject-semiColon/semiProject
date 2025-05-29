@@ -303,11 +303,13 @@ body {
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
 }
-/* 모달 스타일 */
+/* 기존 CSS 내용은 그대로 두고, 모달 관련 부분만 이것으로 교체 */
+
+/* 모달 스타일 - 단일 정의 */
 .modal {
   display: none;
   position: fixed;
-  z-index: 1000;
+  z-index: 99999;
   left: 0;
   top: 0;
   width: 100%;
@@ -316,7 +318,7 @@ body {
 }
 
 .modal-content {
-  background-color: #fefefe;
+  background-color: white;
   margin: 10% auto;
   padding: 30px;
   border: none;
@@ -324,6 +326,7 @@ body {
   width: 90%;
   max-width: 500px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  position: relative;
 }
 
 .modal-header {
@@ -426,186 +429,7 @@ body {
   opacity: 0.9;
 }
 
-/* 버튼 그룹 */
-.button-group {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #dee2e6;
-  flex-wrap: wrap;
-}
-
-/* 로딩 상태 */
-.btn.loading {
-  position: relative;
-  color: transparent;
-}
-
-.btn.loading::after {
-  content: "";
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  top: 50%;
-  left: 50%;
-  margin-left: -8px;
-  margin-top: -8px;
-  border: 2px solid transparent;
-  border-top-color: #ffffff;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* 성공/에러 메시지 */
-.alert {
-  padding: 12px 16px;
-  border-radius: 6px;
-  margin-bottom: 20px;
-  border: 1px solid transparent;
-}
-
-.alert-success {
-  color: #155724;
-  background-color: #d4edda;
-  border-color: #c3e6cb;
-}
-
-.alert-error {
-  color: #721c24;
-  background-color: #f8d7da;
-  border-color: #f5c6cb;
-}
-
-/* 애니메이션 */
-.fade-in {
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 반응형 */
-@media (max-width: 768px) {
-  .main-content {
-    flex-direction: column;
-    padding: 10px;
-  }
-
-  .content {
-    padding: 20px;
-  }
-
-  .content-heading {
-    font-size: 20px;
-  }
-
-  .withdrawal-container {
-    padding: 0;
-  }
-
-  .member-withdrawal,
-  .leader-withdrawal {
-    padding: 20px;
-  }
-
-  .withdrawal-notice {
-    padding: 20px;
-  }
-
-  .notice-title {
-    font-size: 18px;
-  }
-
-  .button-group {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .btn {
-    width: 100%;
-    margin-right: 0 !important;
-  }
-
-  .option-card {
-    padding: 15px;
-  }
-
-  .option-actions {
-    text-align: center;
-  }
-
-  .character-img {
-    width: 80px;
-    height: 80px;
-  }
-
-  .info-item {
-    flex-direction: column;
-  }
-
-  .info-label {
-    min-width: auto;
-    margin-right: 0;
-    margin-bottom: 3px;
-  }
-}
-
-@media (max-width: 480px) {
-  .content-heading {
-    font-size: 18px;
-  }
-
-  .btn {
-    padding: 8px 16px;
-    font-size: 13px;
-  }
-
-  .member-withdrawal,
-  .leader-withdrawal {
-    padding: 15px;
-  }
-
-  .withdrawal-notice {
-    padding: 15px;
-  }
-
-  .notice-title {
-    font-size: 16px;
-  }
-
-  .character-img {
-    width: 60px;
-    height: 60px;
-  }
-
-  .option-card {
-    padding: 12px;
-  }
-
-  .study-info {
-    padding: 15px;
-  }
-
-  .checkbox-item {
-    padding: 12px;
-  }
+/* 모달 오버레이는 사용하지 않으므로 제거하거나 숨김 */
+.modal-overlay {
+  display: none !important;
 }

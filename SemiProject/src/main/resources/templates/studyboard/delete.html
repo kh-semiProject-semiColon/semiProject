@@ -178,7 +178,7 @@
                     <button
                       type="button"
                       class="btn btn-primary"
-                      onclick="location.href='/studyBoard/' + [[${study.studyNo}]] + '/transfer-leadership'"
+                      id="transferBtn"
                     >
                       팀장 위임하기
                     </button>
@@ -204,7 +204,7 @@
                     <button
                       type="button"
                       class="btn btn-danger"
-                      onclick="confirmStudyDeletion()"
+                      id="deleteStudyBtn"
                     >
                       스터디 해체하기
                     </button>
@@ -233,7 +233,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h4>👥 팀장 권한 위임</h4>
-          <span class="close" onclick="closeTransferModal()">&times;</span>
+          <span class="close" id="modalCloseBtn">&times;</span>
         </div>
         <div class="modal-body">
           <p><strong>새로운 팀장을 선택해주세요:</strong></p>
@@ -253,26 +253,34 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            onclick="closeTransferModal()"
-          >
+          <button type="button" class="btn btn-secondary" id="modalCancelBtn">
             취소
           </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            onclick="executeTransfer()"
-          >
+          <button type="button" class="btn btn-primary" id="modalConfirmBtn">
             위임하고 탈퇴
           </button>
         </div>
       </div>
     </div>
 
+    <!-- 오버레이 -->
+    <div
+      id="modalOverlay"
+      class="modal-overlay"
+      style="display: none"
+      onclick="closeRuleModal()"
+    ></div>
+
     <!-- 푸터 -->
     <th:block th:replace="~{common/footer}"></th:block>
+
+    <script>
+      const STUDY_DATA = {
+        studyNo: /*[[${study.studyNo}]]*/ 1,
+        studyName: /*[[${study.studyName}]]*/ "JAVA스터디",
+        memberCount: /*[[${study.currentMemberCount}]]*/ 2,
+      };
+    </script>
 
     <script src="/js/studyBoard/delete.js"></script>
   </body>
