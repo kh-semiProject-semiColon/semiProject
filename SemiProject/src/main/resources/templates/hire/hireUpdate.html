@@ -38,15 +38,16 @@
               <div class="form-row">
                 <label class="form-label">스터디 명</label>
                 <div class="form-input-area">
-                  <select name="studyNo">
-                    <th:block th:each="study : ${study}">
-                      <option selected disabled th:value="${study.studyNo}"
-                              th:text="${study.studyName}"
-                              th:data-studyMaxCount="${study.studyMaxCount}"
-                              th:data-studyType="${study.studyType}"
-                              th:data-studyPeriod="${study.studyPeriod}"></option>
-                    </th:block>
-                  </select>
+                  <!-- 사용자에게 보여주는 readonly input -->
+                  <input type="text" class="read-only-input"
+                        th:value="${study.studyName}"
+                        readonly
+                        id="studyDisplay"
+                        th:data-studytype="${study.studyType}"
+                        th:data-studyperiod="${study.studyPeriod}" />
+
+                  <!-- 실제 form에 제출할 hidden 값들 -->
+                  <input type="hidden" name="studyNo" th:value="${study.studyNo}" />
                 </div>
               </div>
             </div>
@@ -56,8 +57,15 @@
                 <label class="form-label">모집 인원</label>
                 <div class="form-input-area">
                   <div class="input-group">
-                    <input type="text" class="small-input" name="studyMaxCount" th:value="${hireInfo.hireCount}"/>
-                    <span class="span-text">명</span>
+                    <select name="hireCount" id="hireCountSelect">
+                      <option value="" disabled>선택</option>
+                      <th:block th:each="i : ${#numbers.sequence(1, hireInfo.hireCount)}">
+                        <option th:value="${i}"
+                                th:text="${i + '명'}"
+                                th:selected="${i == hireInfo.hireCount}">
+                        </option>
+                      </th:block>
+                    </select>
                   </div>
                 </div>
               </div>

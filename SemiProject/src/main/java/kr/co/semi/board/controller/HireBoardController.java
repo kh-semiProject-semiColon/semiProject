@@ -2,6 +2,7 @@ package kr.co.semi.board.controller;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,17 +74,43 @@ public class HireBoardController {
 		
 		int memberNo = loginMember.getMemberNo();
 		
-	    List<Study> studyList = service.showStudySelect(memberNo);
+	    List<Study> study = service.showStudySelect(memberNo);
+
+	    
+	    List<Study> studyList = new ArrayList<>();
+	    
+	    for (Study s : study) {
+	        if ("Y".equals(s.getStudyCap())) {
+	        	int currentMemberCount = service.hireCount(s.getStudyNo());
+	            s.setCurrentMemberCount(currentMemberCount);
+	        	
+	        	studyList.add(s);
+	        	
+	        	System.out.println(s.getCurrentMemberCount());
+	    	    
+	    	    
+	    	    
+	        }
+	    }
 	    
 	    
-	    if(studyList.isEmpty() || studyList == null) {
+	    if(study.isEmpty() || study == null) {
 	    	path = "redirect:/hire/board"; // 목록 재요청
 	    	ra.addFlashAttribute("message", "생성된 스터디가 없습니다.");
 	    	
 	    } else {
 	    	
-	    	model.addAttribute("study", studyList);
-	    	path = "hire/hireWrite";
+	    	if(studyList.isEmpty() || studyList == null) {
+	    		
+	    		path = "redirect:/hire/board"; // 목록 재요청
+	    		ra.addFlashAttribute("message", "스터디의 리더만 작성할 수 있습니다");
+	    		
+	    	} else {
+	    		
+	    		model.addAttribute("study", studyList);
+	    		path = "hire/hireWrite";
+	    		
+	    	}
 	    	
 	    }
 	    
@@ -99,6 +126,8 @@ public class HireBoardController {
 									   )throws Exception {
 		
 		int hireNo = 0;
+		
+//		System.out.println(inputHire);
 		
 		inputHire.setMemberNo(loginMember.getMemberNo());
 		inputHire.setStudyNo(loginMember.getStudyNo());
@@ -236,6 +265,10 @@ public class HireBoardController {
 			
 			// 스터디 정보 조회
 			Study study = service.selectStudyNo(hireInfo.getStudyNo());
+			
+			int currentMemberCount = service.hireCount(hireInfo.getStudyNo());
+			
+			study.setCurrentMemberCount(currentMemberCount);
 			
 //			System.out.println(hireInfo);
 			

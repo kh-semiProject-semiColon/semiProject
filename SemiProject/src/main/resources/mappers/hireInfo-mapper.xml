@@ -61,7 +61,7 @@
 	
 	<!-- 내 스터디 조회 -->
 	<select id="showStudySelect">
-	 SELECT S.*
+	 SELECT S.*, SM.STUDY_CAP
 	 FROM STUDY_MEMBER SM
 	 JOIN STUDY S ON SM.STUDY_NO = S.STUDY_NO
 	 WHERE SM.MEMBER_NO = #{memberNo}
@@ -83,6 +83,13 @@
 	    #{dayCanJoin}, #{hireCount}, #{hireTitle}
 	  )
 	</insert>
+	
+	<!-- 현재 인원 구하기 -->
+	<select id="hireCount">
+		SELECT COUNT(*) HIRE_COUNT
+		FROM "STUDY_MEMBER"
+		WHERE STUDY_NO = #{studyNo}
+	</select>
 
 	<!-- 구인 게시글 상세 조회 -->
 	<select id="selectOne">

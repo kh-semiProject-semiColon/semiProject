@@ -40,6 +40,9 @@ public interface HireBoardService {
 	// 스터디 번호 구하기
 	int getStudyNo(int memberNo);
 
+	// 모집인원 구하기
+	int hireCount(int studyNo);
+
 
 	
 

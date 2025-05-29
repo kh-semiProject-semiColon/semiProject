@@ -86,14 +86,15 @@
             </th:block>
           </div>
         </div>
+
         <div class="detail-item">
           <div class="detail-label">현재 인원</div>
           <div class="detail-item">
             <div
               class="detail-value"
-              th:text="${(study.studyMaxCount ?: 0) - (hireInfo.hireCount ?: 0)}"
+              th:text="${study.currentMemberCount}"
             >
-              3
+              3 
             </div>
             <div class="detail-value1">/</div>
             <div class="detail-value1" th:text="${study.studyMaxCount} + '명'">
@@ -101,6 +102,19 @@
             </div>
           </div>
         </div>
+
+        <div class="detail-item">
+          <div class="detail-label">모집 인원</div>
+          <div class="detail-item">
+            <div
+              class="detail-value"
+              th:text="${hireInfo.hireCount} + 명"
+            >
+              3 
+            </div>
+          </div>
+        </div>
+
 
         <div class="detail-item">
           <div class="detail-label">스터디 요일</div>

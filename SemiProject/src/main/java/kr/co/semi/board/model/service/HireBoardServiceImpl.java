@@ -89,6 +89,12 @@ public class HireBoardServiceImpl implements HireBoardService{
 	    }
 	}
 	
+	// 구인 모집 인원 조회
+	@Override
+	public int hireCount(int studyNo) {
+		return mapper.hireCount(studyNo);
+	}
+	
 	// 구인 게시글 상세 조회
 	@Override
 	public HireInfo selectOne(Map<String, Integer> map) {

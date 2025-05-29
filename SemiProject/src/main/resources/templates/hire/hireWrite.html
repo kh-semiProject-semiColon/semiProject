@@ -42,6 +42,7 @@
                       <option selected disabled th:value="${study.studyNo}"
                               th:text="${study.studyName}"
                               th:data-studyMaxCount="${study.studyMaxCount}"
+                              th:data-currentMemberCount="${study.currentMemberCount}"
                               th:data-studyType="${study.studyType}"
                               th:data-studyPeriod="${study.studyPeriod}"></option>
                     </th:block>
@@ -55,12 +56,14 @@
                 <label class="form-label">모집 인원</label>
                 <div class="form-input-area">
                   <div class="input-group">
-                    <input type="text" class="small-input" name="studyMaxCount"/>
-                    <span class="span-text">명</span>
+                    <select name="hireCount" id="hireCountSelect">
+                      <option value="" disabled selected>선택</option>
+                    </select>
                   </div>
                 </div>
               </div>
             </div>
+
 
             <div class="form-group">
               <div class="form-row">

@@ -1,16 +1,8 @@
-// th:data- 에서 저장한 값 지정된 자리에 집어넣기
 document.addEventListener("DOMContentLoaded", function () {
-  const studySelect = document.querySelector("select[name='studyNo']");
+  const studyInput = document.querySelector("#studyDisplay");
 
-  const selected = studySelect.options[studySelect.selectedIndex];
-
-  // 올바른 속성명 사용 (소문자)
-  // const studyMaxCount = selected.dataset.studymaxcount;
-  const studyType = selected.dataset.studytype || "";
-  const studyPeriod = selected.dataset.studyperiod || "";
-
-  // 모집 인원
-  // document.querySelector("input[name='studyMaxCount']").value = studyMaxCount;
+  const studyType = studyInput.dataset.studytype || "";
+  const studyPeriod = studyInput.dataset.studyperiod || "";
 
   // 방향성 (라디오 버튼)
   const directionRadio = document.querySelector(

@@ -76,4 +76,10 @@ public interface HireBoardMapper {
 	 * @return
 	 */
 	int getStudyNo(int memberNo);
+
+	/** 스터디 현재 인원 구하기
+	 * @param studyNo
+	 * @return
+	 */
+	int hireCount(int studyNo);
 }
