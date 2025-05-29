@@ -1,3 +1,4 @@
-document.querySelector(".card").addEventListener("click", () => {
-  location.href = "/board/detail";
+document.querySelector(".post-btn").addEventListener("click", (event) => {
+  const hireNo = event.target.dataset.hireno;
+  location.href = "/hire/edit" + hireNo;
 });

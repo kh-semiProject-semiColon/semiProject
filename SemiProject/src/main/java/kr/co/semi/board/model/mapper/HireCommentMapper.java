@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.semi.board.model.dto.Comment;
+import kr.co.semi.board.model.dto.HireComment;
 
 @Mapper
 public interface HireCommentMapper {
@@ -13,7 +14,7 @@ public interface HireCommentMapper {
 	 * @param boardNo
 	 * @return
 	 */
-	List<Comment> select(int hireNo);
+	List<HireComment> select(int hireNo);
 
 	/** 댓글/ 답글 등록 서비스
 	 * @param comment
