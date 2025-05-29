@@ -244,7 +244,7 @@ public class StudyBoardController {
     // ============================================
     
     /**
-     * 스터디 탈퇴 페이지
+     * 스터디 탈퇴 조회
      */
     @GetMapping("delete1")
     public String studyBoardDelete1(@SessionAttribute("loginMember") Member loginMember,

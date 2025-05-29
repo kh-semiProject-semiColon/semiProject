@@ -30,14 +30,58 @@ function confirmStudyDeletion() {
     form.method = "POST";
     form.action = "/study/[[${study.studyNo}]]/dissolve";
 
-    // CSRF 토큰 추가
-    const csrfToken = document.createElement("input");
-    csrfToken.type = "hidden";
-    csrfToken.name = "[[${_csrf.parameterName}]]";
-    csrfToken.value = "[[${_csrf.token}]]";
-    form.appendChild(csrfToken);
+    document.body.appendChild(form);
+    form.submit();
+  }
+}
+
+// 모달 열기
+function openTransferModal() {
+  document.getElementById("transferModal").style.display = "block";
+}
+
+// 모달 닫기
+function closeTransferModal() {
+  document.getElementById("transferModal").style.display = "none";
+  document.getElementById("newLeaderSelect").value = "";
+}
+
+// 위임 실행
+function executeTransfer() {
+  const selectedLeaderId = document.getElementById("newLeaderSelect").value;
+  const selectedLeaderName =
+    document.getElementById("newLeaderSelect").options[
+      document.getElementById("newLeaderSelect").selectedIndex
+    ].text;
+
+  if (!selectedLeaderId) {
+    alert("새로운 팀장을 선택해주세요.");
+    return;
+  }
+
+  if (
+    confirm(`${selectedLeaderName}에게 팀장 권한을 위임하고 탈퇴하시겠습니까?`)
+  ) {
+    // 폼 생성해서 서버에 전송
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "/studyBoard/[[${study.studyNo}]]/transfer-leadership";
+
+    const leaderInput = document.createElement("input");
+    leaderInput.type = "hidden";
+    leaderInput.name = "newLeaderId";
+    leaderInput.value = selectedLeaderId;
+    form.appendChild(leaderInput);
 
     document.body.appendChild(form);
     form.submit();
   }
 }
+
+// 모달 외부 클릭 시 닫기
+window.onclick = function (event) {
+  const modal = document.getElementById("transferModal");
+  if (event.target === modal) {
+    closeTransferModal();
+  }
+};
