@@ -155,6 +155,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
+    // 기본 사진 넣는 폼
+    const defaultFile = document.querySelector("#defaultFile");
+
     removeImageBtn.addEventListener("click", () => {
       if (profileImg.src !== defaultImageUrl) {
         imageInput.value = "";
@@ -162,8 +165,11 @@ document.addEventListener("DOMContentLoaded", function () {
         statusCheck = 0;
         previousImage = defaultImageUrl;
         previousFile = null;
+
+        defaultFile.value = "true";
       } else {
         statusCheck = -1;
+        defaultFile.value = "false";
       }
     });
 

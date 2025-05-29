@@ -28,5 +28,6 @@ public class Member {
 	private String memberMajor;
 	private String memberIntroduce;
 	private String memberName;
+	
 }
 

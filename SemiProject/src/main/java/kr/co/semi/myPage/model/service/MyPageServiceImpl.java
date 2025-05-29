@@ -44,15 +44,13 @@ public class MyPageServiceImpl implements MyPageService {
 		return (Member) mapper.selectMember(memberNo);
 	}
 
-	
-
 	@Override
 	public int updateInfo(Member inputMember, Member loginMember, MultipartFile profileImg) throws Exception {
 		int result = 0;
 		String updatePath = null;
 		String rename = null;
 
-		// 1. 주소 처리 먼저
+		// 1. 주소 처리
 		String rawAddress = inputMember.getMemberAddress();
 		if (rawAddress != null && !rawAddress.trim().isEmpty()) {
 			String[] parts = rawAddress.split(",");
@@ -68,40 +66,42 @@ public class MyPageServiceImpl implements MyPageService {
 			inputMember.setMemberAddress(null);
 		}
 
-		// 2. 회원 정보 업데이트 먼저
+		// 2. 기본 회원 정보 업데이트
 		result = mapper.updateInfo(inputMember);
 
 		if (result > 0) {
-			
-			// 3. 프로필 이미지 처리 (회원정보 업데이트 성공시에만)
-			if (!profileImg.isEmpty()) {
-				
-				// 파일명 변경
+
+			// 3-1. 프로필 이미지 삭제 요청 (기본 이미지로 변경 요청)
+			if (inputMember.getProfileImg() != null && inputMember.getProfileImg().contains("default-profile.png")) {
+				Member profileMember = Member.builder().memberNo(loginMember.getMemberNo())
+						.profileImg("/images/default-profile.png").build();
+
+				int profileResult = mapper.profile(profileMember);
+				if (profileResult > 0) {
+					loginMember.setProfileImg(profileMember.getProfileImg());
+				} else {
+					result = 0; // 실패 시 전체 롤백
+				}
+			}
+
+			// 3-2. 프로필 이미지 새로 업로드한 경우
+			else if (profileImg != null && !profileImg.isEmpty()) {
 				rename = Utility.fileRename(profileImg.getOriginalFilename());
-				
-				// 경로 설정
 				updatePath = profileWebPath + rename;
 
-				// 프로필 이미지 경로 업데이트
 				Member profileMember = Member.builder().memberNo(loginMember.getMemberNo()).profileImg(updatePath)
 						.build();
 
 				int profileResult = mapper.profile(profileMember);
-
 				if (profileResult > 0) {
-					
-					// 파일 서버에 저장
 					profileImg.transferTo(new File(profileFolderPath + rename));
-					
-					// 세션 동기화
 					loginMember.setProfileImg(updatePath);
-					
 				} else {
-					
-					// 프로필 이미지 업데이트 실패시 롤백 고려
 					result = 0;
 				}
 			}
+
+			// else: 아무 것도 안 바꾸는 경우는 무시
 		}
 
 		return result;

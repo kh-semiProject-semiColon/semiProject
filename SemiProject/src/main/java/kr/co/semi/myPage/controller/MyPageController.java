@@ -72,8 +72,9 @@ public class MyPageController {
 		return "myPage/myPage-info";
 	}
 
-	
-	 /**회원정보 수정 메서드
+	/**
+	 * 회원정보 수정 메서드
+	 * 
 	 * @param inputMember
 	 * @param loginMember
 	 * @param profileImg
@@ -82,20 +83,26 @@ public class MyPageController {
 	 * @throws Exception
 	 */
 	@PostMapping("info")
-	public String updateInfo(Member inputMember, 
-			@SessionAttribute("loginMember") Member loginMember,
-			@RequestParam("uploadFile") MultipartFile profileImg,
+	public String updateInfo(Member inputMember, @SessionAttribute("loginMember") Member loginMember,
+			@RequestParam("uploadFile") MultipartFile profileImg, @RequestParam("defaultFile") String defaultFile,
 			RedirectAttributes ra) throws Exception {
 
 		// 로그인한 회원의 번호 얻어오기
 		int memberNo = loginMember.getMemberNo();
-		
+
 		// 수정되었다는 알림 메세지 띄우는 변수
 		String message = null;
-		
+
 		// 제출된 수정된 회원 닉네임, 전화번호, 주소에 로그인한 세션넘버를 같이 보내는 과정
 		inputMember.setMemberNo(loginMember.getMemberNo());
 		inputMember.setMemberName(loginMember.getMemberName());
+
+		// 사진 삭제 대신 기본 이미지로 수정하는 메서드
+		if ("true".equals(defaultFile)) {
+			inputMember.setProfileImg("/images/default-profile.png");
+			// 빈 파일로 전달 (혹시 서비스에서 null 검사하는 로직 있을 경우 대비)
+			profileImg = null;
+		}
 
 		// 회원정보 수정 메서드
 		int result = service.updateInfo(inputMember, loginMember, profileImg);
@@ -104,10 +111,10 @@ public class MyPageController {
 			loginMember.setMemberNickname(inputMember.getMemberNickname());
 			loginMember.setMemberTel(inputMember.getMemberTel());
 			loginMember.setMemberAddress(inputMember.getMemberAddress());
-
+			loginMember.setProfileImg(inputMember.getProfileImg());
 
 			message = "회원 정보 수정 성공!";
-			
+
 		} else {
 
 			message = "회원 정보 수정 실패..";
@@ -154,28 +161,27 @@ public class MyPageController {
 	}
 
 	@GetMapping("posts")
-	public String posts(@SessionAttribute("loginMember") Member loginMember,
-	                   Model model, 
-	                   @RequestParam(value="cp", required = false, defaultValue = "1") int cp,
-	                   @RequestParam(value="commentCp", required = false, defaultValue = "1") int commentCp,
-	                   @RequestParam Map<String, Object> paramMap) {
+	public String posts(@SessionAttribute("loginMember") Member loginMember, Model model,
+			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+			@RequestParam(value = "commentCp", required = false, defaultValue = "1") int commentCp,
+			@RequestParam Map<String, Object> paramMap) {
 
-	    int memberNo = loginMember.getMemberNo();
-	    
-	    // 페이지네이션 적용된 게시글 조회
-	    Map<String, Object> boardMap = service.selectBoardWithPaging(memberNo, cp);
-	    
-	    // 게시글 목록과 페이지네이션 정보를 모델에 추가
-	    model.addAttribute("boardList", boardMap.get("boardList"));
-	    model.addAttribute("pagination", boardMap.get("pagination"));
-	    
-	    // 댓글 페이지네이션
-	    Map<String, Object> commentMap = service.selectCommentWithPaging(memberNo, commentCp);
-	    log.info("결과 : {}" , commentMap.get("commentList"));
-	    model.addAttribute("commentList", commentMap.get("commentList"));
-	    model.addAttribute("commentPagination", commentMap.get("pagination"));
+		int memberNo = loginMember.getMemberNo();
 
-	    return "myPage/myPage-posts";
+		// 페이지네이션 적용된 게시글 조회
+		Map<String, Object> boardMap = service.selectBoardWithPaging(memberNo, cp);
+
+		// 게시글 목록과 페이지네이션 정보를 모델에 추가
+		model.addAttribute("boardList", boardMap.get("boardList"));
+		model.addAttribute("pagination", boardMap.get("pagination"));
+
+		// 댓글 페이지네이션
+		Map<String, Object> commentMap = service.selectCommentWithPaging(memberNo, commentCp);
+		log.info("결과 : {}", commentMap.get("commentList"));
+		model.addAttribute("commentList", commentMap.get("commentList"));
+		model.addAttribute("commentPagination", commentMap.get("pagination"));
+
+		return "myPage/myPage-posts";
 	}
 
 	@GetMapping("delete1")
