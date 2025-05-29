@@ -325,6 +325,11 @@ nav a:hover::after {
   padding: 0 20px;
   pointer-events: none; /* 버튼 외의 요소 클릭 방지 */
 }
+.carousel-controls button {
+  position: relative; /* 또는 absolute */
+  z-index: 10; /* 슬라이드보다 위에 있도록 */
+  pointer-events: auto; /* 클릭 가능 */
+}
 
 .carousel-control {
   background: none;

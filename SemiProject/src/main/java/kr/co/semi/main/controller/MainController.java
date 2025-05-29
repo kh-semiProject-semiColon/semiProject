@@ -1,5 +1,7 @@
 package kr.co.semi.main.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +10,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import kr.co.semi.common.util.Utility;
 import kr.co.semi.main.service.MainService;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.studyboard.model.dto.Study;
@@ -68,7 +73,10 @@ public class MainController {
 	 */
 	@PostMapping("/study/create")
 	@ResponseBody
-	public int stduyCreation(Study study, RedirectAttributes ra,@SessionAttribute("loginMember") Member loginMember) {
+	public int stduyCreation(Study study, 
+								RedirectAttributes ra
+								,@SessionAttribute("loginMember") Member loginMember
+								,@RequestParam(value = "profileImage", required = false) MultipartFile studyMainImg) {
 		
 		// 로그인 안되어 있을 시 생성 불가
 		if(loginMember == null) {
@@ -76,10 +84,38 @@ public class MainController {
 			ra.addFlashAttribute(message);
 			return -1;
 		}
-		// 스터디 생성 기능
-		int result = service.studyCreation(study, loginMember.getMemberNo());
 		
-		return result;
+		// 이미지가 존재하면 저장 처리
+	    String uploadDir = "C:/uploadSemiFiles/studyProfile/";
+	    String imagePath = null;
+	    String savedFileName = null;
+		
+	    if (studyMainImg != null && !studyMainImg.isEmpty()) {
+	        try {
+	        	String originalFileName = studyMainImg.getOriginalFilename();
+	        	savedFileName = Utility.fileRename(originalFileName);
+
+	            File saveFile = new File(uploadDir + savedFileName);
+	            saveFile.getParentFile().mkdirs();
+	            studyMainImg.transferTo(saveFile);
+
+	            imagePath = "/studyProfile/" + savedFileName;
+	            study.setStudyMainImg(imagePath); // DTO에 경로 설정
+	            
+	            
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            return 0;
+	        }
+	    }
+	    // 스터디 생성 기능
+	    int result = service.studyCreation(study, loginMember.getMemberNo());
+	    
+	    if (result == 0 && imagePath != null) {
+	    	new File(uploadDir + savedFileName).delete();
+	    }
+	    return result;
+	    
 	}
 	
 	@ResponseBody

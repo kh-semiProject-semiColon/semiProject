@@ -28,14 +28,17 @@ function startAutoSlide() {
 
 // 자동 슬라이드 멈춤
 function stopAutoSlide() {
+  console.log("감지");
   clearInterval(intervalId);
 }
 
 // 마우스 호버 감지
 const carouselContainer = document.querySelector(".carousel-container");
 
-carouselContainer.addEventListener("mouseenter", stopAutoSlide);
-carouselContainer.addEventListener("mouseleave", startAutoSlide);
+document.addEventListener("DOMContentLoaded", () => {
+  carouselContainer.addEventListener("mouseenter", stopAutoSlide);
+  carouselContainer.addEventListener("mouseleave", startAutoSlide);
+});
 
 // 초기 실행
 startAutoSlide();
