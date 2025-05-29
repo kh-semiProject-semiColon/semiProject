@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.semi.board.model.dto.Comment;
+import kr.co.semi.board.model.dto.HireComment;
 import kr.co.semi.board.model.service.HireCommentService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,18 +26,12 @@ public class HireCommentController {
 	@Autowired
 	private HireCommentService service;
 	
-	
-	/** 댓글 목록 조회
-	 * @param boardNo
-	 * @return
-	 */
+	// 댓글 목록 조회
 	@GetMapping("")
-	public List<Comment> select(@RequestParam("hireNo") int hireNo) {
+	public List<HireComment> select(@RequestParam("hireNo") int hireNo) {
 		// List<Comment> (Java의 자료형 List)
 		// HTTPMessageConverter가
 		// List -> JSON(문자열)로 변환해서 응답 -> JS
-		
-		
 		
 		return service.select(hireNo);
 		

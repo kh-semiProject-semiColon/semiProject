@@ -3,6 +3,7 @@ package kr.co.semi.board.model.service;
 import java.util.List;
 
 import kr.co.semi.board.model.dto.Comment;
+import kr.co.semi.board.model.dto.HireComment;
 
 public interface HireCommentService {
 
@@ -10,7 +11,7 @@ public interface HireCommentService {
 	 * @param boardNo
 	 * @return
 	 */
-	List<Comment> select(int boardNo);
+	List<HireComment> select(int hireNo);
 
 	/** 댓글 작성
 	 * @param comment

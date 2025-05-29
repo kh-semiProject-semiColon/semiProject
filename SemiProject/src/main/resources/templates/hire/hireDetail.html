@@ -20,8 +20,19 @@
           class="post-controls"
           th:if="${loginMember != null} and ${loginMember.memberNo == hireInfo.memberNo}"
         >
-          <button class="post-btn">수정</button>
-          <button class="post-btn">삭제</button>
+          <button
+            class="post-btn"
+            th:onclick="|location.href='/hire/edit/${hireInfo.hireNo}'|"
+          >
+            수정
+          </button>
+
+          <button
+            class="post-btn"
+            th:onclick="|location.href='/hire/delete/${hireInfo.hireNo}'|"
+          >
+            삭제
+          </button>
         </div>
       </div>
 
@@ -96,122 +107,7 @@
       <div class="post-content" th:text="${hireInfo.hireContent}"></div>
 
       <!-- 댓글 섹션 -->
-      <h3 class="comments-title">댓글</h3>
-      <hr class="divider-post-comment" />
-      <div class="comments-section">
-        <!-- 첫 댓글 -->
-        <div class="comment">
-          <img
-            src="/images/commenter.png"
-            class="comment-profile"
-            alt="댓글자 프로필"
-          />
-          <div class="comment-body">
-            <div class="comment-header">
-              <span class="comment-author">딩딩대왕</span>
-              <button class="invite-btn">초대하기</button>
-            </div>
-            <div class="comment-text">저랑 같이 해요!</div>
-            <div class="comment-footer">
-              <span class="comment-date">2025.05.20 13:03</span>
-              <div class="comment-actions">
-                <button>답글</button>
-                <button>수정</button>
-                <button>삭제</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <hr class="divider-comment" />
-
-        <!-- 대댓글 -->
-        <div class="reply">
-          <img
-            src="/"
-            class="reply-profile"
-            alt="대댓글자 프로필"
-            onclick="openResumeModal()"
-          />
-          <div class="comment-body">
-            <div class="reply-header">
-              <span class="comment-author">모코콩</span>
-              <button class="invite-btn">초대하기</button>
-            </div>
-            <div class="comment-text">좋아요, 디스코드 아이디 주세요.</div>
-            <div class="comment-footer">
-              <span class="comment-date">2025.05.20 13:15</span>
-              <div class="comment-actions">
-                <button>답글</button>
-                <button>수정</button>
-                <button>삭제</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <hr class="divider-comment" />
-
-        <!-- 또 다른 댓글 -->
-        <div class="comment">
-          <img
-            src="/images/commenter3.png"
-            class="comment-profile"
-            alt="댓글자 프로필"
-          />
-          <div class="comment-body">
-            <div class="comment-header">
-              <span class="comment-author">별이반짝</span>
-              <button class="invite-btn">초대하기</button>
-            </div>
-            <div class="comment-text">저도 참여할게요~</div>
-            <div class="comment-footer">
-              <span class="comment-date">2025.05.20 14:00</span>
-              <div class="comment-actions">
-                <button>답글</button>
-                <button>수정</button>
-                <button>삭제</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <!-- 이력서 팝업 -->
-    <div class="resume-modal" id="resumeModal">
-      <div class="resume-content">
-        <div class="resume-header">
-          <span class="resume-title">이력서</span>
-          <button class="resume-close" onclick="closeResumeModal()">×</button>
-        </div>
-        <div class="resume-body">
-          <div class="resume-row">
-            <span class="resume-label">닉네임</span>
-            <div class="resume-profile">
-              <img src="프로필이미지.png" class="resume-avatar" />
-              <span class="resume-nickname">짱구</span>
-            </div>
-          </div>
-          <div class="resume-row">
-            <span class="resume-label">자기소개</span>
-            <div class="resume-intro">
-              ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
-            </div>
-          </div>
-          <div class="resume-row">
-            <span class="resume-label">컴퓨터 전공 여부</span>
-            <div class="resume-radio">
-              <label
-                ><input type="radio" name="major" checked disabled /> ●</label
-              >
-              <label><input type="radio" name="major" disabled /> ○</label>
-              <label><input type="radio" name="major" disabled /> ✕</label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      
 
     <!-- 팝업창 js -->
     <script>

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -91,16 +92,22 @@ public class HireBoardController {
 									   RedirectAttributes ra
 									   )throws Exception {
 		
-		inputHire.setMemberNo(loginMember.getMemberNo());
+		int hireNo = 0;
 		
-		int hireNo = service.writeHireBoardInsert(inputHire);
+		inputHire.setMemberNo(loginMember.getMemberNo());
+		inputHire.setStudyNo(loginMember.getStudyNo());
+		
+		hireNo = service.writeHireBoardInsert(inputHire);
+		
+		// 게시판 번호 조회
+		
 		
 		String path = null;
 		String message = null;
 		
 		if(hireNo > 0) {
 			message = "게시글이 작성되었습니다!";
-			path = "/hire/detail" + hireNo;
+			path = "/hire/detail/" + hireNo;
 			
 		} else {
 			
@@ -237,5 +244,123 @@ public class HireBoardController {
 		
 		
 		return path;
+	}
+	
+	// 구인게시글 수정 페이지로 이동
+	@GetMapping("edit/{hireNo:[0-9]+}")
+	public String boardUpdate(@PathVariable("hireNo") int hireNo,
+							  @SessionAttribute("loginMember") Member loginMember,
+							  Model model,
+							  RedirectAttributes ra) {
+		
+		// 수정 화면에 출력할 기존의 제목/내용/이미지 조회
+		// -> 게시글 상세 조회
+		Map<String, Integer> map = new HashMap<>();
+		map.put("hireNo", hireNo);
+		
+		HireInfo hireInfo = service.selectOne(map);
+		
+		Study study = service.selectStudyNo(hireInfo.getStudyNo());
+		
+		String message = null;
+		String path = null;
+		
+		if(hireInfo == null) {
+			message = "해당 게시글이 존재하지 않습니다";
+			path = "redirect:/hire/board"; // 메인페이지로 리다이렉트
+			
+			ra.addFlashAttribute("message", message);
+			
+		} else if(hireInfo.getMemberNo() != loginMember.getMemberNo()) {
+			message = "자신이 작성한 글만 수정이 가능합니다!";
+			
+			// 해당 글 상세조회 리다이렉트 (/board/1/2000)
+			path = String.format("redirect:/hire/%d", hireNo);
+			
+			ra.addFlashAttribute("message", message);
+			
+		} else {
+			
+			path = "hire/hireUpdate";
+			model.addAttribute("hireInfo",hireInfo);
+			model.addAttribute("study",study);
+			
+		}
+		
+		return path;
+	}
+	
+	// 구인 게시글 수정
+	@PostMapping("edit/{hireNo:[0-9]+}/update")
+	public String hireBoardUpdate(@PathVariable("hireNo") int hireNo,
+			  				  HireInfo inputHire,
+			  				  @SessionAttribute("loginMember") Member loginMemeber,
+			  				  RedirectAttributes ra,
+			  				  @RequestParam(value="cp", required = false, defaultValue = "1") int cp
+			  				  ) throws Exception {
+		
+		// 1. 커맨드 객체 (inputBoard)에 boardCode, boardNo, memberNo 세팅
+		inputHire.setHireNo(hireNo);
+		inputHire.setMemberNo(loginMemeber.getMemberNo());
+		// inputBoard -> 제목, 내용, boardCode, boardNo, memberNo
+		
+		// 2. 게시글 수정 서비스 호출 후 결과 반환 받기
+		int result = service.hireUpdate(inputHire);
+		
+		// 3. 서비스 결과에 따라 응답 제어
+		String message = null;
+		String path = null;
+		
+		if(result > 0) {
+			message = "게시글이 수정 되었습니다";
+			// 게시글 상세조회 페이지로 redirect
+			// /board/1/2000?cp=3
+			path = String.format("/hire/detail/%d?cp=%d", hireNo, cp);
+			
+		} else {
+			message = "수정 실패";
+			path = String.format("/hire/detail/%d?cp=%d", hireNo, cp);
+			// 목표 : editBoard/1/2004/update?cp=1 (GET)
+			// 게시글 수정 화면으로 다시 요청!
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+	}
+	
+	// 구인 게시글 삭제
+	@RequestMapping(value = "delete/{hireNo:[0-9]+}", 
+					method = {RequestMethod.GET, RequestMethod.POST})
+	public String hireDelete(@PathVariable("hireNo") int hireNo,
+						     @RequestParam(value="cp", required = false, defaultValue = "1") int cp,
+						     RedirectAttributes ra,
+						     @SessionAttribute("loginMember") Member loginMember) {
+	
+	Map<String, Integer> map = new HashMap<>();
+	map.put("hireNo", hireNo);
+	map.put("memberNo", loginMember.getMemberNo());
+	
+	int result = service.hireDelete(map);
+	
+	String path = null;
+	String message = null;
+	
+	if(result > 0) {
+		message = "삭제 되었습니다";
+		
+		path = String.format("/hire/board?cp=%d", cp); // 게시글 목록 조회
+		// /board/1?cp=7
+		
+	} else {
+		message = "삭제 실패";
+		
+		path = String.format("/hire/detail/%d?cp=%d", hireNo, cp); //  게시글 상세 조회 
+		// /board/1/2000?cp=7
+	}
+	
+	ra.addFlashAttribute("message", message);
+	
+	return "redirect:" + path;
 	}
 }

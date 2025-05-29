@@ -31,6 +31,15 @@ public interface HireBoardService {
 	// 구인 스터디 조회
 	Study selectStudyNo(int studyNo);
 
+	// 게시글 수정
+	int hireUpdate(HireInfo inputHire);
+
+	// 게시글 삭제
+	int hireDelete(Map<String, Integer> map);
+
+	// 스터디 번호 구하기
+	int getStudyNo(int memberNo);
+
 
 	
 
