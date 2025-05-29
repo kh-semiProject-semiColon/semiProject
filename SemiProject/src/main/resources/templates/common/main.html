@@ -304,6 +304,24 @@
 
     <!-- common/footer 추가-->
     <th:block th:replace="~{common/footer}"></th:block>
+   <div th:if="${loginMember != null}">
+  <script th:inline="javascript">
+    document.addEventListener("DOMContentLoaded", () => {
+      const isStudy = document.querySelector(".isStudy");
+      const studyNo = [[${loginMember.studyNo}]];
+
+      if (isStudy) {
+        isStudy.addEventListener("click", (e) => {
+          if (studyNo === 0) {
+            e.preventDefault();
+            alert("가입된 스터디가 없습니다");
+            location.href = "/";
+          }
+        });
+      }
+    });
+  </script>
+</div>
 
     <script>
       // 기본 JavaScript 동작을 위한 공간
