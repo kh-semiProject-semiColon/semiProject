@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.semi.board.model.dto.Board;
+import kr.co.semi.common.util.Utility;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.myPage.model.mapper.MyPageMapper;
 
@@ -25,7 +26,7 @@ public class MyPageServiceImpl implements MyPageService {
 
 	@Autowired // 현재 비밀번호와 비교하기 위한 의존성 주입
 	private BCryptPasswordEncoder bcrypt;
-	
+
 	@Value("${my.profile.web-path}")
 	private String profileWebPath; // /myPage/profile/
 
@@ -39,7 +40,49 @@ public class MyPageServiceImpl implements MyPageService {
 	}
 
 	// 자기 페이지 수정하는 메서드
-	public int updateInfo(Member inputMember) {
+	@Override
+	public int updateInfo(Member inputMember, MultipartFile profileImg) {
+		
+		// 프로필 이미지 경로
+		String updatePath = null;
+		
+		// 이미지 파일명 변경
+		String rename = null;
+		
+		// 업로드한 이미지가 있을 경우
+		// - 있을 경우 : 경로 조합 (클라이언트 접근 경로 + 리네임파일명)
+		if(!profileImg.isEmpty()) {
+			// 1. 파일명 변경
+			rename = Utility.fileRename(profileImg.getOriginalFilename());
+			
+			// 2. /myPage/profile/변경된 파일명
+			updatePath = profileWebPath + rename;
+		}
+		
+		// 수정된 프로필 이미지 경로 + 회원 번호를 저장할 DTO 객체
+
+		// 수정된 프로필 이미지 경로 + 회원 번호를 저장할 DTO 객체
+//		Member member = Member.builder().memberNo(loginMember.getMemberNo()).profileImg(updatePath).build();
+//
+//		int result = mapper.profile(member);
+//
+//		if (result > 0) {
+//
+//			// 프로필 이미지를 없애는 update 를 한 경우
+//			// -> 업로드한 이미지가 있을 경우
+//			if (!profileImg.isEmpty()) {
+//				// 파일을 서버에 저장
+//				profileImg.transferTo(new File(profileFolderPath + rename));
+//				// C:/uploadFiles/profile/변경한 이름
+//			}
+//
+//			// 세션에 저장된 loginMember의 프로필 이미지 경로를
+//			// DB와 동기화
+//			loginMember.setProfileImg(updatePath);
+//
+//		}
+		
+		
 		String rawAddress = inputMember.getMemberAddress();
 
 		if (rawAddress != null && !rawAddress.trim().isEmpty()) {
@@ -64,25 +107,26 @@ public class MyPageServiceImpl implements MyPageService {
 		return mapper.updateInfo(inputMember);
 	}
 
-	
-	/** 게시글을 조회, 상세조회하는 메서드
+	/**
+	 * 게시글을 조회, 상세조회하는 메서드
 	 *
 	 */
 	@Override
 	public List<Board> selectBoard(int memberNo) {
 		return mapper.selectBoard(memberNo);
 	}
-	
-	
-	/** 댓글을 조회, 상세조회하는 메서드
+
+	/**
+	 * 댓글을 조회, 상세조회하는 메서드
 	 *
 	 */
 	@Override
 	public List<Map<String, String>> selectComment(int memberNo) {
 		return mapper.selectComment(memberNo);
 	}
-	
-	/** 비밀번호 변경하는 메서드
+
+	/**
+	 * 비밀번호 변경하는 메서드
 	 * 
 	 */
 	@Override
@@ -116,7 +160,8 @@ public class MyPageServiceImpl implements MyPageService {
 		return mapper.changePw(paramMap);
 	}
 
-	/** 회원탈퇴전 비밀번호가 일치하는지 확인하는 메서드
+	/**
+	 * 회원탈퇴전 비밀번호가 일치하는지 확인하는 메서드
 	 *
 	 */
 	@Override
@@ -124,8 +169,9 @@ public class MyPageServiceImpl implements MyPageService {
 		String encryptedPw = mapper.selectPw(memberNo);
 		return bcrypt.matches(inputPw, encryptedPw);
 	}
-	
-	/** 회원 삭제하러 가는 메서즈
+
+	/**
+	 * 회원 삭제하러 가는 메서즈
 	 *
 	 */
 	@Override
@@ -133,6 +179,4 @@ public class MyPageServiceImpl implements MyPageService {
 		return mapper.deleteMember(memberNo);
 	}
 
-
-	
 }
