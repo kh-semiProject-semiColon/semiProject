@@ -97,41 +97,40 @@ document.getElementById("ruleForm").addEventListener("submit", function (e) {
     closeRuleModal();
   }, 1500); // 1.5초 로딩 시뮬레이션
 
-  /* 실제 AJAX 코드 (주석 처리)
-        fetch(`/study/${studyNo}/rule`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-            // CSRF 토큰이 필요한 경우: 'X-CSRF-TOKEN': csrfToken
-          },
-          body: JSON.stringify({
-            studyNo: studyNo,
-            ruleContent: ruleContent
-          })
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          if (data.success) {
-            location.reload();
-          } else {
-            alert(data.message || '내규 저장에 실패했습니다.');
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('서버 오류가 발생했습니다.');
-        })
-        .finally(() => {
-          submitBtn.classList.remove('loading');
-          submitBtn.disabled = false;
-        });
-        */
+  //  실제 AJAX 코드 (주석 처리)
+  fetch(`/study/${studyNo}/rule`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Requested-With": "XMLHttpRequest",
+      // CSRF 토큰이 필요한 경우: 'X-CSRF-TOKEN': csrfToken
+    },
+    body: JSON.stringify({
+      studyNo: studyNo,
+      ruleContent: ruleContent,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.success) {
+        location.reload();
+      } else {
+        alert(data.message || "내규 저장에 실패했습니다.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("서버 오류가 발생했습니다.");
+    })
+    .finally(() => {
+      submitBtn.classList.remove("loading");
+      submitBtn.disabled = false;
+    });
 });
 
 // 페이지 로드 시 글자 수 카운터 초기화

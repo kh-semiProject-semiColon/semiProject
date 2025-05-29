@@ -178,7 +178,7 @@
                     <button
                       type="button"
                       class="btn btn-primary"
-                      onclick="location.href='/study/' + [[${study.studyNo}]] + '/transfer-leadership'"
+                      id="transferBtn"
                     >
                       팀장 위임하기
                     </button>
@@ -204,7 +204,7 @@
                     <button
                       type="button"
                       class="btn btn-danger"
-                      onclick="confirmStudyDeletion()"
+                      id="deleteStudyBtn"
                     >
                       스터디 해체하기
                     </button>
@@ -228,8 +228,59 @@
       </div>
     </div>
 
+    <!-- 팀장 위임 모달 -->
+    <div id="transferModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>👥 팀장 권한 위임</h4>
+          <span class="close" id="modalCloseBtn">&times;</span>
+        </div>
+        <div class="modal-body">
+          <p><strong>새로운 팀장을 선택해주세요:</strong></p>
+          <select id="newLeaderSelect">
+            <option value="">멤버를 선택하세요</option>
+            <option
+              th:each="member : ${members}"
+              th:if="${member.id != currentUser.id}"
+              th:value="${member.id}"
+              th:text="${member.name}"
+            ></option>
+          </select>
+          <div class="warning-box">
+            <p><strong>⚠️ 주의사항:</strong></p>
+            <p>• 팀장 권한을 위임한 후 자동으로 탈퇴됩니다</p>
+            <p>• 이 작업은 되돌릴 수 없습니다</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="modalCancelBtn">
+            취소
+          </button>
+          <button type="button" class="btn btn-primary" id="modalConfirmBtn">
+            위임하고 탈퇴
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 오버레이 -->
+    <div
+      id="modalOverlay"
+      class="modal-overlay"
+      style="display: none"
+      onclick="closeRuleModal()"
+    ></div>
+
     <!-- 푸터 -->
     <th:block th:replace="~{common/footer}"></th:block>
+
+    <script>
+      const STUDY_DATA = {
+        studyNo: /*[[${study.studyNo}]]*/ 1,
+        studyName: /*[[${study.studyName}]]*/ "JAVA스터디",
+        memberCount: /*[[${study.currentMemberCount}]]*/ 2,
+      };
+    </script>
 
     <script src="/js/studyBoard/delete.js"></script>
   </body>

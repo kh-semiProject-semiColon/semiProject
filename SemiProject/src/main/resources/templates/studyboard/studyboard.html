@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GoStudy 스터디 게시글</title>
+    <title>GoStudy 마이페이지 게시글</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
@@ -31,7 +31,7 @@
       <div class="content">
         <!-- 내 게시글 섹션 -->
         <div class="content-section">
-          <h2 class="content-heading">스터디 게시글</h2>
+          <h2 class="content-heading">내 게시글</h2>
 
           <!-- 게시글 테이블 헤더 -->
           <div class="table-header">
@@ -103,7 +103,43 @@
             >
           </div>
         </div>
-    
+
+       
+
+          <!-- 페이지네이션 -->
+          <div class="pagination">
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${commentCurrentPage > 1}"
+              th:href="@{/mypage/comments(page=1)}"
+              >&#x300A;</a
+            >
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${commentCurrentPage > 1}"
+              th:href="@{/mypage/comments(page=${commentCurrentPage - 1})}"
+              >&#x3008;</a
+            >
+
+     
+
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${commentCurrentPage < commentTotalPages}"
+              th:href="@{/mypage/comments(page=${commentCurrentPage + 1})}"
+              >&#x3009;</a
+            >
+            <a
+              href="#"
+              class="page-item arrow"
+              th:if="${commentCurrentPage < commentTotalPages}"
+              th:href="@{/mypage/comments(page=${commentTotalPages})}"
+              >&#x300B;</a
+            >
+          </div>
         </div>
       </div>
     </div>
