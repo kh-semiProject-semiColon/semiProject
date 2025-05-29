@@ -18,7 +18,7 @@
 		
 	</insert>
 	
-			<!-- 게시글 제목/내용 수정-->
+	<!-- 게시글 제목/내용 수정-->
 	<update id="boardUpdate">
 		UPDATE "BOARD" SET
 		BOARD_TITLE = #{boardTitle},
@@ -28,7 +28,7 @@
 		AND MEMBER_NO = #{memberNo}
 	</update>
 	
-		<!-- 게시글 삭제 -->
+	<!-- 게시글 삭제 -->
 	<update id="boardDelete">
 		UPDATE "BOARD" SET
 		BOARD_DEL_FL = 'Y'
@@ -36,5 +36,36 @@
 		AND BOARD_NO = #{boardNo}
 		AND MEMBER_NO = #{memberNo}
 	</update>
+	
+	<!-- 게시글 삭제 -->
+	<update id="announceDelete">
+		UPDATE "ANNOUNCEMENT" SET
+		ANNOUNCE_DEL_FL = 'Y'
+		WHERE ANNOUNCE_NO = #{announceNo}
+		AND MEMBER_NO = #{memberNo}
+	</update>
+	
+		<!-- 게시글 제목/내용 수정-->
+	<update id="announceUpdate">
+		UPDATE "ANNOUNCEMENT" SET
+		ANNOUNCE_NAME = #{announceName},
+		ANNOUNCE_CONTENT = #{announceContent}
+		WHERE ANNOUNCE_NO = #{announceNo}
+		AND MEMBER_NO = #{memberNo}
+	</update>
+	
+	<insert id="announceInsert" useGeneratedKeys="true" parameterType="Announce">
+		
+		<selectKey order="BEFORE" resultType="_int" keyProperty="announceNo">
+			SELECT SEQ_ANNOUNCEMENT_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO "ANNOUNCEMENT"
+		VALUES(#{announceNo}, #{announceName},DEFAULT,
+		#{announceContent}, DEFAULT, DEFAULT, #{memberNo}, NULL
+		
+		)
+		
+	</insert>
 	
 </mapper>

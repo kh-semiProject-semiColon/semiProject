@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.semi.board.model.dto.Announce;
 import kr.co.semi.board.model.dto.Board;
 import kr.co.semi.board.model.dto.BoardImg;
 import kr.co.semi.board.model.mapper.EditBoardMapper;
@@ -61,6 +62,7 @@ public class EditBoardServiceImpl implements EditBoardService{
 		}
 	
 	
+	// 게시글 수정
 	@Override
 	public int boardUpdate(Board inputBoard) throws Exception {
 		
@@ -79,5 +81,36 @@ public class EditBoardServiceImpl implements EditBoardService{
 		return mapper.boardDelete(map);
 	}
 	
-
+	// 공지글 삭제
+	@Override
+	public int announceDelete(Map<String, Integer> map) {
+		return mapper.announceDelete(map);
+	}
+	
+	// 공지글 수정
+	@Override
+	public int announceUpdate(Announce inputAnnounce) {
+		// 1. 공지글 부분(제목/내용) 수정
+		int result = mapper.announceUpdate(inputAnnounce);
+		
+		// 수정 실패 시 바로 리턴
+		if(result == 0) return 0;
+		
+		return result;
+	}
+	
+	// 공지글 작성
+	@Override
+	public int announceInsert(Announce inputAnnounce) {
+		int result = mapper.announceInsert(inputAnnounce);
+		
+		
+		if(result == 0) {
+			return 0;
+		}
+		
+		int announceNo = inputAnnounce.getAnnounceNo();
+		
+		return announceNo;
+	}
 }

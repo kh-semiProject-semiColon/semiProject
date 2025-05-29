@@ -248,26 +248,26 @@ public class StudyBoardController {
      */
     @GetMapping("delete1")
     public String studyBoardDelete1(@SessionAttribute("loginMember") Member loginMember,
-                                  @RequestParam("studyNo") int studyNo, Model model) {
+                                   Model model) {
         try {
             Study study = service.getStudyInfo(loginMember);
             if (study == null) {
                 log.warn("존재하지 않는 스터디 또는 권한 없음 - studyNo: {}, memberNo: {}", 
-                        studyNo, loginMember.getMemberNo());
+                        loginMember.getStudyNo(), loginMember.getMemberNo());
                 return "redirect:/study/studyNow";
             }
             
             // 팀장만 접근 가능
             if (!service.isStudyLeader(loginMember.getMemberNo())) {
-                log.warn("팀장 권한 없음 - studyNo: {}, memberNo: {}", studyNo, loginMember.getMemberNo());
-                return "redirect:/studyBoard/delete?studyNo=" + studyNo;
+                log.warn("팀장 권한 없음 - studyNo: {}, memberNo: {}", loginMember.getStudyNo(), loginMember.getMemberNo());
+                return "redirect:/studyBoard/delete?studyNo=" + loginMember.getStudyNo();
             }
             
             model.addAttribute("study", study);
-            model.addAttribute("studyNo", studyNo);
+            model.addAttribute("studyNo", loginMember.getStudyNo());
             
             log.info("스터디 해체 페이지 접근 - studyNo: {}, memberNo: {}", 
-                    studyNo, loginMember.getMemberNo());
+            		loginMember.getStudyNo(), loginMember.getMemberNo());
             
         } catch (Exception e) {
             log.error("스터디 해체 페이지 오류", e);
@@ -401,8 +401,7 @@ public class StudyBoardController {
      */
     @GetMapping("members")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> getStudyMembers(@SessionAttribute("loginMember") Member loginMember,
-                                                              @RequestParam int studyNo) {
+    public ResponseEntity<Map<String, Object>> getStudyMembers(@SessionAttribute("loginMember") Member loginMember) {
         Map<String, Object> response = new HashMap<>();
         try {
             // 스터디 멤버인지 확인
@@ -413,7 +412,7 @@ public class StudyBoardController {
                 return ResponseEntity.ok(response);
             }
             
-            List<Map<String, Object>> members = service.getStudyMembers(studyNo);
+            List<Map<String, Object>> members = service.getStudyMembers(loginMember.getStudyNo());
             
             response.put("success", true);
             response.put("members", members);
