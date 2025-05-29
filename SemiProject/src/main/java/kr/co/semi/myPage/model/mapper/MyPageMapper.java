@@ -40,6 +40,9 @@ public interface MyPageMapper {
 	// 댓글 페이지네이션
 	List<Map<String, String>> selectCommentWithPaging(int memberNo, RowBounds rowBounds);
 
+	// 프로필 사진 변경하는 메서드
+	int profile(Member profileMember);
+
 	
 
 

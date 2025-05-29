@@ -82,11 +82,9 @@ public class MyPageController {
 	 * @throws Exception
 	 */
 	@PostMapping("info")
-
-
 	public String updateInfo(Member inputMember, 
 			@SessionAttribute("loginMember") Member loginMember,
-			@RequestParam("profileImg") MultipartFile profileImg,
+			@RequestParam("uploadFile") MultipartFile profileImg,
 			RedirectAttributes ra) throws Exception {
 
 		// 로그인한 회원의 번호 얻어오기
@@ -94,12 +92,13 @@ public class MyPageController {
 		
 		// 수정되었다는 알림 메세지 띄우는 변수
 		String message = null;
+		
 		// 제출된 수정된 회원 닉네임, 전화번호, 주소에 로그인한 세션넘버를 같이 보내는 과정
 		inputMember.setMemberNo(loginMember.getMemberNo());
 		inputMember.setMemberName(loginMember.getMemberName());
 
 		// 회원정보 수정 메서드
-		int result = service.updateInfo(inputMember, profileImg);
+		int result = service.updateInfo(inputMember, loginMember, profileImg);
 
 		if (result > 0) {
 			loginMember.setMemberNickname(inputMember.getMemberNickname());
@@ -108,6 +107,7 @@ public class MyPageController {
 
 
 			message = "회원 정보 수정 성공!";
+			
 		} else {
 
 			message = "회원 정보 수정 실패..";

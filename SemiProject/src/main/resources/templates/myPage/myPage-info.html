@@ -37,15 +37,16 @@
             class="info-form"
             enctype="multipart/form-data"
           >
-          <!-- 프로필 이미지 섹션 -->
-          <div class="profile-section">
+             <!-- 프로필 이미지 섹션 -->
+               <div class="profile-section">
             <div class="profile-image-container">
               <img
-              th:if="${loginMember == null or loginMember.profileImg == null}"
-              th:src="@{/images/default-profile.png}"
+              th:src="${loginMember != null and loginMember.profileImg != null} ?
+              ${loginMember.profileImg} :
+              @{/images/default-profile.png}"
               id="profileImg"
               />
-              <input type="file" name="imageInput" accept="image/*" id="imageInput" style="display: none;" />
+              <input type="file" name="uploadFile" accept="image/*" id="imageInput" style="display: none;" />
               <button type="button" class="remove-image">X</button>
               <input type="hidden" name="deleteProfileImage" id="deleteProfileImage" value="false" />
             </div>
