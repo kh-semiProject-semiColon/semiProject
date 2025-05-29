@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,7 +27,7 @@
       <div class="content">
         <div class="content-section">
           <h2 class="content-header">프로필</h2>
-          
+
           <form
             th:action="info"
             method="post"
@@ -37,25 +36,39 @@
             class="info-form"
             enctype="multipart/form-data"
           >
-          <!-- 프로필 이미지 섹션 -->
-          <div class="profile-section">
-            <div class="profile-image-container">
-              <img
-              th:if="${loginMember == null or loginMember.profileImg == null}"
-              th:src="@{/images/default-profile.png}"
-              id="profileImg"
-              />
-              <input type="file" name="imageInput" accept="image/*" id="imageInput" style="display: none;" />
-              <button type="button" class="remove-image">X</button>
-              <input type="hidden" name="deleteProfileImage" id="deleteProfileImage" value="false" />
+            <!-- 프로필 이미지 섹션 -->
+            <div class="profile-section">
+              <div class="profile-image-container">
+                <img
+                  th:src="${loginMember != null and loginMember.profileImg != null} ?
+              ${loginMember.profileImg} :
+              @{/images/default-profile.png}"
+                  id="profileImg"
+                />
+                <input
+                  type="file"
+                  name="uploadFile"
+                  accept="image/*"
+                  id="imageInput"
+                  style="display: none"
+                />
+                <input
+                  type="hidden"
+                  name="defaultFile"
+                  id="defaultFile"
+                  value="false"
+                />
+                <button type="button" class="remove-image">X</button>
+              </div>
+              <button type="button" class="image-select-btn">
+                이미지 선택
+              </button>
             </div>
-            <button type="button" class="image-select-btn">이미지 선택</button>
-          </div>
 
-          <!-- 내정보 섹션 -->
-          <div class="info-section">
-            <h3 class="info-header">내정보</h3>
-            <div class="content-divider"></div>
+            <!-- 내정보 섹션 -->
+            <div class="info-section">
+              <h3 class="info-header">내정보</h3>
+              <div class="content-divider"></div>
               <!-- 이름 입력 -->
               <div class="form-group">
                 <label class="form-label">이름</label>
@@ -198,8 +211,8 @@
 
               <!-- 제출 버튼 -->
               <button type="submit" class="submit-btn">수정하기</button>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -212,4 +225,3 @@
     <script src="/js/myPage/sidebar.js"></script>
   </body>
 </html>
-

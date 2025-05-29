@@ -15,7 +15,7 @@ public interface MyPageService {
 	Member selectMember(int memberNo);
 
 	// 회원정보 update문 메서드
-	public int updateInfo(Member inputMember, MultipartFile profileImg);
+	public int updateInfo(Member inputMember, Member loginMember, MultipartFile profileImg) throws Exception;
 
 	// 비밀번호 조회하러 가는 길
 	boolean checkPassword(int memberNo, String inputPw);
