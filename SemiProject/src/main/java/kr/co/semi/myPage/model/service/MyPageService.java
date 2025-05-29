@@ -9,7 +9,6 @@ import kr.co.semi.board.model.dto.Board;
 import kr.co.semi.board.model.dto.Pagination;
 import kr.co.semi.member.model.dto.Member;
 
-
 public interface MyPageService {
 
 	// memberIntroduce, memberMajor 가져오는 메서드
@@ -26,14 +25,11 @@ public interface MyPageService {
 
 	// 회원 탈퇴 메서드
 	int deleteMember(int memberNo);
-	
-	// 보드 리스트 들고 오는 메서드
-	List<Board> selectBoard(int memberNo);
 
-	// 댓글 리스트 들고 오는 메서드
-	List<Map<String, String>> selectComment(int memberNo);
+	// 페이지네이션 포함
+	Map<String, Object> selectBoardWithPaging(int memberNo, int cp);
 
-	
-
+	// 페이지네이션 포함 댓글
+	Map<String, Object> selectCommentWithPaging(int memberNo, int commentCp);
 
 }

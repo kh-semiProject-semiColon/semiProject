@@ -82,6 +82,8 @@ public class MyPageController {
 	 * @throws Exception
 	 */
 	@PostMapping("info")
+
+
 	public String updateInfo(Member inputMember, 
 			@SessionAttribute("loginMember") Member loginMember,
 			@RequestParam("profileImg") MultipartFile profileImg,
@@ -104,7 +106,6 @@ public class MyPageController {
 			loginMember.setMemberTel(inputMember.getMemberTel());
 			loginMember.setMemberAddress(inputMember.getMemberAddress());
 
-			info(loginMember, ra, loginMember);
 
 			message = "회원 정보 수정 성공!";
 		} else {
@@ -152,19 +153,27 @@ public class MyPageController {
 		return "redirect:" + path;
 	}
 
-	// 게시글 상세주소로 옮기는 메서드 (단순 forward)
 	@GetMapping("posts")
-	public String posts(@SessionAttribute("loginMember") Member loginMember, Model model) {
+	public String posts(@SessionAttribute("loginMember") Member loginMember,
+	                   Model model, 
+	                   @RequestParam(value="cp", required = false, defaultValue = "1") int cp,
+	                   @RequestParam(value="commentCp", required = false, defaultValue = "1") int commentCp,
+	                   @RequestParam Map<String, Object> paramMap) {
 
-	    // 게시판 조회
-	    List<Board> boardList = service.selectBoard(loginMember.getMemberNo());
-
-	    // 댓글 조회
-	    List<Map<String, String>> commentList = service.selectComment(loginMember.getMemberNo());
-
-	    // Null-safe 처리
-	    model.addAttribute("boardList", boardList != null ? boardList : new ArrayList<>());
-	    model.addAttribute("commentList", commentList != null ? commentList : new ArrayList<>());
+	    int memberNo = loginMember.getMemberNo();
+	    
+	    // 페이지네이션 적용된 게시글 조회
+	    Map<String, Object> boardMap = service.selectBoardWithPaging(memberNo, cp);
+	    
+	    // 게시글 목록과 페이지네이션 정보를 모델에 추가
+	    model.addAttribute("boardList", boardMap.get("boardList"));
+	    model.addAttribute("pagination", boardMap.get("pagination"));
+	    
+	    // 댓글 페이지네이션
+	    Map<String, Object> commentMap = service.selectCommentWithPaging(memberNo, commentCp);
+	    log.info("결과 : {}" , commentMap.get("commentList"));
+	    model.addAttribute("commentList", commentMap.get("commentList"));
+	    model.addAttribute("commentPagination", commentMap.get("pagination"));
 
 	    return "myPage/myPage-posts";
 	}
