@@ -62,7 +62,6 @@ public class MyPageServiceImpl implements MyPageService {
 			updatePath = profileWebPath + rename;
 		}
 		
-		// 수정된 프로필 이미지 경로 + 회원 번호를 저장할 DTO 객체
 
 		// 수정된 프로필 이미지 경로 + 회원 번호를 저장할 DTO 객체
 //		Member member = Member.builder().memberNo(loginMember.getMemberNo()).profileImg(updatePath).build();
@@ -110,7 +109,6 @@ public class MyPageServiceImpl implements MyPageService {
 		return mapper.updateInfo(inputMember);
 	}
 
-<<<<<<< HEAD
 	
 	// 기존의 selectBoard(int memberNo) 대신 페이지네이션 버전
 	public Map<String, Object> selectBoardWithPaging(int memberNo, int cp) {
@@ -136,22 +134,7 @@ public class MyPageServiceImpl implements MyPageService {
 	    return map;
 	}
 	
-	/** 댓글을 조회, 상세조회하는 메서드
-=======
-	/**
-	 * 게시글을 조회, 상세조회하는 메서드
-	 *
-	 */
-	@Override
-	public List<Board> selectBoard(int memberNo) {
-		return mapper.selectBoard(memberNo);
-	}
 
-	/**
-	 * 댓글을 조회, 상세조회하는 메서드
->>>>>>> 67e98b6ea1bd15ef52226cd68ba791fd6d8899fd
-	 *
-	 */
 	// 댓글 총 개수 조회 + 페이징 처리
 	public Map<String, Object> selectCommentWithPaging(int memberNo, int cp) {
 	    // 해당 회원의 총 댓글 수 조회
@@ -175,14 +158,10 @@ public class MyPageServiceImpl implements MyPageService {
 	    
 	    return map;
 	}
-<<<<<<< HEAD
-	/** 비밀번호 변경하는 메서드
-=======
 
-	/**
-	 * 비밀번호 변경하는 메서드
->>>>>>> 67e98b6ea1bd15ef52226cd68ba791fd6d8899fd
-	 * 
+	
+	/** 비밀번호 변경
+	 *
 	 */
 	@Override
 	public int changePw(Map<String, String> paramMap, int memberNo) {
