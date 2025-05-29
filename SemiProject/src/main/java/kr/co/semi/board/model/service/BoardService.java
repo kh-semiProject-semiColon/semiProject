@@ -63,7 +63,6 @@ public interface BoardService {
 	 * @return
 	 */
 	int updateAnnounceCount(int announceNo);
-
 	
 	
 }

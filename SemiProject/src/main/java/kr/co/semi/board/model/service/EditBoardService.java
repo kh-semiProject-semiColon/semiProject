@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.semi.board.model.dto.Announce;
 import kr.co.semi.board.model.dto.Board;
 import kr.co.semi.board.model.dto.BoardImg;
 
@@ -28,6 +29,24 @@ public interface EditBoardService {
 	 * @return
 	 */
 	int boardUpdate(Board inputBoard) throws Exception;
+
+	/** 공지글 삭제
+	 * @param map
+	 * @return
+	 */
+	int announceDelete(Map<String, Integer> map);
+
+	/** 공지글 수정
+	 * @param inputAnnounce
+	 * @return
+	 */
+	int announceUpdate(Announce inputAnnounce);
+
+	/** 공지글 작성
+	 * @param inputAnnounce
+	 * @return
+	 */
+	int announceInsert(Announce inputAnnounce);
 
 
 

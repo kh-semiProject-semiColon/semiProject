@@ -75,6 +75,7 @@ public class MemberController {
 				loginMember.setStudyNo(studyCalendarService.bringStudyNo(loginMember.getMemberNo()));
 			}
 			
+
 			// session scope에 loginMember 추가
 			model.addAttribute("loginMember", loginMember);
 			// 1단계 : model을 이용하여 request scope에 세팅됨
