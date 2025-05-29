@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.semi.board.model.dto.Comment;
+import kr.co.semi.board.model.dto.HireComment;
 import kr.co.semi.board.model.mapper.HireCommentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,7 @@ public class HireCommentServiceImpl implements HireCommentService{
 	
 	// 댓글 목록 조회 서비스
 	@Override
-	public List<Comment> select(int hireNo) {
+	public List<HireComment> select(int hireNo) {
 		return mapper.select(hireNo);
 	}
 

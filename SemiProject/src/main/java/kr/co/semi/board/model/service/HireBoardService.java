@@ -37,6 +37,9 @@ public interface HireBoardService {
 	// 게시글 삭제
 	int hireDelete(Map<String, Integer> map);
 
+	// 스터디 번호 구하기
+	int getStudyNo(int memberNo);
+
 
 	
 

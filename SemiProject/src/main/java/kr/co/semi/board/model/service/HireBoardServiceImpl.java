@@ -80,7 +80,13 @@ public class HireBoardServiceImpl implements HireBoardService{
 	// 구인 게시글 작성
 	@Override
 	public int writeHireBoardInsert(HireInfo inputHire) {
-		return mapper.writeHireBoardInsert(inputHire);
+		int result = mapper.writeHireBoardInsert(inputHire);
+
+	    if (result > 0) {
+	        return inputHire.getHireNo(); // <selectKey>로 세팅된 값 반환
+	    } else {
+	        return 0;
+	    }
 	}
 	
 	// 구인 게시글 상세 조회
@@ -120,5 +126,10 @@ public class HireBoardServiceImpl implements HireBoardService{
 	@Override
 	public int hireDelete(Map<String, Integer> map) {
 		return mapper.hireDelete(map);
+	}
+	
+	@Override
+	public int getStudyNo(int memberNo) {
+		return mapper.getStudyNo(memberNo);
 	}
 }

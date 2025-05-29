@@ -70,4 +70,10 @@ public interface HireBoardMapper {
 	 * @return
 	 */
 	int hireDelete(Map<String, Integer> map);
+
+	/** 스터디 번호 구하기
+	 * @param memberNo
+	 * @return
+	 */
+	int getStudyNo(int memberNo);
 }

@@ -92,16 +92,22 @@ public class HireBoardController {
 									   RedirectAttributes ra
 									   )throws Exception {
 		
-		inputHire.setMemberNo(loginMember.getMemberNo());
+		int hireNo = 0;
 		
-		int hireNo = service.writeHireBoardInsert(inputHire);
+		inputHire.setMemberNo(loginMember.getMemberNo());
+		inputHire.setStudyNo(loginMember.getStudyNo());
+		
+		hireNo = service.writeHireBoardInsert(inputHire);
+		
+		// 게시판 번호 조회
+		
 		
 		String path = null;
 		String message = null;
 		
 		if(hireNo > 0) {
 			message = "게시글이 작성되었습니다!";
-			path = "/hire/detail" + hireNo;
+			path = "/hire/detail/" + hireNo;
 			
 		} else {
 			
@@ -240,6 +246,7 @@ public class HireBoardController {
 		return path;
 	}
 	
+	// 구인게시글 수정 페이지로 이동
 	@GetMapping("edit/{hireNo:[0-9]+}")
 	public String boardUpdate(@PathVariable("hireNo") int hireNo,
 							  @SessionAttribute("loginMember") Member loginMember,
@@ -253,7 +260,7 @@ public class HireBoardController {
 		
 		HireInfo hireInfo = service.selectOne(map);
 		
-		List<Study> studyList = service.showStudySelect(loginMember.getMemberNo());
+		Study study = service.selectStudyNo(hireInfo.getStudyNo());
 		
 		String message = null;
 		String path = null;
@@ -276,26 +283,16 @@ public class HireBoardController {
 			
 			path = "hire/hireUpdate";
 			model.addAttribute("hireInfo",hireInfo);
-			model.addAttribute("studyList",studyList);
+			model.addAttribute("study",study);
 			
 		}
 		
 		return path;
 	}
 	
-	/**
-	 * @param boardCode				: 게시판 종류 번호
-	 * @param boardNo				: 수정할 게시글 번호
-	 * @param inputBoard			: 커멘드 객체(제목, 내용)
-	 * @param images				: 제출된 input type="file" 모든 요소 (이미지 파일)
-	 * @param loginMemeber			: 로그인한 회원 번호 이용
-	 * @param ra
-	 * @param deleteOrderList		: 삭제된 이미지 순서가 기록된 문자열("1,2,3")
-	 * @param cp					: 수정 성공 시 이전 파라미터 유지
-	 * @return
-	 */
-	@PostMapping("edit/{boardNo:[0-9]+}/update")
-	public String boardUpdate(@PathVariable("hireNo") int hireNo,
+	// 구인 게시글 수정
+	@PostMapping("edit/{hireNo:[0-9]+}/update")
+	public String hireBoardUpdate(@PathVariable("hireNo") int hireNo,
 			  				  HireInfo inputHire,
 			  				  @SessionAttribute("loginMember") Member loginMemeber,
 			  				  RedirectAttributes ra,
@@ -332,6 +329,7 @@ public class HireBoardController {
 		return "redirect:" + path;
 	}
 	
+	// 구인 게시글 삭제
 	@RequestMapping(value = "delete/{hireNo:[0-9]+}", 
 					method = {RequestMethod.GET, RequestMethod.POST})
 	public String hireDelete(@PathVariable("hireNo") int hireNo,

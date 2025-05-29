@@ -16,7 +16,7 @@
       <h2 class="form-title">구인 게시글 작성</h2>
       <div class="divider"></div>
 
-      <form action="/hire/write"
+      <form th:action="@{/hire/edit/{hireNo}/update(hireNo=${hireInfo.hireNo})}"
             method="POST"  class="hireWrite" id="hireWriteFrm">
         <div class="form-section">
           <input
@@ -24,6 +24,7 @@
             class="title-input"
             placeholder="제목을 입력하세요."
 			      name="hireTitle"
+            th:value="${hireInfo.hireTitle}"
             required
           />
         </div>
@@ -55,7 +56,7 @@
                 <label class="form-label">모집 인원</label>
                 <div class="form-input-area">
                   <div class="input-group">
-                    <input type="text" class="small-input" name="studyMaxCount"/>
+                    <input type="text" class="small-input" name="studyMaxCount" th:value="${hireInfo.hireCount}"/>
                     <span class="span-text">명</span>
                   </div>
                 </div>
@@ -137,38 +138,45 @@
                   <div class="radio-days">
                     <div class="days-grid">
                       <div class="radio-item">
-                        <input type="checkbox" name="dayCanJoin" id="day-mon" value="월"/>
+                        <input type="checkbox" name="dayCanJoin" id="day-mon" value="월"
+                              th:checked="${hireInfo.dayCanJoin != null and #strings.contains(hireInfo.dayCanJoin, '월')}"/>
                         <label class="radio-label" for="day-mon">월요일</label>
                       </div>
                       <div class="radio-item">
-                        <input type="checkbox" name="dayCanJoin" id="day-tue" value="화"/>
+                        <input type="checkbox" name="dayCanJoin" id="day-tue" value="화"
+                              th:checked="${hireInfo.dayCanJoin != null and #strings.contains(hireInfo.dayCanJoin, '화')}"/>
                         <label class="radio-label" for="day-tue">화요일</label>
                       </div>
                       <div class="radio-item">
-                        <input type="checkbox" name="dayCanJoin" id="day-wed" value="수"/>
+                        <input type="checkbox" name="dayCanJoin" id="day-wed" value="수"
+                              th:checked="${hireInfo.dayCanJoin != null and #strings.contains(hireInfo.dayCanJoin, '수')}"/>
                         <label class="radio-label" for="day-wed">수요일</label>
                       </div>
                       <div class="radio-item">
-                        <input type="checkbox" name="dayCanJoin" id="day-thu" value="목"/>
+                        <input type="checkbox" name="dayCanJoin" id="day-thu" value="목"
+                              th:checked="${hireInfo.dayCanJoin != null and #strings.contains(hireInfo.dayCanJoin, '목')}"/>
                         <label class="radio-label" for="day-thu">목요일</label>
                       </div>
                       <div class="radio-item">
-                        <input type="checkbox" name="dayCanJoin" id="day-fri" value="금"/>
+                        <input type="checkbox" name="dayCanJoin" id="day-fri" value="금"
+                              th:checked="${hireInfo.dayCanJoin != null and #strings.contains(hireInfo.dayCanJoin, '금')}"/>
                         <label class="radio-label" for="day-fri">금요일</label>
                       </div>
                       <div class="radio-item">
-                        <input type="checkbox" name="dayCanJoin" id="day-sat" value="토"/>
+                        <input type="checkbox" name="dayCanJoin" id="day-sat" value="토"
+                              th:checked="${hireInfo.dayCanJoin != null and #strings.contains(hireInfo.dayCanJoin, '토')}"/>
                         <label class="radio-label" for="day-sat">토요일</label>
                       </div>
                       <div class="radio-item">
-                        <input type="checkbox" name="dayCanJoin" id="day-sun" value="일"/>
+                        <input type="checkbox" name="dayCanJoin" id="day-sun" value="일"
+                              th:checked="${hireInfo.dayCanJoin != null and #strings.contains(hireInfo.dayCanJoin, '일')}"/>
                         <label class="radio-label" for="day-sun">일요일</label>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+</div>
           </div>
         </div>
 
@@ -176,12 +184,12 @@
           <div class="form-row">
             <label class="form-label">내용</label>
             <div class="form-input-area" style="width: 100%">
-              <textarea name="hireContent" placeholder="내용을 입력하세요."></textarea>
+              <textarea name="hireContent" placeholder="내용을 입력하세요." th:field="${hireInfo.hireContent}"></textarea>
             </div>
           </div>
         </div>
 
-        <button type="submit" class="submit-btn">확인</button>
+        <button type="submit" class="submit-btn">수정하기</button>
       </form>
     </main>
 
