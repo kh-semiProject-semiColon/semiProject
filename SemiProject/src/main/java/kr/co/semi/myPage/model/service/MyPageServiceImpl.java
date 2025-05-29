@@ -1,8 +1,10 @@
 package kr.co.semi.myPage.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.semi.board.model.dto.Board;
+import kr.co.semi.board.model.dto.Pagination;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.myPage.model.mapper.MyPageMapper;
 
@@ -65,23 +68,56 @@ public class MyPageServiceImpl implements MyPageService {
 	}
 
 	
-	/** 게시글을 조회, 상세조회하는 메서드
-	 *
-	 */
-	@Override
-	public List<Board> selectBoard(int memberNo) {
-		return mapper.selectBoard(memberNo);
+	// 기존의 selectBoard(int memberNo) 대신 페이지네이션 버전
+	public Map<String, Object> selectBoardWithPaging(int memberNo, int cp) {
+	    // 해당 회원의 총 게시글 수 조회
+	    int listCount = mapper.getBoardCountByMember(memberNo);
+	    
+	    // 페이지네이션 객체 생성
+	    Pagination pagination = new Pagination(cp, listCount);
+	    
+	    // RowBounds로 페이징 처리
+	    int limit = pagination.getLimit();
+	    int offset = (cp - 1) * limit;
+	    RowBounds rowBounds = new RowBounds(offset, limit);
+	    
+	    // 페이징된 게시글 목록 조회
+	    List<Board> boardList = mapper.selectBoardWithPaging(memberNo, rowBounds);
+	    
+	    // 결과 반환
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("boardList", boardList);
+	    map.put("pagination", pagination);
+	    
+	    return map;
 	}
-	
 	
 	/** 댓글을 조회, 상세조회하는 메서드
 	 *
 	 */
-	@Override
-	public List<Map<String, String>> selectComment(int memberNo) {
-		return mapper.selectComment(memberNo);
+	// 댓글 총 개수 조회 + 페이징 처리
+	public Map<String, Object> selectCommentWithPaging(int memberNo, int cp) {
+	    // 해당 회원의 총 댓글 수 조회
+	    int listCount = mapper.getCommentCountByMember(memberNo);
+	    
+	    // 페이지네이션 객체 생성
+	    Pagination pagination = new Pagination(cp, listCount);
+	    
+	    // RowBounds로 페이징 처리
+	    int limit = pagination.getLimit();
+	    int offset = (cp - 1) * limit;
+	    RowBounds rowBounds = new RowBounds(offset, limit);
+	    
+	    // 페이징된 댓글 목록 조회
+	    List<Map<String, String>> commentList = mapper.selectCommentWithPaging(memberNo, rowBounds);
+	    
+	    // 결과 반환
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("commentList", commentList);
+	    map.put("pagination", pagination);
+	    
+	    return map;
 	}
-	
 	/** 비밀번호 변경하는 메서드
 	 * 
 	 */

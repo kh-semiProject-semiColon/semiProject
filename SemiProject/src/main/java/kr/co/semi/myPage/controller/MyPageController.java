@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
@@ -74,7 +75,8 @@ public class MyPageController {
 
 	// 회원정보 수정 메서드
 	@PostMapping("info")
-	public String updateInfo(Member inputMember, @SessionAttribute("loginMember") Member loginMember,
+	public String updateInfo(Member inputMember, @SessionAttribute("loginMember") Member loginMember, 
+			@RequestParam("profileImg") MultipartFile profileImg,
 			RedirectAttributes ra) {
 
 		// 수정되었다는 알림 메세지 띄우는 변수
@@ -91,7 +93,6 @@ public class MyPageController {
 			loginMember.setMemberTel(inputMember.getMemberTel());
 			loginMember.setMemberAddress(inputMember.getMemberAddress());
 
-			info(loginMember, ra, loginMember);
 
 			message = "회원 정보 수정 성공!";
 		} else {
@@ -139,19 +140,26 @@ public class MyPageController {
 		return "redirect:" + path;
 	}
 
-	// 게시글 상세주소로 옮기는 메서드 (단순 forward)
 	@GetMapping("posts")
-	public String posts(@SessionAttribute("loginMember") Member loginMember, Model model) {
+	public String posts(@SessionAttribute("loginMember") Member loginMember,
+	                   Model model, 
+	                   @RequestParam(value="cp", required = false, defaultValue = "1") int cp,
+	                   @RequestParam(value="commentCp", required = false, defaultValue = "1") int commentCp,
+	                   @RequestParam Map<String, Object> paramMap) {
 
-	    // 게시판 조회
-	    List<Board> boardList = service.selectBoard(loginMember.getMemberNo());
-
-	    // 댓글 조회
-	    List<Map<String, String>> commentList = service.selectComment(loginMember.getMemberNo());
-
-	    // Null-safe 처리
-	    model.addAttribute("boardList", boardList != null ? boardList : new ArrayList<>());
-	    model.addAttribute("commentList", commentList != null ? commentList : new ArrayList<>());
+	    int memberNo = loginMember.getMemberNo();
+	    
+	    // 페이지네이션 적용된 게시글 조회
+	    Map<String, Object> boardMap = service.selectBoardWithPaging(memberNo, cp);
+	    
+	    // 게시글 목록과 페이지네이션 정보를 모델에 추가
+	    model.addAttribute("boardList", boardMap.get("boardList"));
+	    model.addAttribute("pagination", boardMap.get("pagination"));
+	    
+	    // 댓글 페이지네이션
+	    Map<String, Object> commentMap = service.selectCommentWithPaging(memberNo, commentCp);
+	    model.addAttribute("commentList", commentMap.get("commentList"));
+	    model.addAttribute("commentPagination", commentMap.get("pagination"));
 
 	    return "myPage/myPage-posts";
 	}
