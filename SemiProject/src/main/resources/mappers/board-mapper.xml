@@ -337,7 +337,7 @@
 	
 	<!-- 공지 조회 수 조회 -->
 	<select id="selectAnnounceCount">
-		SELECT ANNOUCE_COUNT
+		SELECT ANNOUNCE_COUNT
 		FROM "ANNOUNCEMENT"
 		WHERE ANNOUNCE_NO = #{announceNo}
 	</select>
