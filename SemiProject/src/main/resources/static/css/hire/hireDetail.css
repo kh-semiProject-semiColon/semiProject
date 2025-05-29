@@ -18,26 +18,36 @@
 .post-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
 .post-title {
   font-size: 24px;
   font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+.post-controls {
+  display: flex;
+  width: 50%;
+  height: 30px;
 }
 .post-controls .post-btn {
+  width: 20%;
+  height: 30px;
+  color: #ffff;
   margin-left: 10px;
-  background: none;
-  border: 1px solid #ccc;
+  background: #4aa7ff;
+  border: none;
   padding: 6px 10px;
-  border-radius: 4px;
+  border-radius: 30px;
   cursor: pointer;
 }
 
 /* 작성자 정보 영역 */
 .author-info {
   display: flex;
-  align-items: center;
-  margin-top: 20px;
+  align-items: flex-end;
+  margin-top: 0px;
 }
 .profile-img {
   width: 40px;
@@ -74,8 +84,8 @@
 
 /* 구인글 요약 박스 */
 .study-details {
-  background-color: #f9f9fe;
-  border: 1px solid #c5d4ff;
+  background-color: #f8f9ff;
+  border: 1px solid #dbdae2;
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 30px;
@@ -86,21 +96,23 @@
   margin-bottom: 16px;
 }
 .detail-item {
+  height: 24px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 10px;
 }
 .detail-label {
   width: 80px;
-  color: #555;
+  color: #25272b;
   font-weight: 500;
+  margin-right: 5%;
 }
 .detail-value {
   justify-content: center;
   display: flex;
   align-items: center;
-  font-weight: 600;
-  color: #333;
+  font-weight: 400;
+  color: #25272b;
 
   position: relative;
   padding-left: 16px; /* 점을 위한 공간 */
@@ -109,8 +121,8 @@
 .detail-value1 {
   display: flex;
   align-items: center;
-  font-weight: 600;
-  color: #333;
+  font-weight: 400;
+  color: #25272b;
 }
 
 .detail-value::before {

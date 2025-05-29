@@ -31,8 +31,14 @@ import kr.co.semi.studyboard.model.dto.Study;
 @RequestMapping("hire")
 public class HireBoardController {
 
+    private final BoardController boardController;
+
 	@Autowired
 	private HireBoardService service;
+
+    HireBoardController(BoardController boardController) {
+        this.boardController = boardController;
+    }
 	
 	/** 구인 게시판 조회 
 	 * @return
@@ -231,7 +237,7 @@ public class HireBoardController {
 			// 스터디 정보 조회
 			Study study = service.selectStudyNo(hireInfo.getStudyNo());
 			
-			System.out.println(hireInfo);
+//			System.out.println(hireInfo);
 			
 			model.addAttribute("loginMember", loginMember);
 			model.addAttribute("hireInfo", hireInfo);
@@ -293,7 +299,7 @@ public class HireBoardController {
 	// 구인 게시글 수정
 	@PostMapping("edit/{hireNo:[0-9]+}/update")
 	public String hireBoardUpdate(@PathVariable("hireNo") int hireNo,
-			  				  HireInfo inputHire,
+			  				  @ModelAttribute HireInfo inputHire,
 			  				  @SessionAttribute("loginMember") Member loginMemeber,
 			  				  RedirectAttributes ra,
 			  				  @RequestParam(value="cp", required = false, defaultValue = "1") int cp
@@ -303,6 +309,8 @@ public class HireBoardController {
 		inputHire.setHireNo(hireNo);
 		inputHire.setMemberNo(loginMemeber.getMemberNo());
 		// inputBoard -> 제목, 내용, boardCode, boardNo, memberNo
+		
+//		System.out.println(inputHire);
 		
 		// 2. 게시글 수정 서비스 호출 후 결과 반환 받기
 		int result = service.hireUpdate(inputHire);
