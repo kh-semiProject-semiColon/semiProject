@@ -98,12 +98,11 @@
           </div>
         </div>
 
-        <div
-          class="write-button-container"
-          th:if="${session.loginMember != null and session.loginMember.memberEmail != null}"
-        >
-          <button class="write-button">글쓰기</button>
-        </div>
+        <th:block th:if="${session.loginMember.authority == 1}">
+          <div class="write-button-container">
+            <button class="write-button">글쓰기</button>
+          </div>
+        </th:block>
 
         <!-- 게시글이 있을 때만 페이지네이션이 보이게 할 예정 -->
         <div class="pagination-area">
@@ -245,8 +244,6 @@
     <!-- footer -->
     <th:block th:replace="~{common/footer}"></th:block>
 
-    <script src="/js/hire/hireBoard.js"></script>
-
-    <script src="/js/hire/boardDetail.js"></script>
+    <script src="/js/board/announce.js"></script>
   </body>
 </html>

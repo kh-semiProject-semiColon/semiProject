@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.Cookie;
@@ -32,6 +33,7 @@ import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.studyboard.model.dto.Study;
 import lombok.extern.slf4j.Slf4j;
 
+@SessionAttributes("loginMember")
 @Controller
 @RequestMapping("board")
 @Slf4j
@@ -54,7 +56,6 @@ public class BoardController {
     	}else {
     		map = bService.searchAnnounceList(paramMap, cp);
     	}
-    	
     	model.addAttribute("announce",map.get("announce"));
     	model.addAttribute("pagination", map.get("pagination"));
 		
@@ -115,7 +116,7 @@ public class BoardController {
 				for(Cookie temp : cookies) {
 					
 					// 요청에 담긴 쿠키에 "readBoardNo"가 존재할 때
-					if(temp.getName().equals("readBoardNo")) {
+					if(temp.getName().equals("readAnnounceNo")) {
 						c = temp;
 						break;
 					}
@@ -127,8 +128,8 @@ public class BoardController {
 				// "readBoardNo"가 쿠키에 없을 때
 				if(c==null) {
 					
-					// 새 쿠키 생성("readBoardNo", [게시글 번호])
-					c = new Cookie("readBoardNo", "["+announceNo+"]");
+					// 새 쿠키 생성("readAnnounceNo", [게시글 번호])
+					c = new Cookie("readAnnounceNo", "["+announceNo+"]");
 					result = bService.updateAnnounceCount(announceNo);
 					
 				}else {
