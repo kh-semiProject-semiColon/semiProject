@@ -15,25 +15,19 @@ body {
 }
 
 /* 공통 콘텐츠 wrapper */
-.main-wrapper,
 .main-content {
   display: flex;
   flex: 1;
   margin: 50px auto;
-  max-width: 1920px;
+  max-width: 1196px;
+  min-width: 1120px;
   padding-bottom: 50px;
   position: relative;
   justify-content: center;
-  width: calc(100% - 724px);
+  width: 100%;
 }
 
-/* post 전용 */
-.main-content {
-  max-width: 1196px;
-  min-width: 1120px;
-}
-
-/* 공통 콘텐츠 영역 */
+/* 공통 content */
 .content {
   width: 80%;
   background-color: white;

@@ -22,7 +22,7 @@
     <th:block th:replace="~{common/header}"></th:block>
 
     <!-- 메인 컨테이너 -->
-    <div class="container">
+    <div class="main-content">
       <!-- 사이드바 프래그먼트 삽입 -->
       <th:block th:replace="~{myPage/sidebar}"></th:block>
 
@@ -49,9 +49,7 @@
               placeholder="비밀번호를 입력하세요"
             />
             <span class="passworderror" id="passworderror"></span>
-            <button class="confirmBtn" id="confirmBtn">
-              확인
-            </button>
+            <button class="confirmBtn" id="confirmBtn">확인</button>
           </form>
         </div>
       </div>
