@@ -58,4 +58,6 @@ public interface MemberMapper {
 	 */
 	int changePw(Member inputMember);
 
+
+
 }
