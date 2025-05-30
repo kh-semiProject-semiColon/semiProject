@@ -9,11 +9,11 @@
       href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
       type="text/css"
     />
-    <link rel="stylesheet" href="/css/myPage/myPage-style.css" />
+<!--    <link rel="stylesheet" href="/css/myPage/myPage-style.css" />-->
     <link rel="stylesheet" href="/css/common/footer.css" />
     <link rel="stylesheet" href="/css/common/header.css" />
     <link rel="stylesheet" href="/css/myPage/sidebar.css" />
-    <link rel="stylesheet" href="/css/myPage/myPage-changePw.css" />
+    <link rel="stylesheet" href="/css/myPage/myPage-changePw.css" /> 
   </head>
   <body>
     <th:block th:replace="~{common/header}"></th:block>
@@ -24,7 +24,8 @@
 
       <!-- Password Change Form -->
       <div class="content">
-        <h2 class="section-title">비밀번호 변경</h2>
+        <h2 class="content-heading">비밀번호 변경</h2>
+
 
         <form action="/myPage/changePw" method="post" class="changePw">
           <div class="form-group">
