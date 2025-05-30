@@ -176,7 +176,7 @@ public class MyPageController {
 
 		// 댓글 페이지네이션
 		Map<String, Object> commentMap = service.selectCommentWithPaging(memberNo, commentCp);
-		log.info("결과 : {}", commentMap.get("commentList"));
+
 		model.addAttribute("commentList", commentMap.get("commentList"));
 		model.addAttribute("commentPagination", commentMap.get("pagination"));
 
