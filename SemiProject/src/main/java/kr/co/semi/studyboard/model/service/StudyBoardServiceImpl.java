@@ -59,8 +59,19 @@ public class StudyBoardServiceImpl implements StudyBoardService {
     @Override
     public boolean updateRule(Study study) {
         try {
-            int result = mapper.insertOrUpdateRule(study);
-            log.info("스터디 내규 수정 - studyNo: {}, result: {}", study.getStudyNo(), result);
+        	int result = 0;
+        	
+        	int ruleCount = mapper.ruleCount(study.getStudyNo());
+        	
+        	
+        	
+        	if(ruleCount >0) {
+        		
+        		 result = mapper.insertOrUpdateRule(study);
+        	}else {
+        		 result = mapper.insertRule(study);
+        	}
+        	
             return result > 0;
         } catch (Exception e) {
             log.error("스터디 내규 수정 중 오류 발생 - studyNo: {}", study.getStudyNo(), e);
