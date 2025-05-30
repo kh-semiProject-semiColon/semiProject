@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -127,16 +128,11 @@ public class StudyBoardController {
     @ResponseBody
     public ResponseEntity<Map<String, Object>> updateStudy(@SessionAttribute("loginMember") Member loginMember,
                                                           Study study,  // DTO로 받기
-                                                          @RequestBody(required = false) MultipartFile imageFile) {
+                                                          @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
         
         Map<String, Object> response = new HashMap<>();
         try {
-            // 팀장 권한 확인
-            if (!service.isStudyLeader(loginMember.getMemberNo())) {
-                response.put("success", false);
-                response.put("message", "팀장만 스터디 정보를 수정할 수 있습니다.");
-                return ResponseEntity.ok(response); // 200
-            }
+    
             
             // 현재 멤버 수보다 최대 인원이 적으면 안됨
             int currentMemberCount = service.getCurrentMemberCount(study.getStudyNo());
@@ -194,10 +190,11 @@ public class StudyBoardController {
             }
             
             model.addAttribute("study", study);
+            model.addAttribute("loginMember", loginMember); // 현재 사용자 정보 추가
+            model.addAttribute("members",service.getStudyMembers(loginMember.getStudyNo()));
             
-//            model.addAttribute("members",service.getStudyMembers(loginMember.getStudyNo()));
-//            log.info("스터디 탈퇴 페이지 접근 - studyNo: {}, memberNo: {}, isLeader: {}", 
-//                    study, loginMember.getMemberNo(), study.isLeader());
+            
+            
             
         } catch (Exception e) {
             
@@ -208,7 +205,7 @@ public class StudyBoardController {
     }
 
     /**
-     * 스터디 탈퇴 처리 - DTO로 받기
+     * 스터디 탈퇴 처리 - DTO로 받기 (일반회원)
      */
     @PostMapping("delete")
     @ResponseBody
@@ -232,6 +229,56 @@ public class StudyBoardController {
         return "redirect:/";
     }
     
+    
+    
+     
+  
+    /**스터디 팀장인경우 위임후 탈퇴처리
+     * @param member
+     * @param loginMember
+     * @param ra
+     * @return
+     */
+    @PostMapping("transfer")
+    public String transferLeadershipAndWithdraw(
+            Member member,
+            @SessionAttribute("loginMember") Member loginMember,
+            RedirectAttributes ra) {
+        
+        try {
+            // 현재 사용자가 팀장인지 확인
+            if (!service.isStudyLeader(loginMember.getMemberNo())) {
+                ra.addFlashAttribute("message", "팀장만 권한을 위임할 수 있습니다.");
+                return "redirect:/studyBoard/delete";
+            }
+            
+            member.setStudyNo(loginMember.getStudyNo());
+            
+            // 새로운 팀장이 해당 스터디 멤버인지 확인
+            if (!service.isStudyMember(member)) {
+                ra.addFlashAttribute("message", "선택한 멤버가 스터디에 속해있지 않습니다.");
+                return "redirect:/studyBoard/delete";
+            }
+
+            // 팀장 권한 위임 및 탈퇴 처리
+            boolean result = service.transferLeadershipAndWithdraw(member, loginMember);
+
+            if (result) {
+                // 세션에서 studyNo 제거
+                loginMember.setStudyNo(0);
+                
+                ra.addFlashAttribute("message", "팀장 권한이 위임되고 스터디에서 탈퇴되었습니다.");
+                return "redirect:/";  // 직접 리다이렉트
+            } else {
+                ra.addFlashAttribute("message", "권한 위임 처리 중 오류가 발생했습니다.");
+                return "redirect:/studyBoard/delete";
+            }
+
+        } catch (Exception e) {
+            ra.addFlashAttribute("message", "오류가 발생했습니다: " + e.getMessage());
+            return "redirect:/studyBoard/delete";
+        }
+    }
     
     // ============================================
     // 스터디 내규 관련
@@ -348,7 +395,7 @@ public class StudyBoardController {
                 return ResponseEntity.ok(response);
             }
             
-            List<Map<String, Object>> members = service.getStudyMembers(loginMember.getStudyNo());
+            List<Member> members = service.getStudyMembers(loginMember.getStudyNo());
             
             response.put("success", true);
             response.put("members", members);

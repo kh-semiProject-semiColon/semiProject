@@ -4,9 +4,52 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ===== 함수 정의 =====
 
+  // 멤버 목록 로드
+  function loadStudyMembers() {
+    fetch("/studyBoard/members", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("서버 응답 오류");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const selectElement = document.getElementById("newLeaderSelect");
+        selectElement.innerHTML = '<option value="">멤버를 선택하세요</option>';
+
+        if (data.success && data.members) {
+          data.members.forEach((member) => {
+            // 현재 팀장은 제외 (STUDY_CAP이 'Y'가 아닌 멤버만 추가)
+            if (member.studyCap !== "Y") {
+              const option = document.createElement("option");
+              option.value = member.memberNo;
+              option.textContent = member.memberNickname;
+              selectElement.appendChild(option);
+            }
+          });
+        } else {
+          console.error("멤버 목록 로드 실패:", data.message);
+          alert("멤버 목록을 불러오는데 실패했습니다.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("서버 오류가 발생했습니다.");
+      });
+  }
+
   // 모달 열기 (CSS 충돌 완전 해결)
   function openTransferModal() {
     console.log("팀장 위임 모달 열기");
+
+    // 먼저 멤버 목록 로드
+    loadStudyMembers();
+
     const modal = document.getElementById("transferModal");
     if (modal) {
       // CSS 충돌을 완전히 무시하고 강제 적용
@@ -42,6 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       console.log("모달 강제 스타일 적용 완료");
+      document.body.style.overflow = "hidden";
     } else {
       console.error("transferModal 요소를 찾을 수 없습니다");
       alert("모달을 찾을 수 없습니다. 페이지를 새로고침해주세요.");
@@ -54,6 +98,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const modal = document.getElementById("transferModal");
     if (modal) {
       modal.style.display = "none";
+      document.body.style.overflow = "auto";
+
       const selectElement = document.getElementById("newLeaderSelect");
       if (selectElement) {
         selectElement.value = "";
@@ -61,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // 위임 실행
+  // 위임 실행 (폼 제출 방식)
   function executeTransfer() {
     console.log("위임 실행 함수 호출");
     const selectedLeaderId = document.getElementById("newLeaderSelect").value;
@@ -82,23 +128,24 @@ document.addEventListener("DOMContentLoaded", function () {
     ) {
       console.log("위임 확인됨, 서버로 전송");
 
-      // 폼 생성해서 서버에 전송
+      // 폼 생성해서 서버에 전송 (컨트롤러 매핑에 맞춤)
       const form = document.createElement("form");
       form.method = "POST";
-      form.action = `/studyBoard/${STUDY_DATA.studyNo}/transfer-leadership`;
+      form.action = "/studyBoard/transfer";
 
-      const leaderInput = document.createElement("input");
-      leaderInput.type = "hidden";
-      leaderInput.name = "newLeaderId";
-      leaderInput.value = selectedLeaderId;
-      form.appendChild(leaderInput);
+      // Member DTO의 memberNo 필드로 전송
+      const memberNoInput = document.createElement("input");
+      memberNoInput.type = "hidden";
+      memberNoInput.name = "newLeaderId";
+      memberNoInput.value = selectedLeaderId;
+      form.appendChild(memberNoInput);
 
       document.body.appendChild(form);
-      form.submit();
+      form.submit(); // 서버에서 직접 리다이렉트 처리
     }
   }
 
-  // 스터디 해체 확인
+  // 스터디 해체 확인 (폼 제출 방식)
   function confirmStudyDeletion() {
     console.log("스터디 해체 함수 호출");
     const studyName = STUDY_DATA.studyName;
@@ -113,12 +160,13 @@ document.addEventListener("DOMContentLoaded", function () {
     if (confirm(message)) {
       console.log("스터디 해체 확인됨");
 
+      // 폼 생성해서 서버에 전송
       const form = document.createElement("form");
       form.method = "POST";
-      form.action = `/study/${STUDY_DATA.studyNo}/dissolve`;
+      form.action = `/studyBoard/dissolve`; // 컨트롤러에 해당 매핑 추가 필요
 
       document.body.appendChild(form);
-      form.submit();
+      form.submit(); // 서버에서 직접 리다이렉트 처리
     }
   }
 
@@ -195,6 +243,13 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("click", function (event) {
     const modal = document.getElementById("transferModal");
     if (event.target === modal) {
+      closeTransferModal();
+    }
+  });
+
+  // ESC 키로 모달 닫기
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
       closeTransferModal();
     }
   });
