@@ -126,7 +126,7 @@ document
     }, 2000);
 
     //  실제 서버 통신 코드 (주석 처리)
-    fetch(`/study/${formData.get("studyNo")}/info`, {
+    fetch(`/studyBoard/update`, {
       method: "POST",
       body: formData,
     })

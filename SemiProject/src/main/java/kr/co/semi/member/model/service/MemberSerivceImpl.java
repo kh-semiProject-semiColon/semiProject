@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -173,9 +174,9 @@ public class MemberSerivceImpl implements MemberService {
 					// 2. /myPage/profile/변경된 파일명
 					updatePath = profileFolderPath + rename;
 					finalPath = profileWebPath + rename;
+					profileImg.transferTo(new File(updatePath));
 				}
 				
-				profileImg.transferTo(new File(updatePath));
 				
 
 				return finalPath;
