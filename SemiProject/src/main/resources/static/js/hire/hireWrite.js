@@ -5,12 +5,27 @@ document.addEventListener("DOMContentLoaded", function () {
   const selected = studySelect.options[studySelect.selectedIndex];
 
   // 올바른 속성명 사용 (소문자)
-  // const studyMaxCount = selected.dataset.studymaxcount;
+  const studyMaxCount = Number(selected.dataset.studymaxcount);
+  const currentMemberCount = Number(selected.dataset.currentmembercount);
+  
   const studyType = selected.dataset.studytype || "";
   const studyPeriod = selected.dataset.studyperiod || "";
 
+  const hireCount = Math.max(0, studyMaxCount - currentMemberCount);
+
   // 모집 인원
-  // document.querySelector("input[name='studyMaxCount']").value = studyMaxCount;
+  hireCountSelect = document.querySelector("select[name='hireCount']");
+
+  hireCountSelect.innerHTML = '';
+
+  hireCountSelect.innerHTML = '<option value="" disabled selected>선택</option>';
+  
+  for(let i=1; i<=hireCount; i++) {
+    const option = document.createElement("option");
+    option.value = i;
+    option.textContent = i + "명";
+    hireCountSelect.appendChild(option);
+  }
 
   // 방향성 (라디오 버튼)
   const directionRadio = document.querySelector(

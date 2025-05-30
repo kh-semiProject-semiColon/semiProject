@@ -20,4 +20,5 @@ public class HireComment {
 	private int hireNo;					// 게시글 번호
 	
 	private int memberNo;				// 회원 고유 번호
+	private String memberNickname;
 }

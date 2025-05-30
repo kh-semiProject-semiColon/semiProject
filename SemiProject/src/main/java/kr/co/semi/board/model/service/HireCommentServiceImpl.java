@@ -28,19 +28,19 @@ public class HireCommentServiceImpl implements HireCommentService{
 
 	// 댓글 답글 등록 서비스
 	@Override
-	public int insert(Comment comment) {
-		return mapper.insert(comment);
+	public int insert(HireComment hireComment) {
+		return mapper.insert(hireComment);
 	}
 	
 	// 댓글 삭제 서비스
 	@Override
-	public int delete(int commentNo) {
-		return mapper.delete(commentNo);
+	public int delete(int hireCommentNo) {
+		return mapper.delete(hireCommentNo);
 	}
 	
 	// 댓글 수정 서비스
 	@Override
-	public int update(Comment comment) {
-		return mapper.update(comment);
+	public int update(HireComment hireComment) {
+		return mapper.update(hireComment);
 	}
 }

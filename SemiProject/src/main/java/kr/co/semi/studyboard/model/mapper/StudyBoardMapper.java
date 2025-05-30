@@ -47,11 +47,10 @@ public interface StudyBoardMapper {
                                @Param("offset") int offset, @Param("limit") int limit);
     
         
-    // 현재 멤버 수 조회
-    int getCurrentMemberCount(@Param("studyNo") int studyNo);
-    
+ 
     // 스터디 멤버 목록 조회
-    List<Map<String, Object>> getStudyMembers(@Param("studyNo") int studyNo);
+    List<Member> getStudyMembers(int studyNo);
+  
 
     // 내규 조회 서비스
     String getStudyrule(Member loginMember);
@@ -97,6 +96,20 @@ public interface StudyBoardMapper {
 	int insertstudyBoardLike(Map<String, Integer> map);
 
 	int selectLikeCount(Integer integer);
+  
+	int getCurrentMemberCount(int studyNo);
+
+	// 새로운 팀장으로 권한 변경
+	int updateMemberRole(Member member);
+
+	// 기존 팀장 탈퇴처리
+	int withdrawMemberById(Member loginMember);
+
+	// 특정 멤버가 해당 스터디에 속해있는지 확인하는 기능
+	int checkStudyMembership(Member member);
+
+
+
 
 
 

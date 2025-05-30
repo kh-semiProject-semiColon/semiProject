@@ -27,6 +27,7 @@ public class StudyBoardServiceImpl implements StudyBoardService {
 
     private final StudyBoardMapper mapper;
 
+    // 스터디 정보 조회
     @Override
     public Study getStudyInfo(Member loginMember) {
         try {
@@ -86,10 +87,12 @@ public class StudyBoardServiceImpl implements StudyBoardService {
 		return map;
     }
 
-    @Override
+    // 스터디 정보 업데이트
+    @Override 
     public int updateStudyInfo(Study study, MultipartFile imageFile) {
         try {
-            if (imageFile != null && !imageFile.isEmpty()) {
+            
+        	if (imageFile != null && !imageFile.isEmpty()) {
                 log.info("이미지 파일 업로드: {}", imageFile.getOriginalFilename());
                 // 이미지 파일 업로드 로직 추가 필요
             }
@@ -102,7 +105,7 @@ public class StudyBoardServiceImpl implements StudyBoardService {
             throw new RuntimeException("스터디 정보 수정 중 오류가 발생했습니다.", e);
         }
     }
-
+    // 내규등록
     @Override
     public boolean updateRule(Study study) {
         try {
@@ -125,7 +128,8 @@ public class StudyBoardServiceImpl implements StudyBoardService {
             throw new RuntimeException("스터디 내규 수정 중 오류가 발생했습니다.", e);
         }
     }
-
+    
+    //스터디 팀장 위임
     @Override
     public boolean withdrawMember(Member loginMember) {
         try {
@@ -145,6 +149,7 @@ public class StudyBoardServiceImpl implements StudyBoardService {
         }
     }
 
+    //스터디 해체
     @Override
     public boolean deleteStudy(int studyNo) {
         try {
@@ -157,6 +162,7 @@ public class StudyBoardServiceImpl implements StudyBoardService {
         }
     }
 
+    //팀장 권한인지 확인하는 메서드
     @Override
     public boolean isStudyLeader(int memberNo) {
         try {
@@ -168,6 +174,7 @@ public class StudyBoardServiceImpl implements StudyBoardService {
         }
     }
 
+    // 페이지 네이션
     @Override
     public Map<String, Object> getMyPosts(int studyNo, int memberNo, int page) {
         try {
@@ -193,6 +200,7 @@ public class StudyBoardServiceImpl implements StudyBoardService {
     }
 
 
+    // 코멘트 
     @Override
     public int getCurrentMemberCount(int studyNo) {
         try {
@@ -205,10 +213,11 @@ public class StudyBoardServiceImpl implements StudyBoardService {
         }
     }
     
+    //스터디 멤버 목록 조회
     @Override
-    public List<Map<String, Object>> getStudyMembers(int studyNo) {
+    public List<Member> getStudyMembers(int studyNo) {
         try {
-            List<Map<String, Object>> members = mapper.getStudyMembers(studyNo);
+            List<Member> members = mapper.getStudyMembers(studyNo);
             log.info("스터디 멤버 목록 조회 - studyNo: {}, count: {}", studyNo, members.size());
             return members;
         } catch (Exception e) {
@@ -217,6 +226,7 @@ public class StudyBoardServiceImpl implements StudyBoardService {
         }
     }
 
+    // 스터디 내규 작성
     @Override
 	public String getStudyrule(Member loginMember) {
 		
@@ -303,4 +313,33 @@ public class StudyBoardServiceImpl implements StudyBoardService {
 		
 		return -1; // 좋아요 처리 실패
     }
+    @Override
+    @Transactional
+    public boolean transferLeadershipAndWithdraw(Member member, Member loginMember) {
+        try {
+            // 1. 새로운 팀장으로 권한 변경
+            int updateResult = mapper.updateMemberRole(member);
+            if (updateResult <= 0) {
+                return false;
+            }
+            int deleteStudyMember = mapper.withdrawMemberById(loginMember);
+            
+            return true;
+            
+        } catch (Exception e) {
+            throw new RuntimeException("팀장 권한 위임 처리 중 오류가 발생했습니다.", e);
+        }
+    }
+
+    @Override
+    public boolean isStudyMember(Member member) {
+        try {
+        	
+            int count = mapper.checkStudyMembership(member);
+            return count > 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }

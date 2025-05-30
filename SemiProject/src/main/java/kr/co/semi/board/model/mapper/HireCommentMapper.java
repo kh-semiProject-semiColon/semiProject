@@ -17,20 +17,20 @@ public interface HireCommentMapper {
 	List<HireComment> select(int hireNo);
 
 	/** 댓글/ 답글 등록 서비스
-	 * @param comment
+	 * @param hireComment
 	 * @return
 	 */
-	int insert(Comment comment);
+	int insert(HireComment hireComment);
 
 	/** 댓글 삭제 서비스
 	 * @param commentNo
 	 * @return
 	 */
-	int delete(int commentNo);
+	int delete(int hireCommentNo);
 
 	/** 댓글 수정 서비스
-	 * @param comment
+	 * @param hireComment
 	 * @return
 	 */
-	int update(Comment comment);
+	int update(HireComment hireComment);
 }

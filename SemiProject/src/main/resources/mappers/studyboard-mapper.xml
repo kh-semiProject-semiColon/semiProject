@@ -75,14 +75,14 @@ WHERE STUDY_NO = #{studyNo}
 </update>
 
 <!-- 스터디 멤버 권한 확인 -->
-<select id="checkMemberRole" resultType="String">
+<select id="checkMemberRole" >
 SELECT STUDY_CAP
 FROM STUDY_MEMBER
 WHERE MEMBER_NO = #{memberNo}
 </select>
 
 <!-- 내가 작성한 스터디 게시글 조회 -->
-<select id="getMyPosts" resultType="StudyBoard">
+<select id="getMyPosts">
 <![CDATA[
 SELECT * FROM (
     SELECT SB.STUDY_BOARD_NO, SB.STUDY_BOARD_TITLE, SB.STUDY_BOARD_CONTENT,
@@ -99,20 +99,45 @@ SELECT * FROM (
 </select>
 
 <!-- 현재 스터디 멤버 수 조회 -->
-<select id="getCurrentMemberCount" resultType="int">
+<select id="getCurrentMemberCount">
 SELECT COUNT(*)
 FROM STUDY_MEMBER
 WHERE STUDY_NO = #{studyNo}
 </select>
 
 <!-- 스터디 멤버 목록 조회 -->
-<select id="getStudyMembers" resultType="java.util.HashMap">
+<select id="getStudyMembers">
 SELECT SM.MEMBER_NO, M.MEMBER_NICKNAME, SM.STUDY_CAP
 FROM STUDY_MEMBER SM
 JOIN MEMBER M ON SM.MEMBER_NO = M.MEMBER_NO
 WHERE SM.STUDY_NO = #{studyNo}
 AND M.MEMBER_DEL_FL = 'N'
-ORDER BY SM.STUDY_CAP DESC
+AND SM.STUDY_CAP = 'N'
+</select>
+
+<!-- 멤버 역할 업데이트 -->
+<update id="updateMemberRole">
+    UPDATE STUDY_MEMBER 
+    SET STUDY_CAP = 'Y'
+    WHERE STUDY_NO = #{studyNo} 
+    AND MEMBER_NO = #{newLeaderId}
+</update>
+
+<!-- 특정 멤버 탈퇴 처리 -->
+<delete id="withdrawMemberById">
+    DELETE FROM STUDY_MEMBER
+    WHERE STUDY_NO = #{studyNo}
+    AND MEMBER_NO = #{memberNo}
+</delete>
+
+<!-- 스터디 멤버십 확인 -->
+<select id="checkStudyMembership">
+    SELECT COUNT(*)
+    FROM STUDY_MEMBER SM
+    JOIN MEMBER M ON SM.MEMBER_NO = M.MEMBER_NO
+    WHERE SM.STUDY_NO = #{studyNo}
+    AND SM.MEMBER_NO = #{newLeaderId}
+    AND M.MEMBER_DEL_FL = 'N'
 </select>
 
 <!-- 검색 조건이 맞는 게시글 수 조회 -->

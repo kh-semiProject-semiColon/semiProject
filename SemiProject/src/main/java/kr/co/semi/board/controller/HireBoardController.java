@@ -2,6 +2,7 @@ package kr.co.semi.board.controller;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import kr.co.semi.board.model.dto.HireComment;
 import kr.co.semi.board.model.dto.HireInfo;
 import kr.co.semi.board.model.service.HireBoardService;
 import kr.co.semi.member.model.dto.Member;
@@ -55,6 +57,7 @@ public class HireBoardController {
 		} else {
 
 			map = service.searchList(paramMap, cp);
+			
 		}
 		
 		model.addAttribute("pagination", map.get("pagination"));
@@ -73,17 +76,43 @@ public class HireBoardController {
 		
 		int memberNo = loginMember.getMemberNo();
 		
-	    List<Study> studyList = service.showStudySelect(memberNo);
+	    List<Study> study = service.showStudySelect(memberNo);
+
+	    
+	    List<Study> studyList = new ArrayList<>();
+	    
+	    for (Study s : study) {
+	        if ("Y".equals(s.getStudyCap())) {
+	        	int currentMemberCount = service.hireCount(s.getStudyNo());
+	            s.setCurrentMemberCount(currentMemberCount);
+	        	
+	        	studyList.add(s);
+	        	
+	        	System.out.println(s.getCurrentMemberCount());
+	    	    
+	    	    
+	    	    
+	        }
+	    }
 	    
 	    
-	    if(studyList.isEmpty() || studyList == null) {
+	    if(study.isEmpty() || study == null) {
 	    	path = "redirect:/hire/board"; // 목록 재요청
 	    	ra.addFlashAttribute("message", "생성된 스터디가 없습니다.");
 	    	
 	    } else {
 	    	
-	    	model.addAttribute("study", studyList);
-	    	path = "hire/hireWrite";
+	    	if(studyList.isEmpty() || studyList == null) {
+	    		
+	    		path = "redirect:/hire/board"; // 목록 재요청
+	    		ra.addFlashAttribute("message", "스터디의 리더만 작성할 수 있습니다");
+	    		
+	    	} else {
+	    		
+	    		model.addAttribute("study", studyList);
+	    		path = "hire/hireWrite";
+	    		
+	    	}
 	    	
 	    }
 	    
@@ -99,6 +128,8 @@ public class HireBoardController {
 									   )throws Exception {
 		
 		int hireNo = 0;
+		
+//		System.out.println(inputHire);
 		
 		inputHire.setMemberNo(loginMember.getMemberNo());
 		inputHire.setStudyNo(loginMember.getStudyNo());
@@ -237,7 +268,9 @@ public class HireBoardController {
 			// 스터디 정보 조회
 			Study study = service.selectStudyNo(hireInfo.getStudyNo());
 			
-//			System.out.println(hireInfo);
+			int currentMemberCount = service.hireCount(hireInfo.getStudyNo());
+			
+			study.setCurrentMemberCount(currentMemberCount);
 			
 			model.addAttribute("loginMember", loginMember);
 			model.addAttribute("hireInfo", hireInfo);
@@ -370,5 +403,39 @@ public class HireBoardController {
 	ra.addFlashAttribute("message", message);
 	
 	return "redirect:" + path;
+	}
+	
+	//멤버초대 - 초대할때 댓글 사용자 memberNo/ 글번호 불러와야함 초대 버튼은 글 주인만 == 로그인 멤버 같을때 볼 수 있음
+	@PostMapping("invite/{hireNo:[0-9]+}")
+	public String memberInvite(@PathVariable("hireNo") int hireNo,
+							   @ModelAttribute HireComment hireComment,
+							   RedirectAttributes ra,
+							   @SessionAttribute("loginMember") Member loginMember) {
+		
+		String message = null;
+		String path = null;
+		
+		int memberNo = hireComment.getMemberNo();
+		
+		int studyNo = service.getStudyNo(hireNo);
+		
+		Map<String, Integer> map = new HashMap<>();
+		map.put("hireNo", hireNo);
+		map.put("memberNo", memberNo);
+		
+		int result = service.memberInvite(map);
+		
+		if(result > 0) {
+			message = "초대완료";
+
+			
+		} else {
+			message = "초대실패";
+
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "hire/detail" + hireNo;
 	}
 }
