@@ -57,29 +57,29 @@ public class StudyBoardServiceImpl implements StudyBoardService {
     }
 
     @Override
-    public boolean updateRule(int studyNo, String ruleContent) {
+    public boolean updateRule(Study study) {
         try {
-            int result = mapper.insertOrUpdateRule(studyNo, ruleContent);
-            log.info("스터디 내규 수정 - studyNo: {}, result: {}", studyNo, result);
+            int result = mapper.insertOrUpdateRule(study);
+            log.info("스터디 내규 수정 - studyNo: {}, result: {}", study.getStudyNo(), result);
             return result > 0;
         } catch (Exception e) {
-            log.error("스터디 내규 수정 중 오류 발생 - studyNo: {}", studyNo, e);
+            log.error("스터디 내규 수정 중 오류 발생 - studyNo: {}", study.getStudyNo(), e);
             throw new RuntimeException("스터디 내규 수정 중 오류가 발생했습니다.", e);
         }
     }
 
     @Override
-    public boolean withdrawMember(int studyNo, int memberNo) {
+    public boolean withdrawMember(Member loginMember) {
         try {
-            if (isStudyLeader(memberNo)) {
+            if (isStudyLeader(loginMember.getMemberNo())) {
                 throw new IllegalStateException("팀장은 직접 탈퇴할 수 없습니다. 팀장 권한을 위임하거나 스터디를 해체해주세요.");
             }
-            
-            int result = mapper.withdrawMember(studyNo, memberNo);
-            log.info("스터디 탈퇴 - studyNo: {}, memberNo: {}, result: {}", studyNo, memberNo, result);
+
+            int result = mapper.withdrawMember(loginMember);
+            log.info("스터디 탈퇴 - studyNo: {}, memberNo: {}, result: {}", loginMember.getStudyNo(), loginMember.getMemberNo(), result);
             return result > 0;
         } catch (Exception e) {
-            log.error("스터디 탈퇴 중 오류 발생 - studyNo: {}, memberNo: {}", studyNo, memberNo, e);
+            log.error("스터디 탈퇴 중 오류 발생 - studyNo: {}, memberNo: {}", loginMember.getStudyNo(), loginMember.getMemberNo(), e);
             if (e instanceof IllegalStateException) {
                 throw e;
             }

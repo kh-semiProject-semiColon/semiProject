@@ -55,85 +55,95 @@ document.addEventListener("keydown", function (e) {
 });
 
 // 글자 수 카운터 이벤트 리스너
-document
-  .getElementById("ruleContent")
-  .addEventListener("input", updateCharCount);
-
-// 폼 비동기 처리
-document.getElementById("ruleForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  const submitBtn = this.querySelector('button[type="submit"]');
-  const formData = new FormData(this);
-  const studyNo = formData.get("studyNo");
-  const ruleContent = formData.get("ruleContent");
-
-  // 로딩 상태 표시
-  submitBtn.classList.add("loading");
-  submitBtn.disabled = true;
-
-  // 실제 환경에서 CSRF 토큰이 필요한 경우:
-  // const csrfToken = document.querySelector('[name="_csrf"]').value;
-
-  // 시뮬레이션을 위한 setTimeout (실제로는 fetch 사용)
-  setTimeout(() => {
-    // 성공 시뮬레이션
-    console.log("내규 업데이트:", { studyNo, ruleContent });
-
-    // 페이지의 내규 내용 업데이트
-    document.querySelector(".rule-text").innerHTML = ruleContent.replace(
-      /\n/g,
-      "<br>"
-    );
-
-    // 로딩 상태 해제
-    submitBtn.classList.remove("loading");
-    submitBtn.disabled = false;
-
-    // 성공 메시지 표시 (실제로는 더 세련된 토스트 메시지 사용)
-    alert("내규가 성공적으로 수정되었습니다.");
-
-    // 모달 닫기
-    closeRuleModal();
-  }, 1500); // 1.5초 로딩 시뮬레이션
-
-  //  실제 AJAX 코드 (주석 처리)
-  fetch(`/study/${studyNo}/rule`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Requested-With": "XMLHttpRequest",
-      // CSRF 토큰이 필요한 경우: 'X-CSRF-TOKEN': csrfToken
-    },
-    body: JSON.stringify({
-      studyNo: studyNo,
-      ruleContent: ruleContent,
-    }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      if (data.success) {
-        location.reload();
-      } else {
-        alert(data.message || "내규 저장에 실패했습니다.");
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      alert("서버 오류가 발생했습니다.");
-    })
-    .finally(() => {
-      submitBtn.classList.remove("loading");
-      submitBtn.disabled = false;
-    });
+document.addEventListener("DOMContentLoaded", function () {
+  const ruleContentTextarea = document.getElementById("ruleContent");
+  if (ruleContentTextarea) {
+    ruleContentTextarea.addEventListener("input", updateCharCount);
+    updateCharCount(); // 초기 글자 수 설정
+  }
 });
 
-// 페이지 로드 시 글자 수 카운터 초기화
+// 폼 비동기 처리 - 수정된 버전
 document.addEventListener("DOMContentLoaded", function () {
-  updateCharCount();
+  const ruleForm = document.getElementById("ruleForm");
+  if (ruleForm) {
+    ruleForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const formData = new FormData(this);
+      const studyNo = formData.get("studyNo");
+      const ruleContent = formData.get("ruleContent");
+
+      // 유효성 검사
+      if (!ruleContent || ruleContent.trim() === "") {
+        alert("내규 내용을 입력해주세요.");
+        return;
+      }
+
+      if (ruleContent.length > 4000) {
+        alert("내규 내용은 4000자를 초과할 수 없습니다.");
+        return;
+      }
+
+      // 로딩 상태 표시
+      submitBtn.classList.add("loading");
+      submitBtn.disabled = true;
+
+      // CSRF 토큰 가져오기 (필요한 경우)
+      const csrfToken = document.querySelector('meta[name="_csrf"]')
+        ? document.querySelector('meta[name="_csrf"]').getAttribute("content")
+        : null;
+      const csrfHeader = document.querySelector('meta[name="_csrf_header"]')
+        ? document
+            .querySelector('meta[name="_csrf_header"]')
+            .getAttribute("content")
+        : null;
+
+      // 헤더 설정
+      const headers = {
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+      };
+
+      // CSRF 토큰이 있으면 헤더에 추가
+      if (csrfToken && csrfHeader) {
+        headers[csrfHeader] = csrfToken;
+      }
+
+      // 실제 AJAX 요청
+      fetch("/studyBoard/rulecontent", {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+          studyNo: parseInt(studyNo),
+          ruleContent: ruleContent,
+        }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.success) {
+            alert("내규가 성공적으로 저장되었습니다.");
+            // 페이지 새로고침으로 변경사항 반영
+            location.reload();
+          } else {
+            alert(data.message || "내규 저장에 실패했습니다.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
+        })
+        .finally(() => {
+          // 로딩 상태 해제
+          submitBtn.classList.remove("loading");
+          submitBtn.disabled = false;
+        });
+    });
+  }
 });
