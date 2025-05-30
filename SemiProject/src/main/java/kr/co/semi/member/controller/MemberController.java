@@ -40,9 +40,7 @@ public class MemberController {
 	@Autowired
 	private StudyCalendarService studyCalendarService;
 	
-	@Value("${my.profile.folder-path}")
-	private String folderPath;
-	
+
 	/*
 	 * [로그인]
 	 * - 특정 사이트에 아이디/비밀번호 등을 입력해서
