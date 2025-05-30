@@ -1,70 +1,365 @@
 package kr.co.semi.studyboard.controller;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.semi.member.model.dto.Member;
+import kr.co.semi.studyboard.model.dto.Study;
 import kr.co.semi.studyboard.model.service.StudyBoardService;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("/studyboard")
+@SessionAttributes("loginMember")
+@RequestMapping("studyBoard")
 @Slf4j
 public class StudyBoardController {
 
-	@Autowired
-	private StudyBoardService service;
-	
-	
-	public String studyBoardMain() {
-		return "studyboard/studyboardList"; //메인 페이지
-	}
-	/** 
-	 * @param studyNo : 게시판 종류 구분 번호 (1/2/3....)
-	 * @param cp : 현재 조회 요청한 페이지 번호 (없으면 1)
-	 * @param model
-	 * @param paraMap
-	 * @return
-	 */
-	@GetMapping("/studyboardList")
-	public String selectStudyBoardList(@PathVariable("studyNo")int studyNo,
-										@RequestParam(value = "cp",required = false,defaultValue = "1")int cp,
-										Model model ,
-										@RequestParam Map<String, Object> paraMap) {	
-		
-		//조회 서비스 호출 후 결과 반환 받기.
-		Map<String, Object> map = null;
-		
-		// 조건에 따라 서비스 메서드를 분기처리 하기 위해 map으로 선언만 함.
-		
-		//검색이 아닌 경우
-		if(paraMap.get("key")==null) {
-			// 게시글 목록 조회 서비스 호출
-			map = service.selectStudyBoardList(studyNo,cp);
-		}else {
-			// 검색인 경우 --> paramMap = {
-			
-			// boardCode 를 paramMap에 추가
-			paraMap.put("studyNo", studyNo );
-			
-			// 검색 서비스 호출
-			map = service.searchList(paraMap,cp);
-		}
-		
-		// model에 반환 받은 값 등록
-		model.addAttribute("pagination",map.get("pagination"));
-		model.addAttribute("studyboardList",map.get("studboardList"));
-				
-		// forward : src/main/resources/templates/studyboard/studyboardList.html
-		return "studyboard/studyboardList";
-	}
-	//상세 조회 요청 주소
-	//  /board/1/1994?cp=1
-	//  /board/2/2000?cp=2	
+    @Autowired
+    private StudyBoardService service;
+    
+    
+    
+    // ============================================
+    // 스터디 스케줄 관련
+    // ============================================
+    
+    /**
+     * 스터디 스케줄 페이지
+     */
+    @GetMapping("calendar")
+    public String studyBoardCalendar() {
+        return "studyBoard/calendar";
+    }
+    
+  
+
+    // ============================================
+    // 스터디 게시판 관련
+    // ============================================
+    
+    /**
+     * 스터디 게시판 페이지 (내 게시글, 내 댓글)
+     */
+    @GetMapping("studyboard")
+    public String studyBoard(@SessionAttribute("loginMember") Member loginMember,
+                           @RequestParam(value = "cp",required = false, defaultValue = "1" ) int page,
+                           Model model,
+                           RedirectAttributes ra) {
+        try {
+        	String message = null;
+        	
+            Study study = service.getStudyInfo(loginMember);
+            
+            if (study == null) {
+                message = "스터디 없습니다";
+                return "redirect:/study/studyNow";
+            }
+            
+            Map<String, Object> postData = service.getMyPosts(loginMember.getStudyNo(), loginMember.getMemberNo(), page);
+            
+            model.addAttribute("study", study);
+            model.addAttribute("posts", postData.get("posts"));
+            model.addAttribute("currentPage", page);
+            model.addAttribute("studyNo", loginMember.getStudyNo());
+            
+            log.info("스터디 게시판 페이지 접근 - studyNo: {}, memberNo: {}, page: {}", 
+                    loginMember.getStudyNo(), loginMember.getMemberNo(), page);
+            
+        } catch (Exception e) {
+            log.error("스터디 게시판 페이지 오류", e);
+            model.addAttribute("errorMessage", "게시판 정보를 불러오는 중 오류가 발생했습니다.");
+        }
+        
+        return "studyBoard/studyboard";
+    }
+    
+    // ============================================
+    // 스터디 정보 수정 관련
+    // ============================================
+    
+    /**
+     * 스터디 정보 수정 페이지
+     */
+    @GetMapping("update")
+    public String studyBoardUpdate(@SessionAttribute("loginMember") Member loginMember,
+                                 Model model) {
+        try {
+            Study study = service.getStudyInfo(loginMember);
+            if (study == null) {
+                log.warn("존재하지 않는 스터디 또는 권한 없음 - studyNo: {}, memberNo: {}", 
+                		loginMember.getStudyNo(), loginMember.getMemberNo());
+                return "redirect:/study/studyNow";
+            }
+            
+            model.addAttribute("study", study);
+            
+            log.info("스터디 정보 수정 페이지 접근 - studyNo: {}, memberNo: {}, isLeader: {}", 
+            		loginMember.getStudyNo(), loginMember.getMemberNo(), study.isLeader());
+            
+        } catch (Exception e) {
+            log.error("스터디 정보 수정 페이지 오류", e);
+            model.addAttribute("errorMessage", "스터디 정보를 불러오는 중 오류가 발생했습니다.");
+        }
+        
+        return "studyBoard/update";
+    }
+
+    /**
+     * 스터디 정보 수정 처리 - DTO로 받기 (완전 수정 버전)
+     */
+    @PostMapping("update")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> updateStudy(@SessionAttribute("loginMember") Member loginMember,
+                                                          Study study,  // DTO로 받기
+                                                          @RequestBody(required = false) MultipartFile imageFile) {
+        
+        Map<String, Object> response = new HashMap<>();
+        try {
+            // 팀장 권한 확인
+            if (!service.isStudyLeader(loginMember.getMemberNo())) {
+                response.put("success", false);
+                response.put("message", "팀장만 스터디 정보를 수정할 수 있습니다.");
+                return ResponseEntity.ok(response); // 200
+            }
+            
+            // 현재 멤버 수보다 최대 인원이 적으면 안됨
+            int currentMemberCount = service.getCurrentMemberCount(study.getStudyNo());
+            if (study.getStudyMaxCount() < currentMemberCount) {
+                response.put("success", false);
+                response.put("message", String.format("현재 참여 인원(%d명)보다 적게 설정할 수 없습니다.", currentMemberCount));
+                return ResponseEntity.ok(response);
+            }
+            
+            
+            // DTO로 받은 데이터를 바로 서비스로 전달
+            int result = service.updateStudyInfo(study, imageFile);
+            
+            response.put("success", result);
+            response.put("message", result == 1 ? "스터디 정보가 수정되었습니다." : "수정에 실패했습니다.");
+            
+            if (result>0) {
+                log.info("스터디 정보 수정 성공 - studyNo: {}, memberNo: {}, studyName: {}", 
+                        study.getStudyNo(), loginMember.getMemberNo(), study.getStudyName());
+            }else {
+            	log.info("수정실패");
+            }
+            
+        } catch (Exception e) {
+            log.error("스터디 정보 수정 중 오류 발생 - studyNo: {}", study.getStudyNo(), e);
+            response.put("success", false);
+            response.put("message", "오류가 발생했습니다: " + e.getMessage());
+        }
+        
+        return ResponseEntity.ok(response);
+    }
+
+    // ============================================
+    // 스터디 탈퇴 관련
+    // ============================================
+    
+    /**
+     * 스터디 탈퇴 페이지
+     */
+    @GetMapping("delete")
+    public String studyBoardDelete(@SessionAttribute("loginMember") Member loginMember,
+                                  Model model) {
+        try {
+            Study study = service.getStudyInfo(loginMember);
+            if(service.isStudyLeader(loginMember.getMemberNo())) {
+            	model.addAttribute("isLeader", true);
+            } else {
+            	
+            	model.addAttribute("isLeader", false);
+            }
+            if (study == null) {
+                log.warn("존재하지 않는 스터디 또는 권한 없음 - studyNo: {}, memberNo: {}", 
+                        study, loginMember.getMemberNo());
+                return "redirect:/study/studyNow";
+            }
+            
+            model.addAttribute("study", study);
+            
+//            model.addAttribute("members",service.getStudyMembers(loginMember.getStudyNo()));
+//            log.info("스터디 탈퇴 페이지 접근 - studyNo: {}, memberNo: {}, isLeader: {}", 
+//                    study, loginMember.getMemberNo(), study.isLeader());
+            
+        } catch (Exception e) {
+            
+            model.addAttribute("errorMessage", "스터디 정보를 불러오는 중 오류가 발생했습니다.");
+        }
+        
+        return "studyBoard/delete";
+    }
+
+    /**
+     * 스터디 탈퇴 처리 - DTO로 받기
+     */
+    @PostMapping("delete")
+    @ResponseBody
+    public String withdrawFromStudy(@SessionAttribute("loginMember") Member loginMember,
+                                                               Study study, RedirectAttributes ra) {  // DTO로 받기
+        String message = null;
+        try {
+        	boolean result = service.withdrawMember(loginMember);
+            
+            
+            if (result) {
+                message = "스터디 탈퇴 성공";
+            }
+            
+        } catch (Exception e) {
+           
+        }
+        
+        ra.addFlashAttribute("message",message);
+        
+        return "redirect:/";
+    }
+    
+    
+    // ============================================
+    // 스터디 내규 관련
+    // ============================================
+    
+    /**
+     * 스터디 내규 페이지
+     */
+    @GetMapping("rulecontent")
+    public String studyBoardRuleContent(@SessionAttribute("loginMember") Member loginMember,
+                                       Model model) {
+        try {
+            Study study = service.getStudyInfo(loginMember);
+            study.setRuleContent(service.getStudyrule(loginMember));
+            if (study == null) {
+                log.warn("존재하지 않는 스터디 또는 권한 없음 - studyNo: {}, memberNo: {}", 
+                        loginMember.getStudyNo(), loginMember.getMemberNo());
+                return "redirect:/study/studyNow";
+            }
+            
+            model.addAttribute("study", study);
+            model.addAttribute("studyNo",  loginMember.getStudyNo());
+            
+            log.info("스터디 내규 페이지 접근 - studyNo: {}, memberNo: {}, isLeader: {}", 
+            		 loginMember.getStudyNo(), loginMember.getMemberNo(), study.isLeader());
+            
+        } catch (Exception e) {
+            log.error("스터디 내규 페이지 오류", e);
+            model.addAttribute("errorMessage", "스터디 정보를 불러오는 중 오류가 발생했습니다.");
+        }
+        
+        return "studyBoard/rulecontent";
+    }
+
+    /**
+     * 스터디 내규 등록/수정 처리
+     */
+    @PostMapping("rulecontent")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> updateRule(
+            @SessionAttribute("loginMember") Member loginMember,
+            @RequestBody Map<String, Object> requestData) {
+        
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            // 요청 데이터에서 값 추출
+            Integer studyNo = (Integer) requestData.get("studyNo");
+            String ruleContent = (String) requestData.get("ruleContent");
+            
+            // 기본 유효성 검사
+            if (studyNo == null) {
+                response.put("success", false);
+                response.put("message", "스터디 번호가 없습니다.");
+                return ResponseEntity.ok(response);
+            }
+            
+            if (ruleContent == null || ruleContent.trim().isEmpty()) {
+                response.put("success", false);
+                response.put("message", "내규 내용을 입력해주세요.");
+                return ResponseEntity.ok(response);
+            }
+            
+            if (ruleContent.length() > 4000) {
+                response.put("success", false);
+                response.put("message", "내규 내용은 4000자를 초과할 수 없습니다.");
+                return ResponseEntity.ok(response);
+            }
+            
+                       
+            // Study 객체 생성
+            Study study = new Study();
+            study.setStudyNo(studyNo);
+            study.setRuleContent(ruleContent.trim());
+            
+            // 내규 업데이트 실행
+            boolean result = service.updateRule(study);
+            
+            response.put("success", result);
+            response.put("message", result ? "내규가 저장되었습니다." : "저장에 실패했습니다.");
+            
+            if (result) {
+                log.info("스터디 내규 수정 성공 - studyNo: {}, memberNo: {}", studyNo, loginMember.getMemberNo());
+            } else {
+                log.warn("스터디 내규 수정 실패 - studyNo: {}, memberNo: {}", studyNo, loginMember.getMemberNo());
+            }
+            
+        } catch (Exception e) {
+            log.error("스터디 내규 수정 중 오류 발생", e);
+            response.put("success", false);
+            response.put("message", "오류가 발생했습니다: " + e.getMessage());
+        }
+        
+        return ResponseEntity.ok(response);
+    }
+    
+    // ============================================
+    // 유틸리티 메서드들
+    // ============================================
+    
+    /**
+     * 스터디 멤버 목록 조회 (AJAX)
+     */
+    @GetMapping("members")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getStudyMembers(@SessionAttribute("loginMember") Member loginMember) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            // 스터디 멤버인지 확인
+            Study study = service.getStudyInfo(loginMember);
+            if (study == null) {
+                response.put("success", false);
+                response.put("message", "스터디 멤버가 아닙니다.");
+                return ResponseEntity.ok(response);
+            }
+            
+            List<Map<String, Object>> members = service.getStudyMembers(loginMember.getStudyNo());
+            
+            response.put("success", true);
+            response.put("members", members);
+            response.put("totalCount", members.size());
+            
+        } catch (Exception e) {
+            log.error("스터디 멤버 목록 조회 중 오류 발생", e);
+            response.put("success", false);
+            response.put("message", "오류가 발생했습니다: " + e.getMessage());
+        }
+        
+        return ResponseEntity.ok(response);
+    }
 }

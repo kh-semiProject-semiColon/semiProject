@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GoStudy - 회원탈퇴</title>
+
+    <!-- 구글 폰트 및 CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="/css/common/footer.css" />
+    <link rel="stylesheet" href="/css/common/header.css" />
+    <link rel="stylesheet" href="/css/myPage/myPage-delete1.css" />
+    <link rel="stylesheet" href="/css/myPage/myPage-style.css" />
+    <link rel="stylesheet" href="/css/myPage/sidebar.css" />
+  </head>
+  <body>
+    <!-- 헤더 프래그먼트 삽입 -->
+    <th:block th:replace="~{common/header}"></th:block>
+
+    <!-- 메인 컨테이너 -->
+    <div class="container">
+      <!-- 사이드바 프래그먼트 삽입 -->
+      <th:block th:replace="~{myPage/sidebar}"></th:block>
+
+      <!-- 메인 콘텐츠 -->
+      <div class="content">
+        <h1 class="content-title">회원탈퇴</h1>
+        <div class="content-divider"></div>
+        <div class="content-main">
+          <!-- 잠금 이미지 -->
+          <img class="locked" src="/images/locked.png" alt="잠금" />
+
+          <!-- 안내 문구 -->
+          <p class="password-info">
+            비밀번호를 입력해야 입장할 수 있는 페이지입니다.
+          </p>
+
+          <!-- 폼 시작 -->
+          <form action="/myPage/delete2" method="post" name="delete">
+            <input
+              type="password"
+              class="password-input"
+              name="memberPw"
+              id="password"
+              placeholder="비밀번호를 입력하세요"
+            />
+            <span class="passworderror" id="passworderror"></span>
+            <button class="confirmBtn" id="confirmBtn">
+              확인
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- 푸터 프래그먼트 삽입 -->
+    <th:block th:replace="~{common/footer}"></th:block>
+
+    <!-- 자바스크립트 -->
+    <script src="/js/myPage/myPage-delete.js"></script>
+    <script src="/js/myPage/sidebar.js"></script>
+  </body>
+</html>

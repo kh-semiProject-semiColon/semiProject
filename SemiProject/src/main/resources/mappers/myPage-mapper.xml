@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.semi.myPage.model.mapper.MyPageMapper">
+
+	<!-- 일정 조회하기 -->
+	<select id="selectMember">
+		SELECT MEMBER_MAJOR, MEMBER_INTRODUCE, PROFILE_IMG
+		FROM MEMBER
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+
+	<update id="updateInfo">
+		UPDATE "MEMBER" SET
+		MEMBER_NICKNAME = #{memberNickname},
+		MEMBER_TEL = #{memberTel},
+		MEMBER_MAJOR = #{memberMajor},
+		MEMBER_ADDRESS = #{memberAddress},
+		MEMBER_INTRODUCE = #{memberIntroduce}
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+	
+	<update id="profile">
+		UPDATE "MEMBER" SET
+		PROFILE_IMG = #{profileImg}
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+
+	<select id="selectPw">
+		SELECT MEMBER_PW
+		FROM "MEMBER"
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+
+	<update id="changePw">
+		UPDATE "MEMBER" SET
+		MEMBER_PW = #{encPw}
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+
+	<update id="deleteMember">
+		UPDATE "MEMBER" SET
+		MEMBER_DEL_FL = 'Y'
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+
+	<!-- 페이지 전체 수 구하는 식 -->
+	<select id="getBoardCountByMember" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM (
+		SELECT STUDY_BOARD_NO FROM STUDY_BOARD WHERE MEMBER_NO = #{memberNo}
+		UNION ALL
+		SELECT BOARD_NO FROM BOARD WHERE MEMBER_NO = #{memberNo}
+		UNION ALL
+		SELECT HIRE_NO FROM HIRE_INFO WHERE MEMBER_NO = #{memberNo}
+		)
+	</select>
+
+	<!-- 페이지 상세조회 -->
+	<resultMap id="boardResultMap" type="kr.co.semi.board.model.dto.Board">
+		<result property="boardNo" column="boardNo" />
+		<result property="boardTitle" column="boardTitle" />
+		<result property="memberNickname" column="memberNickname" />
+		<result property="boardWriteDate" column="boardWriteDate" />
+		<result property="readCount" column="readCount" />
+		<result property="likeCount" column="likeCount" />
+		<result property="boardCode" column="boardCode" />
+	</resultMap>
+
+
+	<select id="selectBoardWithPaging" resultMap="boardResultMap"
+		parameterType="int">
+		SELECT
+		STUDY_BOARD_NO AS boardNo,
+		STUDY_BOARD_TITLE AS boardTitle,
+		MEMBER_NICKNAME AS memberNickname,
+		TO_CHAR(STUDY_BOARD_WRITE_DATE, 'YY.MM.DD') AS boardWriteDate,
+		READ_COUNT AS readCount,
+		LIKE_COUNT AS likeCount,
+		2000 AS boardCode
+		FROM (
+		SELECT
+		sb.STUDY_BOARD_NO,
+		sb.STUDY_BOARD_TITLE,
+		m.MEMBER_NICKNAME,
+		sb.STUDY_BOARD_WRITE_DATE,
+		sb.READ_COUNT,
+		COUNT(bl.BOARD_NO) AS LIKE_COUNT
+		FROM STUDY_BOARD sb
+		LEFT JOIN MEMBER m ON sb.MEMBER_NO = m.MEMBER_NO
+		LEFT JOIN BOARD_LIKE bl ON sb.STUDY_BOARD_NO = bl.BOARD_NO
+		WHERE sb.MEMBER_NO = #{memberNo}
+		AND sb.STUDY_BOARD_DEL_FL = 'N' 
+		GROUP BY sb.STUDY_BOARD_NO, sb.STUDY_BOARD_TITLE, m.MEMBER_NICKNAME,
+		sb.STUDY_BOARD_WRITE_DATE, sb.READ_COUNT
+		)
+
+		UNION
+
+		SELECT
+		b.BOARD_NO AS boardNo,
+		b.BOARD_TITLE AS boardTitle,
+		m.MEMBER_NICKNAME AS memberNickname,
+		TO_CHAR(b.BOARD_WRITE_DATE, 'YY.MM.DD') AS boardWriteDate,
+		b.READ_COUNT AS readCount,
+		COUNT(bl.BOARD_NO) AS LIKE_COUNT,
+		b.BOARD_CODE AS boardCode
+		FROM BOARD b
+		LEFT JOIN MEMBER m ON b.MEMBER_NO = m.MEMBER_NO
+		LEFT JOIN BOARD_LIKE bl ON b.BOARD_NO = bl.BOARD_NO
+		WHERE b.MEMBER_NO = #{memberNo}
+		AND b.BOARD_DEL_FL = 'N'
+		GROUP BY b.BOARD_NO, b.BOARD_TITLE, m.MEMBER_NICKNAME,
+		b.BOARD_WRITE_DATE, b.READ_COUNT, b.BOARD_CODE
+
+		UNION
+
+		SELECT
+		hi.HIRE_NO AS boardNo,
+		hi.HIRE_TITLE AS boardTitle,
+		m.MEMBER_NICKNAME AS memberNickname,
+		TO_CHAR(hi.HIRE_DATE, 'YY.MM.DD') AS boardWriteDate,
+		hi.HIRE_READ_COUNT AS readCount,
+		COUNT(bl.BOARD_NO) AS LIKE_COUNT,
+		1000 AS boardCode
+		FROM HIRE_INFO hi
+		LEFT JOIN MEMBER m ON hi.MEMBER_NO = m.MEMBER_NO
+		LEFT JOIN BOARD_LIKE bl ON hi.HIRE_NO = bl.BOARD_NO
+		WHERE hi.MEMBER_NO = #{memberNo}
+		AND hi.HIRE_DEL_FL = 'N' 
+		GROUP BY hi.HIRE_NO, hi.HIRE_TITLE, m.MEMBER_NICKNAME,
+		hi.HIRE_DATE, hi.HIRE_READ_COUNT
+
+		ORDER BY boardWriteDate DESC
+	</select>
+
+	<!-- 댓글 총 개수 조회 -->
+	<select id="getCommentCountByMember" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM (
+		SELECT hc.HIRE_NO
+		FROM HIRE_COMMENT hc
+		JOIN HIRE_INFO hi ON hc.HIRE_NO = hi.HIRE_NO
+		WHERE hc.MEMBER_NO = #{memberNo}
+		AND hi.HIRE_DEL_FL = 'N'
+		AND hc.HIRE_COMMENT_DEL_FL = 'N'
+
+		UNION ALL
+
+		SELECT sc.STUDY_BOARD_NO
+		FROM STUDY_COMMENT sc
+		JOIN STUDY_BOARD sb ON sc.STUDY_BOARD_NO = sb.STUDY_BOARD_NO
+		WHERE sc.MEMBER_NO = #{memberNo}
+		AND sb.STUDY_BOARD_DEL_FL = 'N'
+		AND sc.STUDY_COMMENT_DEL_FL = 'N'
+
+		UNION ALL
+
+		SELECT c.BOARD_NO
+		FROM "COMMENT" c
+		JOIN BOARD b ON c.BOARD_NO = b.BOARD_NO
+		WHERE c.MEMBER_NO = #{memberNo}
+		AND b.BOARD_DEL_FL = 'N'
+		AND c.COMMENT_DEL_FL = 'N'
+		)
+	</select>
+
+	<select id="selectCommentWithPaging" parameterType="int" resultType="map">
+		SELECT *
+		FROM (
+		SELECT
+		h.HIRE_NO AS "boardNo",
+		h.HIRE_TITLE AS "boardTitle",
+		hc.HIRE_COMMENT_CONTENT AS "commentContent",
+		TO_CHAR(hc.HIRE_COMMENT_DATE, 'YYYY-MM-DD') AS "commentDate",
+		1000 AS "boardCode"
+		FROM HIRE_INFO h
+		JOIN HIRE_COMMENT hc ON h.HIRE_NO = hc.HIRE_NO
+		WHERE hc.MEMBER_NO = 1
+		AND h.HIRE_DEL_FL = 'N'
+		AND hc.HIRE_COMMENT_DEL_FL = 'N'
+
+		UNION ALL
+
+		SELECT
+		s.STUDY_BOARD_NO AS boardNo,
+		s.STUDY_BOARD_TITLE AS boardTitle,
+		sc.STUDY_COMMENT_CONTENT AS commentContent,
+		TO_CHAR(sc.STUDY_COMMENT_DATE, 'YYYY-MM-DD') AS commentDate,
+		2000 AS boardCode
+		FROM STUDY_BOARD s
+		JOIN STUDY_COMMENT sc ON s.STUDY_BOARD_NO = sc.STUDY_BOARD_NO
+		WHERE sc.MEMBER_NO = 1
+		AND s.STUDY_BOARD_DEL_FL = 'N'
+		AND sc.STUDY_COMMENT_DEL_FL = 'N'
+
+		UNION ALL
+
+		SELECT
+		b.BOARD_NO AS boardNo,
+		b.BOARD_TITLE AS boardTitle,
+		c.COMMENT_CONTENT AS commentContent,
+		TO_CHAR(c.COMMENT_WRITTEN_DATE, 'YYYY-MM-DD') AS commentDate,
+		b.BOARD_CODE
+		FROM BOARD b
+		JOIN "COMMENT" c ON b.BOARD_NO = c.BOARD_NO
+		WHERE c.MEMBER_NO = 1
+		AND b.BOARD_DEL_FL = 'N'
+		AND c.COMMENT_DEL_FL = 'N'
+		) sub
+		ORDER BY "commentDate" DESC
+	</select>
+
+
+</mapper>

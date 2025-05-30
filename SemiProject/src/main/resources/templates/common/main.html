@@ -7,11 +7,14 @@
     <link href="/css/main.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/list@6.1.8/index.global.min.js"></script>
+
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
       type="text/css"
     />
+    
     <script th:inline="javascript">
       const authority = Number(
         /*[[${session.loginMember != null ? session.loginMember.authority : 0}]]*/ 0
@@ -49,8 +52,8 @@
     <div class="main-content">
       <!-- Search Section -->
       <div class="search-section">
-        <div class="search-bar">
-          <input type="text" class="search-input" placeholder="검색" />
+        <div class="search-bar gradient-border" >
+            <input type="text" class="search-input" placeholder="검색" />
         </div>
         <div class="partner-links">
           <a href="https://kh-academy.co.kr/login/login.kh" target="_blank">
@@ -118,6 +121,7 @@
                         margin-left: auto;
                         text-decoration: none;
                         border-bottom: 1px solid #25272b;
+                        color: #25272b;
                       "
                       class="find-idPw"
                       >회원가입</a
@@ -129,6 +133,7 @@
                         margin-left: 10px;
                         text-decoration: none;
                         border-bottom: 1px solid #25272b;
+                        color: #25272b;
                       "
                       >ID / PW 찾기</a
                     >
@@ -141,8 +146,8 @@
           <!-- 로그인 이후 -->
 
           <!-- Profile Section - Only shown when logged in -->
-          <div class="profile-section" th:if="${session.loginMember != null}">
-            <div class="profile-container">
+          <div class="profile-section gradient-border-wrapper" th:if="${session.loginMember != null}">
+            <div class="profile-container ">
               <!-- Profile Image - Will load from DB -->
               <div class="profile-image">
 
@@ -174,7 +179,7 @@
                 <!-- Action Buttons -->
                 <div class="profile-actions">
                   <a
-                    href="#"
+                    href="/studyCreation"
                     class="btn btn-primary"
                     id="createStudyBtn"
                     style="
@@ -218,11 +223,11 @@
                 href="/popup/Excel.html"
                 target="_blank"
                 onclick="window.open(this.href, '_blank', 'width=600,height=400,scrollbars=yes,left=600,top=100'); return false;"
-                class="btn btn-secondary"
+                class="btn btn-primary"
                 >등록</a
               >
               <a
-                href="https://docs.google.com/spreadsheets/d/1FczIOY0FEsi1EaTsx-sz2uBtwLv-L5lk2CPMY26M4qw/edit?gid=933226182#gid=933226182"
+                href="https://docs.google.com/spreadsheets/d/1FczIOY0FEsi1EaTsx-sz2uBtwLv-L5lk2CPMY26M4qw/edit?gid=1466346473#gid=1466346473"
                 onclick="window.open(this.href, '_blank', 'width=550,height=800,left=600,top=100'); return false;"
                 class="btn btn-secondary"
                 >수정</a
@@ -235,11 +240,11 @@
             <h4 class="recruitment-title">스터디원 모집중!</h4>
             <ul class="recruitment-details">
               <li>모코코의 파이썬 스터디</li>
-              <li>스터디 생성일: 2025.05.16</li>
               <li>기간: 2개월</li>
+              <li>스터디 생성일: 2025.05.16</li>
             </ul>
             <img
-              src="/path/to/mococo.png"
+              src="/images/ministudy.jpg"
               alt="모코코"
               class="recruitment-icon"
             />
@@ -248,32 +253,77 @@
       </div>
 
       <!-- Study Status Section -->
-      <div class="study-status-section">
-        <div class="study-status-card">
+<div style="display: flex; justify-content: space-between; width: 100%;">
+  
+  <!-- 슬라이드 영역 -->
+  <div class="carousel-wrapper" style="width: 65%;">
+    <div class="carousel-container">
+      <div class="carousel" id="studyCarousel">
+        <div class="study-status-card" th:each="study : ${studyList}">
           <div class="study-status-info">
-            <h3 class="study-status-title">레모나 스터디 현황</h3>
+            <h3 class="study-status-title" th:text="${study.studyName} + ' 스터디 현황'">스터디 이름</h3>
             <ul class="study-status-details">
-              <li>방향성 : 과배업</li>
-              <li>생성일 : 2025.05.12</li>
-              <li>운영기간 : 3개월</li>
-              <li>진행 : 3 / 5 명</li>
+              <li>방향성 :&nbsp; 
+                <span th:switch="${study.studyType}">
+                  <span th:case="1"> 레벨업</span>
+                  <span th:case="2"> 복습</span>
+                  <span th:case="3"> 문제풀이</span>
+                  <span th:case="4"> 자격증</span>
+                  <span th:case="5"> 프로젝트</span>
+                </span>
+              </li>
+              <li>생성일 :&nbsp;<span th:text="${study.studyDate}"> 2025.05.12</span></li>
+              <li>운영기간 :&nbsp;
+                <span th:if="${study.studyPeriod == 0}"> 무기한</span>
+                <span th:unless="${study.studyPeriod == 0}" th:text="${study.studyPeriod + '개월'}"></span>
+              </li>
+              <li>인원 :&nbsp;<span th:text="${study.memberCount}">3</span> / <span th:text="${study.studyMaxCount}">5</span> 명</li>
             </ul>
           </div>
-          <img
-            src="/path/to/study-image.jpg"
-            alt="스터디 이미지"
-            class="study-status-image"
-          />
-          <div class="carousel-controls">
-            <button class="carousel-control prev">‹</button>
-            <button class="carousel-control next">›</button>
-          </div>
+          <img th:src="${study.studyMainImg} != null ? @{${study.studyMainImg}} : @{/images/logo.png}" 
+              alt="스터디 이미지" 
+              class="study-status-image" />
         </div>
       </div>
+      <div class="carousel-controls">
+        <button class="carousel-control prev" onclick="prevSlide()">‹</button>
+        <button class="carousel-control next" onclick="nextSlide()">›</button>
+      </div>
     </div>
+  </div>
+
+  <!-- 아이콘 영역 -->
+  <div style="width: 30%; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+    <a href="https://github.com/" target="_blank"><img src="/images/git.png" style="width: 130px;"></a>
+    <a href="https://velog.io/" target="_blank"><img src="/images/velog.png" style="width: 130px;"></a>
+    <a href="https://drive.google.com/drive/home" target="_blank"><img src="/images/google.png" style="width: 130px;"></a>
+    <a href="https://zoom.us/j/6624238118?pwd=..." target="_blank"><img src="/images/zoom.png" style="width: 130px;"></a>
+  </div>
+</div>
+</div>
+
+      
 
     <!-- common/footer 추가-->
     <th:block th:replace="~{common/footer}"></th:block>
+   <div th:if="${loginMember != null}">
+  <script th:inline="javascript">
+    document.addEventListener("DOMContentLoaded", () => {
+      const isStudy = document.querySelector(".isStudy");
+      const studyNo = [[${loginMember.studyNo}]];
+
+      if (isStudy) {
+        isStudy.addEventListener("click", (e) => {
+          if (studyNo === 0) {
+            e.preventDefault();
+            alert("가입된 스터디가 없습니다");
+            location.href = "/";
+          }
+        });
+      }
+    });
+  </script>
+</div>
 
     <script>
       // 기본 JavaScript 동작을 위한 공간
@@ -286,25 +336,10 @@
             alert("오늘 날짜로 이동합니다.");
           });
         }
-
-        // Carousel controls
-        const prevBtn = document.querySelector(".carousel-control.prev");
-        const nextBtn = document.querySelector(".carousel-control.next");
-
-        if (prevBtn && nextBtn) {
-          prevBtn.addEventListener("click", function () {
-            // 이전 스터디 보기 (실제 구현 시)
-            alert("이전 스터디로 이동합니다.");
-          });
-
-          nextBtn.addEventListener("click", function () {
-            // 다음 스터디 보기 (실제 구현 시)
-            alert("다음 스터디로 이동합니다.");
-          });
-        }
       });
     </script>
     <!-- 학사일정 캘린더 js추가-->
     <script src="/js/cal.js"></script>
+    <script src="/js/study/studyslider.js"></script>
   </body>
 </html>

@@ -1,0 +1,88 @@
+/* 반응형 컨테이너 */
+.container {
+  display: flex;
+  width: calc(100% - 724px); /* 362px * 2 */
+  margin: 50px 362px;
+  position: relative;
+  border-radius: 10px;
+}
+
+.content-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.content-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 180px; /* 버튼 공간 확보 */
+}
+
+.lock-icon {
+  width: 200px;
+  height: 200px;
+  opacity: 0.1%;
+}
+
+.password-info {
+  font-size: 18px;
+  margin-top: 50px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.password-input {
+  width: 500px;
+  height: 40px;
+  border: 1px solid #dbdae2;
+  border-radius: 15px;
+  padding: 0 15px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.password-validation {
+  width: 500px;
+  height: 20px;
+  font-size: 14px;
+  color: #ff3838;
+  visibility: hidden;
+}
+
+.password-validation.error {
+  visibility: visible;
+}
+
+.password-validation.success {
+  color: #3867ff;
+  visibility: visible;
+}
+
+.confirmBtn {
+  width: 100px;
+  height: 51px;
+  background-color: #3867ff;
+  color: #ffffff;
+  border: none;
+  border-radius: 1000px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+}
+
+.confirm-button:hover {
+  background-color: #2d52cc;
+}
+
+.locked {
+  margin-top: 30px;
+  width: 200px;
+  height: 200px;
+  opacity: 20%;
+}

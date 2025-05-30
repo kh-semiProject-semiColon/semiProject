@@ -79,13 +79,15 @@ nav a:hover::after {
 }
 .search-input {
   flex: 1;
-  width: 80%;
-  padding: 10px 15px;
-  border: 2px solid #3867ff;
-  border-radius: 25px;
-  font-size: 16px;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 25px; /* .gradient-border보다 작게 설정 */
   outline: none;
+  background: white; /* 배경색 흰색 */
+  font-size: 16px;
+  width: 100%;
 }
+
 .partner-links {
   display: flex;
   width: 30%;
@@ -180,21 +182,21 @@ nav a:hover::after {
   text-decoration: none;
 }
 .btn-primary {
-  background-color: #4285f4;
+  background: linear-gradient(to right, #4aa7ff, #4188ff);
   width: 50%;
   height: 60px;
   font-size: 16px;
   color: #f8f9ff;
 }
 .btn-secondary {
-  background-color: #5c6bc0;
+  background: linear-gradient(to right, #4186ff, #3867ff);
   width: 50%;
   height: 60px;
   font-size: 16px;
   color: #f8f9ff;
 }
 .recruitment-card {
-  background-color: #7b1fa2;
+  background: linear-gradient(to right, #763bff, #92ceff);
   color: white;
   padding: 20px;
   border-radius: 10px;
@@ -224,71 +226,138 @@ nav a:hover::after {
   position: absolute;
   right: 20px;
   bottom: 20px;
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
+  border-radius: 100%;
 }
+/* 전체 레이아웃을 나누는 컨테이너 */
 .study-status-section {
-  margin-bottom: 20px;
-}
-.study-status-card {
-  border: 2px solid #3867ff;
-  border-radius: 10px;
-  padding: 20px;
   display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  margin: 40px 0;
+  gap: 40px; /* 캐러셀과 아이콘 사이 간격 */
+}
+
+/* 캐러셀 전체 감싸는 래퍼 */
+.carousel-wrapper {
+  width: 65%; /* 왼쪽 슬라이드 영역 */
   position: relative;
 }
+
+/* 슬라이드 영역 컨테이너 */
+.carousel-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* 슬라이드 전체 */
+.carousel {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
+  gap: 0;
+}
+
+/* 슬라이드 카드 한 장 */
+.study-status-card {
+  flex: 0 0 100%; /* 반드시 100%로 고정 */
+  box-sizing: border-box;
+  padding: 30px 40px;
+  border: 2px solid #3867ff;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  min-width: 100%;
+}
+
+/* 텍스트 정보 */
 .study-status-info {
   flex: 1;
 }
+
 .study-status-title {
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 15px;
 }
+
 .study-status-details {
   list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
+
 .study-status-details li {
   margin-bottom: 10px;
   display: flex;
   align-items: center;
 }
+
 .study-status-details li::before {
   content: "•";
   color: #4285f4;
   margin-right: 10px;
   font-weight: bold;
 }
+
+/* 이미지 */
 .study-status-image {
-  width: 200px;
-  height: 150px;
+  width: 300px;
+  height: 200px;
   object-fit: cover;
   border-radius: 5px;
 }
+
+/* 좌우 버튼 */
 .carousel-controls {
   position: absolute;
   top: 50%;
-  width: 100%;
   left: 0;
-  transform: translateY(-50%);
+  right: 0;
   display: flex;
   justify-content: space-between;
+  transform: translateY(-50%);
   padding: 0 20px;
-  pointer-events: none;
+  pointer-events: none; /* 버튼 외의 요소 클릭 방지 */
 }
+.carousel-controls button {
+  position: relative; /* 또는 absolute */
+  z-index: 10; /* 슬라이드보다 위에 있도록 */
+  pointer-events: auto; /* 클릭 가능 */
+}
+
 .carousel-control {
-  background-color: rgba(255, 255, 255, 0.7);
+  background: none;
   border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 32px;
+  color: #3867ff;
   cursor: pointer;
-  font-size: 24px;
   pointer-events: auto;
 }
+
+/* 오른쪽 아이콘 묶음 */
+.icon-links {
+  width: 30%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.icon-links img {
+  width: 120px;
+  transition: transform 0.2s ease;
+}
+
+.icon-links img:hover {
+  transform: scale(1.05);
+}
+
 footer {
   background-color: #eeedf3;
   padding: 20px;
@@ -351,7 +420,6 @@ a.find-idPw:visited {
 /* Profile Section Styles */
 .profile-section {
   background-color: #fff;
-  border: 2px solid #3867ff;
   border-radius: 10px;
   height: 196px;
   padding: 15px;
@@ -364,6 +432,9 @@ a.find-idPw:visited {
 .profile-container {
   display: flex;
   position: relative;
+  background-color: white; /* 내부 내용 배경 */
+  border-radius: 10px;
+  padding: 34px 36px;
 }
 
 .profile-image {
@@ -416,4 +487,20 @@ a.find-idPw:visited {
 
 .logout-btn:hover {
   text-decoration: underline;
+}
+
+.gradient-border {
+  padding: 2px; /* border처럼 보이게 */
+  border-radius: 26px; /* 둥글게 만들고 싶을 경우 */
+  background: linear-gradient(to right, #3867ff, #4aa7ff);
+  display: inline-block;
+}
+.gradient-border-wrapper {
+  background: linear-gradient(
+    to left,
+    #3867ff,
+    #4aa7ff
+  ); /* border용 gradient */
+  padding: 2px; /* 보더 두께 */
+  border-radius: 12px;
 }

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원탈퇴 - 마이페이지</title>
+
+    <link rel="stylesheet" href="/css/myPage/myPage-delete2.css" />
+    <link rel="stylesheet" href="/css/common/header.css" />
+    <link rel="stylesheet" href="/css/common/footer.css" />
+    <link rel="stylesheet" href="/css/myPage/sidebar.css" />
+  </head>
+  <body>
+    <th:block th:replace="~{common/header}"></th:block>
+
+    <div class="main-wrapper">
+      <!-- 사이드바 -->
+      <th:block th:replace="~{myPage/sidebar}"></th:block>
+      <!-- 메인 콘텐츠 -->
+      <div class="content">
+        <div class="content-section">
+          <h1 class="content-heading">회원탈퇴</h1>
+
+          <div class="withdrawal-notice">
+            <p>회원 탈퇴를 신청하기 전, 다음 내용을 꼭 확인해주세요.</p>
+            <p>
+              회원 정보 및 개인형 서비스 이용 기록은<br />
+              개인 정보보호 처리 방침 기준에 따라 삭제됩니다.
+            </p>
+            <p>
+              탈퇴 후 30일 간 재접속 비활성화되며,<br />
+              30일 이후 영구적으로 삭제됩니다.
+            </p>
+            <p>
+              삭제된 정보는 복구 및 수정이<br />
+              향후 불가할 진 기입이 제한됩니다.
+            </p>
+            <p>아래에 동의 시 체크박스를 선택하시고 확인 버튼을 눌러주세요.</p>
+          </div>
+
+          <div class="agreement-section">
+            <input
+              type="checkbox"
+              id="agreementCheck"
+              class="agreement-checkbox"
+            />
+            <label for="agreementCheck" class="agreement-label"
+              >약관에 동의합니다.</label
+            >
+          </div>
+
+          <button class="withdrawal-btn" id="withdrawalBtn" disabled>
+            탈퇴하기
+          </button>
+          <div style="clear: both"></div>
+        </div>
+      </div>
+    </div>
+    <th:block th:replace="~{common/footer}"></th:block>
+
+    <script>
+      // 체크박스 상태에 따른 버튼 활성화/비활성화
+      const agreementCheck = document.getElementById("agreementCheck");
+      const withdrawalBtn = document.getElementById("withdrawalBtn");
+
+      agreementCheck.addEventListener("change", function () {
+        withdrawalBtn.disabled = !this.checked;
+      });
+
+      // 탈퇴 버튼 클릭 이벤트
+      withdrawalBtn.addEventListener("click", function () {
+        window.location.href = "/myPage/delete3";
+      });
+    </script>
+    <script src="/js/myPage/sidebar.js"></script>
+  </body>
+</html>

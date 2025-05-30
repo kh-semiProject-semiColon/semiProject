@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>구인 게시글 상세</title>
+    <link rel="stylesheet" th:href="@{/css/hire/hireDetail.css}" />
+  </head>
+  <body>
+    <!-- hearder -->
+    <th:block th:replace="~{common/header}"></th:block>
+
+    <main class="board-detail-container">
+      <!-- 게시판 이름 -->
+      <div class="board-name">구인 게시판</div>
+
+      <!-- 게시글 헤더 -->
+      <div class="post-header">
+        <h2 class="post-title" th:text="${hireInfo.hireTitle}">게시글 제목</h2>
+        <div
+          class="post-controls"
+          th:if="${loginMember != null} and ${loginMember.memberNo == hireInfo.memberNo}"
+        >
+          <button
+            class="post-btn"
+            th:onclick="|location.href='/hire/edit/${hireInfo.hireNo}'|"
+          >
+            수정
+          </button>
+
+          <button
+            class="post-btn"
+            th:onclick="|location.href='/hire/delete/${hireInfo.hireNo}'|"
+          >
+            삭제
+          </button>
+        </div>
+      </div>
+
+      <!-- 작성자 정보 -->
+      <div class="author-info">
+        <img
+          th:src="${hireInfo.profileImg}"
+          class="profile-img"
+          alt="프로필 이미지"
+        />
+        <div class="author-meta">
+          <div class="author-name" th:text="${hireInfo.memberNickname}">
+            글 작성자
+          </div>
+          <div class="author-date" th:text="${hireInfo.hireDate}">작성일</div>
+        </div>
+        <div class="post-views" th:text="${hireInfo.hireReadCount} + ' 조회'">
+          조회수
+        </div>
+      </div>
+
+      <!-- 게시글과 댓글 사이 구분선 -->
+      <hr class="post-divider" />
+
+      <!-- 구인글 요약 박스 -->
+      <div class="study-details">
+        <div class="details-title" th:text="${study.studyName}">스터디명</div>
+        <div class="detail-item">
+          <div class="detail-label">방향성</div>
+          <div class="detail-value">
+            <th:block th:switch="${study.studyType}">
+              <span th:case="1">레벨업</span>
+              <span th:case="2">복습</span>
+              <span th:case="3">문제풀이</span>
+              <span th:case="4">자격증</span>
+              <span th:case="5">프로젝트</span>
+              <span th:case="*">기타</span>
+              <!-- 기본값 -->
+            </th:block>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">기간</div>
+          <div class="detail-value">
+            <th:block th:switch="${study.studyPeriod}">
+              <span th:case="0">무기한</span>
+              <span th:case="*" th:text="${study.studyPeriod} + '개월'"
+                >개월</span
+              >
+              <!-- 기본값 -->
+            </th:block>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">현재 인원</div>
+          <div class="detail-item">
+            <div
+              class="detail-value"
+              th:text="${(study.studyMaxCount ?: 0) - (hireInfo.hireCount ?: 0)}"
+            >
+              3
+            </div>
+            <div class="detail-value1">/</div>
+            <div class="detail-value1" th:text="${study.studyMaxCount} + '명'">
+              5
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label">스터디 요일</div>
+          <div class="detail-item">
+            <div
+              class="detail-value"
+              th:text="${hireInfo.dayCanJoin}"
+            >월, 수, 금</div>
+        </div>
+      </div>
+      </div>
+
+      <!-- 게시글 본문 -->
+      <div class="post-content" th:text="${hireInfo.hireContent}"></div>
+
+      <!-- 댓글 섹션 -->
+      
+
+    <!-- 팝업창 js -->
+    <script>
+      function openResumeModal() {
+        document.getElementById("resumeModal").style.display = "flex";
+      }
+
+      function closeResumeModal() {
+        document.getElementById("resumeModal").style.display = "none";
+      }
+    </script>
+
+    <!-- footer -->
+    <th:block th:replace="~{common/footer}"></th:block>
+  </body>
+</html>

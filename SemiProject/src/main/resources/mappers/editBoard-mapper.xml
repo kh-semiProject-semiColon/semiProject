@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.semi.board.model.mapper.EditBoardMapper">
+
+	<insert id="boardInsert" useGeneratedKeys="true" parameterType="Board">
+		
+		<selectKey order="BEFORE" resultType="_int" keyProperty="boardNo">
+			SELECT SEQ_BOARD_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO "BOARD"
+		VALUES(#{boardNo}, #{boardTitle}, #{boardCode},#{memberNo}, 
+		DEFAULT, DEFAULT,#{boardContent},DEFAULT, DEFAULT
+		)
+		
+	</insert>
+	
+	<!-- 게시글 제목/내용 수정-->
+	<update id="boardUpdate">
+		UPDATE "BOARD" SET
+		BOARD_TITLE = #{boardTitle},
+		BOARD_CONTENT = #{boardContent}
+		WHERE BOARD_CODE = #{boardCode}
+		AND BOARD_NO = #{boardNo}
+		AND MEMBER_NO = #{memberNo}
+	</update>
+	
+	<!-- 게시글 삭제 -->
+	<update id="boardDelete">
+		UPDATE "BOARD" SET
+		BOARD_DEL_FL = 'Y'
+		WHERE BOARD_CODE = #{boardCode}
+		AND BOARD_NO = #{boardNo}
+		AND MEMBER_NO = #{memberNo}
+	</update>
+	
+	<!-- 게시글 삭제 -->
+	<update id="announceDelete">
+		UPDATE "ANNOUNCEMENT" SET
+		ANNOUNCE_DEL_FL = 'Y'
+		WHERE ANNOUNCE_NO = #{announceNo}
+		AND MEMBER_NO = #{memberNo}
+	</update>
+	
+		<!-- 게시글 제목/내용 수정-->
+	<update id="announceUpdate">
+		UPDATE "ANNOUNCEMENT" SET
+		ANNOUNCE_NAME = #{announceName},
+		ANNOUNCE_CONTENT = #{announceContent}
+		WHERE ANNOUNCE_NO = #{announceNo}
+		AND MEMBER_NO = #{memberNo}
+	</update>
+	
+	<insert id="announceInsert" useGeneratedKeys="true" parameterType="Announce">
+		
+		<selectKey order="BEFORE" resultType="_int" keyProperty="announceNo">
+			SELECT SEQ_ANNOUNCEMENT_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO "ANNOUNCEMENT"
+		VALUES(#{announceNo}, #{announceName},DEFAULT,
+		#{announceContent}, DEFAULT, DEFAULT, #{memberNo}, NULL
+		
+		)
+		
+	</insert>
+	
+</mapper>
