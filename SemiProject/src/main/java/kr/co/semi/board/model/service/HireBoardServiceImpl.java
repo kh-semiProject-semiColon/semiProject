@@ -39,6 +39,19 @@ public class HireBoardServiceImpl implements HireBoardService{
 		
 		List<HireInfo> hireList = mapper.selecHireBoardList(rowBounds);
 		
+		for (HireInfo hire : hireList) {
+		    
+		    // 제목 20자 제한
+		    if (hire.getHireTitle() != null && hire.getHireTitle().length() > 20) {
+		        hire.setHireTitle(hire.getHireTitle().substring(0, 20) + "…");
+		    }
+
+		    // 내용 40자 제한
+		    if (hire.getHireContent() != null && hire.getHireContent().length() > 40) {
+		        hire.setHireContent(hire.getHireContent().substring(0, 40) + "…");
+		    }
+		}
+		
 		Map<String, Object> map = new HashMap<>();
 		
 		map.put("pagination", pagination);
@@ -60,7 +73,20 @@ public class HireBoardServiceImpl implements HireBoardService{
 		int offset = (cp - 1) * limit;
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		List<HireInfo> hireList = mapper.selecHireBoardList(rowBounds);
+		List<HireInfo> hireList = mapper.selectSearchList(paramMap,rowBounds);
+		
+		for (HireInfo hire : hireList) {
+		    
+		    // 제목 20자 제한
+		    if (hire.getHireTitle() != null && hire.getHireTitle().length() > 20) {
+		        hire.setHireTitle(hire.getHireTitle().substring(0, 20) + "…");
+		    }
+
+		    // 내용 40자 제한
+		    if (hire.getHireContent() != null && hire.getHireContent().length() > 40) {
+		        hire.setHireContent(hire.getHireContent().substring(0, 40) + "…");
+		    }
+		}
 		
 		Map<String, Object> map = new HashMap<>();
 		
@@ -87,6 +113,12 @@ public class HireBoardServiceImpl implements HireBoardService{
 	    } else {
 	        return 0;
 	    }
+	}
+	
+	// 구인 모집 인원 조회
+	@Override
+	public int hireCount(int studyNo) {
+		return mapper.hireCount(studyNo);
 	}
 	
 	// 구인 게시글 상세 조회
@@ -128,8 +160,15 @@ public class HireBoardServiceImpl implements HireBoardService{
 		return mapper.hireDelete(map);
 	}
 	
+	// 스터디 번호 구하기
 	@Override
-	public int getStudyNo(int memberNo) {
-		return mapper.getStudyNo(memberNo);
+	public int getStudyNo(int hireNo) {
+		return mapper.getStudyNo(hireNo);
+	}
+	
+	// 스터디 멤버 초대
+	@Override
+	public int memberInvite(Map<String, Integer> map) {
+		return mapper.memberInvite(map);
 	}
 }
