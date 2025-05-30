@@ -24,8 +24,15 @@ public interface StudyBoardMapper {
     // 팀장권한 조회
     String checkMemberRole(int memberNo);
     
-    // 스터디 내규 등록/수정
+    // 스터디 내규 조회
+    int ruleCount(int studyNo);
+
+    // 스터디 내규 수정
     int insertOrUpdateRule(Study study);
+    
+    // 스터디 내규 등록
+	int insertRule(Study study);
+
     
     
     // 스터디 멤버 탈퇴
@@ -49,6 +56,8 @@ public interface StudyBoardMapper {
 
     // 내규 조회 서비스
     String getStudyrule(Member loginMember);
+
+
 
 
 
