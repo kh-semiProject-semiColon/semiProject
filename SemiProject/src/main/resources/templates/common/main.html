@@ -314,7 +314,16 @@
   <script th:inline="javascript">
     document.addEventListener("DOMContentLoaded", () => {
       const isStudy = document.querySelector(".isStudy");
+      const createStudyBtn = document.querySelector("#createStudyBtn")
       const studyNo = [[${loginMember.studyNo}]];
+
+      createStudyBtn.addEventListener("click",(e) => {
+        if(studyNo != 0){
+          e.preventDefault();
+          alert("이미 가입된 스터디가 있습니다");
+          location.href = "/";
+        }
+      })
 
       if (isStudy) {
         isStudy.addEventListener("click", (e) => {
