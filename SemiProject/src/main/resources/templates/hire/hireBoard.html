@@ -31,39 +31,29 @@
           <div class="cards-grid" id="cardContainer">
             <div th:each="hire : ${hireList}" class="card">
               <a th:href="@{/hire/detail/{hireNo}(hireNo=${hire.hireNo})}">
-                <!-- (
-                    hireNo=*{hireNo}, 
-                    cp=${pagination.currentPage}, 
-                    key=${param.key}, 
-                    query=${param.query}
-                ) -->
-
-                <!-- 스터디 메인 이미지 -->
+                <!-- 이미지 -->
                 <img th:src="${hire.studyMainImg != null ? hire.studyMainImg : '/images/default.png'}" class="card-image" />
+                
+                <!-- 제목 -->
+                <p class="card-text" th:text="${hire.hireTitle}"></p>
+                
                 <!-- 내용 -->
-                <div class="card-content">
-                  <p class="card-text" th:text="${#strings.length(hire.hireTitle) > 20} ? ${hire.hireTitle.substring(0, 20)} + '…' : ${hire.hireTitle}">
-                    게시글 제목
-                  </p>
-                  <p class="card-description" th:text="${#strings.length(hire.hireContent) > 40} ? ${hire.hireContent.substring(0, 40)} + '…' : ${hire.hireContent}">
-                    내용
-                  </p>
-
-                  <div class="card-date-con">
-                    <p class="card-date" th:text="${hire.hireDate}">게시일</p>
-                  </div>
-
-                  <div class="card-divider"></div>
-
-                  <div class="card-footer">
-                    <span th:text="${hire.memberNickname}">작성자</span>
-
-                    <span th:text="${hire.hireReadCount}">
-                      <i class="fa-regular fa-eye"></i>조회수</span
-                    >
-                  </div>
+                <p class="card-description" th:text="${hire.hireContent}">내용</p>
+                
+                <div class="card-date-con">
+                  <p class="card-date" th:text="${hire.hireDate}">게시일</p>
+                </div>
+                
+                <div class="card-divider"></div>
+                
+                <div class="card-footer">
+                  <span th:text="${hire.memberNickname}">작성자</span>
+                  <span>
+                    <i class="fa-regular fa-eye"></i> <span th:text="${hire.hireReadCount}">조회수</span>
+                  </span>
                 </div>
               </a>
+            </div>
             </div>
           </div>
 

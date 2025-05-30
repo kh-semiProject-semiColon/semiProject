@@ -88,4 +88,7 @@ public interface HireBoardMapper {
 	 * @return
 	 */
 	int memberInvite(Map<String, Integer> map);
+
+	List<HireInfo> selectSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
+
 }

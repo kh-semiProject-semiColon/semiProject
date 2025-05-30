@@ -1,7 +1,7 @@
 // REST(REpresentational State Transfer) API
 
-// /comments (GET)
-// /comments (POST)
+// /comment (GET)
+// /comment (POST)
 
 // - 자원(데이터, 파일)을 주소로 구분하여(REpresentational)
 // 자원의 상태(State)를 주고 받는 것(Transfer)
@@ -10,88 +10,96 @@
 //    HTTP Method(GET, POST, PUT, DELETE)를
 //    이용해 지정된 자원에 대한 CRUD 진행행
 
-// 댓글 목록 조회(비동기 / ajax)
+// 현재 페이지의 전체 URL을 URL 객체로 파싱
+const url = new URL(window.location.href); // 예: "http://localhost/hire/detail/40"
+
+// URL 경로의 마지막 부분을 가져옴s
+const id = url.pathname.split("/").pop();
+console.log(id); // 40
+
+// 이제 loginMember.memberNo 사용 가능
+console.log(loginMemberNo);
+
 const selectCommentList = () => {
-  // [GET]
-  // fetch(주소?쿼리스트링)
-
-  // [POST, PUT, DELETE]
-  // fetch(주소, {method, header, boady 작성})
-
-  const selectCommentList = () => {
-    fetch("/comment?hireNo=" + hireNo)
-      .then((resp) => resp.json())
-      .then((commentList) => {
-        console.log(commentList);
-
-        const ul = document.querySelector("#CommentList");
-        ul.innerHTML = ""; // 기존 댓글 삭제
-
-        commentList.forEach((comment) => {
-          const li = document.createElement("li");
-          li.classList.add("comment-row");
-
-          if (comment.parentCommentNo !== 0) {
-            li.classList.add("child-comment");
-          }
-
-          if (comment.commentDelFl === "Y") {
-            li.textContent = "삭제된 댓글 입니다";
-          } else {
-            // 작성자 영역
-            const writerP = document.createElement("p");
-            writerP.classList.add("comment-writer");
-
-            const profileImg = document.createElement("img");
-            profileImg.src = comment.profileImg || userDefaultImage;
-
-            const nicknameSpan = document.createElement("span");
-            nicknameSpan.textContent = comment.memberNickname;
-
-            const dateSpan = document.createElement("span");
-            dateSpan.classList.add("comment-date");
-            dateSpan.textContent = comment.commentWrittenDate;
-
-            writerP.append(profileImg, nicknameSpan, dateSpan);
-
-            // 댓글 내용
-            const contentP = document.createElement("p");
-            contentP.classList.add("comment-content");
-            contentP.textContent = comment.commentContent;
-
-            // 버튼 영역
-            const btnDiv = document.createElement("div");
-            btnDiv.classList.add("comment-btn-area");
-
-            const replyBtn = document.createElement("button");
-            replyBtn.textContent = "답글";
-            replyBtn.onclick = () =>
-              showInsertComment(comment.commentNo, replyBtn);
-            btnDiv.appendChild(replyBtn);
-
-            // 로그인한 회원이 댓글 작성자일 때만 수정/삭제 버튼 노출
-            if (loginMemberNo && loginMemberNo === comment.memberNo) {
-              const updateBtn = document.createElement("button");
-              updateBtn.textContent = "수정";
-              updateBtn.onclick = () =>
-                showUpdateComment(comment.commentNo, updateBtn);
-
-              const deleteBtn = document.createElement("button");
-              deleteBtn.textContent = "삭제";
-              deleteBtn.onclick = () => deleteComment(comment.commentNo);
-
-              btnDiv.append(updateBtn, deleteBtn);
-            }
-
-            // 댓글 항목에 모두 추가
-            li.append(writerP, contentP, btnDiv);
-          }
-
-          ul.appendChild(li);
-        });
-      })
-      .catch((err) => console.error("댓글 목록 조회 실패:", err));
+  const data = {
+    hireCommentContent: commentContent.value,
+    hireNo: id,
   };
+  fetch("/comment/select", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  })
+    .then((resp) => resp.json())
+    .then((hireCommentList) => {
+      console.log(hireCommentList); // 데이터 확인
+      const ul = document.querySelector("#commentList");
+      ul.innerHTML = ""; // 기존 댓글 삭제
+
+      hireCommentList.forEach((comment) => {
+        const li = document.createElement("li");
+        li.classList.add("comment-row");
+
+        if (comment.hireParentCommentNo !== 0) {
+          li.classList.add("child-comment");
+        }
+
+        if (comment.hireCommentDelFl === "Y") {
+          li.textContent = "삭제된 댓글 입니다";
+        } else {
+          // 작성자 영역
+          const writerP = document.createElement("p");
+          writerP.classList.add("comment-writer");
+
+          const profileImg = document.createElement("img");
+          profileImg.src = comment.profileImg || "/images/logo.png";
+
+          const nicknameSpan = document.createElement("span");
+          nicknameSpan.textContent = comment.memberNickname;
+
+          const dateSpan = document.createElement("span");
+          dateSpan.classList.add("comment-date");
+          dateSpan.textContent = comment.hireCommentWrittenDate;
+
+          writerP.append(profileImg, nicknameSpan, dateSpan);
+
+          // 댓글 내용
+          const contentP = document.createElement("p");
+          contentP.classList.add("comment-content");
+          contentP.textContent = comment.hireCommentContent;
+
+          // 버튼 영역
+          const btnDiv = document.createElement("div");
+          btnDiv.classList.add("comment-btn-area");
+
+          const replyBtn = document.createElement("button");
+          replyBtn.textContent = "답글";
+          replyBtn.onclick = () =>
+            showInsertComment(comment.hireCommentNo, replyBtn);
+          btnDiv.appendChild(replyBtn);
+
+          // 로그인한 회원이 댓글 작성자일 때만 수정/삭제 버튼 노출
+          if (loginMemberNo && loginMemberNo === comment.memberNo) {
+            const updateBtn = document.createElement("button");
+            updateBtn.textContent = "수정";
+            updateBtn.onclick = () =>
+              showUpdateComment(comment.hireCommentNo, updateBtn); // comment.hireCommentNo 사용
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "삭제";
+            deleteBtn.onclick = () => deleteComment(comment.hireCommentNo);
+
+            btnDiv.append(updateBtn, deleteBtn);
+          }
+
+          // 댓글 항목에 모두 추가
+          li.append(writerP, contentP, btnDiv);
+        }
+
+        ul.appendChild(li);
+      });
+    })
+    .catch((err) => console.error("댓글 목록 조회 실패:", err));
 };
 
 // 댓글 등록 (ajax)
@@ -100,13 +108,6 @@ const addComment = document.querySelector("#addComment"); // 댓글 등록하는
 
 // 댓글 등록 버튼 클릭 시
 addComment.addEventListener("click", (e) => {
-  // 로그인 여부 확인
-  console.log("dd");
-  if (loginMemberNo == null) {
-    alert("로그인 후 이용해주세요.");
-    return;
-  }
-
   // 댓글 내용이 작성되지 않은 경우
   if (commentContent.value.trim().length == 0) {
     alert("내용 작성 후 등록버튼을 클릭해주세요.");
@@ -116,12 +117,11 @@ addComment.addEventListener("click", (e) => {
 
   // ajax를 이용해 댓글 등록 요청
   const data = {
-    commentContent: commentContent.value,
-    memberNo: loginMemberNo,
-    boardNo: boardNo,
+    hireCommentContent: commentContent.value,
+    hireNo: id,
   };
 
-  fetch("/comments", {
+  fetch("/comment", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -209,13 +209,13 @@ const insertChildComment = (parentCommentNo, btn) => {
 
   // ajax를 통한 답글 작성
   const data = {
-    commentContent: textarea.value,
+    hireCommentContent: textarea.value,
     memberNo: loginMemberNo,
-    boardNo: boardNo,
-    parentCommentNo: parentCommentNo,
+    hireNo: id,
+    hireParentCommentNo: parentCommentNo,
   };
 
-  fetch("/comments", {
+  fetch("/comment", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -236,20 +236,20 @@ const insertChildComment = (parentCommentNo, btn) => {
     });
 };
 
-/** 댓글 삭제제
+/** 댓글 삭제
  *
  * @param commentNo (현재 댓글 번호)
  */
 
 // 댓글 삭제 (ajax)
-const deleteComment = (commentNo) => {
+const deleteComment = (e) => {
   // 취소 선택 시
   if (!confirm("삭제하시겠습니까?")) return;
 
-  fetch("/comments", {
+  fetch("/comment", {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
-    body: commentNo,
+    body: e,
   })
     .then((resp) => resp.text())
     .then((result) => {
@@ -331,7 +331,7 @@ const updateCancel = (btn) => {
 };
 
 // 댓글 수정 fetch 요청
-const updateComment = (commentNo, btn) => {
+const updateComment = (e, btn) => {
   // 수정된 내용이 작성된 textarea 얻어오기
   const textarea = btn.parentElement.previousElementSibling;
 
@@ -344,11 +344,11 @@ const updateComment = (commentNo, btn) => {
 
   // 수정 시 전달 데이터
   const data = {
-    commentNo: commentNo,
-    commentContent: textarea.value,
+    hireCommentNo: e,
+    hireCommentContent: textarea.value,
   };
 
-  fetch("/comments", {
+  fetch("/comment", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -363,3 +363,7 @@ const updateComment = (commentNo, btn) => {
       }
     });
 };
+
+document.addEventListener("DOMContentLoaded", function () {
+  selectCommentList(); // DOM이 완전히 로드된 후 실행
+});

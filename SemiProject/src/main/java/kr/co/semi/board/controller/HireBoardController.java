@@ -57,6 +57,7 @@ public class HireBoardController {
 		} else {
 
 			map = service.searchList(paramMap, cp);
+			
 		}
 		
 		model.addAttribute("pagination", map.get("pagination"));
@@ -270,8 +271,6 @@ public class HireBoardController {
 			int currentMemberCount = service.hireCount(hireInfo.getStudyNo());
 			
 			study.setCurrentMemberCount(currentMemberCount);
-			
-//			System.out.println(hireInfo);
 			
 			model.addAttribute("loginMember", loginMember);
 			model.addAttribute("hireInfo", hireInfo);
