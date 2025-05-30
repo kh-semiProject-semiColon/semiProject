@@ -32,7 +32,7 @@
 
           <!-- 테이블 헤더 -->
           <div class="table-header">
-            <div class="col-num">글번호</div>
+            <div class="col-num">게시판</div>
             <div class="col-title">제목</div>
             <div class="col-author">작성자</div>
             <div class="col-date">작성일</div>
@@ -51,13 +51,16 @@
             th:data-board-code="${board.boardCode}"
             onclick="handleBoardClick(event)"
           >
-            <div class="col-num" th:text="${board.boardNo}">1</div>
-            <div class="col-title" th:text="${board.boardTitle}">
-              게시글 제목
-            </div>
-            <div class="col-author" th:text="${board.memberNickname}">
-              작성자
-            </div>
+            <th:block th:switch="${board.boardCode}">
+              <div class="col-num" th:case="1">질문</div>
+              <div class="col-num" th:case="2">자유</div>
+              <div class="col-num" th:case="1000">구인</div>
+              <div class="col-num" th:case="2000">스터디</div>
+              <div class="col-num" th:case="*">기타</div>
+            </th:block>
+
+            <div class="col-title" th:text="${board.boardTitle}">게시글 제목</div>
+            <div class="col-author" th:text="${board.memberNickname}">작성자</div>
             <div class="col-date" th:text="${board.boardWriteDate}">작성일</div>
             <div class="col-views" th:text="${board.readCount}">조회수</div>
             <div class="col-likes" th:text="${board.likeCount}">좋아요</div>
@@ -65,9 +68,7 @@
 
           <!-- 페이지네이션 -->
           <div class="pagination" th:if="${pagination != null}">
-            <a class="page-item arrow" th:href="@{/myPage/posts(cp=1)}"
-              >&#x300A;</a
-            >
+            <a class="page-item arrow" th:href="@{/myPage/posts(cp=1)}">&#x300A;</a>
             <a
               class="page-item arrow"
               th:href="@{/myPage/posts(cp=${pagination.currentPage - 1 > 0 ? pagination.currentPage - 1 : 1})}"
@@ -99,7 +100,7 @@
 
           <!-- 테이블 헤더 -->
           <div class="table-header">
-            <div class="col-num">글번호</div>
+            <div class="col-num">게시판</div>
             <div class="col-post-title">게시글 제목</div>
             <div class="col-comment-text">댓글내용</div>
             <div class="col-comment-date">작성일</div>
@@ -116,25 +117,22 @@
             th:data-board-code="${comment.boardCode}"
             onclick="handleBoardClick(event)"
           >
-            <div class="col-num" th:text="${comment.boardNo}">1</div>
-            <div class="col-post-title" th:text="${comment.boardTitle}">
-              게시글 제목
-            </div>
-            <div class="col-comment-text" th:text="${comment.commentContent}">
-              댓글내용
-            </div>
-            <div class="col-comment-date" th:text="${comment.commentDateStr}">
-              작성일
-            </div>
+            <th:block th:switch="${comment.boardCode}">
+              <div class="col-num" th:case="1">질문</div>
+              <div class="col-num" th:case="2">자유</div>
+              <div class="col-num" th:case="1000">구인</div>
+              <div class="col-num" th:case="2000">스터디</div>
+              <div class="col-num" th:case="*">기타</div>
+            </th:block>
+
+            <div class="col-post-title" th:text="${comment.boardTitle}">게시글 제목</div>
+            <div class="col-comment-text" th:text="${comment.commentContent}">댓글내용</div>
+            <div class="col-comment-date" th:text="${comment.commentDateStr}">작성일</div>
           </div>
 
           <!-- 페이지네이션 -->
           <div class="pagination" th:if="${commentPagination != null}">
-            <a
-              class="page-item arrow"
-              th:href="@{/myPage/posts(cp=1, commentCp=1)}"
-              >&#x300A;</a
-            >
+            <a class="page-item arrow" th:href="@{/myPage/posts(cp=1, commentCp=1)}">&#x300A;</a>
             <a
               class="page-item arrow"
               th:href="@{/myPage/posts(cp=1, commentCp=${commentPagination.currentPage - 1 > 0 ? commentPagination.currentPage - 1 : 1})}"
@@ -178,7 +176,7 @@
             location.href = `/hire/detail/${boardNo}`;
             break;
           case "2000":
-            location.href = `/study/detail/${boardNo}`;
+            location.href = `/studyBoard/studyboard/${boardNo}`;
             break;
           default:
             location.href = `/board/${boardCode}/${boardNo}`;
