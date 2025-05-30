@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.semi.board.model.dto.Announce;
 import kr.co.semi.board.model.dto.Board;
+import kr.co.semi.studyboard.model.dto.StudyBoard;
 
 @Mapper
 public interface EditBoardMapper {
@@ -45,5 +46,15 @@ public interface EditBoardMapper {
 	 * @return
 	 */
 	int announceInsert(Announce inputAnnounce);
+
+	/** 스터디 글 작성
+	 * @param inputStudyBoard
+	 * @return
+	 */
+	int studyBoardInsert(StudyBoard inputStudyBoard);
+
+	int studyBoardUpdate(StudyBoard inputStudyBoard);
+
+	int studyBoardDelete(Map<String, Integer> map);
 
 }

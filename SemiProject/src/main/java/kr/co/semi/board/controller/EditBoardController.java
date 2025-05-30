@@ -31,6 +31,8 @@ import kr.co.semi.board.model.service.BoardService;
 import kr.co.semi.board.model.service.EditBoardService;
 import kr.co.semi.common.util.Utility;
 import kr.co.semi.member.model.dto.Member;
+import kr.co.semi.studyboard.model.dto.StudyBoard;
+import kr.co.semi.studyboard.model.service.StudyBoardService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -42,6 +44,7 @@ public class EditBoardController {
 
 	private final EditBoardService service;
 	private final BoardService bService;
+	private final StudyBoardService sService;
 	
 	@Value("${my.board.temp.folder-path}")
 	private String tempFolderPath;
@@ -62,6 +65,13 @@ public class EditBoardController {
 	public String announceInsert() {
 		return "board/announceWrite";
 	}
+	
+	
+	@GetMapping("studyBoard/insert")
+	public String studyBoardInsert() {
+		return "studyBoard/studyBoardWrite";
+	}
+	
 	
 	
 	/**
@@ -468,5 +478,185 @@ public class EditBoardController {
 			return "redirect:" + path;
 		}
 
+		
+		@PostMapping("studyBoard/insert")
+		public String studyBoardInsert(
+								  @ModelAttribute StudyBoard inputStudyBoard,
+								  @SessionAttribute("loginMember") Member loginMember,
+								  RedirectAttributes ra) throws Exception {
+			
+			
+		    String cleanedContent = Jsoup.parse(inputStudyBoard.getStudyBoardContent()).body().html();
+		    inputStudyBoard.setStudyBoardContent(cleanedContent);
+				
+			
+			// 1. announceCode, 로그인한 회원번호(memberNo)를 inputAnnounce에 세팅
+		    inputStudyBoard.setMemberNo(loginMember.getMemberNo());
+		    inputStudyBoard.setStudyNo(loginMember.getStudyNo());
+		    
+
+			// 2. 서비스 메서드 호출 후 결과 반환
+			// -> 성공 시 [상세조회]를 요청할 수 있도록
+			//    삽입된 게시글의 번호를 반환받기
+			int studyBoardNo = service.studyBoardInsert(inputStudyBoard);
+			
+			// 3. 서비스 결과에 따라 message, 리다이렉트 경로 지정
+			String path = null;
+					
+			String message = null;
+			
+			if(studyBoardNo > 0) {
+				message = "게시글이 작성되었습니다";
+				path = "/studyBoard/"+studyBoardNo;
+			}else {
+				
+				path = "insert";
+				message = "게시글 작성 실패";
+			}
+			
+			ra.addFlashAttribute("message", message);
+			
+			
+			return "redirect:"+path;
+		}
+		
+		
+		/** 공지글 수정 화면 전환
+		 * @param boardCode     : 게시판 종류 번호
+		 * @param boardNumber	: 게시글 번호
+		 * @param loginMember	: 현재 로그인한 회원 객체(로그인한 회원이 작성한 글이 맞는지 검사)
+		 * @param model		
+		 * @param ra
+		 * @return
+		 */
+		@GetMapping("studyBoard/{studyBoardNo:[0-9]+}/update")
+		public String studyBoardUpdate(
+								  @PathVariable("studyBoardNo") int studyBoardNo,
+								  @SessionAttribute("loginMember") Member loginMember,
+								  Model model,
+								  RedirectAttributes ra){
+			
+			// 수정 화면에 출력할 기존의 제목/내용/이미지 조회
+			// -> 게시글 상세 조회
+			Map<String, Integer> map = new HashMap();
+			map.put("studyBoardNo", studyBoardNo);
+			
+			// BoardService.selectOne(map)호출
+			StudyBoard studyBoard = sService.studyBoardOne(map);
+			
+			String message = null;
+			String path = null;
+			
+			if(studyBoard == null) {
+				message = "해당 게시글이 존재하지 않습니다.";
+				path = "redirect:/studyBoard/studyBoard";
+				
+				ra.addFlashAttribute(message);
+			} else if(studyBoard.getMemberNo() != loginMember.getMemberNo()) {
+				message = "자신이 작성한 글만 수정 가능합니다!";
+				
+				// 해당 글 상세조회 리다이렉트
+				path = String.format("redirect:/editBoard/studyBoard/%d", studyBoardNo);
+				
+				ra.addFlashAttribute(message);
+			} else {
+				
+				path = "studyBoard/studyBoardUpdate"; 
+				model.addAttribute("studyBoard", studyBoard);
+				
+			}
+			return path;
+		}
+	   
+	   
+	   
+	   /** 공지글 수정하기
+	 * @param boardCode
+	 * @param boardNo
+	 * @param inputBoard
+	 * @param loginMember
+	 * @param ra
+	 * @param cp
+	 * @return
+	 * @throws Exception
+	 */
+	 @PostMapping("studyBoard/{studyBoardNo:[0-9]+}/update")
+		public String studyBoardUpdate(
+								  @PathVariable("studyBoardNo") int studyBoardNo,
+								  StudyBoard inputStudyBoard,
+								  @SessionAttribute("loginMember") Member loginMember,
+								  RedirectAttributes ra,
+								  @RequestParam(value = "cp", required = false, defaultValue = "1") int cp) throws Exception {
+			
+			// 1. 커맨드 객체 inputBoard에 boardCode, boardNo, memberNo 세팅
+		 inputStudyBoard.setStudyBoardNo(studyBoardNo);
+		 inputStudyBoard.setMemberNo(loginMember.getMemberNo());
+			// inputBoard -> 제목, 내용, boardCode, boardNo, memberNo
+			
+			// 2. 게시글 수정 서비스 호출 후 결과 반환 받기
+			int result = service.studyBoardUpdate(inputStudyBoard);
+			
+			// 3. 서비스 결과에 따라 응답 제어
+			String message = null;
+			String path = null;
+			
+			if(result > 0) {
+				
+				message = "게시글이 수정 되었습니다";
+				path = String.format("studyBoard/%d?cp=%d",studyBoardNo, cp);
+				
+			}else {
+				
+				message = "수정이 실패하였습니다";
+				path = "update";
+				
+			}
+			
+			ra.addFlashAttribute("message", message);
+			
+			return "redirect:/" + path;
+		}
+		
+		
+		/** 공지글 삭제
+		 * @param boardNo
+		 * @param cp
+		 * @param ra
+		 * @param loginMember
+		 * @return
+		 */
+		@PostMapping("studyBoard/{studyBoardNo:[0-9]+}/delete")
+		public String studyBoardDelete(
+								  @PathVariable("studyBoardNo") int studyBoardNo,
+								  @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+								  RedirectAttributes ra,
+								  @SessionAttribute("loginMember") Member loginMember) {
+			
+			
+			Map<String, Integer> map = new HashMap();
+			map.put("studyBoardNo", studyBoardNo);
+			map.put("memberNo", loginMember.getMemberNo());
+			
+			int result = service.studyBoardDelete(map);
+			
+			String message = null;
+			String path = null;
+					
+			if(result > 0) {
+				
+				message = "삭제되었습니다.";
+				path = String.format("/studyBoard/studyBoard?cp=%d", cp);
+			
+			}else {
+				
+				message = "삭제에 실패하였습니다";
+				path = String.format("/studyBoard/studyBoard/%d?cp=%d", studyBoardNo, cp);
+
+			}
+			
+			ra.addFlashAttribute("message", message);
+			
+			return "redirect:" + path;
+		}
 
 }

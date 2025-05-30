@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GoStudy</title>
+	<link
+	     rel="stylesheet"
+	     href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
+	   />
     <link href="/css/main.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
@@ -310,7 +314,16 @@
   <script th:inline="javascript">
     document.addEventListener("DOMContentLoaded", () => {
       const isStudy = document.querySelector(".isStudy");
+      const createStudyBtn = document.querySelector("#createStudyBtn")
       const studyNo = [[${loginMember.studyNo}]];
+
+      createStudyBtn.addEventListener("click",(e) => {
+        if(studyNo != 0){
+          e.preventDefault();
+          alert("이미 가입된 스터디가 있습니다");
+          location.href = "/";
+        }
+      })
 
       if (isStudy) {
         isStudy.addEventListener("click", (e) => {

@@ -8,9 +8,8 @@
 }
 
 .content-title {
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 5px;
+  font-size: 22px;
+  margin-bottom: 7px;
 }
 
 .content-main {
@@ -81,7 +80,6 @@
 }
 
 .locked {
-  margin-top: 30px;
   width: 200px;
   height: 200px;
   opacity: 20%;

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>구인 게시글 상세</title>
     <link rel="stylesheet" th:href="@{/css/hire/hireDetail.css}" />
+    <link rel="stylesheet" th:href="@{/css/hire/hireComment.css}" />
   </head>
   <body>
     <!-- hearder -->
@@ -86,13 +87,11 @@
             </th:block>
           </div>
         </div>
+
         <div class="detail-item">
           <div class="detail-label">현재 인원</div>
           <div class="detail-item">
-            <div
-              class="detail-value"
-              th:text="${(study.studyMaxCount ?: 0) - (hireInfo.hireCount ?: 0)}"
-            >
+            <div class="detail-value" th:text="${study.currentMemberCount}">
               3
             </div>
             <div class="detail-value1">/</div>
@@ -102,23 +101,32 @@
           </div>
         </div>
 
+        <!-- <div class="detail-item">
+          <div class="detail-label">모집 인원</div>
+          <div class="detail-item">
+            <div class="detail-value" th:text="${hireInfo.hireCount} + 명">
+              3
+            </div>
+          </div>
+        </div> -->
+
         <div class="detail-item">
           <div class="detail-label">스터디 요일</div>
           <div class="detail-item">
-            <div
-              class="detail-value"
-              th:text="${hireInfo.dayCanJoin}"
-            >월, 수, 금</div>
+            <div class="detail-value" th:text="${hireInfo.dayCanJoin}">
+              월, 수, 금
+            </div>
+          </div>
         </div>
-      </div>
       </div>
 
       <!-- 게시글 본문 -->
       <div class="post-content" th:text="${hireInfo.hireContent}"></div>
 
       <!-- 댓글 섹션 -->
-      
 
+      <th:block th:replace="~{hire/hireComment}"></th:block>
+    </main>
     <!-- 팝업창 js -->
     <script>
       function openResumeModal() {
@@ -132,5 +140,18 @@
 
     <!-- footer -->
     <th:block th:replace="~{common/footer}"></th:block>
+
+    <script th:inline="javascript">
+      // - loginMember가 null 인 경우 null 반환
+      const loginMemberNo =
+        /*[[${session.loginMember?.memberNo}]]*/ "로그인 회원 번호";
+
+      // 현재 게시글 번호를 전역 변수로 저장
+      const hireNo = /*[[${hireInfo.hireNo}]]*/ "게시글 번호";
+
+      // const userDefaultIamge = /*[[#{user.default.image}]]*/ "기본이미지";
+    </script>
+
+    <script src="/js/hire/hireComment.js"></script>
   </body>
 </html>
