@@ -234,9 +234,9 @@
             <option value="">멤버를 선택하세요</option>
             <option
               th:each="member : ${members}"
-              th:if="${member.id != currentUser.id}"
-              th:value="${member.id}"
-              th:text="${member.name}"
+              th:if="${member.memberNo != loginMember.memberNo}"
+              th:value="${member.memberNo}"
+              th:text="${member.memberNickname}"
             ></option>
           </select>
           <div class="warning-box">

@@ -98,35 +98,8 @@ document
     submitBtn.disabled = true;
     submitBtn.textContent = "수정 중...";
 
-    // 시뮬레이션 (실제로는 서버와 통신)
-    setTimeout(() => {
-      console.log("스터디 정보 업데이트:", {
-        studyNo: formData.get("studyNo"),
-        studyName: formData.get("studyName"),
-        studyMaxCount: formData.get("studyMaxCount"),
-        studyType: formData.get("studyType"),
-        studyPeriod: formData.get("studyPeriod"),
-        hasImage: selectedImageFile !== null,
-      });
-
-      // 로딩 상태 해제
-      submitBtn.classList.remove("loading");
-      submitBtn.disabled = false;
-      submitBtn.textContent = "수정";
-
-      // 성공 메시지 표시
-      showAlert(
-        "성공",
-        "스터디 정보가 성공적으로 수정되었습니다.",
-        function () {
-          // 실제로는 페이지 리다이렉트 또는 새로고침
-          // location.reload();
-        }
-      );
-    }, 2000);
-
     //  실제 서버 통신 코드 (주석 처리)
-    fetch(`/studyBoard/update`, {
+    fetch("/studyBoard/update", {
       method: "POST",
       body: formData,
     })
@@ -138,13 +111,8 @@ document
       })
       .then((data) => {
         if (data.success) {
-          showAlert(
-            "성공",
-            "스터디 정보가 성공적으로 수정되었습니다.",
-            function () {
-              location.reload();
-            }
-          );
+          alert("수정 성공");
+          location.reload();
         } else {
           showAlert("오류", data.message || "수정에 실패했습니다.");
         }

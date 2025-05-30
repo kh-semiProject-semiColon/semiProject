@@ -36,10 +36,18 @@ public interface StudyBoardService {
     int getCurrentMemberCount(int studyNo);
     
     // 스터디 멤버 목록 조회 - Controller에서 호출하는 메서드 추가
-    List<Map<String, Object>> getStudyMembers(int studyNo);
+    List<Member> getStudyMembers(int studyNo);
+  
 
     // 내규 조회 서비스 
 	String getStudyrule(Member loginMember);
+
+	// 스터디 멤버인지 확인하는 메서드
+	boolean isStudyMember(Member member);
+
+	//팀장권한 위임 및 탈퇴처리
+	boolean transferLeadershipAndWithdraw(Member member, Member loginMember);
+
 
 	
 
