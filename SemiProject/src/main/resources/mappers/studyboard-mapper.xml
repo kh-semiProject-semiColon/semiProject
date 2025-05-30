@@ -28,15 +28,12 @@ WHERE STUDY_NO=#{studyNo}
 </select>
 
 <!-- 스터디 내규 등록/수정 -->
-<insert id="insertOrUpdateRule">
-MERGE INTO STUDY_RULE
-USING DUAL ON (STUDY_NO = #{studyNo})
-WHEN MATCHED THEN
-    UPDATE SET RULE_CONTENT = #{ruleContent}
-WHEN NOT MATCHED THEN
-    INSERT (STUDY_NO, RULE_CONTENT)
-    VALUES (#{studyNo}, #{ruleContent})
-</insert>
+<update id="insertOrUpdateRule">
+UPDATE STUDY_RULE SET
+RULE_CONTENT = #{ruleContent}
+WHERE STUDY_NO = #{studyNo}
+</update>
+
 
 <!-- 스터디 정보 수정 -->
 <update id="updateStudyInfo">

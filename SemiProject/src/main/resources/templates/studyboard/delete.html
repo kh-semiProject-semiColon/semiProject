@@ -54,17 +54,10 @@
             <!-- 일반 멤버 탈퇴 폼 -->
             <div th:if="${!isLeader}" class="member-withdrawal">
               <form
-                th:action="@{/study/{studyNo}/withdrawal(studyNo=${study.studyNo})}"
+                th:action="@{/studyBoard/delete}"
                 method="post"
                 class="withdrawal-form"
               >
-                <!-- CSRF 토큰 -->
-                <!-- <input
-                  type="hidden"
-                  th:name="${_csrf.parameterName}"
-                  th:value="${_csrf.token}"
-                /> -->
-
                 <!-- 스터디 정보 -->
                 <div class="study-info">
                   <h4>탈퇴할 스터디 정보</h4>

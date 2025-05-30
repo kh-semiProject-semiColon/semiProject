@@ -18,10 +18,10 @@ public interface StudyBoardService {
     int updateStudyInfo(Study study, MultipartFile imageFile);
     
     // 스터디 내규 수정
-    boolean updateRule(int studyNo, String ruleContent);
+    boolean updateRule(Study study);
     
     // 스터디 탈퇴
-    boolean withdrawMember(int studyNo, int memberNo);
+    boolean withdrawMember(Member loginMember);
     
     // 스터디 해체
     boolean deleteStudy(int studyNo);
@@ -40,4 +40,7 @@ public interface StudyBoardService {
 
     // 내규 조회 서비스 
 	String getStudyrule(Member loginMember);
+
+	
+
 }
