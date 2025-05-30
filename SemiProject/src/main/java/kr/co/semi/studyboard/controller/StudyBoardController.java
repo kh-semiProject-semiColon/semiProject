@@ -195,9 +195,9 @@ public class StudyBoardController {
             
             model.addAttribute("study", study);
             
-            model.addAttribute("members",service.getStudyMembers(loginMember.getStudyNo()));
-            log.info("스터디 탈퇴 페이지 접근 - studyNo: {}, memberNo: {}, isLeader: {}", 
-                    study, loginMember.getMemberNo(), study.isLeader());
+//            model.addAttribute("members",service.getStudyMembers(loginMember.getStudyNo()));
+//            log.info("스터디 탈퇴 페이지 접근 - studyNo: {}, memberNo: {}, isLeader: {}", 
+//                    study, loginMember.getMemberNo(), study.isLeader());
             
         } catch (Exception e) {
             
