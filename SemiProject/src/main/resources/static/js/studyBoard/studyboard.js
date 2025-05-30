@@ -1,41 +1,12 @@
-// 공통 작동 js -------------------------------------
-// 사이드바 메뉴 활성화
-// location.pathname는 /myPage/info를 다운받습니다
-document.addEventListener("DOMContentLoaded", function () {
-  const currentLocation = location.pathname; // 현재 페이지 url
+// 글쓰기 버튼 클릭 시
+const insertBtn = document.querySelector(".write-button");
 
-  const info = document.querySelector("#myPage-info");
-  const posts = document.querySelector("#myPage-posts");
-  const change = document.querySelector("#myPage-change");
-  const delete1 = document.querySelector("#myPage-delete");
+// 글쓰기 버튼이 존재할 때 (로그인 상태일 때만)
+if (insertBtn != null) {
+  insertBtn.addEventListener("click", () => {
+    // get 방식으로 글작성 가능한 페이지로 이동 요청 전송
+    // /editBoard/게시판번호(1)/insert
 
-  switch (currentLocation) {
-    case "/myPage/info":
-      info.classList.add("active");
-      posts.classList.remove("active");
-      change.classList.remove("active");
-      delete1.classList.remove("active");
-      break;
-
-    case "/myPage/posts":
-      info.classList.remove("active");
-      posts.classList.add("active");
-      change.classList.remove("active");
-      delete1.classList.remove("active");
-      break;
-
-    case "/myPage/changePw":
-      info.classList.remove("active");
-      posts.classList.remove("active");
-      change.classList.add("active");
-      delete1.classList.remove("active");
-      break;
-
-    case "/myPage/delete1":
-      info.classList.remove("active");
-      posts.classList.remove("active");
-      change.classList.remove("active");
-      delete1.classList.add("active");
-      break;
-  }
-});
+    location.href = `/editBoard/studyBoard/insert`;
+  });
+}

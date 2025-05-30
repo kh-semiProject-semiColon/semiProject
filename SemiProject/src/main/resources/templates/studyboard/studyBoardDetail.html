@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>구인 게시판</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
+      type="text/css"
+    />
+    <link href="/css/common/header.css" rel="stylesheet" />
+    <link href="/css/common/footer.css" rel="stylesheet" />
+    <link href="/css/board/boardDetail.css" rel="stylesheet" />
+    <link href="/css/board/comment.css" rel="stylesheet" />
+    <script
+      src="https://kit.fontawesome.com/b789cfa0ae.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <!-- hearder -->
+    <th:block th:replace="~{common/header}"></th:block>
+
+    <!-- 게시판 본문 -->
+    <div class="main">
+      <div class="side"></div>
+      <main>
+        <div class="titleContainer">
+          <div class="board-title">스터디 게시판</div>
+        </div>
+
+        <section class="board-detail" th:object="${studyBoard}">
+          <!-- 제목 -->
+          <div class="subTitle">
+            <div class="board-title" th:text="*{studyBoardTitle}">
+              게시글 제목
+            </div>
+            <div th:if="${session.loginMember.memberNo == studyBoard.memberNo}">
+              <button id="updateBtn">수정</button>
+              <button id="deleteBtn2">삭제</button>
+            </div>
+          </div>
+
+          <!-- 프로필 + 닉네임 + 작성일 + 조회수 -->
+          <div class="board-header">
+            <div class="board-writer">
+              <!-- 프로필 이미지 -->
+              <!-- 프로필 이미지가 없을 경우 기본 이미지 출력 -->
+              <img th:unless="*{profileImg}" th:src="#{user.default.image}" />
+
+              <!-- 프로필 이미지가 있을 경우 출력-->
+              <img th:if="*{profileImg}" th:src="*{profileImg}" />
+              <div class="nickDate">
+                <span th:text="*{memberNickname}">작성자 닉네임</span>
+                <span>[[*{studyBoardWriteDate}]]</span>
+              </div>
+            </div>
+
+            <div class="board-info">
+              <p><span>조회수</span> [[*{readCount}]]</p>
+            </div>
+          </div>
+
+          <!-- 내용 -->
+          <div class="board-content" th:utext="*{studyBoardContent}">내용</div>
+
+          <!-- 좋아요 하트 -->
+          <span class="like-area">
+            <!-- 좋아요 누른적이 있으면 fa-solid, 없으면 fa-regular 클래스 추가 -->
+            <i
+              class="fa-heart"
+              id="boardLike"
+              th:classappend="*{likeCheck == 1} ? fa-solid : fa-regular"
+            ></i>
+
+            <!-- 좋아요 개수 -->
+            <span th:text="*{likeCount}">0</span>
+          </span>
+          <div class="board-btn-area"></div>
+        </section>
+
+        <!-- 댓글 영역-->
+        <!-- <th:block th:replace="~{studyBoard/studyComment}"></th:block> -->
+      </main>
+    </div>
+
+    <!-- footer -->
+    <th:block th:replace="~{common/footer}"></th:block>
+
+    <script th:inline="javascript">
+      // - loginMember가 null 인 경우 null 반환
+      const loginMemberNo =
+        /*[[${session.loginMember?.memberNo}]]*/ "로그인 회원 번호";
+
+      // 현재 게시글 번호를 전역 변수로 저장
+      const boardNo = /*[[${studyBoard.studyBoardNo}]]*/ "게시글 번호";
+
+      // 현재 게시글 좋아요 여부를 전역 변수로 저장
+      let likeCheck = /*[[${studyBoard.likeCheck}]]*/ "좋아요 여부";
+
+      const userDefaultIamge = /*[[#{user.default.image}]]*/ "기본이미지";
+    </script>
+
+    <script src="/js/studyBoard/studyBoardDetail.js"></script>
+    <script src="/js/board/comment.js"></script>
+  </body>
+</html>

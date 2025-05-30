@@ -68,4 +68,35 @@
 		
 	</insert>
 	
+	<insert id="studyBoardInsert" useGeneratedKeys="true" parameterType="StudyBoard">
+		
+		<selectKey order="BEFORE" resultType="_int" keyProperty="studyBoardNo">
+			SELECT SEQ_STUDY_BOARD_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO "STUDY_BOARD"
+		VALUES(#{studyBoardNo}, #{studyBoardTitle},#{memberNo},
+		#{studyNo}, DEFAULT, DEFAULT, #{studyBoardContent}, DEFAULT, DEFAULT
+		
+		)
+		
+	</insert>
+	
+			<!-- 게시글 제목/내용 수정-->
+	<update id="studyBoardUpdate">
+		UPDATE "STUDY_BOARD" SET
+		STUDY_BOARD_TITLE = #{studyBoardTitle},
+		STUDY_BOARD_CONTENT = #{studyBoardContent}
+		WHERE STUDY_BOARD_NO = #{studyBoardNo}
+		AND MEMBER_NO = #{memberNo}
+	</update>
+	
+		<!-- 게시글 삭제 -->
+	<update id="studyBoardDelete">
+		UPDATE "STUDY_BOARD" SET
+		STUDY_BOARD_DEL_FL = 'Y'
+		WHERE STUDY_BOARD_NO = #{studyBoardNo}
+		AND MEMBER_NO = #{memberNo}
+	</update>
+	
 </mapper>

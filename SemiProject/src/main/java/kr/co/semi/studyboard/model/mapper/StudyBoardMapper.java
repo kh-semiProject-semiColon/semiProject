@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.studyboard.model.dto.Study;
@@ -14,8 +15,6 @@ import kr.co.semi.studyboard.model.dto.StudyComment;
 @Mapper
 public interface StudyBoardMapper {
 
-    // 스터디 정보 조회
-	Study getStudyInfo(Member loginMember);
    
     
     // 스터디 정보 수정
@@ -57,6 +56,47 @@ public interface StudyBoardMapper {
     String getStudyrule(Member loginMember);
 
 
+	/** 검색 조건에 맞는 게시글 개수
+	 * @param paramMap
+	 * @return
+	 */
+	int getBoardSearchCount(Map<String, Object> paramMap);
+
+
+	/** 검색 조건에 맞는 게시글 정보
+	 * @param paramMap
+	 * @param rowBounds
+	 * @return
+	 */
+	List<StudyBoard> selectBoardSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
+
+	/** 게시글 개수
+	 * @param studyNo
+	 * @return
+	 */
+	int getStudyBoardListCount(int studyNo);
+
+	/** 게시글 개수
+	 * @param studyNo
+	 * @param rowBounds
+	 * @return
+	 */
+	List<StudyBoard> selectStudyBoardList(int studyNo, RowBounds rowBounds);
+
+	Study getStudyInfo(Member loginMember);
+
+	StudyBoard studyBoardOne(Map<String, Integer> map);
+
+	int updateStudyBoardCount(int studyBoardNo);
+
+	int selectStudyBoardCount(int studyBoardNo);
+
+	int deletestudyBoardLike(Map<String, Integer> map);
+
+	int insertstudyBoardLike(Map<String, Integer> map);
+
+	int selectLikeCount(Integer integer);
+  
 	int getCurrentMemberCount(int studyNo);
 
 	// 새로운 팀장으로 권한 변경

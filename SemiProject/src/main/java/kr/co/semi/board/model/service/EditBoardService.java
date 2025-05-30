@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import kr.co.semi.board.model.dto.Announce;
 import kr.co.semi.board.model.dto.Board;
 import kr.co.semi.board.model.dto.BoardImg;
+import kr.co.semi.studyboard.model.dto.StudyBoard;
 
 public interface EditBoardService {
 
@@ -47,6 +48,16 @@ public interface EditBoardService {
 	 * @return
 	 */
 	int announceInsert(Announce inputAnnounce);
+
+	/** 게시글 작성
+	 * @param inputStudyBoard
+	 * @return
+	 */
+	int studyBoardInsert(StudyBoard inputStudyBoard);
+
+	int studyBoardUpdate(StudyBoard inputStudyBoard);
+
+	int studyBoardDelete(Map<String, Integer> map);
 
 
 

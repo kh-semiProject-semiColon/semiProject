@@ -1,5 +1,8 @@
 package kr.co.semi.studyboard.model.dto;
 
+import java.util.List;
+
+import kr.co.semi.board.model.dto.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,6 +36,13 @@ public class Study {
     private String memberNickname; // MEMBER.MEMBER_NICKNAME
     private int currentMemberCount; // COUNT로 계산
     private String memberJoinDate; // 실제로는 STUDY_MEMBER에 JOIN_DATE 컬럼이 없음 (String으로 변경)
+    
+	private int commentCount;				// 댓글 개수
+	private int likeCount;					// 좋아요 개수
+	private String profileImg;				// 프로필 이미지
+	private List<StudyComment> commentList;		// 댓글 목록
+	private int likeCheck;					// 좋아요 여부
+	
     
     // ========================================
     // 🔥 이 메서드가 누락되어 있었습니다!

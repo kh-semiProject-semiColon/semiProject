@@ -11,8 +11,7 @@ import java.util.Map;
 
 public interface StudyBoardService {
 
-    // 스터디 정보 조회 -- 완
-    Study getStudyInfo(Member loginMember);
+
     
     // 스터디 정보 수정
     int updateStudyInfo(Study study, MultipartFile imageFile);
@@ -42,6 +41,24 @@ public interface StudyBoardService {
     // 내규 조회 서비스 
 	String getStudyrule(Member loginMember);
 
+	// 검색조건 있는 게시글
+	Map<String, Object> searchList(Map<String, Object> paramMap, int page);
+
+	/** 해당 스터디 게시글
+	 * @param loginMember
+	 * @param page
+	 * @return
+	 */
+	Map<String, Object> getStudyInfo(Member loginMember, int cp);
+
+	Study getStudyInfo(Member loginMember);
+
+	StudyBoard studyBoardOne(Map<String, Integer> map);
+
+	int updateStudyBoardCount(int studyBoardNo);
+
+	int studyBoardLike(Map<String, Integer> map);
+  
 	// 스터디 멤버인지 확인하는 메서드
 	boolean isStudyMember(Member member);
 
