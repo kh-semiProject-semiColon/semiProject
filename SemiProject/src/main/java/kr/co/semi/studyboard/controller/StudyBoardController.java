@@ -214,6 +214,7 @@ public class StudyBoardController {
             
             if (result) {
                 message = "스터디 탈퇴 성공";
+                loginMember.setStudyNo(0);
             }
             
         } catch (Exception e) {
@@ -256,7 +257,7 @@ public class StudyBoardController {
                 return "redirect:/studyBoard/delete";
             }
 
-            // 팀장 권한 위임 및 탈퇴 처리
+            // 팀장 권한 위임 및 탈퇴처리
             boolean result = service.transferLeadershipAndWithdraw(member, loginMember);
 
             if (result) {
@@ -289,11 +290,11 @@ public class StudyBoardController {
         try {
             Study study = service.getStudyInfo(loginMember);
             study.setRuleContent(service.getStudyrule(loginMember));
-            if (study == null) {
-                log.warn("존재하지 않는 스터디 또는 권한 없음 - studyNo: {}, memberNo: {}", 
-                        loginMember.getStudyNo(), loginMember.getMemberNo());
-                return "redirect:/study/studyNow";
-            }
+//            if (study == null) {
+//                log.warn("존재하지 않는 스터디 또는 권한 없음 - studyNo: {}, memberNo: {}", 
+//                        loginMember.getStudyNo(), loginMember.getMemberNo());
+//                return "redirect:/study/studyNow";
+//            }
             
             model.addAttribute("study", study);
             model.addAttribute("studyNo",  loginMember.getStudyNo());
@@ -406,6 +407,25 @@ public class StudyBoardController {
         return ResponseEntity.ok(response);
     }
     
+    @PostMapping("dissolve")
+    public String dissolveStudy(@SessionAttribute("loginMember") Member loginMember,
+            RedirectAttributes ra) {
+    	
+    	try {
+    		int result = service.studyDelete(loginMember);
+    		if(result>0) {
+    			ra.addAttribute("message", "스터디가 해체되었습니다");
+    			loginMember.setStudyNo(0);
+    		}else {
+    			
+    			ra.addAttribute("message", "스터디가 해체 실패!");
+    		}
+			
+		} catch (Exception e) {
+			ra.addAttribute("message", "스터디가 해체중 오류발생!"+e.getMessage());
+		}
+    	return"redirect:/";
+}
     
 
 	@GetMapping("{studyBoardNo:[0-9]+}")

@@ -22,9 +22,6 @@ public interface StudyBoardService {
     // 스터디 탈퇴
     boolean withdrawMember(Member loginMember);
     
-    // 스터디 해체
-    boolean deleteStudy(int studyNo);
-    
     // 팀장 권한 확인
     boolean isStudyLeader(int memberNo);
     
@@ -64,6 +61,9 @@ public interface StudyBoardService {
 
 	//팀장권한 위임 및 탈퇴처리
 	boolean transferLeadershipAndWithdraw(Member member, Member loginMember);
+
+	// 스터디 탈퇴하고 해체
+	int studyDelete(Member loginMember);
 
 
 	

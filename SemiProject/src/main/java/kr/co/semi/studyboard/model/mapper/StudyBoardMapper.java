@@ -39,7 +39,7 @@ public interface StudyBoardMapper {
     
     
     // 스터디 해체
-    int deleteStudy(@Param("studyNo") int studyNo);
+    int deleteStudy(Member loginMember);
     
 
     // 내 게시글 조회
