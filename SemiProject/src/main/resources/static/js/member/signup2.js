@@ -474,7 +474,9 @@ document.querySelector("#submit-btn").addEventListener("click", (e) => {
   // 하나라도 false가 있으면 제출 X
   // for ~ of (반복가능한 배열 등에 사용되는 향상된 for문)
   // for ~in (객체 전용 향상된 for문)
-  console.log("응애");
+
+  checkObj.memberMajor = majorYes.checked || majorNo.checked;
+
   for (let key in checkObj) {
     // checkObj 요소의 key값을 순서대로 꺼내옴
 
@@ -509,9 +511,15 @@ document.querySelector("#submit-btn").addEventListener("click", (e) => {
           str = "이메일이 인증되지 않았습니다.";
           break;
       }
+
+      if (key === "memberMajor") {
+        alert(str);
+        e.preventDefault();
+        return;
+      }
+
       console.log(checkObj);
       alert(str);
-
       document.getElementById(key).focus(); // 해당 input 초점 이동
       e.preventDefault();
 
