@@ -19,6 +19,7 @@ import kr.co.semi.board.model.dto.Board;
 import kr.co.semi.board.model.dto.Pagination;
 import kr.co.semi.common.util.Utility;
 import kr.co.semi.member.model.dto.Member;
+import kr.co.semi.myPage.model.dto.myPagePagination;
 import kr.co.semi.myPage.model.mapper.MyPageMapper;
 
 @Service
@@ -116,7 +117,7 @@ public class MyPageServiceImpl implements MyPageService {
 		int listCount = mapper.getBoardCountByMember(memberNo);
 
 		// 페이지네이션 객체 생성
-		Pagination pagination = new Pagination(cp, listCount);
+		myPagePagination pagination = new myPagePagination(cp, listCount);
 
 		// RowBounds로 페이징 처리
 		int limit = pagination.getLimit();
@@ -140,7 +141,7 @@ public class MyPageServiceImpl implements MyPageService {
 		int listCount = mapper.getCommentCountByMember(memberNo);
 
 		// 페이지네이션 객체 생성
-		Pagination pagination = new Pagination(cp, listCount);
+		myPagePagination pagination = new myPagePagination(cp, listCount);
 
 		// RowBounds로 페이징 처리
 		int limit = pagination.getLimit();

@@ -159,8 +159,9 @@
 
       <section class="error-message-container">
         <h1>서버 내부 오류 발생</h1>
-
-        <p th:text="|원인 : ${e}|">원인 : 예외 발생 원인 출력</p>
+		
+		<p th:if="${exception != null}" th:text="|원인 : ${exception.message}|">원인 : 예외 발생 원인 출력</p>
+		<p th:if="${exception == null}">알 수 없는 오류가 발생했습니다.</p>
 
         <label for="detailOn">자세히 보기</label>
         <input
