@@ -23,7 +23,28 @@
           method="POST"
           name="signUpForm"
           id="signUpForm"
+          enctype="multipart/form-data"
         >
+          <!-- 프로필 -->
+          <div class="profileImg">
+            <label for="profileImg" class="form-label">
+              <span>프로필 이미지</span>
+            </label>
+            <div class="profile-container">
+              <div class="imageFile">
+                <img class="preview" th:src="#{user.default.image}" />
+                <input
+                  type="file"
+                  name="profileImgs"
+                  class="inputImage"
+                  id="profileImg"
+                  accept="image/*"
+                />
+                <label for="profileImg" class="inputLabel"> 파일 선택 </label>
+              </div>
+              <span class="delete-image">&times;</span>
+            </div>
+          </div>
           <!-- 이메일 -->
           <div class="form-group-email">
             <label for="memberEmail" class="form-label">

@@ -2,8 +2,13 @@ package kr.co.semi.member.model.service;
 
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import kr.co.semi.member.model.dto.Member;
 
+/**
+ * 
+ */
 public interface MemberService {
 
 	/** 로그인 서비스 by 김성원
@@ -21,9 +26,10 @@ public interface MemberService {
 	/** 회원가입 서비스
 	 * @param inputMember
 	 * @param memberAddress
+	 * @param profileResult 
 	 * @return
 	 */
-	int signupInfo(Member inputMember, String[] memberAddress);
+	int signupInfo(Member inputMember, String[] memberAddress, String profileResult);
 
 	/** 닉네임 중복검사
 	 * @param memberNickname
@@ -55,5 +61,13 @@ public interface MemberService {
 	 * @return
 	 */
 	int changePw(Member inputMember);
+
+	
+	/** 프로필 이미지
+	 * @param profileImg
+	 * @param inputMember
+	 * @return
+	 */
+	String profile(MultipartFile profileImg, Member inputMember)throws Exception;
 
 }

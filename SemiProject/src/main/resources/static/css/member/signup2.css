@@ -301,3 +301,43 @@ textarea {
 .label2 {
   margin-top: -110px;
 }
+
+.profileImg {
+  display: flex;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.preview {
+  margin-left: 100px;
+  border-radius: 50%;
+}
+
+.profile-container {
+  display: flex;
+}
+
+.inputImage {
+  margin-top: 10px;
+  margin-left: 120px;
+  display: none;
+}
+
+.imageFile {
+  width: 300px;
+}
+
+.inputLabel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 30px;
+  margin-top: 20px;
+  margin-left: 150px;
+  font-size: 14px;
+  border: none;
+  background-color: #4aa7ff;
+  color: white;
+  border-radius: 15px;
+}
