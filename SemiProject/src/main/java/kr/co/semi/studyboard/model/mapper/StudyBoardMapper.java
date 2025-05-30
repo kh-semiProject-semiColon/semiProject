@@ -25,10 +25,12 @@ public interface StudyBoardMapper {
     String checkMemberRole(int memberNo);
     
     // 스터디 내규 등록/수정
-    int insertOrUpdateRule(@Param("studyNo") int studyNo, @Param("ruleContent") String ruleContent);
+    int insertOrUpdateRule(Study study);
+    
     
     // 스터디 멤버 탈퇴
-    int withdrawMember(@Param("studyNo") int studyNo, @Param("memberNo") int memberNo);
+    int withdrawMember(Member loginMember);
+    
     
     // 스터디 해체
     int deleteStudy(@Param("studyNo") int studyNo);
@@ -47,6 +49,10 @@ public interface StudyBoardMapper {
 
     // 내규 조회 서비스
     String getStudyrule(Member loginMember);
+
+
+
+
 
 
 

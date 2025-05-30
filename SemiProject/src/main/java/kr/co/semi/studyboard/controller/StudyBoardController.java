@@ -195,11 +195,12 @@ public class StudyBoardController {
             
             model.addAttribute("study", study);
             
+            model.addAttribute("members",service.getStudyMembers(loginMember.getStudyNo()));
             log.info("스터디 탈퇴 페이지 접근 - studyNo: {}, memberNo: {}, isLeader: {}", 
                     study, loginMember.getMemberNo(), study.isLeader());
             
         } catch (Exception e) {
-            log.error("스터디 탈퇴 페이지 오류", e);
+            
             model.addAttribute("errorMessage", "스터디 정보를 불러오는 중 오류가 발생했습니다.");
         }
         
@@ -211,106 +212,26 @@ public class StudyBoardController {
      */
     @PostMapping("delete")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> withdrawFromStudy(@SessionAttribute("loginMember") Member loginMember,
-                                                               Study study) {  // DTO로 받기
-        Map<String, Object> response = new HashMap<>();
+    public String withdrawFromStudy(@SessionAttribute("loginMember") Member loginMember,
+                                                               Study study, RedirectAttributes ra) {  // DTO로 받기
+        String message = null;
         try {
-            boolean result = service.withdrawMember(study.getStudyNo(), loginMember.getMemberNo());
+        	boolean result = service.withdrawMember(loginMember);
             
-            response.put("success", result);
-            response.put("message", result ? "스터디에서 탈퇴되었습니다." : "탈퇴에 실패했습니다.");
             
             if (result) {
-                log.info("스터디 탈퇴 성공 - studyNo: {}, memberNo: {}", study.getStudyNo(), loginMember.getMemberNo());
-                response.put("redirectUrl", "/study/studyNow");
+                message = "스터디 탈퇴 성공";
             }
             
-        } catch (IllegalStateException e) {
-            log.warn("스터디 탈퇴 제한 - studyNo: {}, memberNo: {}, reason: {}", 
-                    study.getStudyNo(), loginMember.getMemberNo(), e.getMessage());
-            response.put("success", false);
-            response.put("message", e.getMessage());
         } catch (Exception e) {
-            log.error("스터디 탈퇴 중 오류 발생", e);
-            response.put("success", false);
-            response.put("message", "오류가 발생했습니다: " + e.getMessage());
+           
         }
         
-        return ResponseEntity.ok(response);
+        ra.addFlashAttribute("message",message);
+        
+        return "redirect:/";
     }
     
-    // ============================================
-    // 스터디 해체 관련
-    // ============================================
-    
-    /**
-     * 스터디 탈퇴 조회
-     */
-    @GetMapping("delete1")
-    public String studyBoardDelete1(@SessionAttribute("loginMember") Member loginMember,
-                                   Model model) {
-        try {
-            Study study = service.getStudyInfo(loginMember);
-            if (study == null) {
-                log.warn("존재하지 않는 스터디 또는 권한 없음 - studyNo: {}, memberNo: {}", 
-                        loginMember.getStudyNo(), loginMember.getMemberNo());
-                return "redirect:/study/studyNow";
-            }
-            
-            // 팀장만 접근 가능
-            if (!service.isStudyLeader(loginMember.getMemberNo())) {
-                log.warn("팀장 권한 없음 - studyNo: {}, memberNo: {}", loginMember.getStudyNo(), loginMember.getMemberNo());
-                return "redirect:/studyBoard/delete?studyNo=" + loginMember.getStudyNo();
-            }
-            
-            model.addAttribute("study", study);
-            model.addAttribute("studyNo", loginMember.getStudyNo());
-            
-            log.info("스터디 해체 페이지 접근 - studyNo: {}, memberNo: {}", 
-            		loginMember.getStudyNo(), loginMember.getMemberNo());
-            
-        } catch (Exception e) {
-            log.error("스터디 해체 페이지 오류", e);
-            model.addAttribute("errorMessage", "스터디 정보를 불러오는 중 오류가 발생했습니다.");
-        }
-        
-        return "studyBoard/delete1";
-    }
-
-    /**
-     * 스터디 해체 처리 - DTO로 받기
-     */
-    @PostMapping("delete1")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> deleteStudy(@SessionAttribute("loginMember") Member loginMember,
-                                                          Study study) {  // DTO로 받기
-        Map<String, Object> response = new HashMap<>();
-        try {
-            // 팀장 권한 확인
-            if (!service.isStudyLeader(loginMember.getMemberNo())) {
-                response.put("success", false);
-                response.put("message", "팀장만 스터디를 해체할 수 있습니다.");
-                return ResponseEntity.ok(response);
-            }
-            
-            boolean result = service.deleteStudy(study.getStudyNo());
-            
-            response.put("success", result);
-            response.put("message", result ? "스터디가 해체되었습니다." : "해체에 실패했습니다.");
-            
-            if (result) {
-                log.info("스터디 해체 성공 - studyNo: {}, memberNo: {}", study.getStudyNo(), loginMember.getMemberNo());
-                response.put("redirectUrl", "/study/studyNow");
-            }
-            
-        } catch (Exception e) {
-            log.error("스터디 해체 중 오류 발생", e);
-            response.put("success", false);
-            response.put("message", "오류가 발생했습니다: " + e.getMessage());
-        }
-        
-        return ResponseEntity.ok(response);
-    }
     
     // ============================================
     // 스터디 내규 관련
@@ -346,41 +267,56 @@ public class StudyBoardController {
     }
 
     /**
-     * 스터디 내규 등록/수정 처리 - DTO로 받기
+     * 스터디 내규 등록/수정 처리
      */
     @PostMapping("rulecontent")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> updateRule(@SessionAttribute("loginMember") Member loginMember,
-                                                         Study study) {  // DTO로 받기
+    public ResponseEntity<Map<String, Object>> updateRule(
+            @SessionAttribute("loginMember") Member loginMember,
+            @RequestBody Map<String, Object> requestData) {
+        
         Map<String, Object> response = new HashMap<>();
+        
         try {
-            // 팀장 권한 확인
-            if (!service.isStudyLeader( loginMember.getMemberNo())) {
+            // 요청 데이터에서 값 추출
+            Integer studyNo = (Integer) requestData.get("studyNo");
+            String ruleContent = (String) requestData.get("ruleContent");
+            
+            // 기본 유효성 검사
+            if (studyNo == null) {
                 response.put("success", false);
-                response.put("message", "팀장만 내규를 수정할 수 있습니다.");
+                response.put("message", "스터디 번호가 없습니다.");
                 return ResponseEntity.ok(response);
             }
             
-            // 내규 내용 검증
-            if (study.getRuleContent() == null || study.getRuleContent().trim().isEmpty()) {
+            if (ruleContent == null || ruleContent.trim().isEmpty()) {
                 response.put("success", false);
                 response.put("message", "내규 내용을 입력해주세요.");
                 return ResponseEntity.ok(response);
             }
             
-            if (study.getRuleContent().length() > 4000) {
+            if (ruleContent.length() > 4000) {
                 response.put("success", false);
                 response.put("message", "내규 내용은 4000자를 초과할 수 없습니다.");
                 return ResponseEntity.ok(response);
             }
             
-            boolean result = service.updateRule(study.getStudyNo(), study.getRuleContent().trim());
+                       
+            // Study 객체 생성
+            Study study = new Study();
+            study.setStudyNo(studyNo);
+            study.setRuleContent(ruleContent.trim());
+            
+            // 내규 업데이트 실행
+            boolean result = service.updateRule(study);
             
             response.put("success", result);
             response.put("message", result ? "내규가 저장되었습니다." : "저장에 실패했습니다.");
             
             if (result) {
-                log.info("스터디 내규 수정 성공 - studyNo: {}, memberNo: {}", study.getStudyNo(), loginMember.getMemberNo());
+                log.info("스터디 내규 수정 성공 - studyNo: {}, memberNo: {}", studyNo, loginMember.getMemberNo());
+            } else {
+                log.warn("스터디 내규 수정 실패 - studyNo: {}, memberNo: {}", studyNo, loginMember.getMemberNo());
             }
             
         } catch (Exception e) {
