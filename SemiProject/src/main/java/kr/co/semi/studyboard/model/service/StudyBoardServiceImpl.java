@@ -102,18 +102,6 @@ public class StudyBoardServiceImpl implements StudyBoardService {
         }
     }
 
-    //스터디 해체
-    @Override
-    public boolean deleteStudy(int studyNo) {
-        try {
-            int result = mapper.deleteStudy(studyNo);
-            log.info("스터디 해체 - studyNo: {}, result: {}", studyNo, result);
-            return result > 0;
-        } catch (Exception e) {
-            log.error("스터디 해체 중 오류 발생 - studyNo: {}", studyNo, e);
-            throw new RuntimeException("스터디 해체 중 오류가 발생했습니다.", e);
-        }
-    }
 
     //팀장 권한인지 확인하는 메서드
     @Override
@@ -196,6 +184,7 @@ public class StudyBoardServiceImpl implements StudyBoardService {
             if (updateResult <= 0) {
                 return false;
             }
+            // 2. 스터디 탈퇴 기능
             int deleteStudyMember = mapper.withdrawMemberById(loginMember);
             
             return true;
@@ -215,5 +204,16 @@ public class StudyBoardServiceImpl implements StudyBoardService {
             return false;
         }
     }
+
+	@Override
+	public int studyDelete(Member loginMember) {
+		int deleteStudyMember = mapper.withdrawMemberById(loginMember);
+		int studyDelete = 0;
+		if(deleteStudyMember > 0) {
+			studyDelete = mapper.deleteStudy(loginMember);
+		}
+			
+		return studyDelete;
+	}
 
 }

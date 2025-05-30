@@ -153,9 +153,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const message =
       `정말로 ${studyName} 스터디를 해체하시겠습니까?\n\n` +
-      `현재 ${memberCount}명의 멤버가 있습니다.\n` +
-      `해체 시 모든 멤버가 자동으로 탈퇴되며, 되돌릴 수 없습니다.\n\n` +
+      `스터디 멤버가 없어야 탈퇴가 가능합니다.\n` +
       `계속하시겠습니까?`;
+
+    // 멤버 수 체크 (이중 검증) - 팀장 혼자만 남았을 때만 해체 가능
+    if (memberCount > 1) {
+      alert(
+        "스터디 해체는 팀장 혼자만 남았을 때만 가능합니다.\n다른 멤버들을 먼저 탈퇴시키거나 팀장 권한을 위임해주세요."
+      );
+      return;
+    }
 
     if (confirm(message)) {
       console.log("스터디 해체 확인됨");
