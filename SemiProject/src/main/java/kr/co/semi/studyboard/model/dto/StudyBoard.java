@@ -1,5 +1,7 @@
 package kr.co.semi.studyboard.model.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,4 +27,9 @@ public class StudyBoard {
     // JOIN으로 가져올 추가 정보
     private String memberNickname;      // MEMBER.MEMBER_NICKNAME
     private int likeCount;              // 좋아요 기능이 있다면 별도 계산
+    
+	private int commentCount;				// 댓글 개수
+	private String profileImg;				// 프로필 이미지
+	private List<StudyComment> commentList;		// 댓글 목록
+	private int likeCheck;					// 좋아요 여부
 }

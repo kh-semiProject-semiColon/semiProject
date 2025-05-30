@@ -17,6 +17,7 @@ import kr.co.semi.board.model.dto.Board;
 import kr.co.semi.board.model.dto.BoardImg;
 import kr.co.semi.board.model.mapper.EditBoardMapper;
 import kr.co.semi.common.util.Utility;
+import kr.co.semi.studyboard.model.dto.StudyBoard;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -112,5 +113,36 @@ public class EditBoardServiceImpl implements EditBoardService{
 		int announceNo = inputAnnounce.getAnnounceNo();
 		
 		return announceNo;
+	}
+	
+	@Override
+	public int studyBoardInsert(StudyBoard inputStudyBoard) {
+		int result = mapper.studyBoardInsert(inputStudyBoard);
+		
+		System.out.println(inputStudyBoard);
+		
+		if(result == 0) {
+			return 0;
+		}
+		
+		int studyBoardNo = inputStudyBoard.getStudyBoardNo();
+		
+		return studyBoardNo;
+	}
+	
+	@Override
+	public int studyBoardUpdate(StudyBoard inputStudyBoard) {
+		// 1. 공지글 부분(제목/내용) 수정
+		int result = mapper.studyBoardUpdate(inputStudyBoard);
+		
+		// 수정 실패 시 바로 리턴
+		if(result == 0) return 0;
+		
+		return result;
+	}
+	
+	@Override
+	public int studyBoardDelete(Map<String, Integer> map) {
+		return mapper.studyBoardDelete(map);
 	}
 }
