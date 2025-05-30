@@ -30,8 +30,11 @@ public class MemberSerivceImpl implements MemberService {
 	private BCryptPasswordEncoder bcrypt;
 	
 	
-	@Value("${my.profile.folder-path}")
+	@Value("${my.profile.web-path}")
 	private String profileWebPath;
+	
+	@Value("${my.profile.folder-path}")
+	private String profileFolderPath;
 	/**
 	 *	로그인 서비스 by 김성원
 	 */
@@ -155,6 +158,7 @@ public class MemberSerivceImpl implements MemberService {
 	public String profile(MultipartFile profileImg, Member inputMember) throws Exception{
 		// 프로필 이미지 경로
 				String updatePath = null;
+				String finalPath = null;
 				
 				// 변경명 저장
 				String rename = null;
@@ -167,12 +171,13 @@ public class MemberSerivceImpl implements MemberService {
 					rename = Utility.fileRename(profileImg.getOriginalFilename());
 					
 					// 2. /myPage/profile/변경된 파일명
-					updatePath = profileWebPath + rename;
+					updatePath = profileFolderPath + rename;
+					finalPath = profileWebPath + rename;
 				}
 				
 				profileImg.transferTo(new File(updatePath));
 				
 
-				return updatePath;
+				return finalPath;
 	}
 }
