@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -407,35 +409,54 @@ public class HireBoardController {
 	
 	//멤버초대 - 초대할때 댓글 사용자 memberNo/ 글번호 불러와야함 초대 버튼은 글 주인만 == 로그인 멤버 같을때 볼 수 있음
 	@PostMapping("invite/{hireNo:[0-9]+}")
+	@ResponseBody
 	public String memberInvite(@PathVariable("hireNo") int hireNo,
-							   @ModelAttribute HireComment hireComment,
 							   RedirectAttributes ra,
-							   @SessionAttribute("loginMember") Member loginMember) {
+							   @RequestBody Map<String, Integer> requestData) {
 		
+		int memberNo = requestData.get("memberNo");
 		String message = null;
 		String path = null;
-		
-		int memberNo = hireComment.getMemberNo();
 		
 		int studyNo = service.getStudyNo(hireNo);
 		
 		Map<String, Integer> map = new HashMap<>();
-		map.put("hireNo", hireNo);
+		map.put("studyNo", studyNo);
 		map.put("memberNo", memberNo);
 		
-		int result = service.memberInvite(map);
+//		이미 초대한 회원인지 검사
+		int invitation = service.invitation(map);
 		
-		if(result > 0) {
-			message = "초대완료";
-
+		if(invitation > 0) {
+			
+			message = "은 이미 초대한 회원입니다";
 			
 		} else {
-			message = "초대실패";
+			
+			int result = service.memberInvite(map);
+			
+			if(result > 0) {
+				message = "을 초대했습니다";
 
+				
+			} else {
+				message = " 초대실패";
+
+			}
 		}
 		
-		ra.addFlashAttribute("message", message);
-		
-		return "hire/detail" + hireNo;
+		return message;
+	}
+	
+	@GetMapping("/popup")
+	@ResponseBody
+	public Map<String, String> getResume(@RequestParam("memberNo") int memberNo) {
+	    Member member = service.getResumeByMemberNo(memberNo);
+	    Map<String, String> result = new HashMap<>();
+	    result.put("memberNickname", member.getMemberNickname()); 
+	    result.put("memberIntroduce", member.getMemberIntroduce()); 
+	    result.put("profileImg", member.getProfileImg()); 
+	    result.put("memberMajor", member.getMemberMajor()); 
+	    return result;
 	}
 }

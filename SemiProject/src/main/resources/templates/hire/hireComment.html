@@ -15,26 +15,37 @@
 					삭제된 댓글 입니다
 				</th:block>
 
+
 				<th:block th:if="*{hireCommentDelFl} == 'N'">
+					<span th:text="*{memberNo}">멤버번호</span>
 					<p class="comment-writer">
 						<!-- 프로필 이미지 없을 경우 -->
-						<img th:unless="*{profileImg}" th:src="#{user.default.image}">
+						<img th:unless="*{profileImg}" 
+							th:src="#{user.default.image}" 
+							class="comment-profile-img"
+							 th:onclick="|openResumeModal(*{memberNo})|" 
+							alt="프로필 이미지" />
+
 						<!-- 프로필 이미지 있을 경우 -->
-						<img th:if="*{profileImg}" th:src="*{profileImg}">
-	
+						<img th:if="*{profileImg}" 
+							th:src="*{profileImg}" 
+							class="comment-profile-img"
+							 th:onclick="|openResumeModal(*{memberNo})|"
+							alt="프로필 이미지" />
 						<span th:text="*{memberNickname}">닉네임</span>
-						<span class="comment-date" th:text="*{hireCommentWrittenDate}">작성일</span>
+						<span class="comment-date" th:text="*{hireCommentDate}">작성일</span>
 					</p>
-	
 					<p class="comment-content" th:text="*{hireCommentContent}">댓글 내용</p>
 	
 					<!-- 버튼 영역 -->
 					<div class="comment-btn-area">
 						<button th:onclick="|showInsertComment(*{hireCommentNo}, this)|">답글</button>
 	
-						<th:block th:if="${session.loginMember != null and session.loginMember.memberNo == hireComment.memberNo}">
+						<th:block th:if="${session.loginMember != null and session.loginMember.memberNo == comment.memberNo}">
+
 							<button th:onclick="|showUpdateComment(*{hireCommentNo}, this)|">수정</button>
 							<button th:onclick="|deleteComment(*{hireCommentNo})|">삭제</button>
+							
 						</th:block>
 						<!-- 로그인 회원과 댓글 작성자가 같은 경우 -->
 	

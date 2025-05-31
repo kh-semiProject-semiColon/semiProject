@@ -46,6 +46,12 @@ public interface HireBoardService {
 	// 스터디에 멤버 초대하기
 	int memberInvite(Map<String, Integer> map);
 
+	// 모달창 열기
+	Member getResumeByMemberNo(int memberNo);
+
+	// 이전에 멤버 초대 했는지 검사
+	int invitation(Map<String, Integer> map);
+
 
 	
 

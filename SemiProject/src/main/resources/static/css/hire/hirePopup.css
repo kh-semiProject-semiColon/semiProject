@@ -1,0 +1,115 @@
+      .resume-modal {
+        display: flex;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        justify-content: center;
+        align-items: center;
+      }
+
+      .resume-content {
+        width: 400px;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        font-family: sans-serif;
+      }
+
+      .resume-header {
+        background: linear-gradient(
+          to left,
+          #1f66e5,
+          #4b9ff3
+        ); /* 그라데이션 방향 반대로 수정 */
+        color: white;
+        padding: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+      }
+
+      .resume-close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+      }
+
+      .resume-body {
+        padding: 20px;
+      }
+
+      .resume-row {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: flex-start;
+      }
+
+      .resume-label {
+        width: 80px;
+        font-weight: bold;
+        color: #333;
+        padding-top: 8px;
+      }
+
+      .resume-profile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .resume-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+
+      .resume-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .resume-nickname {
+        font-weight: 600;
+      }
+
+      .resume-content-area {
+        flex: 1;
+      }
+
+      .resume-underline {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+      }
+
+      .resume-intro {
+        white-space: pre-wrap;
+        font-size: 14px;
+        color: #555;
+        max-width: 280px;
+      }
+
+      .resume-radio-group {
+        display: flex;
+        gap: 20px;
+      }
+
+      .resume-radio {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .resume-radio input[type="radio"] {
+        margin: 0;
+      }

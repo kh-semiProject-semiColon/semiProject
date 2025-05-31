@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
 import kr.co.semi.board.model.dto.HireInfo;
+import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.studyboard.model.dto.Study;
 
 @Mapper
@@ -90,5 +91,17 @@ public interface HireBoardMapper {
 	int memberInvite(Map<String, Integer> map);
 
 	List<HireInfo> selectSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
+
+	/** 팝업창
+	 * @param memberNo
+	 * @return
+	 */
+	Member getResumeByMemberNo(int memberNo);
+
+	/** 이전에 초대 했는지 확인
+	 * @param map
+	 * @return
+	 */
+	int inInvitation(Map<String, Integer> map);
 
 }

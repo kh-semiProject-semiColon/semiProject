@@ -42,13 +42,13 @@ public class HireBoardServiceImpl implements HireBoardService{
 		for (HireInfo hire : hireList) {
 		    
 		    // 제목 20자 제한
-		    if (hire.getHireTitle() != null && hire.getHireTitle().length() > 20) {
-		        hire.setHireTitle(hire.getHireTitle().substring(0, 20) + "…");
+		    if (hire.getHireTitle() != null && hire.getHireTitle().length() > 15) {
+		        hire.setHireTitle(hire.getHireTitle().substring(0, 15) + "…");
 		    }
 
 		    // 내용 40자 제한
-		    if (hire.getHireContent() != null && hire.getHireContent().length() > 40) {
-		        hire.setHireContent(hire.getHireContent().substring(0, 40) + "…");
+		    if (hire.getHireContent() != null && hire.getHireContent().length() > 35) {
+		        hire.setHireContent(hire.getHireContent().substring(0, 35) + "…");
 		    }
 		}
 		
@@ -78,13 +78,13 @@ public class HireBoardServiceImpl implements HireBoardService{
 		for (HireInfo hire : hireList) {
 		    
 		    // 제목 20자 제한
-		    if (hire.getHireTitle() != null && hire.getHireTitle().length() > 20) {
-		        hire.setHireTitle(hire.getHireTitle().substring(0, 20) + "…");
+		    if (hire.getHireTitle() != null && hire.getHireTitle().length() > 15) {
+		        hire.setHireTitle(hire.getHireTitle().substring(0, 15) + "…");
 		    }
 
 		    // 내용 40자 제한
-		    if (hire.getHireContent() != null && hire.getHireContent().length() > 40) {
-		        hire.setHireContent(hire.getHireContent().substring(0, 40) + "…");
+		    if (hire.getHireContent() != null && hire.getHireContent().length() > 35) {
+		        hire.setHireContent(hire.getHireContent().substring(0, 35) + "…");
 		    }
 		}
 		
@@ -170,5 +170,17 @@ public class HireBoardServiceImpl implements HireBoardService{
 	@Override
 	public int memberInvite(Map<String, Integer> map) {
 		return mapper.memberInvite(map);
+	}
+	
+	// 팝업창 열기
+	@Override
+	public Member getResumeByMemberNo(int memberNo) {
+		return mapper.getResumeByMemberNo(memberNo);
+	}
+	
+	// 이전에 초대했는지
+	@Override
+	public int invitation(Map<String, Integer> map) {
+		return mapper.inInvitation(map);
 	}
 }
