@@ -6,15 +6,15 @@
 
 			<!-- 대댓글(자식)인 경우 child-comment 클래스 추가 -->
 			<li class="comment-row" 
-					th:each="comment : ${board.commentList}" 
-					th:classappend="${comment.parentCommentNo} != 0 ? child-comment"
-					th:object="${comment}">
+					th:each="studyComment : ${studyBoard.commentList}" 
+					th:classappend="${studyComment.parentStudyCommentNo2} != 0 ? child-comment"
+					th:object="${studyComment}">
 
-				<th:block th:if="*{commentDelFl} == 'Y'">
+				<th:block th:if="*{studyCommentDelFl} == 'Y'">
 					삭제된 댓글 입니다
 				</th:block>
 
-				<th:block th:if="*{commentDelFl} == 'N'">
+				<th:block th:if="*{studyCommentDelFl} == 'N'">
 					<div class="comment-writer">
 						<div class="proNick">
 
@@ -27,11 +27,11 @@
 						</div>
 						<!-- 버튼 영역 -->
 						<div class="comment-btn-area">
-							<button th:onclick="|showInsertComment(*{commentNo}, this)|">답글</button>
+							<button th:onclick="|showInsertComment(*{studyCommentNo}, this)|">답글</button>
 		
-							<th:block th:if="${session.loginMember != null and session.loginMember.memberNo == comment.memberNo}">
-								<button th:onclick="|showUpdateComment(*{commentNo}, this)|">수정</button>
-								<button th:onclick="|deleteComment(*{commentNo})|">삭제</button>
+							<th:block th:if="${session.loginMember != null and session.loginMember.memberNo == studyComment.memberNo}">
+								<button th:onclick="|showUpdateStudyComment(*{studyCommentNo}, this)|">수정</button>
+								<button th:onclick="|deleteStudyComment(*{studyCommentNo})|">삭제</button>
 							</th:block>
 							<!-- 로그인 회원과 댓글 작성자가 같은 경우 -->
 		
@@ -39,8 +39,8 @@
 						
 					</div>
 					<div class="content-comment">
-						<p class="comment-content" th:text="*{commentContent}">댓글 내용</p>
-						<span class="comment-date" th:text="*{commentWrittenDate}">작성일</span>
+						<p class="comment-content" th:text="*{studyCommentContent}">댓글 내용</p>
+						<span class="comment-date" th:text="*{studyCommentDate}">작성일</span>
 					</div>
 				</th:block>
 
