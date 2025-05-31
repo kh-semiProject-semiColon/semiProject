@@ -1,10 +1,20 @@
+body {
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  background-color: #fff;
+  margin: 0px;
+}
+
+.side {
+  width: 29.015%;
+}
+
 /* 전체 컨테이너 */
 .board-detail-container {
-  max-width: 800px;
+  width: 41.67%;
   margin: 0 auto;
   padding: 40px 20px;
-  font-family: "Apple SD Gothic Neo", sans-serif;
   color: #25272b;
+  margin-bottom: 100px;
 }
 
 /* 게시판 이름 */
@@ -16,31 +26,35 @@
 
 /* 포스트 헤더 (제목 + 수정/삭제) */
 .post-header {
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
 }
 .post-title {
   font-size: 24px;
   font-weight: bold;
   margin-top: 0;
   margin-bottom: 20px;
+  width: 70%;
 }
 .post-controls {
   display: flex;
-  width: 50%;
+  justify-content: flex-end;
+  width: 30%;
   height: 30px;
 }
 .post-controls .post-btn {
-  width: 20%;
-  height: 30px;
+  width: 30%;
+  height: 25px;
   color: #ffff;
   margin-left: 10px;
   background: #4aa7ff;
   border: none;
-  padding: 6px 10px;
+  margin-left: 10%;
   border-radius: 30px;
   cursor: pointer;
+  font-size: 10pt;
 }
 
 /* 작성자 정보 영역 */
@@ -69,7 +83,7 @@
   margin-top: 5px;
 }
 .post-views {
-  font-size: 13px;
+  font-size: 12px;
   color: #999;
   margin-left: 10px;
 }
@@ -89,6 +103,7 @@
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 30px;
+  margin-top: 30px;
 }
 .details-title {
   font-size: 18px;
@@ -141,7 +156,7 @@
 .post-content {
   font-size: 18px;
   line-height: 1.8;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 }
 
 /* 좋아요 */
@@ -257,6 +272,7 @@
   background: rgba(0, 0, 0, 0.4);
   justify-content: center;
   align-items: center;
+  display: flex; /* 모달 중앙정렬 위해 flex 필요 */
 }
 
 .resume-content {
@@ -269,9 +285,9 @@
 }
 
 .resume-header {
-  background: linear-gradient(to right, #1f66e5, #4b9ff3);
+  background: linear-gradient(to right, #4AA7FF, #3867FF);
   color: white;
-  padding: 16px;
+  padding: 20px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -287,45 +303,84 @@
 }
 
 .resume-body {
-  padding: 20px;
+  padding: 20px 40px;
 }
 
 .resume-row {
   margin-bottom: 20px;
 }
 
+.resume-row1 {
+  margin-bottom: 10px;
+}
+
+.resume-underline {
+  display: flex;
+  align-items: center;
+  /* border-bottom: 1px solid #ddd; */
+  padding-bottom: 12px;
+}
+
+.resume-underline1 {
+  display: flex;
+  /* border-bottom: 1px solid #ddd; */
+  padding-bottom: 12px;
+
+  height: 150px;
+}
+
 .resume-label {
   display: block;
+  width: 100px;
   font-weight: bold;
   margin-bottom: 6px;
-  color: #333;
+  margin-right: 20px;
+  color: #25272B;
 }
 
 .resume-profile {
   display: flex;
   align-items: center;
   gap: 10px;
+  height: 40px;
 }
 
 .resume-avatar {
   width: 32px;
   height: 32px;
   border-radius: 50%;
+  overflow: hidden;
+}
+
+.resume-avatar img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
 }
 
 .resume-nickname {
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .resume-intro {
-  white-space: pre-wrap;
+  width: 200px;
   font-size: 14px;
   color: #555;
 }
 
-.resume-radio label {
-  margin-right: 12px;
+.resume-radio-group {
+  display: flex;
+  gap: 12px;
   font-size: 16px;
+}
+
+.resume-radio label {
+  cursor: pointer;
+  user-select: none;
+}
+
+.resume-radio input {
+  display: none;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

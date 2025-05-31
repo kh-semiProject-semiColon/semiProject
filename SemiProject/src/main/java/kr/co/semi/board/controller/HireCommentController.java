@@ -35,9 +35,8 @@ public class HireCommentController {
 		// List<Comment> (Java의 자료형 List)
 		// HTTPMessageConverter가
 		// List -> JSON(문자열)로 변환해서 응답 -> JS
-		log.info("댓글목록조회 - hireNo: " + hireComment.getHireNo());
-		log.info("댓글목록조회 : "+service.select(hireComment.getHireNo()));
-		
+//		log.info("댓글목록조회 - hireNo: " + hireComment.getHireNo());
+//		log.info("댓글목록조회 : "+service.select(hireComment.getHireNo()));
 		return service.select(hireComment.getHireNo());
 		
 	}
@@ -48,7 +47,7 @@ public class HireCommentController {
 	@PostMapping("")
 	public int insert(@RequestBody HireComment hireComment,@SessionAttribute("loginMember") Member loginMember) {
 		hireComment.setMemberNo(loginMember.getMemberNo());
-		log.info("댓글조회 - hireNo: " + hireComment.getHireCommentContent());
+//		log.info("댓글조회 - hireNo: " + hireComment.getHireCommentContent());
 		return service.insert(hireComment);
 	}
 	

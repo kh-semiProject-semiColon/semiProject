@@ -49,13 +49,14 @@
 			WHEN SYSDATE - HIRE_DATE < 1
 			THEN FLOOR((SYSDATE - HIRE_DATE) *24) || '시간 전'
 		 ELSE TO_CHAR(HIRE_DATE, 'YYYY-MM-DD')
-		 END HIRE_DATE
+		 END HIRE_DATE	
 	 ]]>
 	 
 	 FROM "HIRE_INFO" H
 	 JOIN "MEMBER" M ON(H.MEMBER_NO = M.MEMBER_NO)
 	 JOIN "STUDY" S ON (H.STUDY_NO  = S.STUDY_NO)
 	 WHERE HIRE_DEL_FL = 'N'
+	 AND STUDY_DEL_FL = 'N'
 	 ORDER BY HIRE_NO DESC
 	</select>
 	
@@ -262,5 +263,19 @@
 	 ORDER BY HIRE_NO DESC
 	</select>
 	
+	<!-- 팝업창 -->
+	<select id="getResumeByMemberNo">
+		SELECT MEMBER_NO, MEMBER_NICKNAME, MEMBER_INTRODUCE, MEMBER_MAJOR, PROFILE_IMG
+		FROM MEMBER
+		WHERE MEMBER_NO = #{memberNo}
+		AND MEMBER_DEL_FL = 'N'
+	</select>
 	
+	<!-- 이전에 초대 했는지 확인 -->
+	<select id="inInvitation">
+		SELECT COUNT(*)
+		FROM STUDY_MEMBER
+		WHERE STUDY_NO = #{studyNo}
+		AND MEMBER_NO = #{memberNo}
+	</select>
 </mapper>
