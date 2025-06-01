@@ -1,5 +1,7 @@
 package kr.co.semi.main.service;
 
+import kr.co.semi.board.model.dto.Announce;
+import kr.co.semi.board.model.dto.HireInfo;
 import kr.co.semi.studyboard.model.dto.Study;
 
 public interface MainService {
@@ -15,6 +17,16 @@ public interface MainService {
 	 * @param studyName
 	 * @return
 	 */
-	int studyNameConfirm(String studyName); 
+	int studyNameConfirm(String studyName);
+
+	/** 최신 구인게시글을 조회 서비스
+	 * @return
+	 */
+	HireInfo latedstPost();
+
+	/** 최신 공지사항 글 조회 서비스
+	 * @return
+	 */
+	Announce latestAnouncement(); 
 
 } 

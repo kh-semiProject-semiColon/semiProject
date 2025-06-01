@@ -19,6 +19,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import kr.co.semi.board.model.dto.Announce;
+import kr.co.semi.board.model.dto.Board;
+import kr.co.semi.board.model.dto.HireInfo;
 import kr.co.semi.common.util.Utility;
 import kr.co.semi.main.service.MainService;
 import kr.co.semi.member.model.dto.Member;
@@ -50,6 +53,16 @@ public class MainController {
 	            session.removeAttribute("message");     // 1회용 메시지니까 제거
 	        }
 	    }
+	    
+	    // 최신 공지사항 글 가져오기
+	    Announce latestAnouncement = service.latestAnouncement();
+	    
+	    model.addAttribute("latestAnouncement",latestAnouncement);
+	    
+	    // 최신 구인게시글 가져오기
+	    HireInfo latesttPost = service.latedstPost(); // 최신 구인글 조회
+	    
+	    model.addAttribute("latestPost",latesttPost); // 모델에 추가
 	    
 	    // 미니 스터디 현황을 위한 스터디 리스트 가져오기
 	    List<Study> studyList = stdService.selectMainStudy(); // 스터디 리스트 조회

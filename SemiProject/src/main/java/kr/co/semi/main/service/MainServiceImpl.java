@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.co.semi.board.model.dto.Announce;
+import kr.co.semi.board.model.dto.HireInfo;
 import kr.co.semi.main.Mapper.MainMapper;
 import kr.co.semi.studyboard.model.dto.Study;
 
@@ -50,6 +52,22 @@ public class MainServiceImpl implements MainService {
 	public int studyNameConfirm(String studyName) {
 		int studyNameConfirm = mapper.studyNameConfirm(studyName);
 		return studyNameConfirm;
+	}
+
+	/**
+	 * 최신 구인게시글 조회
+	 */
+	@Override
+	public HireInfo latedstPost() {
+		return mapper.latedstPost();
+	}
+
+	/**
+	 * 최신 공지사항 글 조회
+	 */
+	@Override
+	public Announce latestAnouncement() {
+		return mapper.latestAnouncement();
 	}
 	
 	

@@ -55,10 +55,13 @@
     <!-- Main Content -->
     <div class="main-content">
       <!-- Search Section -->
+       
       <div class="search-section">
+        <a href="/board/announce" style="text-decoration: none; color: #25272b;">
         <div class="search-bar gradient-border" >
-            <input type="text" class="search-input" placeholder="검색" />
-        </div>
+            <div type="text" class="search-input" th:text="'📢 필독!! [새로운 공지사항]&nbsp;&nbsp;'+${latestAnouncement.announceName}+'&nbsp;📢'" style="text-align: center"></div>
+          </div>
+        </a>
         <div class="partner-links">
           <a href="https://kh-academy.co.kr/login/login.kh" target="_blank">
             <img src="/images/khlogo.png" alt="KH로고" />
@@ -158,7 +161,7 @@
                 <!-- 이미지 태그를 클릭하면 이동하는 거로 해봤습니다. -->
                 <a href="/myPage/info">
                   <img
-                    th:src="${session.loginMember.profileImg != null ? session.loginMember.profileImg : '/images/default-profile.png'}"
+                    th:src="${session.loginMember.profileImg} ?: '/images/logo.png'"
                     alt="프로필 이미지"
                     id="profileImage"
                   />
@@ -239,20 +242,33 @@
             </div>
           </div>
 
+
           <!-- 스터디원 모집 카드 -->
+          <a id="hire-link" th:href="@{/hire/detail/{hireNo}(hireNo=${latestPost.hireNo})}" style="text-decoration: none;">
           <div class="recruitment-card">
             <h4 class="recruitment-title">스터디원 모집중!</h4>
             <ul class="recruitment-details">
-              <li>모코코의 파이썬 스터디</li>
-              <li>기간: 2개월</li>
-              <li>스터디 생성일: 2025.05.16</li>
+              <li th:text="${latestPost.studyName} + 스터디">모코코의 파이썬 스터디</li>
+              <li>
+                기간:&nbsp;<span th:text="${latestPost.studyPeriod == 0} ? '종강까지' : ${latestPost.studyPeriod + '개월'}"></span>
+              </li>
+              <li>
+                스터디 방향성:&nbsp; <span th:switch="${latestPost.studyType}">
+                  <span th:case="1"> 레벨업</span>
+                  <span th:case="2"> 복습</span>
+                  <span th:case="3"> 문제풀이</span>
+                  <span th:case="4"> 자격증</span>
+                  <span th:case="5"> 프로젝트</span>
+                </span>
+              </li>
             </ul>
             <img
-              src="/images/ministudy.jpg"
-              alt="모코코"
+              th:src="@{${latestPost.studyMainImg != null} ? ${latestPost.studyMainImg} : '/images/logo.png'}"
+              alt="스터디 메인 이미지"
               class="recruitment-icon"
             />
           </div>
+          </a>
         </div>
       </div>
 
@@ -337,7 +353,6 @@
     });
   </script>
 </div>
-
     <script>
       // 기본 JavaScript 동작을 위한 공간
       document.addEventListener("DOMContentLoaded", function () {
