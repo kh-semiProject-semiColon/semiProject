@@ -35,6 +35,10 @@ public class HireInfo {
 	private String studyMainImg;			// 스터디 메인 이미지(게시판 썸네일)
 	
 	private List<HireComment> commentList;	//
-	private int joinStudy;					
+	private int joinStudy;	
+	private String studyName;
+	private int studyPeriod;
+	private String studyDate;
+	private int studyType;
 	
 }

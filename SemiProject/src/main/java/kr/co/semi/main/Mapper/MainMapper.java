@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import kr.co.semi.board.model.dto.Announce;
+import kr.co.semi.board.model.dto.HireInfo;
 import kr.co.semi.studyboard.model.dto.Study;
 
 @Mapper
@@ -31,5 +33,15 @@ public interface MainMapper {
 	 * @param studyName
 	 * @return
 	 */
-	int studyNameConfirm(String studyName); 
+	int studyNameConfirm(String studyName);
+
+	/** 최신 구인게시글 조회
+	 * @return
+	 */
+	HireInfo latedstPost();
+
+	/** 최신 공지사항 글 조회
+	 * @return
+	 */
+	Announce latestAnouncement(); 
 }
