@@ -21,4 +21,5 @@ public class StudyComment {
     // JOIN으로 가져올 추가 정보
     private String memberNickname;      // MEMBER.MEMBER_NICKNAME
     private String studyBoardTitle;     // STUDY_BOARD.STUDY_BOARD_TITLE
+	private String profileImg;
 }

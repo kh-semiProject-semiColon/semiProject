@@ -545,7 +545,7 @@ public class StudyBoardController {
 			
 			// board - 게시글 일반 내용 + imageList + commentList
 			model.addAttribute("studyBoard", studyBoard);
-			
+			System.out.println(studyBoard);
 		}
 		
 		return path;
