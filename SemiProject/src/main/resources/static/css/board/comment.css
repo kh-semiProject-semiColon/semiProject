@@ -138,3 +138,10 @@
 .content-comment {
   margin-left: 50px;
 }
+
+.reply{
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}

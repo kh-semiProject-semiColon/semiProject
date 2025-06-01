@@ -226,6 +226,7 @@ AND SM.STUDY_CAP = 'N'
 		FROM "STUDY_BOARD" B
 		JOIN "MEMBER" M ON(B.MEMBER_NO = M.MEMBER_NO)
 		WHERE B.STUDY_BOARD_DEL_FL ='N'
+		AND STUDY_NO = #{studyNo}
 		
 		<choose>
 			<!-- 제목 검색인 경우 key 값 "t"-->
