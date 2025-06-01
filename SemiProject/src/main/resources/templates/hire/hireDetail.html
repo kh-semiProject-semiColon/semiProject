@@ -9,13 +9,15 @@
   <body>
     <!-- hearder -->
     <th:block th:replace="~{common/header}"></th:block>
-
+    <div class="side"></div>
     <main class="board-detail-container">
+
       <!-- 게시판 이름 -->
       <div class="board-name">구인 게시판</div>
 
       <!-- 게시글 헤더 -->
       <div class="post-header">
+
         <h2 class="post-title" th:text="${hireInfo.hireTitle}">게시글 제목</h2>
         <div
           class="post-controls"
@@ -43,6 +45,8 @@
           th:src="${hireInfo.profileImg}"
           class="profile-img"
           alt="프로필 이미지"
+
+         
         />
         <div class="author-meta">
           <div class="author-name" th:text="${hireInfo.memberNickname}">
@@ -124,19 +128,56 @@
       <div class="post-content" th:text="${hireInfo.hireContent}"></div>
 
       <!-- 댓글 섹션 -->
+      <h3 class="form-title">댓글</h3>
+      <div class="divider"></div>
 
       <th:block th:replace="~{hire/hireComment}"></th:block>
-    </main>
-    <!-- 팝업창 js -->
-    <script>
-      function openResumeModal() {
-        document.getElementById("resumeModal").style.display = "flex";
-      }
 
-      function closeResumeModal() {
-        document.getElementById("resumeModal").style.display = "none";
-      }
-    </script>
+    </main>
+    <div id="resumeModal" class="resume-modal" style="display:none;">
+      <div class="resume-content">
+        <div class="resume-header">
+          <div>이력서</div>
+          <button class="resume-close" id="closeModalBtn">×</button>
+        </div>
+        <div class="resume-body">
+          
+          <div class="resume-row resume-underline">
+            <div class="resume-label">닉네임</div>
+            <div class="resume-content-area">
+              <div class="resume-profile">
+                <div class="resume-avatar">
+                  <img id="resumeProfileImg" src="/images/default_profile.png" alt="프로필 이미지" class="resumeProfileImg"/>
+                </div>
+                <div class="resume-nickname" id="resumeNickname">닉네임</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="resume-row resume-underline1">
+            <div class="resume-label">자기소개</div>
+            <div class="resume-content-area">
+              <div class="resume-intro" id="resumeIntro">
+                내용
+              </div>
+            </div>
+          </div>
+
+          <div class="resume-row1 resume-underline" >
+            <div class="resume-label">컴퓨터<br />전공 여부</div>
+            <div class="resume-content-area">
+              <!-- <p class="dot">•</p> -->
+              <div id="resumeMajor" class="resume-radio-group">
+                <!-- ○ 또는 × 표시: JS에서 innerHTML 혹은 textContent로 처리 -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="side"></div>
 
     <!-- footer -->
     <th:block th:replace="~{common/footer}"></th:block>
@@ -149,9 +190,13 @@
       // 현재 게시글 번호를 전역 변수로 저장
       const hireNo = /*[[${hireInfo.hireNo}]]*/ "게시글 번호";
 
+      const memberNo = /*[[${hireInfo.memberNo}]]*/ "작성자 번호";
+
       // const userDefaultIamge = /*[[#{user.default.image}]]*/ "기본이미지";
     </script>
+    
 
+    <script src="/js/hire/hireDetail.js"></script>
     <script src="/js/hire/hireComment.js"></script>
   </body>
 </html>

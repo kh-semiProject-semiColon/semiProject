@@ -14,18 +14,18 @@ document.addEventListener("DOMContentLoaded", function () {
   const hireCount = Math.max(0, studyMaxCount - currentMemberCount);
 
   // 모집 인원
-  hireCountSelect = document.querySelector("select[name='hireCount']");
+  // hireCountSelect = document.querySelector("select[name='hireCount']");
 
-  hireCountSelect.innerHTML = '';
+  // hireCountSelect.innerHTML = '';
 
-  hireCountSelect.innerHTML = '<option value="" disabled selected>선택</option>';
+  // hireCountSelect.innerHTML = '<option value="" disabled selected>선택</option>';
   
-  for(let i=1; i<=hireCount; i++) {
-    const option = document.createElement("option");
-    option.value = i;
-    option.textContent = i + "명";
-    hireCountSelect.appendChild(option);
-  }
+  // for(let i=1; i<=hireCount; i++) {
+  //   const option = document.createElement("option");
+  //   option.value = i;
+  //   option.textContent = i + "명";
+  //   hireCountSelect.appendChild(option);
+  // }
 
   // 방향성 (라디오 버튼)
   const directionRadio = document.querySelector(

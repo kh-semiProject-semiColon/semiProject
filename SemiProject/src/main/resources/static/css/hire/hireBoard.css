@@ -7,6 +7,7 @@ body {
 .hire {
   margin: 50px 0px 100px 0px;
   display: flex;
+  min-width: 1500px;
 }
 
 .side {
@@ -28,6 +29,7 @@ main {
   width: 100%;
   display: flex;
   flex-direction: column;
+  
 }
 
 .board-title {
@@ -55,9 +57,12 @@ main {
 
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(4, 23.75%);
-  gap: 30px 20px;
-  width: 100%;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 20px;
+  row-gap: 30px;
+  /* max-width: 1196px; */
+  margin: 0 auto;
+
 }
 
 .card {
@@ -99,24 +104,30 @@ main {
   font-weight: bold;
   font-size: 16px;
   margin-bottom: 5px;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 
 .card-description {
-  height: 30px;
+  height: 40px;
   font-size: 14px;
-  color: #555;
+  color: #25272B;
   flex-grow: 1;
   margin: 0;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 
 .card-date-con {
   display: flex;
   justify-content: flex-end;
+   margin-right: 5%;
 }
 
 .card-date {
   font-size: 14px;
-  color: #555;
+  margin-top: 5px;
+  color: #25272B;
   margin-bottom: 5px;
 }
 
@@ -130,14 +141,54 @@ main {
 .card-footer {
   height: 35px;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   font-size: 15px;
   color: #888;
 }
 
-.card-footer :first-child {
-  padding-right: 30%;
+.profile {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+}
+
+.user > span {
+  padding-top: 5px;
+}
+
+.card-footer > span {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 50%;
+  display: flex;
+  align-items: center;
+}
+
+.look {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.look > span {
+
+  margin-left: 10%;
+}
+
+.fa-regular fa-eye {
+  display: flex;
+  align-items: center;
 }
 
 a,
@@ -154,6 +205,7 @@ a:active {
   justify-content: flex-end;
   margin: 0;
   padding: 0;
+  width: 100%;
 }
 
 .writeBtn {
@@ -201,7 +253,6 @@ a:active {
   letter-spacing: 0 !important;
 }
 
-/* 검색창 */
 /* 검색창 */
 .search-container {
   width: 600px;
