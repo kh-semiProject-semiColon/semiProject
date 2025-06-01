@@ -831,3 +831,144 @@ REFERENCES "STUDY" (
 ) ON DELETE CASCADE;
 
 COMMIT;
+
+SELECT
+    boardNo,
+    boardTitle,
+    memberNickname,
+    boardWriteDate,
+    readCount,
+    likeCount,
+    boardCode
+FROM (
+    -- 1. 스터디 게시판
+    SELECT
+        sb.STUDY_BOARD_NO AS boardNo,
+        sb.STUDY_BOARD_TITLE AS boardTitle,
+        m.MEMBER_NICKNAME AS memberNickname,
+        TO_CHAR(sb.STUDY_BOARD_WRITE_DATE, 'YY.MM.DD') AS boardWriteDate,
+        sb.STUDY_BOARD_WRITE_DATE AS writeDate,
+        sb.READ_COUNT AS readCount,
+        COUNT(bl.BOARD_NO) AS likeCount,
+        2000 AS boardCode
+    FROM STUDY_BOARD sb
+    LEFT JOIN MEMBER m ON sb.MEMBER_NO = m.MEMBER_NO
+    LEFT JOIN BOARD_LIKE bl ON sb.STUDY_BOARD_NO = bl.BOARD_NO
+    JOIN STUDY s ON sb.STUDY_NO = s.STUDY_NO
+    WHERE sb.MEMBER_NO = 1
+      AND sb.STUDY_BOARD_DEL_FL = 'N'
+      AND s.STUDY_DEL_FL = 'N'
+    GROUP BY sb.STUDY_BOARD_NO, sb.STUDY_BOARD_TITLE, m.MEMBER_NICKNAME,
+             sb.STUDY_BOARD_WRITE_DATE, sb.READ_COUNT
+
+    UNION
+
+    -- 2. 일반 게시판
+    SELECT
+        b.BOARD_NO AS boardNo,
+        b.BOARD_TITLE AS boardTitle,
+        m.MEMBER_NICKNAME AS memberNickname,
+        TO_CHAR(b.BOARD_WRITE_DATE, 'YY.MM.DD') AS boardWriteDate,
+        b.BOARD_WRITE_DATE AS writeDate,
+        b.READ_COUNT AS readCount,
+        COUNT(bl.BOARD_NO) AS likeCount,
+        b.BOARD_CODE AS boardCode
+    FROM BOARD b
+    LEFT JOIN MEMBER m ON b.MEMBER_NO = m.MEMBER_NO
+    LEFT JOIN BOARD_LIKE bl ON b.BOARD_NO = bl.BOARD_NO
+    WHERE b.MEMBER_NO = 1
+      AND b.BOARD_DEL_FL = 'N'
+    GROUP BY b.BOARD_NO, b.BOARD_TITLE, m.MEMBER_NICKNAME,
+             b.BOARD_WRITE_DATE, b.READ_COUNT, b.BOARD_CODE
+
+    UNION
+
+    -- 3. 채용 공고
+    SELECT
+        hi.HIRE_NO AS boardNo,
+        hi.HIRE_TITLE AS boardTitle,
+        m.MEMBER_NICKNAME AS memberNickname,
+        TO_CHAR(hi.HIRE_DATE, 'YY.MM.DD') AS boardWriteDate,
+        hi.HIRE_DATE AS writeDate,
+        hi.HIRE_READ_COUNT AS readCount,
+        COUNT(bl.BOARD_NO) AS likeCount,
+        1000 AS boardCode
+    FROM HIRE_INFO hi
+    LEFT JOIN MEMBER m ON hi.MEMBER_NO = m.MEMBER_NO
+    LEFT JOIN BOARD_LIKE bl ON hi.HIRE_NO = bl.BOARD_NO
+    LEFT JOIN STUDY s ON hi.STUDY_NO = s.STUDY_NO
+    WHERE hi.MEMBER_NO = 1
+      AND hi.HIRE_DEL_FL = 'N'
+      AND (hi.STUDY_NO IS NULL OR s.STUDY_DEL_FL = 'N')
+    GROUP BY hi.HIRE_NO, hi.HIRE_TITLE, m.MEMBER_NICKNAME,
+             hi.HIRE_DATE, hi.HIRE_READ_COUNT
+)
+ORDER BY writeDate DESC;
+
+SELECT * FROM STUDY_BOARD sb
+JOIN STUDY s USING(s.STUDY_NO = sb.STUDY_NO);
+
+SELECT *
+		FROM (
+		-- 채용 댓글
+		SELECT
+		h.HIRE_NO AS "boardNo",
+		h.HIRE_TITLE AS "boardTitle",
+		hc.HIRE_COMMENT_CONTENT AS
+		"commentContent",
+		hc.HIRE_COMMENT_DATE AS "commentDate", -- DATE 형식 유지
+		TO_CHAR(hc.HIRE_COMMENT_DATE, 'YYYY-MM-DD') AS "commentDateStr",
+		1000 AS "boardCode"
+		FROM HIRE_INFO h
+		JOIN HIRE_COMMENT hc ON
+		h.HIRE_NO = hc.HIRE_NO
+		WHERE hc.MEMBER_NO = 1
+		AND
+		h.HIRE_DEL_FL = 'N'
+		AND hc.HIRE_COMMENT_DEL_FL = 'N'
+
+		UNION
+
+		-- 스터디 댓글
+		SELECT
+		s.STUDY_BOARD_NO AS boardNo,
+		s.STUDY_BOARD_TITLE AS boardTitle,
+		sc.STUDY_COMMENT_CONTENT AS commentContent,
+		sc.STUDY_COMMENT_DATE AS
+		commentDate,
+		TO_CHAR(sc.STUDY_COMMENT_DATE, 'YYYY-MM-DD') AS
+		"commentDateStr",
+		2000 AS boardCode
+		FROM STUDY_BOARD s
+		JOIN STUDY_COMMENT
+		sc ON s.STUDY_BOARD_NO = sc.STUDY_BOARD_NO
+		JOIN STUDY st ON s.STUDY_NO
+		= st.STUDY_NO
+		WHERE sc.MEMBER_NO = 1
+		AND s.STUDY_BOARD_DEL_FL
+		= 'N'
+		AND sc.STUDY_COMMENT_DEL_FL = 'N'
+		AND st.STUDY_DEL_FL = 'N'
+
+		UNION
+
+		-- 일반 댓글
+		SELECT
+		b.BOARD_NO AS boardNo,
+		b.BOARD_TITLE AS boardTitle,
+		c.COMMENT_CONTENT AS commentContent,
+		c.COMMENT_WRITTEN_DATE AS
+		commentDate,
+		TO_CHAR(c.COMMENT_WRITTEN_DATE, 'YYYY-MM-DD') AS
+		"commentDateStr",
+		b.BOARD_CODE
+		FROM BOARD b
+		JOIN "COMMENT" c ON
+		b.BOARD_NO = c.BOARD_NO
+		WHERE c.MEMBER_NO = 1
+		AND
+		b.BOARD_DEL_FL = 'N'
+		AND c.COMMENT_DEL_FL = 'N'
+		) sub
+		ORDER BY
+		"commentDate" DESC;
