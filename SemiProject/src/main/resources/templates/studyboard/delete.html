@@ -36,7 +36,7 @@
             <div class="withdrawal-notice">
               <div class="character-icon">
                 <img
-                  src="/images/character.png"
+                  src="/images/logo.png"
                   alt="캐릭터"
                   class="character-img"
                 />
@@ -154,9 +154,12 @@
                 <h4>팀장 탈퇴 옵션</h4>
 
                 <!-- 옵션 1: 팀장 위임 -->
-                <div class="option-card">
+                <div
+                  class="option-card"
+                  th:if="${study.currentMemberCount > 1}"
+                >
                   <div class="option-header">
-                    <h5>👥 팀장 권한 위임 후 탈퇴</h5>
+                    <h5>팀장 권한 위임 후 탈퇴</h5>
                   </div>
                   <div class="option-content">
                     <p>
@@ -179,17 +182,16 @@
                 </div>
 
                 <!-- 옵션 2: 스터디 해체 -->
-                <div class="option-card">
+                <div
+                  class="option-card"
+                  th:if="${study.currentMemberCount == 1}"
+                >
                   <div class="option-header">
-                    <h5>🗑️ 스터디 해체</h5>
+                    <h5>스터디 해체</h5>
                   </div>
                   <div class="option-content">
-                    <p>스터디를 완전히 해체하고 모든 멤버가 탈퇴됩니다.</p>
                     <p class="option-note warning">
                       • 스터디가 완전히 삭제됩니다
-                    </p>
-                    <p class="option-note warning">
-                      • 모든 멤버가 자동으로 탈퇴됩니다
                     </p>
                     <p class="option-note warning">• 되돌릴 수 없습니다</p>
                   </div>
