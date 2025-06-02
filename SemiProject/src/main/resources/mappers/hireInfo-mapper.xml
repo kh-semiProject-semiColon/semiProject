@@ -157,13 +157,6 @@
 		ORDER SIBLINGS BY HIRE_COMMENT_NO
 	</select>
 	
-	<!-- getStudyNo -->
-	<select id="getStudyNo">
-		SELECT STUDY_NO
-		FROM HIRE_INFO
-		WHERE HIRE_NO = #{hireNo}
-	</select>
-	
 	<!-- 멤버 초대 -->
 	<insert id="memberInvite">
 		INSERT INTO STUDY_MEMBER (

@@ -23,5 +23,5 @@ public class HireComment {
 	private String memberNickname;
 	private String profileImg;
 	
-	private int studyNo;
+	private int studyCount; 			// 스터디 카운트
 }

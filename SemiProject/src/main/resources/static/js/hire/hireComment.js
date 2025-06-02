@@ -80,7 +80,8 @@ const selectCommentList = () => {
           if (
             loginMemberNo &&
             loginMemberNo !== comment.memberNo &&
-            loginMemberNo === memberNo
+            loginMemberNo === memberNo &&
+            comment.studyCount === 0
           ) {
             const inviteBtn = document.createElement("button");
             inviteBtn.textContent = "초대";
@@ -174,6 +175,7 @@ addComment.addEventListener("click", (e) => {
   const data = {
     hireCommentContent: commentContent.value,
     hireNo: id,
+    memberNo: loginMemberNo,
   };
 
   fetch("/comment", {
@@ -202,16 +204,23 @@ const showInsertComment = (parentCommentNo, btn) => {
   // 수정창이 열려 있다면 닫기
   const existingUpdate = document.querySelector(".update-textarea");
   if (existingUpdate) {
-    const confirmClose = confirm(
-      "댓글 수정을 취소하고 답글을 작성하시겠습니까?"
-    );
+    const confirmClose = confirm("댓글 수정을 취소하시겠습니까?");
     if (!confirmClose) return;
 
-    existingUpdate.closest("li").after(beforeCommentRow);
-    existingUpdate.closest("li").remove();
+    // 전체 리스트 새로고침 후, 답글 작성 재시도
+    selectCommentList();
+
+    // 약간의 딜레이 후 다시 시도 (DOM 갱신 시간 고려)
+    setTimeout(() => {
+      const retryBtn = document.querySelector(
+        `[data-comment-no="${parentCommentNo}"]`
+      );
+      if (retryBtn) showInsertComment(parentCommentNo, retryBtn);
+    }, 100);
+    return;
   }
 
-  // 다른 답글창이 열려 있다면 닫기
+  // 나머지 기존 코드 그대로
   const existingReply = document.querySelector(".commentInsertContent");
   if (existingReply) {
     const confirmClose = confirm(
@@ -219,27 +228,29 @@ const showInsertComment = (parentCommentNo, btn) => {
     );
     if (!confirmClose) return;
 
-    existingReply.nextElementSibling.remove(); // 버튼 영역 제거
-    existingReply.remove(); // textarea 제거
+    existingReply.nextElementSibling.remove();
+    existingReply.remove();
   }
 
-  // 답글 textarea 생성
   const textarea = document.createElement("textarea");
   textarea.classList.add("commentInsertContent");
   btn.closest("li").appendChild(textarea);
 
-  // 버튼 생성
   const commentBtnArea = document.createElement("div");
   commentBtnArea.classList.add("comment-btn-area1");
+
   const insertBtn = document.createElement("button");
   insertBtn.innerText = "등록";
   insertBtn.setAttribute(
     "onclick",
     "insertChildComment(" + parentCommentNo + ", this)"
   );
+  insertBtn.setAttribute("data-comment-no", parentCommentNo); // 재시도 시 식별자용
+
   const cancelBtn = document.createElement("button");
   cancelBtn.innerText = "취소";
   cancelBtn.setAttribute("onclick", "insertCancel(this)");
+
   commentBtnArea.append(insertBtn, cancelBtn);
   textarea.after(commentBtnArea);
 };
@@ -341,19 +352,32 @@ const showUpdateComment = (commentNo, btn) => {
     existingReply.remove();
   }
 
-  // 수정창이 이미 열려 있다면 닫기
+  // 이미 수정창이 열려 있는지 체크
   const existingUpdate = document.querySelector(".update-textarea");
   if (existingUpdate) {
+    const currentLi = btn.closest("li");
+    const openedLi = existingUpdate.closest("li");
+
+    if (currentLi === openedLi) {
+      // 같은 댓글에서 다시 수정 버튼 클릭 시 아무 동작 하지 않음
+      alert("이미 수정 중인 댓글입니다.");
+      return;
+    }
+
     const confirmClose = confirm("다른 댓글 수정을 취소하고 수정하시겠습니까?");
     if (!confirmClose) return;
 
-    existingUpdate.closest("li").after(beforeCommentRow);
-    existingUpdate.closest("li").remove();
+    // 수정창 닫고 원래 댓글 복원
+    openedLi.after(beforeCommentRow);
+    openedLi.remove();
   }
 
   // 수정 textarea 생성
   const commentRow = btn.closest("li");
+
+  // 수정 전 원래 댓글 내용을 복사 (매번 갱신)
   beforeCommentRow = commentRow.cloneNode(true);
+
   const contentP = commentRow.querySelector(".comment-content");
   const beforeContent = contentP ? contentP.textContent : "";
 
@@ -426,6 +450,7 @@ document.addEventListener("DOMContentLoaded", function () {
   selectCommentList(); // DOM이 완전히 로드된 후 실행
 });
 
+// 멤버 초대
 function inviteMember(memberNo, memberNickname, hireNo) {
   console.log("초대 멤버 번호:", memberNo);
   console.log("초대 멤버 닉네임:", memberNickname);
