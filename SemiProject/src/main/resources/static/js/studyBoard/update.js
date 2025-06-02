@@ -54,29 +54,24 @@ function previewImage(file) {
   reader.onload = function (e) {
     const imagePreview = document.getElementById("imagePreview");
     imagePreview.innerHTML = `
-            <div class="current-image">
-              <img src="${e.target.result}" alt="미리보기 이미지" class="study-image" id="currentImage" />
-            </div>
+              <img src="${e.target.result}" alt="미리보기 이미지" class="default-img" id="currentImage" />
           `;
   };
   reader.readAsDataURL(file);
 }
 
+const imagePreview = document.getElementById("imagePreview");
+const imgtag = imagePreview.cloneNode(true);
+
 // 이미지 삭제
 function removeImage() {
   selectedImageFile = null;
   document.getElementById("imageFile").value = "";
+  const previewImgContainer = document.querySelector(".previewImgContainer");
+  const newPreview = imgtag.cloneNode(true); // 새로운 복제본
 
-  const imagePreview = document.getElementById("imagePreview");
-  imagePreview.innerHTML = `
-          <div class="default-image" id="defaultImage">
-            <div class="character-placeholder">
-              <div style="width: 150px; height: 150px; background-color: #e9ecef; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #666; font-size: 48px;">
-                👤
-              </div>
-            </div>
-          </div>
-        `;
+  previewImgContainer.innerHTML = "";
+  previewImgContainer.appendChild(newPreview);
 }
 
 // 폼 제출 처리

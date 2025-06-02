@@ -180,21 +180,23 @@
                   <div class="image-section">
                     <label class="form-label">대표 이미지</label>
                     <div class="image-upload-area">
-                      <div class="image-preview" id="imagePreview">
-                        <img
-                          th:if="${study.studyMainImg}"
-                          th:src="@{${study.studyMainImg}}"
-                          alt="현재 스터디 이미지"
-                          class="default-img"
-                          id="currentImage"
-                        />
+                      <div class="previewImgContainer">
+                        <div class="image-preview" id="imagePreview">
+                          <img
+                            th:if="${study.studyMainImg}"
+                            th:src="@{${study.studyMainImg}}"
+                            alt="현재 스터디 이미지"
+                            class="default-img"
+                            id="currentImage"
+                          />
 
-                        <img
-                          th:unless="${study.studyMainImg}"
-                          th:src="#{user.default.image}"
-                          alt="대표 이미지"
-                          class="default-img"
-                        />
+                          <img
+                            th:unless="${study.studyMainImg}"
+                            th:src="#{user.default.image}"
+                            alt="대표 이미지"
+                            class="default-img"
+                          />
+                        </div>
                       </div>
 
                       <div class="upload-controls">
