@@ -1,5 +1,6 @@
 package kr.co.semi.member.model.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -57,6 +58,12 @@ public interface MemberMapper {
 	 * @return
 	 */
 	int changePw(Member inputMember);
+
+	/** 스터디원 정보 조회
+	 * @param studyNo
+	 * @return
+	 */
+	List<Member> getStudyMembers(int studyNo);
 
 
 

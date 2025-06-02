@@ -1,6 +1,7 @@
 package kr.co.semi.member.model.service;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -180,5 +181,10 @@ public class MemberSerivceImpl implements MemberService {
 				
 
 				return finalPath;
+	}
+
+	@Override
+	public List<Member> getStudyMembers(int studyNo) {
+		return mapper.getStudyMembers(studyNo);
 	}
 }
