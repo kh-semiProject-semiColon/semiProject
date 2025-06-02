@@ -154,3 +154,24 @@ document.addEventListener("keydown", function (e) {
     closeAlert();
   }
 });
+
+const formInput = document.querySelector("#studyMaxCount");
+const spanInput = document.querySelector("#maxCount");
+
+formInput.addEventListener("input", function () {
+  const value = Number(formInput.value);
+
+  if (value > 6) {
+    spanInput.classList.add("error");
+    spanInput.classList.remove("confirm");
+    spanInput.innerText = "최대 인원은 6명입니다.";
+  } else if (value >= 1) {
+    spanInput.classList.remove("error");
+    spanInput.classList.add("confirm");
+    spanInput.innerText = "조건에 부합합니다.";
+  } else {
+    spanInput.classList.remove("confirm");
+    spanInput.classList.add("error");
+    spanInput.innerText = "최소 1명 이상이어야 합니다.";
+  }
+});
