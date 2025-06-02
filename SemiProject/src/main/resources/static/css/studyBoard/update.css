@@ -295,6 +295,13 @@
   flex-wrap: wrap;
 }
 
+.error {
+  color: red;
+}
+.confirm {
+  color: green;
+}
+
 /* 로딩 상태 */
 .btn.loading {
   position: relative;
