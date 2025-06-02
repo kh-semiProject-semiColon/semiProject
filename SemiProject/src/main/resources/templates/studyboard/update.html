@@ -82,7 +82,8 @@
                       required
                     />
                     <span class="input-note">
-                      현재 <span th:text="${study.memberCount}">5</span>명이
+                      현재
+                      <span th:text="${study.currentMemberCount}">5</span>명이
                       참여 중입니다.
                     </span>
                   </div>
@@ -180,40 +181,20 @@
                     <label class="form-label">대표 이미지</label>
                     <div class="image-upload-area">
                       <div class="image-preview" id="imagePreview">
-                        <div
-                          class="current-image"
+                        <img
                           th:if="${study.studyMainImg}"
-                        >
-                          <img
-                            th:src="@{${study.studyMainImg}}"
-                            alt="현재 스터디 이미지"
-                            class="study-image"
-                            id="currentImage"
-                          />
-                        </div>
-                        <div
-                          class="default-image"
+                          th:src="@{${study.studyMainImg}}"
+                          alt="현재 스터디 이미지"
+                          class="study-image"
+                          id="currentImage"
+                        />
+
+                        <img
                           th:unless="${study.studyMainImg}"
-                          id="defaultImage"
-                        >
-                          <div class="character-placeholder">
-                            <div
-                              style="
-                                width: 150px;
-                                height: 150px;
-                                background-color: #e9ecef;
-                                border-radius: 50%;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                color: #666;
-                                font-size: 48px;
-                              "
-                            >
-                              👤
-                            </div>
-                          </div>
-                        </div>
+                          th:src="#{user.default.image}"
+                          alt="대표 이미지"
+                          class="default-img"
+                        />
                       </div>
 
                       <div class="upload-controls">
