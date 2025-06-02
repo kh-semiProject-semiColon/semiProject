@@ -200,6 +200,9 @@ main {
 }
 
 .write-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-family: AppleSDGothicNeoB00;
   width: 131.73px;
   height: 51px;

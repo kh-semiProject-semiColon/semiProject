@@ -158,6 +158,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 멤버 수 체크 (이중 검증) - 팀장 혼자만 남았을 때만 해체 가능
     if (memberCount > 1) {
+      console.log(memberCount);
+
       alert(
         "스터디 해체는 팀장 혼자만 남았을 때만 가능합니다.\n다른 멤버들을 먼저 탈퇴시키거나 팀장 권한을 위임해주세요."
       );

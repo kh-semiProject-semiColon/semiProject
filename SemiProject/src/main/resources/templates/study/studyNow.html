@@ -91,11 +91,14 @@
                 <!-- 하단 정보 -->
                 <div class="card-footer">
                   <div>
-                    <img th:unless="*{studyMainImg}"
+                    <img th:unless="*{profileImg}"
                     th:src="#{user.default.image}"
                     alt="대표 이미지" class="leader-icon" />
+                    <img th:if="*{profileImg}"
+                    th:src="*{profileImg}"
+                    alt="대표 이미지" class="leader-icon" />
                     <span class="leader-text">Team Leader</span>
-                    <span class="leader-nickname">모코콩</span>
+                    <span class="leader-nickname" th:text="*{memberNickname}">모코콩</span>
                   </div>
                   <div th:text="${study.memberCount} + '/' +${study.studyMaxCount}" class="member-count">3/5명</div>
                 </div>
