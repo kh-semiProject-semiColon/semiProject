@@ -65,6 +65,8 @@ public interface MemberMapper {
 	 */
 	List<Member> getStudyMembers(int studyNo);
 
+	List<Member> selectMemberName(int studyNo);
+
 
 
 }

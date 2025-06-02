@@ -187,4 +187,9 @@ public class MemberSerivceImpl implements MemberService {
 	public List<Member> getStudyMembers(int studyNo) {
 		return mapper.getStudyMembers(studyNo);
 	}
+	
+	@Override
+	public List<Member> selectMemberName(int studyNo) {
+		return mapper.selectMemberName(studyNo);
+	}
 }
