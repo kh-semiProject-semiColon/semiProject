@@ -16,5 +16,15 @@
   </nav>
   <div class="nothingBox"></div>
   <div class="hamburger">☰</div>
-  <!-- <script src="/js/common/header.js"></script> -->
+
+  <script th:inline="javascript">
+    document.querySelector(".isStudy").addEventListener("click", function(e) {
+      let studyNo = [[${session.loginMember != null ? session.loginMember.studyNo : 0}]];
+
+      if (studyNo === 0) {
+        alert("가입된 스터디가 없습니다.");
+        e.preventDefault(); // 링크 이동 막기
+      }
+    });
+  </script>
 </header>

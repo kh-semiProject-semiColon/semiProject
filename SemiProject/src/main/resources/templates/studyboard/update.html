@@ -99,7 +99,7 @@
                           value="1"
                           th:checked="${study.studyType == 1}"
                         />
-                        <span>📚 레벨업</span>
+                        <span>레벨업</span>
                       </label>
                       <label class="radio-item">
                         <input
@@ -108,7 +108,7 @@
                           value="2"
                           th:checked="${study.studyType == 2}"
                         />
-                        <span>🎨 복습</span>
+                        <span>복습</span>
                       </label>
                       <label class="radio-item">
                         <input
@@ -117,7 +117,7 @@
                           value="3"
                           th:checked="${study.studyType == 3}"
                         />
-                        <span>📱 문제풀이</span>
+                        <span>문제풀이</span>
                       </label>
                       <label class="radio-item">
                         <input
@@ -126,7 +126,7 @@
                           value="4"
                           th:checked="${study.studyType == 4}"
                         />
-                        <span>🤝 자격증</span>
+                        <span>자격증</span>
                       </label>
                       <label class="radio-item">
                         <input
@@ -135,7 +135,7 @@
                           value="5"
                           th:checked="${study.studyType == 5}"
                         />
-                        <span>🚀 프로젝트</span>
+                        <span>프로젝트</span>
                       </label>
                     </div>
                   </div>
@@ -185,7 +185,7 @@
                           th:if="${study.studyMainImg}"
                           th:src="@{${study.studyMainImg}}"
                           alt="현재 스터디 이미지"
-                          class="study-image"
+                          class="default-img"
                           id="currentImage"
                         />
 
@@ -275,11 +275,11 @@
                     <label class="info-label">방향성</label>
                     <div class="info-value">
                       <span th:switch="${study.studyType}">
-                        <span th:case="1">📚 백엔드</span>
-                        <span th:case="2">🎨 복습</span>
-                        <span th:case="3">📱 문제풀이</span>
-                        <span th:case="4">🤝 자격증</span>
-                        <span th:case="5">🚀 프로젝트</span>
+                        <span th:case="1">백엔드</span>
+                        <span th:case="2">복습</span>
+                        <span th:case="3">문제풀이</span>
+                        <span th:case="4">자격증</span>
+                        <span th:case="5">프로젝트</span>
                         <span th:case="*">-</span>
                       </span>
                     </div>
@@ -367,6 +367,6 @@
     <th:block th:replace="~{common/footer}"></th:block>
     <script src="/js/studyBoard/study-sidebar.js"></script>
     <script src="/js/studyBoard/update.js"></script>
-	<script src="/js/common/header.js"></script>
+    <script src="/js/common/header.js"></script>
   </body>
 </html>
