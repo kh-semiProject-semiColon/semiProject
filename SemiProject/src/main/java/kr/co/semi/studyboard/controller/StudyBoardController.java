@@ -180,11 +180,6 @@ public class StudyBoardController {
             	
             	model.addAttribute("isLeader", false);
             }
-            if (study == null) {
-                log.warn("존재하지 않는 스터디 또는 권한 없음 - studyNo: {}, memberNo: {}", 
-                        study, loginMember.getMemberNo());
-                return "redirect:/study/studyNow";
-            }
             
             model.addAttribute("study", study);
             model.addAttribute("loginMember", loginMember); // 현재 사용자 정보 추가

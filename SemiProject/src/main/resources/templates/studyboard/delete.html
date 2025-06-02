@@ -267,11 +267,11 @@
     <!-- 푸터 -->
     <th:block th:replace="~{common/footer}"></th:block>
 
-    <script>
+    <script th:inline="javascript">
       const STUDY_DATA = {
-        studyNo: /*[[${study.studyNo}]]*/ 1,
-        studyName: /*[[${study.studyName}]]*/ "JAVA스터디",
-        memberCount: /*[[${study.currentMemberCount}]]*/ 2,
+        studyNo: [[${study.studyNo}]] ,
+        studyName: [[${study.studyName}]] ,
+        memberCount: [[${study.currentMemberCount}]]
       };
     </script>
 
