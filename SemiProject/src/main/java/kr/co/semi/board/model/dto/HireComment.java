@@ -21,4 +21,7 @@ public class HireComment {
 	
 	private int memberNo;				// 회원 고유 번호
 	private String memberNickname;
+	private String profileImg;
+	
+	private int studyNo;
 }

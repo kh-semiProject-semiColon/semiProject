@@ -45,6 +45,17 @@ nav a:hover::after {
   bottom: -5px;
   left: 0;
 }
+
+nav a.active::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: #4285f4;
+  bottom: -5px;
+  left: 0;
+}
+
 /* 호버 시에만 스타일 적용 (active 클래스 제거) */
 .hamburger {
   display: none;

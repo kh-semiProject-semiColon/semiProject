@@ -1,9 +1,10 @@
 /* 전체 레이아웃 */
 .main {
-  max-width: 1196px;
+  width: 41.67%;
   margin: 0 auto;
-  padding: 20px;
-  font-family: "Apple SD Gothic Neo", sans-serif;
+  padding: 40px 20px;
+  color: #25272b;
+  margin-bottom: 100px;
 }
 
 main {
