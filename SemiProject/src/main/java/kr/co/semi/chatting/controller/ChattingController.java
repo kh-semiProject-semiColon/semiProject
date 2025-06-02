@@ -31,11 +31,8 @@ public class ChattingController {
     private ChattingService service;
     
     @Autowired
-    private MemberService memberService; // 멤버 정보 조회용
+    private MemberService memberService;
 
-    /**
-     * 채팅 페이지 보기 (HTML 페이지 반환)
-     */
     @GetMapping("")
     public String showChatPage(@PathVariable("studyNo") int studyNo, 
                               Model model,
@@ -44,20 +41,44 @@ public class ChattingController {
         log.info("채팅 페이지 접근 - studyNo: {}, loginMember: {}", studyNo, loginMember.getMemberNo());
         
         try {
-            // 메시지 목록 조회
+            // 사용자가 해당 스터디의 멤버인지 확인 (URL의 studyNo 사용)
+            boolean isStudyMember = service.isStudyMember(studyNo, loginMember.getMemberNo());
+            if (!isStudyMember) {
+                log.warn("비인가 접근 시도: 사용자 {}는 스터디 {}의 멤버가 아님", 
+                        loginMember.getMemberNo(), studyNo);
+                model.addAttribute("error", "해당 스터디의 멤버만 접근할 수 있습니다.");
+                return "error/403";
+            }
+            
+            // 메시지 목록 조회 (URL의 studyNo 사용 - 이게 핵심!)
             List<Chatting> messages = service.getMessagesByStudyNo(studyNo);
             log.info("조회된 메시지 수: {}", messages != null ? messages.size() : 0);
             
-            // 멤버 정보 매핑 (사용자 이름 표시용)
+            // 메시지 내용 로깅 (디버깅용)
+            if (messages != null && !messages.isEmpty()) {
+                log.info("첫 번째 메시지: messageNo={}, senderNo={}, content={}", 
+                        messages.get(0).getMessageNo(), 
+                        messages.get(0).getSenderNo(), 
+                        messages.get(0).getContent());
+            }
+            
+            // 멤버 정보 매핑 (URL의 studyNo 사용)
             Map<Integer, String> memberMap = getMemberMapForStudy(studyNo);
+            log.info("멤버 맵: {}", memberMap);
             
             // 모델에 데이터 추가
             model.addAttribute("messages", messages);
-            model.addAttribute("studyNo", studyNo);
+            model.addAttribute("studyNo", studyNo);  // URL의 studyNo 사용
             model.addAttribute("loginMember", loginMember);
             model.addAttribute("memberMap", memberMap);
             
-            return "study/chat"; // 채팅 페이지 템플릿
+            log.info("=== 최종 전달 데이터 ===");
+            log.info("studyNo: {}", studyNo);
+            log.info("messages 개수: {}", messages != null ? messages.size() : 0);
+            log.info("memberMap: {}", memberMap);
+            log.info("=====================");
+            
+            return "studyBoard/studyChat";
             
         } catch (Exception e) {
             log.error("채팅 페이지 로드 중 오류 발생", e);
@@ -65,21 +86,35 @@ public class ChattingController {
             return "error/500";
         }
     }
-
-    /**
-     * 스터디 채팅 메시지 목록 조회 (AJAX용 - JSON 반환)
-     */
+    
     @GetMapping("/messages")
     @ResponseBody
     public Map<String, Object> getStudyChatMessages(@PathVariable("studyNo") int studyNo,
+                                                   @RequestParam(value = "lastMessageNo", defaultValue = "0") int lastMessageNo,
                                                    @SessionAttribute("loginMember") Member loginMember) {
         
-        log.info("AJAX 메시지 목록 조회 요청 - studyNo: {}", studyNo);
+        log.info("AJAX 메시지 목록 조회 요청 - studyNo: {}, lastMessageNo: {}", studyNo, lastMessageNo);
         
         Map<String, Object> response = new HashMap<>();
         
         try {
-            List<Chatting> messages = service.getMessagesByStudyNo(studyNo);
+            // 권한 확인 (URL의 studyNo 사용)
+            boolean isStudyMember = service.isStudyMember(studyNo, loginMember.getMemberNo());
+            if (!isStudyMember) {
+                response.put("success", false);
+                response.put("error", "접근 권한이 없습니다.");
+                return response;
+            }
+            
+            List<Chatting> messages;
+            if (lastMessageNo > 0) {
+                // 특정 메시지 번호 이후의 새 메시지만 조회
+                messages = service.getMessagesAfter(studyNo, lastMessageNo);
+            } else {
+                // 전체 메시지 조회
+                messages = service.getMessagesByStudyNo(studyNo);
+            }
+            
             Map<Integer, String> memberMap = getMemberMapForStudy(studyNo);
             
             response.put("success", true);
@@ -87,7 +122,7 @@ public class ChattingController {
             response.put("memberMap", memberMap);
             response.put("loginMemberNo", loginMember.getMemberNo());
             
-            log.info("AJAX 조회 결과 - 메시지 수: {}", messages.size());
+            log.info("AJAX 조회 결과 - 메시지 수: {}, 멤버 맵: {}", messages.size(), memberMap);
             
         } catch (Exception e) {
             log.error("AJAX 메시지 조회 중 오류 발생", e);
@@ -98,9 +133,6 @@ public class ChattingController {
         return response;
     }
 
-    /**
-     * 스터디 채팅 메시지 전송
-     */
     @PostMapping("/send")
     public String sendStudyChatMessage(@PathVariable("studyNo") int studyNo,
                                      @RequestParam("content") String content,
@@ -111,10 +143,17 @@ public class ChattingController {
                 studyNo, loginMember.getMemberNo(), content);
         
         try {
+            // 권한 확인 (URL의 studyNo 사용)
+            boolean isStudyMember = service.isStudyMember(studyNo, loginMember.getMemberNo());
+            if (!isStudyMember) {
+                redirectAttributes.addFlashAttribute("error", "해당 스터디의 멤버만 메시지를 보낼 수 있습니다.");
+                return "redirect:/study/" + studyNo + "/chat";
+            }
+            
             Chatting message = new Chatting();
-            message.setStudyNo(loginMember.getStudyNo());
+            message.setStudyNo(studyNo);  // URL의 studyNo 사용
             message.setSenderNo(loginMember.getMemberNo());
-            message.setContent(content);
+            message.setContent(content.trim());
 
             int result = service.insertMessage(message);
             log.info("메시지 전송 결과: {}", result);
@@ -130,59 +169,21 @@ public class ChattingController {
             redirectAttributes.addFlashAttribute("error", "메시지 전송 중 오류가 발생했습니다.");
         }
         
-        return "redirect:/study/" + studyNo + "/chat";
+        return "redirect:/study/" + studyNo + "/chat";  // URL의 studyNo 사용
     }
 
     /**
-     * AJAX로 메시지 전송 (페이지 리로드 없이)
-     */
-    @PostMapping("/send-ajax")
-    @ResponseBody
-    public Map<String, Object> sendMessageAjax(@PathVariable("studyNo") int studyNo,
-                                             @RequestParam("content") String content,
-                                             @SessionAttribute("loginMember") Member loginMember) {
-
-        Map<String, Object> response = new HashMap<>();
-        
-        try {
-            Chatting message = new Chatting();
-            message.setStudyNo(studyNo);
-            message.setSenderNo(loginMember.getMemberNo());
-            message.setContent(content);
-
-            int result = service.insertMessage(message);
-            
-            if (result > 0) {
-                response.put("success", true);
-                response.put("message", "메시지가 전송되었습니다.");
-            } else {
-                response.put("success", false);
-                response.put("error", "메시지 전송에 실패했습니다.");
-            }
-            
-        } catch (Exception e) {
-            log.error("AJAX 메시지 전송 중 오류 발생", e);
-            response.put("success", false);
-            response.put("error", "메시지 전송 중 오류가 발생했습니다.");
-        }
-        
-        return response;
-    }
-
-
-    /**
-     * 스터디 멤버 정보 매핑 조회 (임시 구현)
+     * 스터디 멤버 정보 매핑 조회
      */
     private Map<Integer, String> getMemberMapForStudy(int studyNo) {
-        // 실제로는 스터디 멤버 정보를 조회해야 합니다
         Map<Integer, String> memberMap = new HashMap<>();
         
         try {
-            
-             List<Member> studyMembers = memberService.getStudyMembers(studyNo);
-             for (Member member : studyMembers) {
-                 memberMap.put(member.getMemberNo(), member.getMemberName());
-             }
+            List<Member> studyMembers = memberService.getStudyMembers(studyNo);
+            for (Member member : studyMembers) {
+                memberMap.put(member.getMemberNo(), member.getMemberName());
+            }
+            log.debug("스터디 {} 멤버 정보 매핑 완료: {} 명", studyNo, memberMap.size());
             
         } catch (Exception e) {
             log.error("멤버 정보 조회 중 오류 발생", e);
@@ -190,5 +191,4 @@ public class ChattingController {
         
         return memberMap;
     }
-
 }

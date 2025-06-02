@@ -94,8 +94,9 @@
 	
 	<!-- 모든 스터디원의 정보 가져오기 -->
 	<select id="getStudyMembers">
-		SELECT STUDY_NO ,MEMBER_NO
-		FROM STUDY_MEMBER
+		SELECT STUDY_NO , MEMBER_NO,MEMBER_NAME
+		FROM MEMBER
+		JOIN STUDY_MEMBER USING(MEMBER_NO)
 		WHERE STUDY_NO = #{studyNo}
 	</select>
  
