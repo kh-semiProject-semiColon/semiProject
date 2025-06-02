@@ -9,7 +9,7 @@ body {
   display: flex;
   flex-direction: column;
 }
-header {
+/*header {
   background-color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 10px 20px;
@@ -56,13 +56,13 @@ nav a:hover::after {
   bottom: -5px;
   left: 0;
 }
-/* 호버 시에만 스타일 적용 (active 클래스 제거) */
-/* .hamburger {
+ 호버 시에만 스타일 적용 (active 클래스 제거) 
+.hamburger {
   display: none;
   cursor: pointer;
   font-size: 24px;
 } 
-
+*/
 .main-content {
   flex: 1;
   padding: 20px 363px;
