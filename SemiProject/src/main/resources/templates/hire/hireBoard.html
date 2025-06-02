@@ -32,7 +32,7 @@
             <div th:each="hire : ${hireList}" class="card">
               <a th:href="@{/hire/detail/{hireNo}(hireNo=${hire.hireNo})}">
                 <!-- 이미지 -->
-                <img th:src="${hire.studyMainImg != null ? hire.studyMainImg : '/images/default.png'}" class="card-image" />
+                <img th:src="${hire.studyMainImg != null ? hire.studyMainImg : '/images/default-profile.png'}" class="card-image" />
                 
                 <!-- 제목 -->
                 <p class="card-text" th:text="${hire.hireTitle}"></p>
@@ -48,7 +48,7 @@
                 
                 <div class="card-footer">
                   <span class="user">
-                    <img th:src="${hire.studyMainImg != null ? hire.studyMainImg : '/images/default.png'}" class="profile"/>
+                    <img th:src="${hire.profileImg != null ? hire.profileImg : '/images/default-profile.png'}" class="profile"/>
                     <span th:text="${hire.memberNickname}">작성자</span>
                   </span>
                   <span class="look">
