@@ -68,8 +68,6 @@ body {
 .study-form {
   background-color: white; /* #f8f9fa에서 white로 변경 */
   padding: 25px;
-  border-radius: 8px;
-  border-left: 4px solid #3867ff;
   width: 100%;
   box-sizing: border-box;
 }
@@ -197,6 +195,9 @@ body {
 
 /* 이미지 미리보기 */
 .image-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 15px;
 }
 
@@ -346,4 +347,10 @@ body {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.default-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
 }
