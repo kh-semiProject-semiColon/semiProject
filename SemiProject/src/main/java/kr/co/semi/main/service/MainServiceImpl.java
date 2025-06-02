@@ -42,7 +42,7 @@ public class MainServiceImpl implements MainService {
 			result = 0;
 		}
 		
-		return result;
+		return studyNo;
 	}
 
 	/**

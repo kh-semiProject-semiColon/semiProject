@@ -112,7 +112,7 @@ public class ChattingController {
         
         try {
             Chatting message = new Chatting();
-            message.setStudyNo(studyNo);
+            message.setStudyNo(loginMember.getStudyNo());
             message.setSenderNo(loginMember.getMemberNo());
             message.setContent(content);
 

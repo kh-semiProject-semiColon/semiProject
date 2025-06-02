@@ -123,6 +123,10 @@ public class MainController {
 	    }
 	    // 스터디 생성 기능
 	    int result = service.studyCreation(study, loginMember.getMemberNo());
+	    if(result>0) {
+	    	loginMember.setStudyNo(result);
+	    	result = 1;
+	    }
 	    
 	    if (result == 0 && imagePath != null) {
 	    	new File(uploadDir + savedFileName).delete();
