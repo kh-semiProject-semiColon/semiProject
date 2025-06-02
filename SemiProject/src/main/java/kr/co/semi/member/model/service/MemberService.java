@@ -1,5 +1,6 @@
 package kr.co.semi.member.model.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -69,5 +70,11 @@ public interface MemberService {
 	 * @return
 	 */
 	String profile(MultipartFile profileImg, Member inputMember)throws Exception;
+
+	/** 스터디 멤버 정보 가져오기
+	 * @param studyNo
+	 * @return
+	 */
+	List<Member> getStudyMembers(int studyNo);
 
 }

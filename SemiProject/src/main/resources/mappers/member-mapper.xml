@@ -91,5 +91,12 @@
 	AND MEMBER_TEL = #{memberTel}
 	AND MEMBER_DEL_FL='N'
 	</select>
+	
+	<!-- 모든 스터디원의 정보 가져오기 -->
+	<select id="getStudyMembers">
+		SELECT STUDY_NO ,MEMBER_NO
+		FROM STUDY_MEMBER
+		WHERE STUDY_NO = #{studyNo}
+	</select>
  
 </mapper>

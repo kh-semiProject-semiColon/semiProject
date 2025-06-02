@@ -173,6 +173,7 @@ public class StudyBoardController {
                                   Model model) {
         try {
             Study study = service.getStudyInfo(loginMember);
+            study.setCurrentMemberCount(service.getCurrentMemberCount(loginMember.getStudyNo())); 
             if(service.isStudyLeader(loginMember.getMemberNo())) {
             	model.addAttribute("isLeader", true);
             } else {
@@ -558,4 +559,12 @@ public class StudyBoardController {
 		
 		return service.studyBoardLike(map);
 	}
+	
+	/**
+     * 스터디 스케줄 페이지
+     */
+    @GetMapping("studyChat")
+    public String studyChat() {
+        return "studyBoard/studyChat";
+    }
 }
