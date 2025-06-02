@@ -276,4 +276,10 @@
 		WHERE STUDY_NO = #{studyNo}
 		AND MEMBER_NO = #{memberNo}
 	</select>
+	
+	<select id="getStudyNo">
+		SELECT STUDY_NO
+		FROM HIRE_INFO
+		WHERE HIRE_NO = #{hireNo}
+	</select>
 </mapper>
