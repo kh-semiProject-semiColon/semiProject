@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
       chatting.classList.remove("active");
       break;
 
-    case "/studyBoard/chatting":
+    case "/studyBoard/studyChat":
       calendar.classList.remove("active");
       rulecontent.classList.remove("active");
       studyBoard.classList.remove("active");
