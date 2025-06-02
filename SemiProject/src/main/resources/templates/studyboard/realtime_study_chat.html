@@ -81,7 +81,7 @@
       </div>
     </div>
 
-    <script>
+    <script th:inline="javascript">
       document.addEventListener("DOMContentLoaded", function () {
         const messageInput = document.getElementById("gostudyMessageInput");
         const messagesContainer = document.getElementById(
@@ -94,7 +94,7 @@
         const studyNo = parseInt("[[${session.loginMember.studyNo}]]") || 1;
         const loginMemberNo =
           parseInt("[[${session.loginMember.memberNo}]]") || 1;
-        const memberMapData = /*[[${memberMap}]]*/ {};
+        const memberMapData = [[${memberMap}]];
 
         // memberMap이 제대로 전달되었는지 확인
         console.log("studyNo:", studyNo);

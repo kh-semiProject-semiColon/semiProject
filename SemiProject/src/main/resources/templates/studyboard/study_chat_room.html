@@ -29,7 +29,7 @@
             <div class="gostudy-message-info">
               <span
                 th:if="${message.senderNo != session.loginMember.memberNo}"
-                th:text="${memberMap[message.senderNo] ?: '알 수 없음'}"
+                th:text="${memberMap[message.senderNo]}"
               ></span>
               <span th:text="${message.sendTime}"></span>
               <span th:if="${message.senderNo == session.loginMember.memberNo}"
@@ -172,7 +172,7 @@
             "gostudy-message" + (isOwn ? " gostudy-message-own" : "");
           messageDiv.setAttribute("data-message-no", message.messageNo);
 
-          const userName = memberMap[message.senderNo] || "알 수 없음";
+          const userName = memberMap[message.senderNo];
           const avatarText = userName.substring(0, 1);
           const avatarClass = `gostudy-avatar-${(message.senderNo % 4) + 1}`;
 
