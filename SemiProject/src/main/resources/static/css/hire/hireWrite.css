@@ -10,13 +10,17 @@ body {
   box-sizing: border-box;
 }
 
+.side {
+  width: 29.015%;
+}
+
 body {
   background-color: #ffffff;
   color: #25272b;
 }
 
 .container {
-  width: 100%;
+  width: 41.67%;
   max-width: 920px;
   margin: 0 auto;
   padding: 50px 20px 80px;
@@ -59,7 +63,7 @@ body {
 .form-label {
   font-size: 16px;
   font-weight: 500;
-  width: 140px;
+  width: 100px;
   display: inline-block;
   line-height: 38px;
 }
