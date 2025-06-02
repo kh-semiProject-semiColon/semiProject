@@ -11,19 +11,19 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("현재 경로:", currentLocation);
 
   if (currentLocation.startsWith("/board/announce")) {
-    announce.classList.add("active");
-  } else if (currentLocation.startsWith("/hire/board")) {
-    hire.classList.add("active");
+    announce.classList.toggle("active");
+  } else if (currentLocation.startsWith("/hire/")) {
+    hire.classList.toggle("active");
   } else if (currentLocation.startsWith("/board/1")) {
-    board1.classList.add("active");
+    board1.classList.toggle("active");
   } else if (currentLocation.startsWith("/study/studyNow")) {
-    studyNow.classList.add("active");
+    studyNow.classList.toggle("active");
   } else if (
     currentLocation.startsWith("/board/2") ||
     currentLocation.startsWith("/editBoard/2")
   ) {
-    board2.classList.add("active");
+    board2.classList.toggle("active");
   } else if (currentLocation.startsWith("/studyBoard/")) {
-    studyBoard.classList.add("active");
+    studyBoard.classList.toggle("active");
   }
 });
