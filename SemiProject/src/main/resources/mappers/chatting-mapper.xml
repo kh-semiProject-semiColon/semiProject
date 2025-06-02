@@ -1,42 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="kr.co.semi.chatting.model.mapper.ChattingMapper">
 
-	<!-- 채팅 보내기 -->
-	<insert id="insertMessage">
-    INSERT INTO STUDY_CHAT_MESSAGE
-        VALUES (
-        SEQ_MESSAGE_NO.NEXTVAL,
-        #{studyNo},
-        #{senderNo},
-        #{content},
-        SYSDATE)
-	</insert>
-	
-	<!-- 채팅 불러오기 -->
-	<select id="getMessagesByStudyNo">
-		SELECT 
+    <!-- 채팅 메시지 저장 -->
+    <insert id="insertMessage" parameterType="Chatting">
+        <selectKey keyProperty="messageNo" resultType="int" order="BEFORE">
+            SELECT SEQ_MESSAGE_NO.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO STUDY_CHAT_MESSAGE (
             MESSAGE_NO,
             STUDY_NO,
             SENDER_NO,
             CONTENT,
-            TO_CHAR(SEND_TIME, 'AM HH:MI') AS SEND_TIME
+            SEND_TIME
+        ) VALUES (
+            #{messageNo},
+            #{studyNo},
+            #{senderNo},
+            #{content},
+            SYSTIMESTAMP
+        )
+    </insert>
+
+    <!-- 스터디의 모든 메시지 조회 (최근 100개로 제한) -->
+    <select id="getMessagesByStudyNo" parameterType="int" resultType="Chatting">
+        SELECT * FROM (
+            SELECT 
+                MESSAGE_NO as messageNo,
+                STUDY_NO as studyNo,
+                SENDER_NO as senderNo,
+                CONTENT as content,
+                TO_CHAR(SEND_TIME, 'YYYY.MM.DD HH24:MI') as sendTime
+            FROM STUDY_CHAT_MESSAGE 
+            WHERE STUDY_NO = #{studyNo}
+            ORDER BY messageNo DESC
+        ) WHERE ROWNUM &lt;= 100
+        ORDER BY messageNo ASC
+    </select>
+
+    <!-- 특정 메시지 번호 이후의 새 메시지들 조회 -->
+    <select id="getMessagesAfter" resultType="Chatting">
+        SELECT 
+            MESSAGE_NO as messageNo,
+            STUDY_NO as studyNo,
+            SENDER_NO as senderNo,
+            CONTENT as content,
+            TO_CHAR(SEND_TIME, 'YYYY.MM.DD HH24:MI') as sendTime
         FROM STUDY_CHAT_MESSAGE 
         WHERE STUDY_NO = #{studyNo}
-        ORDER BY SEND_TIME ASC, MESSAGE_NO ASC
-	</select>
-	
-	<!--해당 member가 study에 속해있는지 확인 -->
-	<select id="isStudyMember" resultType="boolean">
-    	SELECT
-        	CASE
-            	WHEN COUNT(*) > 0 THEN TRUE
-            	ELSE FALSE
-        	END
-	    FROM STUDY_MEMBER
-	    WHERE STUDY_NO = #{studyNo}
-	    AND MEMBER_NO = #{memberNo}
-</select>
+        AND MESSAGE_NO > #{lastMessageNo}
+        ORDER BY messageNo ASC
+    </select>
 
+    <!-- 스터디 멤버 여부 확인 -->
+    <select id="isStudyMember" resultType="boolean">
+        SELECT CASE 
+            WHEN COUNT(*) > 0 THEN 1 
+            ELSE 0 
+        END
+        FROM STUDY_MEMBER 
+        WHERE STUDY_NO = #{studyNo} 
+        AND MEMBER_NO = #{memberNo}
+    </select>
+
+    <!-- 스터디의 최근 메시지 조회 (개수 제한) -->
+    <select id="getRecentMessages" resultType="Chatting">
+        SELECT * FROM (
+            SELECT 
+                MESSAGE_NO as messageNo,
+                STUDY_NO as studyNo,
+                SENDER_NO as senderNo,
+                CONTENT as content,
+                TO_CHAR(SEND_TIME, 'YYYY.MM.DD HH24:MI') as sendTime
+            FROM STUDY_CHAT_MESSAGE 
+            WHERE STUDY_NO = #{studyNo}
+            ORDER BY MESSAGE_NO DESC
+        ) WHERE ROWNUM &lt;= #{limit}
+        ORDER BY messageNo ASC
+    </select>
 
 </mapper>

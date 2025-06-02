@@ -556,7 +556,7 @@ public class StudyBoardController {
 	}
 	
 	/**
-     * 스터디 스케줄 페이지
+     * 스터디 채팅 페이지
      */
     @GetMapping("studyChat")
     public String studyChat() {

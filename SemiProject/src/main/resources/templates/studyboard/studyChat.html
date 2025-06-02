@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="/css/studyBoard/sidebar.css" />
     <link rel="stylesheet" href="/css/studyBoard/rulecontent.css" />
     <link rel="stylesheet" href="/css/chatting/study_chat.css" />
+    <!-- SockJS 라이브러리 추가 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
   </head>
 
   <body>
@@ -39,25 +41,11 @@
             </div>
           </div>
 
-          <div class="rules-content">
-            <div class="no-rules">
-              <!-- 스터디 채팅룸 -->
-              <th:block th:replace="~{studyBoard/study_chat_room}"></th:block>
-            </div>
-          </div>
+          <!-- 스터디 채팅룸 -->
+          <th:block th:replace="~{studyBoard/realtime_study_chat}"></th:block>
         </div>
       </div>
     </div>
     <th:block th:replace="~{common/footer}"></th:block>
-
-    <!-- 오버레이 -->
-    <div
-      id="modalOverlay"
-      class="modal-overlay"
-      style="display: none"
-      onclick="closeRuleModal()"
-    ></div>
-
-    <script src="/js/studyBoard/rulecontent.js"></script>
   </body>
 </html>

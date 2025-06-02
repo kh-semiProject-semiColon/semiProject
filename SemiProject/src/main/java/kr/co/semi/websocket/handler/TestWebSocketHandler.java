@@ -1,101 +1,191 @@
 package kr.co.semi.websocket.handler;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.servlet.http.HttpSession;
+import kr.co.semi.chatting.model.dto.Chatting;
+import kr.co.semi.chatting.model.service.ChattingService;
+import kr.co.semi.member.model.dto.Member;
 import lombok.extern.slf4j.Slf4j;
 
-/** OOOWebSocketHandler 클래스
- * 
- * 웹소켓 동작 시 수행할 구문을 작성하는 클래스
- * 
- */
+@Component
 @Slf4j
-@Component // Bean 등록
 public class TestWebSocketHandler extends TextWebSocketHandler {
 	
-	// WebSocketSession : 
-	// 클라이언트 - 서버 간 전이중(양방향) 통신을 담당하는 객체
-	// SessionHandshakeInterceptor가 가로챈
-	// 연결한 클라이언트의 HttpSession 을 가지고 있음
-	// attributes에 추가한 값을 가지고 있음
+	@Autowired
+	private ChattingService service;
 	
+	// 연결된 모든 웹소켓 세션을 저장
 	private Set<WebSocketSession> sessions = Collections.synchronizedSet(new HashSet<>());
-	// Set 중복 허용 X, 순서 X
-	// -> synchronizedSet : 동기화된 Set
-	// -> 여러가지 스레드가 동작하는 환경에서 하나의 컬렉션에
-	//		여러 스레드가 접근하여 의도치 않은 문제가 발생되지 않게 하기 위해
-	//		동기화를 진행하여 스레드가 순서대로 한 컬렉션에 접근할 수 있도록 변경
 	
-	// 클라이언트와 서버가 연결이 완료되고, 통신할 준비가 완료되면 실행
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-
-		// 연결된 클라이언트와 WebSocketSession 정보를 Set에 추가
-		// -> 웹소켓에 연결된 클라이언트 정보를 모아둠
 		sessions.add(session);
+		log.info("웹소켓 연결 성공: {}", session.getId());
 		
+		// 연결된 사용자 정보 로깅
+		HttpSession httpSession = (HttpSession) session.getAttributes().get("session");
+		if (httpSession != null) {
+			Member loginMember = (Member) httpSession.getAttribute("loginMember");
+			if (loginMember != null) {
+				log.info("사용자 {}({})가 채팅에 연결됨", loginMember.getMemberName(), loginMember.getMemberNo());
+			}
+		}
 	}
-
-	// 클라이언트와 연결이 종료되면 실행
+	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-	
-		// 웹소켓 연결이 끊긴 클라이언트 정보를 Set 에서 제거
 		sessions.remove(session);
+		log.info("웹소켓 연결 종료: {}, 상태: {}", session.getId(), status);
 	}
-
-	// 클라이언트로부터 텍스트 메시지를 받았을 때 실행
+	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-	
-		// TextMessage : 웹소켓으로 연결된 클라이언트가 전달한
-		//				텍스트(내용)가 담겨있는 객체
-		
-		// message.getPayload() : 통신 시 탑재된 데이터 그 자체
-		log.info("전달받은 메시지 : {}", message.getPayload());
-		
-		// 전달받은 메시지를
-		// 현재 해당 웹소켓에 연결되어 있는 모든 클라이언트에게 보내기
-		for(WebSocketSession s : sessions) {
-			s.sendMessage(message);
+		try {
+			log.info("수신된 메시지: {}", message.getPayload());
+			
+			// JSON 파싱
+			ObjectMapper objectMapper = new ObjectMapper();
+			Chatting msg = objectMapper.readValue(message.getPayload(), Chatting.class);
+			
+			// 메시지 유효성 검증
+			if (msg.getStudyNo() <= 0 || msg.getSenderNo() <= 0 || 
+				msg.getContent() == null || msg.getContent().trim().isEmpty()) {
+				log.warn("유효하지 않은 메시지: {}", msg);
+				return;
+			}
+			
+			// DB에 메시지 저장
+			int result = service.insertMessage(msg);
+			log.info("메시지 저장 결과: {}", result);
+			
+			if (result > 0) {
+				// 시간 포맷 설정
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+				msg.setSendTime(sdf.format(new Date()));
+				
+				// 저장된 메시지의 번호를 다시 조회하여 설정 (필요한 경우)
+				// msg.setMessageNo(저장된메시지번호);
+				
+				// 해당 스터디의 모든 멤버에게 메시지 전송
+				broadcastToStudyMembers(msg, objectMapper);
+				
+			} else {
+				log.error("메시지 저장 실패");
+				// 실패 시 발신자에게 오류 메시지 전송
+				sendErrorMessage(session, "메시지 저장에 실패했습니다.");
+			}
+			
+		} catch (Exception e) {
+			log.error("메시지 처리 중 오류 발생", e);
+			sendErrorMessage(session, "메시지 처리 중 오류가 발생했습니다.");
 		}
-		
 	}
 	
+	/**
+	 * 스터디 멤버들에게 메시지 브로드캐스트
+	 */
+	private void broadcastToStudyMembers(Chatting msg, ObjectMapper objectMapper) {
+		String jsonMessage;
+		try {
+			jsonMessage = objectMapper.writeValueAsString(msg);
+		} catch (Exception e) {
+			log.error("메시지 JSON 변환 실패", e);
+			return;
+		}
+		
+		int successCount = 0;
+		int totalSessions = sessions.size();
+		
+		// 모든 연결된 세션에 대해 확인
+		for (WebSocketSession s : sessions) {
+			try {
+				// 세션이 열려있는지 확인
+				if (!s.isOpen()) {
+					continue;
+				}
+				
+				HttpSession httpSession = (HttpSession) s.getAttributes().get("session");
+				if (httpSession == null) {
+					continue;
+				}
+				
+				Member loginMember = (Member) httpSession.getAttribute("loginMember");
+				if (loginMember == null) {
+					continue;
+				}
+				
+				int memberNo = loginMember.getMemberNo();
+				
+				// 해당 멤버가 이 스터디의 멤버인지 확인
+				boolean isStudyMember = service.isStudyMember(msg.getStudyNo(), memberNo);
+				
+				if (isStudyMember) {
+					s.sendMessage(new TextMessage(jsonMessage));
+					successCount++;
+					log.debug("메시지 전송 성공: 사용자 {}", memberNo);
+				}
+				
+			} catch (Exception e) {
+				log.error("개별 세션 메시지 전송 실패: {}", s.getId(), e);
+			}
+		}
+		
+		log.info("메시지 브로드캐스트 완료: 성공 {}/{} (전체 세션: {})", 
+				successCount, sessions.size(), totalSessions);
+	}
+	
+	/**
+	 * 특정 세션에 오류 메시지 전송
+	 */
+	private void sendErrorMessage(WebSocketSession session, String errorMsg) {
+		try {
+			if (session.isOpen()) {
+				ObjectMapper objectMapper = new ObjectMapper();
+				String errorJson = objectMapper.writeValueAsString(
+					new ErrorMessage("error", errorMsg)
+				);
+				session.sendMessage(new TextMessage(errorJson));
+			}
+		} catch (Exception e) {
+			log.error("오류 메시지 전송 실패", e);
+		}
+	}
+	
+	/**
+	 * 에러 메시지를 위한 내부 클래스
+	 */
+	private static class ErrorMessage {
+		private String type;
+		private String message;
+		
+		public ErrorMessage(String type, String message) {
+			this.type = type;
+			this.message = message;
+		}
+		
+		public String getType() { return type; }
+		public void setType(String type) { this.type = type; }
+		public String getMessage() { return message; }
+		public void setMessage(String message) { this.message = message; }
+	}
+	
+	@Override
+	public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
+		log.error("웹소켓 전송 오류: {}", session.getId(), exception);
+		super.handleTransportError(session, exception);
+	}
 }
-/*
-WebSocketHandler 인터페이스 :
-	웹소켓을 위한 메소드를 지원하는 인터페이스
-  -> WebSocketHandler 인터페이스를 상속받은 클래스를 이용해
-    웹소켓 기능을 구현
-WebSocketHandler 주요 메소드
-     
-  void handlerMessage(WebSocketSession session, WebSocketMessage message)
-  - 클라이언트로부터 메세지가 도착하면 실행
- 
-  void afterConnectionEstablished(WebSocketSession session)
-  - 클라이언트와 연결이 완료되고, 통신할 준비가 되면 실행
-  void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus)
-  - 클라이언트와 연결이 종료되면 실행
-  void handleTransportError(WebSocketSession session, Throwable exception)
-  - 메세지 전송중 에러가 발생하면 실행
-----------------------------------------------------------------
-TextWebSocketHandler : 
-	WebSocketHandler 인터페이스를 상속받아 구현한
-	텍스트 메세지 전용 웹소켓 핸들러 클래스
-  handlerTextMessage(WebSocketSession session, TextMessage message)
-  - 클라이언트로부터 텍스트 메세지를 받았을때 실행
-  
-BinaryWebSocketHandler:
-	WebSocketHandler 인터페이스를 상속받아 구현한
-	이진 데이터 메시지를 처리하는 데 사용.
-	주로 바이너리 데이터(예: 이미지, 파일)를 주고받을 때 사용.
-*/
