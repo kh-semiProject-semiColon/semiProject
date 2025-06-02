@@ -27,12 +27,6 @@ body {
   width: calc(100% - 724px);
 }
 
-/* post 전용 */
-.main-content {
-  max-width: 1196px;
-  min-width: 1120px;
-}
-
 /* 공통 콘텐츠 영역 */
 .content {
   width: 80%;

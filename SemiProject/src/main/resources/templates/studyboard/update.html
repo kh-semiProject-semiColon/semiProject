@@ -230,6 +230,20 @@
                 </div>
               </div>
 
+              <span class="studyList">스터디원</span>
+              <div class="study-member">
+                <div class="member-info" th:each="member : ${member}">
+                  <img
+                    class="memberProfile"
+                    th:src="@{${member.profileImg}}"
+                    alt="프로필"
+                  />
+                  <p class="memberInfo" th:text="${member.memberNickname}">
+                    닉네임
+                  </p>
+                </div>
+              </div>
+
               <!-- 버튼 그룹 -->
               <div class="button-group">
                 <button

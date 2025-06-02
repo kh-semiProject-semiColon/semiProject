@@ -77,4 +77,6 @@ public interface MemberService {
 	 */
 	List<Member> getStudyMembers(int studyNo);
 
+	List<Member> selectMemberName(int studyNo);
+
 }

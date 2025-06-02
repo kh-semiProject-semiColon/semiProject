@@ -25,8 +25,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.co.semi.board.model.dto.Announce;
 import kr.co.semi.member.model.dto.Member;
+import kr.co.semi.member.model.service.MemberService;
 import kr.co.semi.studyboard.model.dto.Study;
 import kr.co.semi.studyboard.model.dto.StudyBoard;
 import kr.co.semi.studyboard.model.service.StudyBoardService;
@@ -40,6 +40,9 @@ public class StudyBoardController {
 
     @Autowired
     private StudyBoardService service;
+    
+    @Autowired
+    private MemberService mService;
     
     
     
@@ -98,6 +101,7 @@ public class StudyBoardController {
                                  Model model) {
         try {
             Study study = service.getStudyInfo(loginMember);
+            List<Member> member = mService.selectMemberName(loginMember.getStudyNo());
             if (study == null) {
                 log.warn("존재하지 않는 스터디 또는 권한 없음 - studyNo: {}, memberNo: {}", 
                 		loginMember.getStudyNo(), loginMember.getMemberNo());
@@ -105,12 +109,14 @@ public class StudyBoardController {
             }
             
             model.addAttribute("study", study);
+            model.addAttribute("member",member);
             
             log.info("스터디 정보 수정 페이지 접근 - studyNo: {}, memberNo: {}, isLeader: {}", 
             		loginMember.getStudyNo(), loginMember.getMemberNo(), study.isLeader());
             
         } catch (Exception e) {
             log.error("스터디 정보 수정 페이지 오류", e);
+            e.printStackTrace();
             model.addAttribute("errorMessage", "스터디 정보를 불러오는 중 오류가 발생했습니다.");
         }
         
