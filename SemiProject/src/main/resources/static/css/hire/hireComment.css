@@ -52,7 +52,7 @@ body {
   margin: 0px;
 }
 
-.nickName{
+.nickName {
   margin: 2%;
   height: 30px;
 }
@@ -87,7 +87,6 @@ body {
   margin-right: 2%;
   font-size: 0.8em;
   color: #aaa;
-
 }
 
 .btn-wrapper {
@@ -127,7 +126,7 @@ body {
 }
 
 .child-comment {
-padding-left: 30px; /* 답글은 30px 들여쓰기 */
+  padding-left: 30px; /* 답글은 30px 들여쓰기 */
 }
 
 /* 버튼 */
@@ -161,7 +160,6 @@ padding-left: 30px; /* 답글은 30px 들여쓰기 */
 .comment-row {
   border-top: 1px solid #e0e0e0;
   padding: 2% 5%;
-
 }
 
 .child-comment {
@@ -170,7 +168,7 @@ padding-left: 30px; /* 답글은 30px 들여쓰기 */
 }
 
 .invite-btn {
-  width: 80px;
+  width: 60px;
   padding: 2px 6px;
   font-size: 0.8rem;
   border-radius: 15px;

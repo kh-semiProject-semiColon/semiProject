@@ -30,9 +30,11 @@ import kr.co.semi.board.model.dto.HireInfo;
 import kr.co.semi.board.model.service.HireBoardService;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.studyboard.model.dto.Study;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("hire")
+@Slf4j
 public class HireBoardController {
 
     private final BoardController boardController;
@@ -61,6 +63,8 @@ public class HireBoardController {
 			map = service.searchList(paramMap, cp);
 			
 		}
+		
+//		System.out.println("map :" + map);
 		
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("hireList", map.get("hireList"));

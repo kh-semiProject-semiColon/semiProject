@@ -47,7 +47,6 @@ const selectCommentList = () => {
 
         if (comment.hireCommentDelFl === "Y") {
           li.textContent = "삭제된 댓글 입니다";
-          
         } else {
           // 작성자 영역
           const writerP = document.createElement("p");
@@ -62,7 +61,10 @@ const selectCommentList = () => {
           content.classList.add("content");
 
           const profileImg = document.createElement("img");
-          profileImg.src = comment.profileImg || "/images/logo.png";
+          profileImg.src =
+            comment.profileImg && comment.profileImg.trim() !== ""
+              ? comment.profileImg
+              : "/images/logo.png";
           profileImg.classList.add("comment-profile-img");
 
           // 클릭 시 openResumeModal 호출 (memberNo 전달)
@@ -72,81 +74,79 @@ const selectCommentList = () => {
           nicknameSpan.classList.add("nickName");
           nicknameSpan.textContent = comment.memberNickname;
 
-
           profile.appendChild(profileImg);
           content.appendChild(nicknameSpan);
-          
-          if (  loginMemberNo && 
-            loginMemberNo !== comment.memberNo && 
-            loginMemberNo === memberNo) {
-              const inviteBtn = document.createElement("button");
-              inviteBtn.textContent = "초대하기";
-              inviteBtn.classList.add("invite-btn");
-              inviteBtn.onclick = () => {
-                if (confirm(`${comment.memberNickname}님을 초대하시겠습니까?`)) {
-                  inviteMember(comment.memberNo, comment.memberNickname, id);
-                }
+
+          if (
+            loginMemberNo &&
+            loginMemberNo !== comment.memberNo &&
+            loginMemberNo === memberNo
+          ) {
+            const inviteBtn = document.createElement("button");
+            inviteBtn.textContent = "초대";
+            inviteBtn.classList.add("invite-btn");
+            inviteBtn.onclick = () => {
+              if (confirm(`${comment.memberNickname}님을 초대하시겠습니까?`)) {
+                inviteMember(comment.memberNo, comment.memberNickname, id);
               }
-              
-              content.append(inviteBtn)
             };
 
-            
-            
-            
-            // 댓글 내용
-            const contentP = document.createElement("p");
-            contentP.classList.add("comment-content");
-            contentP.textContent = comment.hireCommentContent;
-            
-            content.appendChild(contentP);
-            
-            // 버튼 영역
-            const btnDiv = document.createElement("div");
-            btnDiv.classList.add("comment-btn-area");
-            
-            // 작성일
-            const dateSpan = document.createElement("span");
-            dateSpan.classList.add("comment-date");
-            dateSpan.textContent = comment.hireCommentDate;
-            
-            const dateDiv = document.createElement("div");
-            dateDiv.classList.add("date-wrapper");  // 필요하면 클래스 추가
-            
-            // span을 div 안에 넣기
-            dateDiv.appendChild(dateSpan);
-            btnDiv.append(dateDiv);
-            
-            const reDiv = document.createElement("div");
-            reDiv.classList.add("btn-wrapper");  // 필요하면 클래스 추가
-            
-            
-            const replyBtn = document.createElement("button");
-            replyBtn.textContent = "답글";
-            replyBtn.onclick = () =>
-              showInsertComment(comment.hireCommentNo, replyBtn);
-            reDiv.appendChild(replyBtn);
-            
-            // 로그인한 회원이 댓글 작성자일 때만 수정/삭제 버튼 노출
-            if (loginMemberNo && loginMemberNo === comment.memberNo) {
-              const updateBtn = document.createElement("button");
-              updateBtn.textContent = "수정";
-              updateBtn.onclick = () =>
-                showUpdateComment(comment.hireCommentNo, updateBtn); // comment.hireCommentNo 사용
-              
-              const deleteBtn = document.createElement("button");
-              deleteBtn.textContent = "삭제";
-              deleteBtn.onclick = () => deleteComment(comment.hireCommentNo, deleteBtn);
-              
-              reDiv.append(updateBtn, deleteBtn);
-            }
-            
-            btnDiv.appendChild(reDiv);
+            content.append(inviteBtn);
+          }
 
-            content.appendChild(btnDiv);
+          // 댓글 내용
+          const contentP = document.createElement("p");
+          contentP.classList.add("comment-content");
+          contentP.textContent = comment.hireCommentContent;
 
-            writerP.append(profile, content);
-            
+          content.appendChild(contentP);
+
+          // 버튼 영역
+          const btnDiv = document.createElement("div");
+          btnDiv.classList.add("comment-btn-area");
+
+          // 작성일
+          const dateSpan = document.createElement("span");
+          dateSpan.classList.add("comment-date");
+          dateSpan.textContent = comment.hireCommentDate;
+
+          const dateDiv = document.createElement("div");
+          dateDiv.classList.add("date-wrapper"); // 필요하면 클래스 추가
+
+          // span을 div 안에 넣기
+          dateDiv.appendChild(dateSpan);
+          btnDiv.append(dateDiv);
+
+          const reDiv = document.createElement("div");
+          reDiv.classList.add("btn-wrapper"); // 필요하면 클래스 추가
+
+          const replyBtn = document.createElement("button");
+          replyBtn.textContent = "답글";
+          replyBtn.onclick = () =>
+            showInsertComment(comment.hireCommentNo, replyBtn);
+          reDiv.appendChild(replyBtn);
+
+          // 로그인한 회원이 댓글 작성자일 때만 수정/삭제 버튼 노출
+          if (loginMemberNo && loginMemberNo === comment.memberNo) {
+            const updateBtn = document.createElement("button");
+            updateBtn.textContent = "수정";
+            updateBtn.onclick = () =>
+              showUpdateComment(comment.hireCommentNo, updateBtn); // comment.hireCommentNo 사용
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "삭제";
+            deleteBtn.onclick = () =>
+              deleteComment(comment.hireCommentNo, deleteBtn);
+
+            reDiv.append(updateBtn, deleteBtn);
+          }
+
+          btnDiv.appendChild(reDiv);
+
+          content.appendChild(btnDiv);
+
+          writerP.append(profile, content);
+
           // 댓글 항목에 모두 추가
           li.append(writerP);
         }
@@ -199,35 +199,40 @@ addComment.addEventListener("click", (e) => {
  * @param {*} btn
  */
 const showInsertComment = (parentCommentNo, btn) => {
-  // ** 답글 작성 textarea가 한 개만 열릴 수 있도록 만들기 **
-  const temp = document.getElementsByClassName("commentInsertContent");
-  if (temp.length > 0) {
-    // 답글 작성 textara가 이미 화면에 존재하는 경우
-    if (
-      confirm(
-        "다른 답글을 작성 중입니다. 현재 댓글에 답글을 작성 하시겠습니까?"
-      )
-    ) {
-      temp[0].nextElementSibling.remove(); // 버튼 영역부터 삭제
-      temp[0].remove(); // textara 삭제 (기준점은 마지막에 삭제해야 된다!)
-    } else {
-      return; // 함수를 종료시켜 답글이 생성되지 않게함.
-    }
+  // 수정창이 열려 있다면 닫기
+  const existingUpdate = document.querySelector(".update-textarea");
+  if (existingUpdate) {
+    const confirmClose = confirm(
+      "댓글 수정을 취소하고 답글을 작성하시겠습니까?"
+    );
+    if (!confirmClose) return;
+
+    existingUpdate.closest("li").after(beforeCommentRow);
+    existingUpdate.closest("li").remove();
   }
-  // 답글을 작성할 textarea 요소 생성
+
+  // 다른 답글창이 열려 있다면 닫기
+  const existingReply = document.querySelector(".commentInsertContent");
+  if (existingReply) {
+    const confirmClose = confirm(
+      "다른 답글을 작성 중입니다. 현재 댓글에 답글을 작성 하시겠습니까?"
+    );
+    if (!confirmClose) return;
+
+    existingReply.nextElementSibling.remove(); // 버튼 영역 제거
+    existingReply.remove(); // textarea 제거
+  }
+
+  // 답글 textarea 생성
   const textarea = document.createElement("textarea");
   textarea.classList.add("commentInsertContent");
-  // 답글 버튼의 부모의 뒤쪽에 textarea 추가
-  // after(요소) : 뒤쪽에 추가
   btn.closest("li").appendChild(textarea);
-  // 답글 버튼 영역 + 등록/취소 버튼 생성 및 추가
+
+  // 버튼 생성
   const commentBtnArea = document.createElement("div");
   commentBtnArea.classList.add("comment-btn-area1");
   const insertBtn = document.createElement("button");
   insertBtn.innerText = "등록";
-
-  // 매개변수에 +문자열+ 작성시 Number타입으로 형변환이 진행된다
-  // == +parentCommentNo+ == Number(parentCommentNo)
   insertBtn.setAttribute(
     "onclick",
     "insertChildComment(" + parentCommentNo + ", this)"
@@ -235,9 +240,7 @@ const showInsertComment = (parentCommentNo, btn) => {
   const cancelBtn = document.createElement("button");
   cancelBtn.innerText = "취소";
   cancelBtn.setAttribute("onclick", "insertCancel(this)");
-  // 답글 버튼 영역의 자식으로 등록/취소 버튼 추가
   commentBtnArea.append(insertBtn, cancelBtn);
-  // 답글 버튼 영역을 화면에 추가된 textarea 뒤쪽에 추가
   textarea.after(commentBtnArea);
 };
 // ---------------------------------------
@@ -326,27 +329,41 @@ let beforeCommentRow;
  * @param {*} btn
  */
 const showUpdateComment = (commentNo, btn) => {
-  // 수정창 1개만 존재하도록 제어(생략)
-  
+  // 답글창이 열려 있다면 닫기
+  const existingReply = document.querySelector(".commentInsertContent");
+  if (existingReply) {
+    const confirmClose = confirm(
+      "답글 작성을 취소하고 댓글을 수정하시겠습니까?"
+    );
+    if (!confirmClose) return;
+
+    existingReply.nextElementSibling.remove();
+    existingReply.remove();
+  }
+
+  // 수정창이 이미 열려 있다면 닫기
+  const existingUpdate = document.querySelector(".update-textarea");
+  if (existingUpdate) {
+    const confirmClose = confirm("다른 댓글 수정을 취소하고 수정하시겠습니까?");
+    if (!confirmClose) return;
+
+    existingUpdate.closest("li").after(beforeCommentRow);
+    existingUpdate.closest("li").remove();
+  }
+
+  // 수정 textarea 생성
   const commentRow = btn.closest("li");
   beforeCommentRow = commentRow.cloneNode(true);
-
-  // 기존 댓글 내용 영역만 찾아 텍스트만 추출
   const contentP = commentRow.querySelector(".comment-content");
   const beforeContent = contentP ? contentP.textContent : "";
 
-  // 댓글 내용 영역 삭제 (기존 내용이 보여지는 부분만 제거)
   if (contentP) contentP.remove();
 
-  // 텍스트 에리어 생성
   const textarea = document.createElement("textarea");
   textarea.classList.add("update-textarea");
   textarea.value = beforeContent;
-
-  // 텍스트 에리어를 댓글 내용 영역 바로 아래에 삽입
   commentRow.appendChild(textarea);
 
-  // 버튼 영역 생성 (수정, 취소)
   const commentBtnArea = document.createElement("div");
   commentBtnArea.classList.add("comment-btn-area1");
 
@@ -367,9 +384,7 @@ const showUpdateComment = (commentNo, btn) => {
  */
 const updateCancel = (btn) => {
   if (confirm("취소 하시겠습니까?")) {
-    const commentRow = btn.closest("li"); // 기존 댓글 행
-    commentRow.after(beforeCommentRow); // 기존 댓글 다음에 백업 추가
-    commentRow.remove(); // 기존 삭제 -> 백업이 기존 행 위치로 이동
+    selectCommentList();
   }
 };
 
@@ -416,12 +431,12 @@ function inviteMember(memberNo, memberNickname, hireNo) {
   console.log("초대 멤버 닉네임:", memberNickname);
 
   fetch(`/hire/invite/${hireNo}`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ memberNo: memberNo })
+    body: JSON.stringify({ memberNo: memberNo }),
   })
-  .then(res => res.text())
-  .then(msg => alert(`${memberNickname}님${msg}`))
+    .then((res) => res.text())
+    .then((msg) => alert(`${memberNickname}님${msg}`));
 }
