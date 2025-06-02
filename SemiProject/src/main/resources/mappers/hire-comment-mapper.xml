@@ -8,24 +8,44 @@
 	
 	<!-- 댓글 목록 조회 -->
 	<select id="select">
-	 SELECT LEVEL, C.*
-		FROM
-		  (SELECT HIRE_COMMENT_NO, HIRE_COMMENT_CONTENT,HIRE_NO,STUDY_NO,
-		          TO_CHAR(HIRE_COMMENT_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분"') HIRE_COMMENT_DATE,
-		          MEMBER_NO, MEMBER_NICKNAME, PROFILE_IMG, HIRE_PARENT_COMMENT_NO, HIRE_COMMENT_DEL_FL
-		   FROM "HIRE_COMMENT"
-		   JOIN MEMBER USING(MEMBER_NO)
-		   JOIN STUDY_MEMBER USING(MEMBER_NO)
-		   JOIN STUDY USING(STUDY_NO)
-		   WHERE HIRE_NO = #{hireNo}) C
+		SELECT LEVEL, C.*
+		FROM (
+		    SELECT 
+		      HC.HIRE_COMMENT_NO,
+		      HC.HIRE_COMMENT_CONTENT,
+		      HC.HIRE_NO,
+		      COUNT(SM.STUDY_NO) AS STUDY_COUNT,
+		      HC.HIRE_COMMENT_DATE, -- 원본 날짜 컬럼도 SELECT에 포함
+		      M.MEMBER_NO,
+		      M.MEMBER_NICKNAME,
+		      M.PROFILE_IMG,
+		      HC.HIRE_PARENT_COMMENT_NO,
+		      HC.HIRE_COMMENT_DEL_FL
+		    FROM HIRE_COMMENT HC
+		    JOIN MEMBER M ON HC.MEMBER_NO = M.MEMBER_NO
+		    LEFT JOIN STUDY_MEMBER SM ON HC.MEMBER_NO = SM.MEMBER_NO
+		    WHERE HC.HIRE_NO = #{hireNo}
+		    GROUP BY 
+		      HC.HIRE_COMMENT_NO,
+		      HC.HIRE_COMMENT_CONTENT,
+		      HC.HIRE_NO,
+		      HC.HIRE_COMMENT_DATE,
+		      M.MEMBER_NO,
+		      M.MEMBER_NICKNAME,
+		      M.PROFILE_IMG,
+		      HC.HIRE_PARENT_COMMENT_NO,
+		      HC.HIRE_COMMENT_DEL_FL
+		) C
 		WHERE (C.HIRE_COMMENT_DEL_FL = 'N'
-		       OR 0 != (SELECT COUNT(*) FROM "HIRE_COMMENT" SUB
-		                WHERE SUB.HIRE_PARENT_COMMENT_NO = C.HIRE_COMMENT_NO
-		                AND SUB.HIRE_COMMENT_DEL_FL = 'N'))
+		       OR EXISTS (
+		         SELECT 1 FROM HIRE_COMMENT SUB
+		         WHERE SUB.HIRE_PARENT_COMMENT_NO = C.HIRE_COMMENT_NO
+		           AND SUB.HIRE_COMMENT_DEL_FL = 'N'
+		       ))
 		START WITH C.HIRE_PARENT_COMMENT_NO IS NULL
 		CONNECT BY PRIOR C.HIRE_COMMENT_NO = C.HIRE_PARENT_COMMENT_NO
-		ORDER SIBLINGS BY C.HIRE_COMMENT_NO	
-		
+		ORDER SIBLINGS BY C.HIRE_COMMENT_NO
+				
 	</select>
 	
 	<!-- MyBatis에서 제공하는 동적 SQL : <if>
@@ -44,15 +64,15 @@
 			   DEFAULT,
 			   SYSDATE,
 			   #{hireNo},
-			   #{memberNo},
+			   #{memberNo}
 			   <!-- 자식 댓글 -->
 			   <if test="hireParentCommentNo != 0">
-			 	  #{hireParentCommentNo}
+			 	 , #{hireParentCommentNo}
 			   </if>
 			   
 			   <!-- 부모 댓글 -->
 			   <if test="hireParentCommentNo == 0">
-			  	 NULL
+			  	, NULL
 			   </if>
 			   
 			   )

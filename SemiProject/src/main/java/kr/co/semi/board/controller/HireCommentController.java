@@ -36,7 +36,12 @@ public class HireCommentController {
 		// HTTPMessageConverter가
 		// List -> JSON(문자열)로 변환해서 응답 -> JS
 //		log.info("댓글목록조회 : "+service.select(hireComment.getHireNo()));
-		return service.select(hireComment.getHireNo());
+		
+		List<HireComment> hireList =  service.select(hireComment.getHireNo());
+		
+		System.out.println(hireList);
+		
+		return hireList;
 		
 	}
 	
@@ -45,8 +50,7 @@ public class HireCommentController {
 	 */
 	@PostMapping("")
 	public int insert(@RequestBody HireComment hireComment,@SessionAttribute("loginMember") Member loginMember) {
-		hireComment.setMemberNo(loginMember.getMemberNo());
-//		log.info("댓글조회 - hireNo: " + hireComment.getHireCommentContent());
+		log.info("댓글조회 : " + hireComment);
 		return service.insert(hireComment);
 	}
 	
