@@ -157,6 +157,23 @@ public class EditBoardController {
 	       return imageUrl;
 	   }
 	   
+	   @ResponseBody
+	   @PostMapping("studyBoard/uploadImg")
+	   public String uploadStudySummernoteImage(@RequestParam("image") MultipartFile image,
+			   HttpServletRequest req) throws IOException {
+		   
+		   String imgPath = folderPath; 
+		   
+		   String imgOriginalName = image.getOriginalFilename();
+		   String imgRename = Utility.fileRename(imgOriginalName);
+		   
+		   File target = new File(imgPath + imgRename);
+		   image.transferTo(target);
+		   
+		   String imageUrl = req.getContextPath()+ webPath + imgRename;
+		   return imageUrl;
+	   }
+	   
 		/** 게시글 수정 화면 전환
 		 * @param boardCode     : 게시판 종류 번호
 		 * @param boardNumber	: 게시글 번호
