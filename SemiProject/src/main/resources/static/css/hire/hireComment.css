@@ -151,23 +151,24 @@ body {
 
 /* 버튼 */
 .comment-btn-area button {
-  background: #fff; /* 배경 없애기 */
-  width: 50px;
-  height: 20px;
-  border: none; /* 테두리 없애기 */
-  color: #3867ff; /* 파란색 글자 */
-  cursor: pointer; /* 마우스 포인터 변경 */
-  padding: 0; /* 버튼 기본 패딩 없애기 */
-  margin-left: 20px; /* 버튼 간 간격 유지 */
-  font-size: 10pt; /* 글자 크기 조절 가능 */
-  text-decoration: none; /* 필요하면 밑줄 추가 (선택 사항) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 20px;
+  width: 70px;
+  height: 30px;
+  border-radius: 15px;
+  background-color: white;
+  border: none;
+  color: #4aa7ff;
+  cursor: pointer;
+  margin-left: 10px;
 }
 
 .comment-btn-area button:hover {
-  color: #4aa7ff; /* 호버 시 더 진한 파란색 */
-  background: #fff; /* 배경 변화 없애기 */
-  border: none; /* 테두리 변화 없애기 */
-  text-decoration: none; /* 호버 시 밑줄 유지 또는 추가 */
+  background-color: white;
+  color: #4aa7ff;
+  border: 2px solid #4aa7ff;
 }
 
 .update-textarea {

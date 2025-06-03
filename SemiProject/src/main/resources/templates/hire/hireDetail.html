@@ -52,7 +52,7 @@
           </div>
           <div class="author-date" th:text="${hireInfo.hireDate}">작성일</div>
         </div>
-        <div class="post-views" th:text="${hireInfo.hireReadCount} + ' 조회'">
+        <div class="post-views" th:text="'조회수 ' + ${hireInfo.hireReadCount}">
           조회수
         </div>
       </div>
