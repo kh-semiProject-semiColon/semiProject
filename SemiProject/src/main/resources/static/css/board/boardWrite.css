@@ -217,6 +217,7 @@ form {
 /* 글쓰기 버튼 */
 .write-button-container {
   display: flex;
+  width: 100%;
   justify-content: flex-end;
   margin: 0;
   padding: 0;
