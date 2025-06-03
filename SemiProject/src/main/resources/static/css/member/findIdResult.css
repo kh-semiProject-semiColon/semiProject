@@ -9,6 +9,7 @@
   margin: 50px auto;
   padding: 0 20px;
   gap: 30px;
+  min-height: 650px;
 }
 
 /* 사이드바 스타일 */
