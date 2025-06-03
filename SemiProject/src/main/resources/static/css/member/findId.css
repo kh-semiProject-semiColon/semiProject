@@ -5,6 +5,8 @@
   justify-content: flex-start;
   align-items: stretch;
   max-width: 1070px;
+  min-height: 650px;
+
   width: 100%;
   margin: 50px auto;
   padding: 0 20px;
@@ -106,4 +108,3 @@
     width: 96%;
   }
 }
-
