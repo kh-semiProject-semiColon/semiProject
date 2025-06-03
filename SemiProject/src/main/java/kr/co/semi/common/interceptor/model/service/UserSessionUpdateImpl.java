@@ -17,5 +17,10 @@ public class UserSessionUpdateImpl implements UserSessionUpdate{
 	public int update(int memberNo) {
 		return mapper.update(memberNo);
 	}
+	
+	@Override
+	public int studyCount(int memberNo) {
+		return mapper.studyCount(memberNo);
+	}
 
 }

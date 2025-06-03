@@ -5,4 +5,5 @@ public interface UserSessionUpdate {
 
 	int update(int memberNo);
 
+	int studyCount(int memberNo);
 }
