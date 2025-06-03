@@ -175,3 +175,24 @@ formInput.addEventListener("input", function () {
     spanInput.innerText = "최소 1명 이상이어야 합니다.";
   }
 });
+
+const studyMessage = document.querySelector("#studyMessage");
+const studyName = document.querySelector("#studyName");
+
+studyName.addEventListener("input", function(){
+	const length = studyName.value.length;
+
+	if (length > 20) {
+	  studyMessage.classList.add("error");
+	  studyMessage.classList.remove("confirm");
+	  studyMessage.innerText = "설정가능한 스터디명은 20글자 입니다.";
+	} else if (length >= 1) {
+	  studyMessage.classList.remove("error");
+	  studyMessage.classList.add("confirm");
+	  studyMessage.innerText = "조건에 부합합니다.";
+	} else {
+	  studyMessage.classList.remove("confirm");
+	  studyMessage.classList.add("error");
+	  studyMessage.innerText = "최소 1글자 이상이어야 합니다.";
+	}
+})
