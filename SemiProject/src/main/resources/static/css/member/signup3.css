@@ -15,6 +15,7 @@ body {
   max-width: 900px;
   min-width: 500px;
   padding-top: 50px;
+  min-height: 730px;
 }
 
 .introHeader {
