@@ -8,4 +8,6 @@ public interface UserSessionUpdateMapper {
 
 	int update(int memberNo);
 
+	int studyCount(int memberNo);
+
 }

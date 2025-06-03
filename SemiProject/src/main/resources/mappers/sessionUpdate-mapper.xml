@@ -12,5 +12,10 @@
 		WHERE MEMBER_NO = #{memberNo}
 	</select>
 
+	<select id="studyCount">
+		SELECT COUNT(*)
+		FROM STUDY_MEMBER
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
 	
 </mapper>

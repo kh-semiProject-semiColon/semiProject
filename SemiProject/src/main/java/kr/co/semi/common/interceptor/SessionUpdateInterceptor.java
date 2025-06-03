@@ -26,8 +26,16 @@ public class SessionUpdateInterceptor implements HandlerInterceptor {
 	    	Member sessionUser = (Member) session.getAttribute("loginMember");
 
 	        if (sessionUser != null) {
+	        	
+	        	// 해당 회원이 스터디에 가입된 수가 하나라도 있으면
+	        	int countStudy = UserSessionUpdate.studyCount(sessionUser.getMemberNo());
+	        	
+	        	if(countStudy > 0) {
+	        		
+	        		sessionUser.setStudyNo(UserSessionUpdate.update(sessionUser.getMemberNo())); 
+	        	}
+	        	
 	            // DB에서 최신 사용자 정보 조회 (권한, 상태 등)
-	        	sessionUser.setStudyNo(UserSessionUpdate.update(sessionUser.getMemberNo())); 
 	        			
 	            // DB의 최신 정보를 기반으로 세션도 갱신
 	            session.setAttribute("loginMember", sessionUser);
