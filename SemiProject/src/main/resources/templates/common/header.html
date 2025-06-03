@@ -21,7 +21,7 @@
     document.querySelector(".isStudy").addEventListener("click", function(e) {
       let studyNo = [[${session.loginMember != null ? session.loginMember.studyNo : 0}]];
 
-      if (studyNo === 0) {
+      if ([[${session.loginMember != null}]] && studyNo === 0) {
         alert("가입된 스터디가 없습니다.");
         e.preventDefault(); // 링크 이동 막기
       }

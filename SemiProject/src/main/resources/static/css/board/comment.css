@@ -70,8 +70,18 @@
 
 .comment-btn-area {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+}
+
+.btn-area {
+  display: flex;
+}
+
+.reply-btn-area {
+  display: flex;
+  justify-content: end;
+  margin-top: 10px;
 }
 
 /* 버튼 */
@@ -83,9 +93,9 @@
   width: 70px;
   height: 30px;
   border-radius: 15px;
-  background-color: #4aa7ff;
+  background-color: white;
   border: none;
-  color: white;
+  color: #4aa7ff;
   cursor: pointer;
   margin-left: 10px;
 }
@@ -139,7 +149,7 @@
   margin-left: 50px;
 }
 
-.reply{
+.reply {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 20px;
