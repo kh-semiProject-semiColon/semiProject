@@ -206,7 +206,6 @@ public class StudyBoardController {
      * 스터디 탈퇴 처리 - DTO로 받기 (일반회원)
      */
     @PostMapping("delete")
-    @ResponseBody
     public String withdrawFromStudy(@SessionAttribute("loginMember") Member loginMember,
                                                                Study study, RedirectAttributes ra) {  // DTO로 받기
         String message = null;

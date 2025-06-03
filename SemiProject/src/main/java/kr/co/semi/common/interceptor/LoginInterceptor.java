@@ -1,5 +1,6 @@
 package kr.co.semi.common.interceptor;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 /* Intercepter : 로그인을 안했을 때 모든 요청 가로채서 접근 막기
  * by 김성원
  */
+@Component
 @Slf4j
 public class LoginInterceptor implements HandlerInterceptor {
 
