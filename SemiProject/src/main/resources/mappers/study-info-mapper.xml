@@ -41,7 +41,6 @@
 		LEFT JOIN "MEMBER" M ON SM.MEMBER_NO = M.MEMBER_NO
  		WHERE S.STUDY_DEL_FL = 'N'
  		AND M.MEMBER_DEL_FL = 'N'
-		
  	</select>
  	
  	

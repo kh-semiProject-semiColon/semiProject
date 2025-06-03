@@ -100,6 +100,8 @@ public class StudyBoardController {
     public String studyBoardUpdate(@SessionAttribute("loginMember") Member loginMember,
                                  Model model) {
         try {
+        	
+
             Study study = service.getStudyInfo(loginMember);
             List<Member> member = mService.selectMemberName(loginMember.getStudyNo());
             if (study == null) {
@@ -135,7 +137,6 @@ public class StudyBoardController {
         Map<String, Object> response = new HashMap<>();
         try {
     
-            
             // 현재 멤버 수보다 최대 인원이 적으면 안됨
             int currentMemberCount = service.getCurrentMemberCount(study.getStudyNo());
             if (study.getStudyMaxCount() < currentMemberCount) {

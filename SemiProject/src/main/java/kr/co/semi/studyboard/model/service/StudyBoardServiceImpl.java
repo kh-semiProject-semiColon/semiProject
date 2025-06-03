@@ -1,20 +1,22 @@
 package kr.co.semi.studyboard.model.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.co.semi.board.model.dto.Board;
 import kr.co.semi.board.model.dto.Pagination;
+import kr.co.semi.common.util.Utility;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.studyboard.model.dto.Study;
 import kr.co.semi.studyboard.model.dto.StudyBoard;
-import kr.co.semi.studyboard.model.dto.StudyComment;
 import kr.co.semi.studyboard.model.mapper.StudyBoardMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +25,16 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
 @Slf4j
+@PropertySource("classpath:/config.properties")
+
 public class StudyBoardServiceImpl implements StudyBoardService {
 
+	@Value("${my.studyProfile.folder-path}")
+	private String folderPath;
+	
+	@Value("${my.studyProfile.web-path}")
+	private String webPath;
+	
     private final StudyBoardMapper mapper;
 
     // 스터디 정보 조회
@@ -92,11 +102,26 @@ public class StudyBoardServiceImpl implements StudyBoardService {
     public int updateStudyInfo(Study study, MultipartFile imageFile) {
         try {
             
-        	if (imageFile != null && !imageFile.isEmpty()) {
-                log.info("이미지 파일 업로드: {}", imageFile.getOriginalFilename());
-                // 이미지 파일 업로드 로직 추가 필요
-            }
-            
+			String updatePath = null;
+			String finalPath = null;
+			
+			// 변경명 저장
+			String rename = null;
+			
+			// 업로드한 이미지가 있을 경우
+			// - 있을 경우 : 경로 조합 (클라이언트 접근 경로 + 리네임파일명)
+			if(!imageFile.isEmpty()) {
+				
+				// 1. 파일명 변경
+				rename = Utility.fileRename(imageFile.getOriginalFilename());
+				
+				// 2. /myPage/profile/변경된 파일명
+				updatePath = folderPath + rename;
+				finalPath = webPath + rename;
+				imageFile.transferTo(new File(updatePath));
+				study.setStudyMainImg(finalPath);
+			}
+			
             int result = mapper.updateStudyInfo(study);
             log.info("스터디 정보 수정 - studyNo: {}, result: {}", study.getStudyNo(), result);
             return result ;
