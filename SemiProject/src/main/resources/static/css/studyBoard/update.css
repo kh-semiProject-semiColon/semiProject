@@ -51,8 +51,6 @@
 .study-view {
   background-color: white; /* #f8f9fa에서 white로 변경 */
   padding: 25px;
-  border-radius: 8px;
-  border-left: 4px solid #3867ff;
   width: 100%;
   box-sizing: border-box;
 }
@@ -343,7 +341,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   max-width: 800px;
-  margin: auto;
+  margin-top: 10px;
 }
 
 .member-info {

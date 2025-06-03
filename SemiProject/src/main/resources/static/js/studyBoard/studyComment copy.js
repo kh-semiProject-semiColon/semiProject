@@ -13,17 +13,17 @@
 const selectCommentList = () => {
   fetch("/studyComments?studyBoardNo=" + boardNo)
     .then((resp) => resp.json())
-    .then((studyCommentList) => {
+    .then((commentList) => {
       const ul = document.querySelector("#commentList");
       ul.innerHTML = ""; // 기존 댓글 목록 삭제
 
-      for (let comment of studyCommentList) {
+      for (let comment of commentList) {
         const commentRow = document.createElement("li");
         commentRow.classList.add("comment-row");
-        if (comment.parentStudyCommentNo2 != 0)
+        if (comment.parentCommentNo != 0)
           commentRow.classList.add("child-comment");
 
-        if (comment.studyCommentDelFl === "Y") {
+        if (comment.commentDelFl === "Y") {
           commentRow.innerText = "삭제된 댓글 입니다";
         } else {
           // ----- 댓글 작성자 영역 -----
@@ -51,7 +51,7 @@ const selectCommentList = () => {
           replyBtn.innerText = "답글";
           replyBtn.setAttribute(
             "onclick",
-            `showInsertComment(${comment.studyCommentNo}, this)`
+            `showInsertComment(${comment.commentNo}, this)`
           );
           btnArea.appendChild(replyBtn);
 
@@ -62,14 +62,14 @@ const selectCommentList = () => {
             updateBtn.innerText = "수정";
             updateBtn.setAttribute(
               "onclick",
-              `showUpdateStudyComment(${comment.studyCommentNo}, this)`
+              `showUpdateComment(${comment.commentNo}, this)`
             );
 
             const deleteBtn = document.createElement("button");
             deleteBtn.innerText = "삭제";
             deleteBtn.setAttribute(
               "onclick",
-              `deleteStudyComment(${comment.studyCommentNo})`
+              `deleteComment(${comment.commentNo})`
             );
 
             btnArea.append(updateBtn, deleteBtn);
@@ -83,14 +83,14 @@ const selectCommentList = () => {
 
           const content = document.createElement("p");
           content.classList.add("comment-content");
-          content.innerText = comment.studyCommentContent;
+          content.innerText = comment.commentContent;
 
           contentWrapper.appendChild(content);
 
           // ----- 댓글 작성일 -----
           const commentDate = document.createElement("span");
           commentDate.classList.add("comment-date");
-          commentDate.innerText = comment.studyCommentDate;
+          commentDate.innerText = comment.commentWrittenDate;
 
           // ----- 조립 -----
           commentRow.append(commentWriter, contentWrapper);
@@ -125,12 +125,12 @@ addComment.addEventListener("click", (e) => {
 
   // ajax를 이용해 댓글 등록 요청
   const data = {
-    studyCommentContent: commentContent.value,
+    commentContent: commentContent.value,
     memberNo: loginMemberNo,
-    studyBoardNo: boardNo,
+    boardNo: boardNo,
   };
 
-  fetch("/studyComments", {
+  fetch("/comments", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -149,10 +149,10 @@ addComment.addEventListener("click", (e) => {
 });
 
 /** 답글 작성 화면 추가
- * @param {*} parentStudyCommentNo2
+ * @param {*} parentCommentNo
  * @param {*} btn
  */
-const showInsertComment = (parentStudyCommentNo2, btn) => {
+const showInsertComment = (parentCommentNo, btn) => {
   // 기존 답글 작성 textarea 모두 제거하는 함수
   const removeExistingReplyAreas = () => {
     const existingTextareas = document.querySelectorAll(
@@ -195,7 +195,7 @@ const showInsertComment = (parentStudyCommentNo2, btn) => {
   insertBtn.innerText = "등록";
   insertBtn.setAttribute(
     "onclick",
-    `insertChildComment(${parentStudyCommentNo2}, this)`
+    `insertChildComment(${parentCommentNo}, this)`
   );
 
   const cancelBtn = document.createElement("button");
@@ -218,7 +218,7 @@ const insertCancel = (cancelBtn) => {
   cancelBtn.parentElement.remove();
 };
 
-const insertChildComment = (parentStudyCommentNo2, btn) => {
+const insertChildComment = (parentCommentNo, btn) => {
   // 답글 내용이 작성된 textarea 요소
   const textarea = btn.parentElement.previousElementSibling;
 
@@ -231,13 +231,13 @@ const insertChildComment = (parentStudyCommentNo2, btn) => {
 
   // ajax를 통한 답글 작성
   const data = {
-    studyCommentContent: textarea.value,
+    commentContent: textarea.value,
     memberNo: loginMemberNo,
-    studyBoardNo: boardNo,
-    parentStudyCommentNo2: parentStudyCommentNo2,
+    boardNo: boardNo,
+    parentCommentNo: parentCommentNo,
   };
 
-  fetch("/studyComments", {
+  fetch("/comments", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -262,18 +262,18 @@ const insertChildComment = (parentStudyCommentNo2, btn) => {
 
 /** 댓글 삭제제
  *
- * @param studyCommentNo (현재 댓글 번호)
+ * @param commentNo (현재 댓글 번호)
  */
 
 // 댓글 삭제 (ajax)
-const deleteStudyComment = (studyCommentNo) => {
+const deleteComment = (commentNo) => {
   // 취소 선택 시
   if (!confirm("삭제하시겠습니까?")) return;
 
-  fetch("/studyComments", {
+  fetch("/comments", {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
-    body: studyCommentNo,
+    body: commentNo,
   })
     .then((resp) => resp.text())
     .then((result) => {
@@ -291,10 +291,10 @@ const deleteStudyComment = (studyCommentNo) => {
 // 수정 취소 시 원래 댓글 형태로 돌아가기 위한 백업 변수
 let beforeCommentRow;
 /** 댓글 수정 화면 전환
- * @param {*} studyCommentNo
+ * @param {*} commentNo
  * @param {*} btn
  */
-const showUpdateStudyComment = (studyCommentNo, btn) => {
+const showUpdateComment = (commentNo, btn) => {
   /* 댓글 수정 화면이 1개만 열릴 수 있게 하기 */
   const temp = document.querySelector(".update-textarea");
   if (temp != null) {
@@ -324,7 +324,7 @@ const showUpdateStudyComment = (studyCommentNo, btn) => {
 
   const updateBtn = document.createElement("button");
   updateBtn.innerText = "수정";
-  updateBtn.onclick = () => updateComment(studyCommentNo, updateBtn);
+  updateBtn.onclick = () => updateComment(commentNo, updateBtn);
 
   const cancelBtn = document.createElement("button");
   cancelBtn.innerText = "취소";
@@ -346,7 +346,7 @@ const updateCancel = (btn) => {
   }
 };
 
-const updateComment = (studyCommentNo, btn) => {
+const updateComment = (commentNo, btn) => {
   const commentRow = btn.closest("li");
   const textarea = commentRow.querySelector(".update-textarea");
 
@@ -357,11 +357,11 @@ const updateComment = (studyCommentNo, btn) => {
   }
 
   const data = {
-    studyCommentNo: studyCommentNo,
-    studyCommentContent: textarea.value,
+    commentNo: commentNo,
+    commentContent: textarea.value,
   };
 
-  fetch("/studyComments", {
+  fetch("/comments", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -389,7 +389,7 @@ const updateComment = (studyCommentNo, btn) => {
         childCommentBtn.innerText = "답글";
         childCommentBtn.setAttribute(
           "onclick",
-          `showInsertComment(${studyCommentNo}, this)`
+          `showInsertComment(${commentNo}, this)`
         );
         btnArea.appendChild(childCommentBtn);
 
@@ -399,15 +399,12 @@ const updateComment = (studyCommentNo, btn) => {
         updateBtn.innerText = "수정";
         updateBtn.setAttribute(
           "onclick",
-          `showUpdateStudyComment(${studyCommentNo}, this)`
+          `showUpdateComment(${commentNo}, this)`
         );
 
         const deleteBtn = document.createElement("button");
         deleteBtn.innerText = "삭제";
-        deleteBtn.setAttribute(
-          "onclick",
-          `deleteStudyComment(${studyCommentNo})`
-        );
+        deleteBtn.setAttribute("onclick", `deleteComment(${commentNo})`);
 
         btnArea.append(updateBtn, deleteBtn);
         selectCommentList();

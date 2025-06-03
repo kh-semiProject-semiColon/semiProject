@@ -25,23 +25,21 @@
 		
 							<span th:text="*{memberNickname}">닉네임</span>
 						</div>
-						<!-- 버튼 영역 -->
-						<div class="comment-btn-area">
+					</div>
+
+					<div class="content-comment">
+						<p class="comment-content" th:text="*{studyCommentContent}">댓글 내용</p>
+					</div>
+					<div class="comment-btn-area">
+						<span class="comment-date" th:text="*{studyCommentDate}">작성일</span>
+						<div class="btn-area">
 							<button th:onclick="|showInsertComment(*{studyCommentNo}, this)|">답글</button>
-		
 							<th:block th:if="${session.loginMember != null and session.loginMember.memberNo == studyComment.memberNo}">
 								<button th:onclick="|showUpdateStudyComment(*{studyCommentNo}, this)|">수정</button>
 								<button th:onclick="|deleteStudyComment(*{studyCommentNo})|">삭제</button>
 							</th:block>
-							<!-- 로그인 회원과 댓글 작성자가 같은 경우 -->
-		
 						</div>
-						
-					</div>
-					<div class="content-comment">
-						<p class="comment-content" th:text="*{studyCommentContent}">댓글 내용</p>
-					</div>
-					<span class="comment-date" th:text="*{studyCommentDate}">작성일</span>
+						</div>
 				</th:block>
 
 			</li>

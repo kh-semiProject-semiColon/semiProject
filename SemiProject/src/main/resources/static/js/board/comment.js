@@ -44,6 +44,8 @@ const selectCommentList = () => {
           // 버튼 영역
           const commentBtnArea = document.createElement("div");
           commentBtnArea.classList.add("comment-btn-area");
+          const btnArea = document.createElement("div");
+          btnArea.classList.add("btn-area");
 
           const replyBtn = document.createElement("button");
           replyBtn.innerText = "답글";
@@ -51,7 +53,9 @@ const selectCommentList = () => {
             "onclick",
             `showInsertComment(${comment.commentNo}, this)`
           );
-          commentBtnArea.appendChild(replyBtn);
+          btnArea.appendChild(replyBtn);
+
+          commentBtnArea.append(btnArea);
 
           if (loginMemberNo != null && loginMemberNo == comment.memberNo) {
             const updateBtn = document.createElement("button");
@@ -68,10 +72,10 @@ const selectCommentList = () => {
               `deleteComment(${comment.commentNo})`
             );
 
-            commentBtnArea.append(updateBtn, deleteBtn);
+            btnArea.append(updateBtn, deleteBtn);
           }
 
-          commentWriter.append(proNick, commentBtnArea);
+          commentWriter.append(proNick);
 
           // ----- 댓글 내용 -----
           const contentWrapper = document.createElement("div");
@@ -89,7 +93,9 @@ const selectCommentList = () => {
           commentDate.innerText = comment.commentWrittenDate;
 
           // ----- 조립 -----
-          commentRow.append(commentWriter, contentWrapper, commentDate);
+          commentRow.append(commentWriter, contentWrapper);
+          contentWrapper.after(commentBtnArea);
+          commentBtnArea.prepend(commentDate);
         }
 
         ul.appendChild(commentRow);
@@ -149,7 +155,9 @@ addComment.addEventListener("click", (e) => {
 const showInsertComment = (parentCommentNo, btn) => {
   // 기존 답글 작성 textarea 모두 제거하는 함수
   const removeExistingReplyAreas = () => {
-    const existingTextareas = document.querySelectorAll(".commentInsertContent");
+    const existingTextareas = document.querySelectorAll(
+      ".commentInsertContent"
+    );
     existingTextareas.forEach((ta) => {
       const btnArea = ta.nextElementSibling;
       if (btnArea && btnArea.classList.contains("comment-btn-area")) {
@@ -161,7 +169,9 @@ const showInsertComment = (parentCommentNo, btn) => {
 
   if (document.querySelector(".commentInsertContent")) {
     if (
-      confirm("다른 답글을 작성 중입니다. 현재 댓글에 답글을 작성 하시겠습니까?")
+      confirm(
+        "다른 답글을 작성 중입니다. 현재 댓글에 답글을 작성 하시겠습니까?"
+      )
     ) {
       removeExistingReplyAreas();
     } else {
@@ -172,7 +182,6 @@ const showInsertComment = (parentCommentNo, btn) => {
   const commentLi = btn.closest("li.comment-row");
 
   const replyComment = document.createElement("div");
-  
 
   const textarea = document.createElement("textarea");
   textarea.classList.add("commentInsertContent");
@@ -306,13 +315,13 @@ const showUpdateComment = (commentNo, btn) => {
 
   contentDiv.innerHTML = "";
   const textarea = document.createElement("textarea");
-  textarea.classList.add("update-textarea", "comment-content"); 
+  textarea.classList.add("update-textarea", "comment-content");
   textarea.value = beforeContent;
   contentDiv.appendChild(textarea);
 
   const btnArea = commentRow.querySelector(".comment-btn-area");
-  btnArea.replaceChildren(); 
-  
+  btnArea.replaceChildren();
+
   const updateBtn = document.createElement("button");
   updateBtn.innerText = "수정";
   updateBtn.onclick = () => updateComment(commentNo, updateBtn);
@@ -320,8 +329,10 @@ const showUpdateComment = (commentNo, btn) => {
   const cancelBtn = document.createElement("button");
   cancelBtn.innerText = "취소";
   cancelBtn.onclick = () => updateCancel(cancelBtn);
-
   btnArea.append(updateBtn, cancelBtn);
+
+  btnArea.classList.add("reply-btn-area");
+  btnArea.classList.remove("btn-area");
 };
 // --------------------------------------------------------------------
 /** 댓글 수정 취소
@@ -384,29 +395,27 @@ const updateComment = (commentNo, btn) => {
 
         // 작성자 번호 확인 후 수정/삭제 버튼 추가
         // (commentRow 에 data-member-no 속성으로 작성자 번호가 저장되어 있다고 가정)
-          const updateBtn = document.createElement("button");
-          updateBtn.innerText = "수정";
-          updateBtn.setAttribute(
-            "onclick",
-            `showUpdateComment(${commentNo}, this)`
-          );
+        const updateBtn = document.createElement("button");
+        updateBtn.innerText = "수정";
+        updateBtn.setAttribute(
+          "onclick",
+          `showUpdateComment(${commentNo}, this)`
+        );
 
-          const deleteBtn = document.createElement("button");
-          deleteBtn.innerText = "삭제";
-          deleteBtn.setAttribute(
-            "onclick",
-            `deleteComment(${commentNo})`
-          );
+        const deleteBtn = document.createElement("button");
+        deleteBtn.innerText = "삭제";
+        deleteBtn.setAttribute("onclick", `deleteComment(${commentNo})`);
 
-          btnArea.append(updateBtn, deleteBtn);
-        
-
+        btnArea.append(updateBtn, deleteBtn);
+        selectCommentList();
       } else {
+        selectCommentList();
         alert("댓글 수정이 실패하였습니다");
       }
     })
     .catch((err) => {
       console.error(err);
+      selectCommentList();
       alert("댓글 수정 중 오류가 발생했습니다.");
     });
 };
