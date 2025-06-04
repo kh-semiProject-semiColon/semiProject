@@ -157,6 +157,7 @@ body {
   font-size: 18px;
   line-height: 1.8;
   margin-bottom: 50px;
+  white-space: pre-line;
 }
 
 /* 좋아요 */

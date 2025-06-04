@@ -25,8 +25,13 @@
           <div
             class="gostudy-message-avatar"
             th:classappend="${'gostudy-avatar-' + (message.senderNo % 4 + 1)}"
-            th:text="${memberMap[message.senderNo] != null ? #strings.substring(memberMap[message.senderNo], 0, 1) : '?'}"
-          ></div>
+          >
+            <img
+              th:src="${message.profileImg != null and message.profileImg != '' ? message.profileImg : '/images/logo.png'}"
+              alt="avatar"
+              class="gostudy-avatar-img"
+            />
+          </div>
 
           <div class="gostudy-message-content">
             <div class="gostudy-message-info">
@@ -281,9 +286,6 @@
             userName = "나";
           }
 
-          // 안전한 아바타 텍스트 생성
-          const avatarText =
-            userName && userName.length > 0 ? userName.substring(0, 1) : "?";
           const avatarClass = `gostudy-avatar-${(message.senderNo % 4) + 1}`;
 
           // 시간 포맷팅 (서버에서 받은 시간이 있으면 사용, 없으면 현재 시간)
@@ -293,7 +295,13 @@
           const messageContent = message.content || "";
 
           messageDiv.innerHTML = `
-            <div class="gostudy-message-avatar ${avatarClass}">${avatarText}</div>
+            <div class="gostudy-message-avatar ${avatarClass}">
+              <img
+                src="${message.profileImg ? message.profileImg : '/images/logo.png'}"
+                alt="avatar"
+                class="gostudy-avatar-img"
+              />
+            </div>
             <div class="gostudy-message-content">
               <div class="gostudy-message-info">
                 ${!isOwn ? `<span>${userName}</span>` : ""}
@@ -351,11 +359,6 @@
               console.log("메시지 조회 응답:", data);
               if (data.success && data.messages) {
                 console.log("조회된 메시지 수:", data.messages.length);
-                // 기존 메시지 제거 후 다시 추가 (테스트용)
-                // messagesContainer.innerHTML = '';
-                // data.messages.forEach(message => {
-                //   addMessageToChat(message);
-                // });
               }
             })
             .catch((error) => {

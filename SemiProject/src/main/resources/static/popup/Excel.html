@@ -1,96 +1,83 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <title>퇴실 자동입력</title>
-    <style>
-      body {
-        font-family: Arial;
-        padding: 30px;
+<head>
+  <meta charset="UTF-8">
+  <title>퇴실 자동입력</title>
+  <style>
+    body { font-family: Arial; padding: 30px; }
+    input, select, button { font-size: 16px; margin: 5px 0; }
+    #result { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <h2>📋 퇴실 입력</h2>
+
+  <label>강사 선택:</label><br>
+  <select id="instructor">
+    <option value="D (박신우강사님)">D (박신우강사님)</option>
+    <option value="E (조미현강사님)" selected>E (조미현강사님)</option>
+    <option value="F (민봉식강사님)">F (민봉식강사님)</option>
+    <option value="G (최종선강사님)">G (최종선강사님)</option>
+  </select><br>
+
+  <label>닉네임:</label><br>
+  <input type="text" id="nickname" placeholder="이름"><br>
+
+  <label>퇴실시간:</label><br>
+  <select id="leaveTime">
+    <option value="">선택하세요</option>
+    <option value="18:30">18:30</option>
+    <option value="19:00">19:00</option>
+    <option value="19:30">19:30</option>
+    <option value="20:00">20:00</option>
+    <option value="20:30" selected>20:30</option> <!-- ✅ 기본 선택 -->
+    <option value="21:00">21:00</option>
+    <option value="21:30">21:30</option>
+    <option value="22:00">22:00</option>
+    <option value="22:30">22:30</option>
+  </select><br>
+
+  <!-- ✅ 프로젝트룸 체크박스 추가 -->
+  <label>
+    <input type="checkbox" id="projectRoom">
+    프로젝트룸 사용하기
+  </label><br>
+
+  <button onclick="submitForm()">작성하기</button>
+
+  <p id="result"></p>
+
+  <script>
+    function submitForm() {
+      const instructor = document.getElementById("instructor").value;
+      const nickname = document.getElementById("nickname").value.trim();
+      const leaveTime = document.getElementById("leaveTime").value;
+      const projectRoom = document.getElementById("projectRoom").checked ? "TRUE" : "FALSE";
+      const result = document.getElementById("result");
+
+      if (!nickname || !leaveTime) {
+        alert("강사, 닉네임, 퇴실시간을 모두 선택해주세요.");
+        return;
       }
-      input,
-      select,
-      button {
-        font-size: 16px;
-        margin: 5px 0;
-      }
-      #result {
-        margin-top: 20px;
-        font-weight: bold;
-      }
-    </style>
-  </head>
-  <body>
-    <h2>📋 퇴실 입력</h2>
 
-    <label>강사 선택:</label><br />
-    <select id="instructor">
-      <option value="D (박신우강사님)">D (박신우강사님)</option>
-      <option value="E (조미현강사님)" selected>E (조미현강사님)</option>
-      <option value="F (민봉식강사님)">F (민봉식강사님)</option>
-      <option value="G (최종선강사님)">G (최종선강사님)</option></select
-    ><br />
+      const url = `https://script.google.com/macros/s/AKfycbwm-cYiROM2AXAlOTR4qxtnVwTU8SOY6jYPeXUxqKrZnHzEUMYTuIEyppkb41-dHmkmhQ/exec` +
+                  `?instructor=${encodeURIComponent(instructor)}` +
+                  `&nickname=${encodeURIComponent(nickname)}` +
+                  `&leaveTime=${encodeURIComponent(leaveTime)}` +
+                  `&projectRoom=${projectRoom}`;
 
-    <label>닉네임:</label><br />
-    <input type="text" id="nickname" placeholder="이름" /><br />
+      fetch(url, { method: "GET", mode: "no-cors" })
+        .then(() => {
+          result.innerText = "✅ 요청 전송 완료! 시트에서 확인하세요.";
+          result.style.color = "green";
+        })
+        .catch(error => {
+          result.innerText = `❌ 오류 발생: ${error}`;
+          result.style.color = "red";
+        });
+    }
+  </script>
 
-    <label>퇴실시간:</label><br />
-    <select id="leaveTime">
-      <option value="">선택하세요</option>
-      <option value="18:30">18:30</option>
-      <option value="19:00">19:00</option>
-      <option value="19:30">19:30</option>
-      <option value="20:00">20:00</option>
-      <option value="20:30" selected>20:30</option>
-      <!-- ✅ 기본 선택 -->
-      <option value="21:00">21:00</option>
-      <option value="21:30">21:30</option>
-      <option value="22:00">22:00</option>
-      <option value="22:30">22:30</option></select
-    ><br />
-
-    <!-- ✅ 프로젝트룸 체크박스 추가 -->
-    <label>
-      <input type="checkbox" id="projectRoom" />
-      프로젝트룸 사용하기 </label
-    ><br />
-
-    <button onclick="submitForm()">작성하기</button>
-
-    <p id="result"></p>
-
-    <script>
-      function submitForm() {
-        const instructor = document.getElementById("instructor").value;
-        const nickname = document.getElementById("nickname").value.trim();
-        const leaveTime = document.getElementById("leaveTime").value;
-        const projectRoom = document.getElementById("projectRoom").checked
-          ? "TRUE"
-          : "FALSE";
-        const result = document.getElementById("result");
-
-        if (!nickname || !leaveTime) {
-          alert("강사, 닉네임, 퇴실시간을 모두 선택해주세요.");
-          return;
-        }
-
-        const url =
-          `https://script.google.com/u/0/home/projects/15suIptjXkk5x0VcpDF_5sG2wXHYJZQgXy_v7cMaGdgSUtdD86izszvhg/edit` +
-          `?instructor=${encodeURIComponent(instructor)}` +
-          `&nickname=${encodeURIComponent(nickname)}` +
-          `&leaveTime=${encodeURIComponent(leaveTime)}` +
-          `&projectRoom=${projectRoom}`;
-
-        fetch(url, { method: "GET", mode: "no-cors" })
-          .then(() => {
-            result.innerText = "✅ 요청 전송 완료! 시트에서 확인하세요.";
-            result.style.color = "green";
-          })
-          .catch((error) => {
-            result.innerText = `❌ 오류 발생: ${error}`;
-            result.style.color = "red";
-          });
-      }
-    </script>
-  </body>
+</body>
 </html>

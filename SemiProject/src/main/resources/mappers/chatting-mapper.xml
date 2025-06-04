@@ -23,21 +23,23 @@
         )
     </insert>
 
-    <!-- 스터디의 모든 메시지 조회 (최근 100개로 제한) -->
+    
     <select id="getMessagesByStudyNo" parameterType="int" resultType="Chatting">
-        SELECT * FROM (
-            SELECT 
-                MESSAGE_NO as messageNo,
-                STUDY_NO as studyNo,
-                SENDER_NO as senderNo,
-                CONTENT as content,
-                TO_CHAR(SEND_TIME, 'YYYY.MM.DD HH24:MI') as sendTime
-            FROM STUDY_CHAT_MESSAGE 
-            WHERE STUDY_NO = #{studyNo}
-            ORDER BY messageNo DESC
-        ) WHERE ROWNUM &lt;= 100
-        ORDER BY messageNo ASC
-    </select>
+    SELECT * FROM (
+        SELECT 
+            M.MESSAGE_NO as messageNo,
+            M.STUDY_NO as studyNo,
+            M.SENDER_NO as senderNo,
+            M.CONTENT as content,
+            TO_CHAR(M.SEND_TIME, 'YYYY.MM.DD HH24:MI') as sendTime,
+            U.PROFILE_IMG as profileImg  <!-- 프로필 추가 -->
+        FROM STUDY_CHAT_MESSAGE M
+        JOIN MEMBER U ON M.SENDER_NO = U.MEMBER_NO
+        WHERE M.STUDY_NO = #{studyNo}
+        ORDER BY M.MESSAGE_NO DESC
+    ) WHERE ROWNUM &lt;= 100
+    ORDER BY messageNo ASC
+</select>
 
     <!-- 특정 메시지 번호 이후의 새 메시지들 조회 -->
     <select id="getMessagesAfter" resultType="Chatting">

@@ -144,6 +144,23 @@ public class EditBoardController {
 	   }
 	   
 	   @ResponseBody
+	   @PostMapping("{boardCode:[0-9]+}/{boardNo:[0-9]+}/uploadImg")
+	   public String updateUploadSummernoteImage(@RequestParam("image") MultipartFile image,
+	                                       HttpServletRequest req) throws IOException {
+
+	       String imgPath = folderPath; 
+
+	       String imgOriginalName = image.getOriginalFilename();
+	       String imgRename = Utility.fileRename(imgOriginalName);
+
+	       File target = new File(imgPath + imgRename);
+	       image.transferTo(target);
+	       
+	       String imageUrl = req.getContextPath()+ webPath + imgRename;
+	       return imageUrl;
+	   }
+	   
+	   @ResponseBody
 	   @PostMapping("announce/uploadImg")
 	   public String uploadAnnounceSummernoteImage(@RequestParam("image") MultipartFile image,
 	                                       HttpServletRequest req) throws IOException {
@@ -161,8 +178,42 @@ public class EditBoardController {
 	   }
 	   
 	   @ResponseBody
+	   @PostMapping("announce/{announceNo:[0-9]+}/uploadImg")
+	   public String updateploadAnnounceSummernoteImage(@RequestParam("image") MultipartFile image,
+	                                       HttpServletRequest req) throws IOException {
+
+	       String imgPath = folderPath; 
+
+	       String imgOriginalName = image.getOriginalFilename();
+	       String imgRename = Utility.fileRename(imgOriginalName);
+
+	       File target = new File(imgPath + imgRename);
+	       image.transferTo(target);
+	       
+	       String imageUrl = req.getContextPath()+ webPath + imgRename;
+	       return imageUrl;
+	   }
+	   
+	   @ResponseBody
 	   @PostMapping("studyBoard/uploadImg")
 	   public String uploadStudySummernoteImage(@RequestParam("image") MultipartFile image,
+			   HttpServletRequest req) throws IOException {
+		   
+		   String imgPath = folderPath; 
+		   
+		   String imgOriginalName = image.getOriginalFilename();
+		   String imgRename = Utility.fileRename(imgOriginalName);
+		   
+		   File target = new File(imgPath + imgRename);
+		   image.transferTo(target);
+		   
+		   String imageUrl = req.getContextPath()+ webPath + imgRename;
+		   return imageUrl;
+	   }
+	   
+	   @ResponseBody
+	   @PostMapping("studyBoard/{studyBoardNo:[0-9]+}/uploadImg")
+	   public String updateUploadStudySummernoteImage(@RequestParam("image") MultipartFile image,
 			   HttpServletRequest req) throws IOException {
 		   
 		   String imgPath = folderPath; 

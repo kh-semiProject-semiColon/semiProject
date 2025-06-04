@@ -14,5 +14,6 @@ public class Chatting {
     private int senderNo;
     private String content;
     private String sendTime;
+    private String profileImg;
 
 }

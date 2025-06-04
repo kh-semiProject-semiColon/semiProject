@@ -72,6 +72,13 @@
   flex-shrink: 0;
 }
 
+.gostudy-avatar-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .gostudy-avatar-1 {
   background: linear-gradient(135deg, #3b82f6, #1d4ed8);
 }

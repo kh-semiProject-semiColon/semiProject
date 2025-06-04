@@ -55,6 +55,7 @@ body {
 .nickName {
   margin: 2%;
   height: 30px;
+  font-weight: bold;
 }
 
 .content {
