@@ -56,7 +56,10 @@ public class EditBoardController {
 	private String folderPath;
 	
 	@GetMapping("{boardCode:[0-9]+}/insert")
-	public String boardInsert(@PathVariable("boardCode") int boardCode) {
+	public String boardInsert(@PathVariable("boardCode") int boardCode,
+							  Model model) {
+		
+		model.addAttribute("boardCodeNo", boardCode);
 		
 		return "board/boardWrite";
 	}

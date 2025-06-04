@@ -20,14 +20,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.co.semi.board.model.dto.HireComment;
+import jakarta.servlet.http.HttpSession;
 import kr.co.semi.board.model.dto.HireInfo;
 import kr.co.semi.board.model.service.HireBoardService;
+import kr.co.semi.board.model.service.HireCommentService;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.studyboard.model.dto.Study;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +43,7 @@ public class HireBoardController {
 
 	@Autowired
 	private HireBoardService service;
-
+	
     HireBoardController(BoardController boardController) {
         this.boardController = boardController;
     }
@@ -136,6 +138,8 @@ public class HireBoardController {
 		int hireNo = 0;
 		
 //		System.out.println(inputHire);
+		
+		
 		
 		inputHire.setMemberNo(loginMember.getMemberNo());
 		inputHire.setStudyNo(loginMember.getStudyNo());
@@ -416,6 +420,8 @@ public class HireBoardController {
 	@ResponseBody
 	public String memberInvite(@PathVariable("hireNo") int hireNo,
 							   RedirectAttributes ra,
+							   @SessionAttribute("loginMember") Member loginMember,
+							   HttpSession session,
 							   @RequestBody Map<String, Integer> requestData) {
 		
 		int memberNo = requestData.get("memberNo");
@@ -448,6 +454,7 @@ public class HireBoardController {
 
 			}
 		}
+		
 		
 		return message;
 	}

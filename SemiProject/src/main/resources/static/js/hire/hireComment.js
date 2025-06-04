@@ -20,10 +20,15 @@ console.log(id); // 40
 // 이제 loginMember.memberNo 사용 가능
 console.log(loginMemberNo);
 
+let maxCount = null;
+
+let nowCount = null;
+
 const selectCommentList = () => {
   const data = {
     hireCommentContent: commentContent.value,
     hireNo: id,
+    studyNo: studyNo,
   };
   fetch("/comment/select", {
     method: "POST",
@@ -31,13 +36,11 @@ const selectCommentList = () => {
     body: JSON.stringify(data),
   })
     .then((resp) => resp.json())
-    .then((hireCommentList) => {
-      console.log(hireCommentList); // 데이터 확인
+    .then((result) => {
       const ul = document.querySelector("#commentList");
       ul.innerHTML = ""; // 기존 댓글 삭제
 
-      hireCommentList.forEach((comment) => {
-        console.log("parentNo:", comment.hireParentCommentNo, comment);
+      result.hireList.forEach((comment) => {
         const li = document.createElement("li");
         li.classList.add("comment-row");
 
@@ -83,11 +86,22 @@ const selectCommentList = () => {
             loginMemberNo === memberNo &&
             comment.studyCount === 0
           ) {
+            maxCount = result.studyMaxCount;
+            nowCount = result.currentCount;
+
+            console.log(maxCount);
+            console.log(nowCount);
+
             const inviteBtn = document.createElement("button");
             inviteBtn.textContent = "초대";
             inviteBtn.classList.add("invite-btn");
-            inviteBtn.onclick = () => {
+            inviteBtn.onclick = (e) => {
               if (confirm(`${comment.memberNickname}님을 초대하시겠습니까?`)) {
+                if (maxCount == nowCount) {
+                  alert("스터디 최대인원수를 초과합니다");
+                  return;
+                }
+
                 inviteMember(comment.memberNo, comment.memberNickname, id);
               }
             };
@@ -463,5 +477,12 @@ function inviteMember(memberNo, memberNickname, hireNo) {
     body: JSON.stringify({ memberNo: memberNo }),
   })
     .then((res) => res.text())
-    .then((msg) => alert(`${memberNickname}님${msg}`));
+    .then((msg) => {
+      alert(`${memberNickname}님${msg}`);
+      selectCommentList();
+      // maxCount = result.studyMaxCount;
+      // nowCount = result.studyCurrentCount;
+
+      // console.log(maxCount);
+    });
 }
