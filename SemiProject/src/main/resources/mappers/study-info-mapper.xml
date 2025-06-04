@@ -22,7 +22,7 @@
 		LEFT JOIN "MEMBER" M ON SM.MEMBER_NO = M.MEMBER_NO
 		WHERE S.STUDY_DEL_FL = 'N'
 		AND M.MEMBER_DEL_FL ='N'
-		ORDER BY STUDY_DATE DESC
+		ORDER BY STUDY_NO DESC
  	</select>
  	
  	
@@ -82,7 +82,7 @@
  				AND STUDY_TYPE = #{query}
  			</when>
  		</choose>
- 		ORDER BY STUDY_DATE DESC
+ 		ORDER BY STUDY_NO DESC
  	</select>
  	
  	 	<!-- 모든 스터디 조회 -->
@@ -93,7 +93,7 @@
  		WHERE SM.STUDY_NO = S.STUDY_NO) AS MEMBER_COUNT
  		FROM "STUDY" S
  		WHERE STUDY_DEL_FL = 'N'
- 		ORDER BY STUDY_DATE DESC
+ 		ORDER BY STUDY_NO DESC
  	</select>
  	
  	

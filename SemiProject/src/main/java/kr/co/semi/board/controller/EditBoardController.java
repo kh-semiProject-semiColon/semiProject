@@ -484,7 +484,7 @@ public class EditBoardController {
 			if(result > 0) {
 				
 				message = "삭제되었습니다.";
-				path = String.format("/announce?cp=%d", cp);
+				path = String.format("/board/announce?cp=%d", cp);
 			
 			}else {
 				

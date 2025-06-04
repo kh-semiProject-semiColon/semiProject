@@ -98,6 +98,13 @@ public class MainController {
 			return -1;
 		}
 		
+		// 스터디 명 10글자 이상일 때 생성 불가
+		if(study.getStudyName().length() > 10) {
+			String message = "스터디 명은 10글자 이하로 작성해 주세요";
+			ra.addFlashAttribute(message);
+			return -2;
+		}
+		
 		// 이미지가 존재하면 저장 처리
 	    String uploadDir = "C:/uploadSemiFiles/studyProfile/";
 	    String imagePath = null;

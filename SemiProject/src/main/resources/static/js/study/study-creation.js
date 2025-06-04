@@ -99,8 +99,13 @@ function submitForm(event) {
         alert("스터디가 성공적으로 생성되었습니다!");
         window.location.href = "/"; // 성공 시 메인페이지로 이동
       } else {
-        alert("스터디 생성에 실패했습니다");
-        window.location.href = "/"; // 실패 시 메인페이지로 이동 후 alert 따로 컨트롤러에서 요청
+        if (data === -1) {
+          alert("스터디 생성에 실패했습니다");
+          window.location.href = "/"; // 실패 시 메인페이지로 이동 후 alert 따로 컨트롤러에서 요청
+        } else {
+          alert("스터디명은 10글자 이내로 작성해주세요");
+          return;
+        }
       }
     })
     .catch((error) => {
