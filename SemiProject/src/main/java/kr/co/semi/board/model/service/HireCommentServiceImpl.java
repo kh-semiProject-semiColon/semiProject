@@ -22,8 +22,8 @@ public class HireCommentServiceImpl implements HireCommentService{
 	
 	// 댓글 목록 조회 서비스
 	@Override
-	public List<HireComment> select(int hireNo) {
-		return mapper.select(hireNo);
+	public List<HireComment> select(HireComment hireComment) {
+		return mapper.select(hireComment);
 	}
 
 	// 댓글 답글 등록 서비스
@@ -42,5 +42,15 @@ public class HireCommentServiceImpl implements HireCommentService{
 	@Override
 	public int update(HireComment hireComment) {
 		return mapper.update(hireComment);
+	}
+	
+	@Override
+	public int selectCurrentCount(int studyNo) {
+		return mapper.selectCurrentCount(studyNo);
+	}
+	
+	@Override
+	public int selectMaxCount(int studyNo) {
+		return mapper.selectMaxCount(studyNo);
 	}
 }

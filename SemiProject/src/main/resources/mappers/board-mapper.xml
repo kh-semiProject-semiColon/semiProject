@@ -6,7 +6,7 @@
 <mapper namespace="kr.co.semi.board.model.mapper.BoardMapper">
 
 	<resultMap type="Board" id="board_rm">
-		<id property="boardNo" column="BOARD_NO"/>
+	<id property="boardNo" column="BOARD_NO"/>
 		
 		<!-- collection 태그
 			 : SELECT로 조회된 결과를 컬렉션(List)에 담아 지정된 필드에 세팅

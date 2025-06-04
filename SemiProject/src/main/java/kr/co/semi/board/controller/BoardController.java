@@ -350,6 +350,7 @@ public class BoardController {
 			
 			// board - 게시글 일반 내용 + imageList + commentList
 			model.addAttribute("board", board);
+			model.addAttribute("boardCodeNo", boardCode);
 			
 		}
 		

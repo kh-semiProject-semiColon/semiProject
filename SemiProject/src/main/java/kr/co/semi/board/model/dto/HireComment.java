@@ -23,5 +23,9 @@ public class HireComment {
 	private String memberNickname;
 	private String profileImg;
 	
+	private int StudyNo;				// 스터디 번호
+	
 	private int studyCount; 			// 스터디 카운트
+	private int studyMaxCount;			// 스터디 최대 인원
+	private int currentCount;			// 스터디 현재 인원
 }

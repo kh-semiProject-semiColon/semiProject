@@ -11,7 +11,7 @@ public interface HireCommentService {
 	 * @param boardNo
 	 * @return
 	 */
-	List<HireComment> select(int hireNo);
+	List<HireComment> select(HireComment hireComment);
 
 	/** 댓글 작성
 	 * @param hireComment
@@ -30,5 +30,9 @@ public interface HireCommentService {
 	 * @return
 	 */
 	int update(HireComment hireComment);
+
+	int selectCurrentCount(int studyNo);
+
+	int selectMaxCount(int studyNo);
 
 }

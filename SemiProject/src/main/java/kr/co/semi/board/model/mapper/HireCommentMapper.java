@@ -14,7 +14,7 @@ public interface HireCommentMapper {
 	 * @param boardNo
 	 * @return
 	 */
-	List<HireComment> select(int hireNo);
+	List<HireComment> select(HireComment hireComment);
 
 	/** 댓글/ 답글 등록 서비스
 	 * @param hireComment
@@ -33,4 +33,8 @@ public interface HireCommentMapper {
 	 * @return
 	 */
 	int update(HireComment hireComment);
+
+	int selectMaxCount(int studyNo);
+
+	int selectCurrentCount(int studyNo);
 }

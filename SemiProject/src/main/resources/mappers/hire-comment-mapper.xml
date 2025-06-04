@@ -91,4 +91,18 @@
 		HIRE_COMMENT_CONTENT = #{hireCommentContent}
 		WHERE HIRE_COMMENT_NO = #{hireCommentNo}
 	</update>
+	
+	
+	<select id="selectMaxCount">
+		SELECT STUDY_MAX_COUNT
+		FROM STUDY
+		WHERE STUDY_NO = #{studyNo}
+	</select>
+	
+	<select id="selectCurrentCount">
+		SELECT COUNT(*)
+		FROM STUDY_MEMBER
+		WHERE STUDY_NO = #{studyNo}
+	</select>
+	
 </mapper>
