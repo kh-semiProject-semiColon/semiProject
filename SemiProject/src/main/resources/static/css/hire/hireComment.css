@@ -1,0 +1,226 @@
+body {
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  background-color: #fff;
+  margin: 0px;
+}
+
+/*댓글*/
+.comment-write-area {
+  display: flex;
+  min-height: 85px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0;
+}
+
+.comment-write-area > textarea {
+  width: 90%;
+  height: 70px;
+  margin-right: 10px;
+  resize: none;
+}
+
+.comment-write-area > button {
+  width: 10%;
+  height: 76px;
+
+  font-weight: bold;
+  border: none;
+  border-radius: 15px;
+  background-color: #3867ff;
+  color: white;
+  cursor: pointer;
+}
+
+.comment-write-area > button:hover {
+  background-color: white;
+  color: #4aa7ff;
+  border: 2px solid #4aa7ff;
+}
+
+#commentList {
+  padding: 0;
+  list-style: none;
+}
+
+.comment-writer {
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+  margin: 0px;
+}
+
+.nickName {
+  margin: 2%;
+  height: 30px;
+}
+
+.content {
+  width: 90.44%;
+}
+
+.proNick {
+  display: flex;
+  align-items: center;
+}
+
+.comment-writer img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 3%;
+}
+
+.proNick span {
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.date-wrapper {
+  margin-left: 2%;
+  width: 45%;
+}
+
+.comment-date {
+  margin-right: 2%;
+  font-size: 0.8em;
+  color: #dbdae2;
+}
+
+.btn-wrapper {
+  display: flex;
+  justify-content: end;
+  width: 50%;
+}
+
+.comment-btn-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  gap: 20px;
+}
+
+.comment-btn-area1 {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+  gap: 5px; /* 버튼 사이 간격 */
+  flex-direction: row; /* 버튼 가로 정렬 */
+}
+
+/* 버튼 */
+.comment-btn-area1 button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 20px;
+  width: 60px;
+  height: 25px;
+  border-radius: 15px;
+  background-color: #3867ff;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 8pt;
+  margin-left: 10px;
+}
+
+.comment-btn-area1 button:hover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 20px;
+  width: 60px;
+  height: 25px;
+  border-radius: 15px;
+  background-color: #4aa7ff;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 8pt;
+  margin-left: 10px;
+}
+
+.child-comment {
+  padding-left: 30px; /* 답글은 30px 들여쓰기 */
+}
+
+/* 버튼 */
+.comment-btn-area button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 20px;
+  width: 70px;
+  height: 30px;
+  border-radius: 15px;
+  background-color: white;
+  border: none;
+  color: #4aa7ff;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.comment-btn-area button:hover {
+  background-color: white;
+  color: #4aa7ff;
+  border: 2px solid #4aa7ff;
+}
+
+.update-textarea {
+  width: 100%;
+  height: 90px;
+  resize: none;
+}
+
+.comment-row {
+  border-top: 1px solid #e0e0e0;
+  padding: 2% 5%;
+}
+
+.child-comment {
+  padding-left: 10%;
+  position: relative;
+}
+
+.invite-btn {
+  width: 50px;
+  height: 20px;
+  padding: 2px 6px;
+  font-size: 8pt;
+  border-radius: 15px;
+  cursor: pointer;
+  background-color: #3867ff;
+}
+
+.invite-btn:hover {
+  width: 50px;
+  height: 20px;
+  padding: 2px 6px;
+  font-size: 8pt;
+  border-radius: 15px;
+  cursor: pointer;
+  background-color: #4aa7ff;
+}
+
+/* 답글 */
+.commentInsertContent {
+  width: 100%;
+  height: 90px;
+  resize: none;
+  margin-top: 20px;
+}
+
+/* 댓글 내용 */
+.comment-content {
+  margin-left: 2%;
+  white-space: pre-wrap; /* 작성된 문자열 모양 그대로(공백 유지) */
+}
+
+.content-comment {
+  margin-left: 50px;
+}

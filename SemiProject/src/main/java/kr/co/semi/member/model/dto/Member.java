@@ -1,6 +1,7 @@
 package kr.co.semi.member.model.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Member {
 	
 	private int memberNo;
@@ -26,5 +28,7 @@ public class Member {
 	private String memberMajor;
 	private String memberIntroduce;
 	private String memberName;
+	private String newLeaderId;
+	
 }
 

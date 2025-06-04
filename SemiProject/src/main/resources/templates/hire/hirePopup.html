@@ -1,0 +1,48 @@
+<th:block th:fragment="popupModal">
+  <div class="resume-modal" id="resumeModal" style="display:none;">
+    <div class="resume-content">
+      <div class="resume-header">
+        <div>이력서</div>
+        <button class="resume-close" id="closeModalBtn">×</button>
+      </div>
+      <div class="resume-body">
+        <div class="resume-row resume-underline">
+          <div class="resume-label">닉네임</div>
+          <div class="resume-content-area">
+            <div class="resume-profile">
+              <div class="resume-avatar">
+                <img src="https://via.placeholder.com/32" alt="프로필 이미지" />
+              </div>
+              <div class="resume-nickname">짱구</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="resume-row resume-underline">
+          <div class="resume-label">자기소개</div>
+          <div class="resume-content-area">
+            <div class="resume-intro">
+              ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
+            </div>
+          </div>
+        </div>
+
+        <div class="resume-row">
+          <div class="resume-label">컴퓨터<br />전공 여부</div>
+          <div class="resume-content-area">
+            <div class="resume-radio-group">
+              <label class="resume-radio">
+                <input type="radio" name="major" checked />
+                <span>○</span>
+              </label>
+              <label class="resume-radio">
+                <input type="radio" name="major" />
+                <span>✕</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</th:block>

@@ -1,33 +1,33 @@
 package kr.co.semi.common.config;
 
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import kr.co.semi.common.intercepter.BoardTypeInterceptor;
+import kr.co.semi.common.interceptor.LoginInterceptor;
+import kr.co.semi.common.interceptor.SessionUpdateInterceptor;
 
 // 인터셉터가 어떤 요청을 가로챌지 설정하는 클래스
 
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer{
 	
-	// 인터셉터 클래스 Bean 등록
-	@Bean
-	public BoardTypeInterceptor boardTypeInterceptor() {
-		return new BoardTypeInterceptor();
-	}
-	
-	// 동작할 인터셉터 객체를 추가하는 메서드
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		
-		// Bean으로 등록된 BoardTypeInterceptor를 얻어와서 매개변수로 전달
-		registry
-		.addInterceptor(boardTypeInterceptor())
-		.addPathPatterns("/**") // 가로챌 요청 주소 지정 /** : /이하 모든 요청 주소
-		.excludePathPatterns("/css/**", "/js/**", "images/**", "favicon.ico"); // 가로채지 않을 주소 지정
-	}
+	 @Autowired
+	   private SessionUpdateInterceptor sessionUpdateInterceptor;
+	 
+	 @Autowired
+	 private LoginInterceptor LoginInterceptor;
+	   
+	 @Override
+	   public void addInterceptors(InterceptorRegistry registry) {
 
+	        registry.addInterceptor(LoginInterceptor)
+	            .addPathPatterns("/board/**", "/study/**", "/studyBoard/**") // 로그인 필요 경로
+	            .excludePathPatterns("/login", "/signup", "/resources/**", "/css/**", "/js/**","/member/**"); // 허용 경로
+	        
+	        registry.addInterceptor(sessionUpdateInterceptor)
+            .addPathPatterns("/studyBoard/**"); // 게시판 요청에만 적용
+	 }
 	
 }

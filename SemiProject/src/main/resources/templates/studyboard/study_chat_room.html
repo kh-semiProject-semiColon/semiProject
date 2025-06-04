@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>스터디 채팅방</title>
+    <link rel="stylesheet" href="/css/study-chat.css" />
+  </head>
+  <body>
+    <div th:fragment="studyChatRoom" class="gostudy-chat-container">
+      <div class="gostudy-chat-header">
+        <div class="gostudy-chat-title"></div>
+      </div>
+
+      <div class="gostudy-chat-messages" id="gostudyChatMessages">
+        <!-- 타임리프로 메시지 목록을 렌더링 -->
+        <div
+          th:each="message : ${messages}"
+          th:class="'gostudy-message' + (${message.senderNo == session.loginMember.memberNo} ? ' gostudy-message-own' : '')"
+          th:data-message-no="${message.messageNo}"
+        >
+          <div
+            class="gostudy-message-avatar"
+            th:classappend="${'gostudy-avatar-' + (message.senderNo % 4 + 1)}"
+            th:text="${memberMap[message.senderNo] != null ? #strings.substring(memberMap[message.senderNo], 0, 1) : '?'}"
+          ></div>
+
+          <div class="gostudy-message-content">
+            <div class="gostudy-message-info">
+              <span
+                th:if="${message.senderNo != session.loginMember.memberNo}"
+                th:text="${memberMap[message.senderNo]}"
+              ></span>
+              <span th:text="${message.sendTime}"></span>
+              <span th:if="${message.senderNo == session.loginMember.memberNo}"
+                >나</span
+              >
+            </div>
+
+            <div class="gostudy-message-bubble">
+              <div
+                class="gostudy-message-text"
+                th:text="${message.content}"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gostudy-chat-input-container">
+        <!-- 일반 폼 전송 -->
+        <form
+          th:action="@{/study/{studyNo}/chat/send(studyNo=${studyNo})}"
+          method="post"
+          id="gostudyMessageForm"
+          class="gostudy-chat-input-wrapper"
+        >
+          <textarea
+            class="gostudy-chat-input"
+            placeholder="메시지를 입력하세요..."
+            rows="1"
+            name="content"
+            id="gostudyMessageInput"
+            required
+          ></textarea>
+
+          <button type="submit" class="gostudy-send-button">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M2 12L22 2L13 21L11 13L2 12Z"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const messageInput = document.getElementById("gostudyMessageInput");
+        const messagesContainer = document.getElementById(
+          "gostudyChatMessages"
+        );
+        const messageForm = document.getElementById("gostudyMessageForm");
+
+        // 현재 스터디 번호 가져오기
+        const studyNo = /*[[${studyNo}]]*/ 1;
+        const loginMemberNo = /*[[${session.loginMember.memberNo}]]*/ 1;
+
+        let lastMessageNo = 0;
+        let pollingInterval;
+
+        if (!messageInput || !messagesContainer || !messageForm) return;
+
+        // 마지막 메시지 번호 초기화
+        initializeLastMessageNo();
+
+        // 텍스트 영역 자동 높이 조절
+        messageInput.addEventListener("input", function () {
+          this.style.height = "auto";
+          this.style.height = this.scrollHeight + "px";
+        });
+
+        // 엔터 키로 메시지 전송 (Shift+Enter는 줄바꿈)
+        messageInput.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            sendMessageAjax();
+          }
+        });
+
+        // 폼 제출 방지하고 AJAX로 전송
+        messageForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          sendMessageAjax();
+        });
+
+        // AJAX로 메시지 전송
+        function sendMessageAjax() {
+          const content = messageInput.value.trim();
+          if (!content) return;
+
+          const formData = new FormData();
+          formData.append("content", content);
+
+          fetch(`/study/${studyNo}/chat/send-ajax`, {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                messageInput.value = "";
+                messageInput.style.height = "auto";
+              } else {
+                alert(
+                  "메시지 전송에 실패했습니다: " +
+                    (data.error || "알 수 없는 오류")
+                );
+              }
+            })
+            .catch((error) => {
+              console.error("메시지 전송 오류:", error);
+              alert("메시지 전송 중 오류가 발생했습니다.");
+            });
+        }
+
+        // 새 메시지를 화면에 추가
+        function appendNewMessages(messages, memberMap) {
+          messages.forEach((message) => {
+            const messageElement = createMessageElement(message, memberMap);
+            messagesContainer.appendChild(messageElement);
+          });
+
+          scrollToBottom();
+        }
+
+        // 메시지 엘리먼트 생성
+        function createMessageElement(message, memberMap) {
+          const isOwn = message.senderNo === loginMemberNo;
+          const messageDiv = document.createElement("div");
+          messageDiv.className =
+            "gostudy-message" + (isOwn ? " gostudy-message-own" : "");
+          messageDiv.setAttribute("data-message-no", message.messageNo);
+
+          const userName = memberMap[message.senderNo];
+          const avatarText = userName.substring(0, 1);
+          const avatarClass = `gostudy-avatar-${(message.senderNo % 4) + 1}`;
+
+          messageDiv.innerHTML = `
+                    <div class="gostudy-message-avatar ${avatarClass}">${avatarText}</div>
+                    <div class="gostudy-message-content">
+                        <div class="gostudy-message-info">
+                            ${!isOwn ? `<span>${userName}</span>` : ""}
+                            <span>${message.sendTime}</span>
+                            ${isOwn ? "<span>나</span>" : ""}
+                        </div>
+                        <div class="gostudy-message-bubble">
+                            <div class="gostudy-message-text">${escapeHtml(
+                              message.content
+                            )}</div>
+                        </div>
+                    </div>
+                `;
+
+          return messageDiv;
+        }
+
+        // HTML 이스케이프
+        function escapeHtml(text) {
+          const div = document.createElement("div");
+          div.textContent = text;
+          return div.innerHTML;
+        }
+
+        // 마지막 메시지 번호 초기화
+        function initializeLastMessageNo() {
+          const messageElements =
+            messagesContainer.querySelectorAll("[data-message-no]");
+          if (messageElements.length > 0) {
+            const lastElement = messageElements[messageElements.length - 1];
+            lastMessageNo =
+              parseInt(lastElement.getAttribute("data-message-no")) || 0;
+          }
+        }
+
+        // 마지막 메시지 번호 업데이트
+        function updateLastMessageNo() {
+          const messageElements =
+            messagesContainer.querySelectorAll("[data-message-no]");
+          if (messageElements.length > 0) {
+            const lastElement = messageElements[messageElements.length - 1];
+            lastMessageNo =
+              parseInt(lastElement.getAttribute("data-message-no")) ||
+              lastMessageNo;
+          }
+        }
+
+        // 스크롤을 맨 아래로
+        function scrollToBottom() {
+          setTimeout(() => {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+          }, 100);
+        }
+
+        // 초기 스크롤 설정
+        scrollToBottom();
+      });
+    </script>
+  </body>
+</html>

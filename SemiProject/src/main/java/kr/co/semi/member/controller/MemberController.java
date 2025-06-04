@@ -1,6 +1,11 @@
 package kr.co.semi.member.controller;
 
+import java.io.File;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,10 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import kr.co.semi.board.model.service.StudyCalendarService;
+import kr.co.semi.common.util.Utility;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.member.model.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,11 +31,16 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("member")
 @Slf4j
 @SessionAttributes({"loginMember"})
+@PropertySource("classpath:/config.properties")
 public class MemberController {
 	
 	@Autowired
 	private MemberService service;
 	
+	@Autowired
+	private StudyCalendarService studyCalendarService;
+	
+
 	/*
 	 * [로그인]
 	 * - 특정 사이트에 아이디/비밀번호 등을 입력해서
@@ -55,12 +68,21 @@ public class MemberController {
 		// 로그인 서비스 호출
 		Member loginMember = service.login(inputMember);
 		
+		
 		// 로그인 실패 시
 		if(loginMember == null) {
 			ra.addFlashAttribute("message", "이메일 또는 비밀번호가 일치하지 않습니다.");
 		} else {
 			// 로그인 성공 시
+			if(studyCalendarService.bringStudyNo(loginMember.getMemberNo()) == 0) {
+				// 스터디가 없는 회원은 스터디 넘버를 0으로 설정
+				loginMember.setStudyNo(0);
+			}else {
+				
+				loginMember.setStudyNo(studyCalendarService.bringStudyNo(loginMember.getMemberNo()));
+			}
 			
+
 			// session scope에 loginMember 추가
 			model.addAttribute("loginMember", loginMember);
 			// 1단계 : model을 이용하여 request scope에 세팅됨
@@ -149,19 +171,21 @@ public class MemberController {
 		return "member/findId";
 	}
 	
-	/** 회원가입 페이지
-	 * @param inputMember
-	 * @param memberAddress
-	 * @param ra
+	/** 회원가입 STEP2에서 입력한 기본 정보를 DB에 저장
+	 * @param inputMember : input창에 입력한 정보들을 DTO에 담아 가져오기
+	 * @param memberAddress : 해당하는 memberAddress가 3개로 나뉘어있기 때문에 배열로 묶어서 가져옴 
 	 * @return
 	 */
 	@PostMapping("signupInfo")
 	public String signupInfo(Member inputMember,
 							@RequestParam("memberAddress") String[] memberAddress,
-							RedirectAttributes ra) {
+							@RequestParam("profileImgs") MultipartFile profileImg
+							)throws Exception {
 		
+		String profileResult = service.profile(profileImg, inputMember);
+		
+		int result = service.signupInfo(inputMember, memberAddress, profileResult);
 		// 회원가입 서비스 호출
-		int result = service.signupInfo(inputMember, memberAddress);
 		
 		String path = null;
 		
@@ -174,7 +198,11 @@ public class MemberController {
 		return "redirect:"+path;
 	}
 	
-	@ResponseBody
+	/** 이메일(아이디) 중복 검사
+	 * @param memberEmail : fetch로 보낸 쿼리로 받음
+	 * @return
+	 */
+	@ResponseBody 
 	@GetMapping("checkEmail")
 	public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
 		
@@ -182,7 +210,7 @@ public class MemberController {
 	}
 	
 	/** 닉네임 중복 검사
-	 * @param memberNickname
+	 * @param memberNickname : fetch로 보낸 쿼리로 받음
 	 * @return 중복 1, 아님 0
 	 */
 	@ResponseBody
@@ -192,6 +220,10 @@ public class MemberController {
 		return service.checkNickname(memberNickname); 
 	}
 	
+	/** ID 찾기
+	 * @param inputMember : input에 작성한 이름과 전화번호를 obj로 담아 fetch로 보낸 것을 받았다
+	 * @return
+	 */
 	@ResponseBody
 	@PostMapping("checkName")
 	public int checkName(@RequestBody Member inputMember) {
@@ -204,6 +236,11 @@ public class MemberController {
 		return result;
 	}
 	
+	/** ID 찾기 결과창으로 이동
+	 * @param inputMember : ID찾기 input에 작성한 이름과 전화번호를 다음으로 버튼 클릭시 form으로 제출
+	 * @param model : 작성한 이름과 그를 바탕으로 얻어낸 일치하는 회원의 아이디(이메일)을 저장하여 다음 페이지에 출력한다.
+	 * @return
+	 */
 	@PostMapping("findIdResult")
 	public String findIdResult(Member inputMember, Model model) {
 		
@@ -214,6 +251,76 @@ public class MemberController {
 		
 		return "/member/findIdResult";
 	}
+	
+	/** 비밀번호 찾기 페이지 이동
+	 * @return
+	 */
+	@GetMapping("findPw")
+	public String findPw() {
+		return "/member/findPw";
+	}
 
+	/** 인증 번호 받기 전 DB에 입력한 이름, 이메일 동일한 회원 있는지 조회
+	 * @param inputMember
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("checkNM")
+	public int checkNM(@RequestBody Map<String, String> map) {
+		
+	
+		
+		int result = service.checkNM(map);
+		
+		return result;
+	}
+	
+	
+	/** 비밀번호 찾기 첫페이지(findPw)에서 다음 버튼을 누르고 수정페이지로 넘어감
+	 * @param inputMember input에 입력한 회원 정보를 가져옴
+	 * @param model 가져온 회원 정보 중 아이디를 model에 저장하여 넘김
+	 * @return
+	 */
+	@PostMapping("modifyPw")
+	public String modifyPw(Member inputMember, Model model) {
+		
+		model.addAttribute("memberEmail", inputMember.getMemberEmail());
+		
+		return "/member/modifyPw";
+	}
+	
+	/** 비밀번호 수정
+	 * @param inputMember 입력한 비밀번호와 input/hidden에 저장한 memberEmail값
+	 * @return
+	 */
+	@PostMapping("changePw")
+	public String changePw(Member inputMember) {
+		
+		System.out.println(inputMember.getMemberEmail());
+		System.out.println(inputMember.getMemberPw());
+		
+		String path = "";
+		String message = "";
+		
+		int result = service.changePw(inputMember);
+		
+		if(result == 1) {
+			path = "/member/pwChanged";
+		}else {
+			path = "/";
+			message = "비밀번호 변경에 실패했습니다";
+		}
+		
+		return "redirect:"+path;
+	}
+	
+	/** 비밀번호 수정 완료 페이지로 이동
+	 * @return
+	 */
+	@GetMapping("pwChanged")
+	public String pwChanged() {
+		return "/member/pwChanged";
+	}
+	
 	
 }

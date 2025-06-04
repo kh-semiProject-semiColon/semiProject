@@ -4,13 +4,27 @@
     <a href="/"><img src="/images/headerlogo.png" alt="GoStudy Logo" /></a>
   </div>
   <nav>
-    <a href="#">공지사항</a>
-    <a href="/board/hire">구인</a>
-    <a href="#">질문 게시판</a>
-    <a href="#">스터디 현황</a>
-    <a href="#">자유 게시판</a>
-    <a href="/study/board">스터디 게시판</a>
+    <a href="/board/announce" id="announce">공지사항</a>
+    <a href="/hire/board" id="hire">구인</a>
+    <a href="/board/1" id="board1">질문 게시판</a>
+    <a href="/study/studyNow" id="studyNow">스터디 현황</a>
+    <a href="/board/2" id="board2">자유 게시판</a>
+    <a class="isStudy" href="/studyBoard/calendar" id="studyBoard"
+      >스터디 게시판</a
+    >
+    <!--<a th:href="@{/studyBoard/list/{studyNo}(studyNo=${selectedStudyNo})}">-->
   </nav>
   <div class="nothingBox"></div>
   <div class="hamburger">☰</div>
+
+  <!-- <script th:inline="javascript">
+    document.querySelector(".isStudy").addEventListener("click", function(e) {
+      let studyNo = [[${session.loginMember != null ? session.loginMember.studyNo : 0}]];
+
+      if ([[${session.loginMember != null}]] && studyNo === 0) {
+        alert("가입된 스터디가 없습니다.");
+        e.preventDefault(); // 링크 이동 막기
+      }
+    });
+  </script> -->
 </header>

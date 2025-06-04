@@ -35,7 +35,7 @@ public class FileConfig implements WebMvcConfigurer{
 	
 	// 임계값 초과 시 파일의 임시 저장경로
 	@Value("${spring.servlet.multipart.location}")
-	private String location; // C:/uploadFiles/temp/
+	private String location; // C:/uploadSemiFiles/temp/
 	
 	// --------------------------------------------------------
 	
@@ -47,13 +47,22 @@ public class FileConfig implements WebMvcConfigurer{
 	private String profileResourceLocation;
 	
 	// --------------------------------------------------------
+
+	// 스터디 메인 이미지 관련 경로
+	@Value("${my.studyProfile.resource-handler}")
+    private String resourceHandler;
+
+    @Value("${my.studyProfile.resource-location}")
+    private String resourceLocation;
+	
+	// --------------------------------------------------------
 	
 	// 게시판 이미지 관련 경로
 	@Value("${my.board.resource-handler}")
 	private String boardResourceHandler; // /images/board/**
 	
 	@Value("${my.board.resource-location}")
-	private String boardResourceLocation; // file:///C:/uploadFiles/board/
+	private String boardResourceLocation; // file:///C:/uploadSelmiFiles/board/
 	
 	// 요청 주소에 따라
 	// 서버 컴퓨터의 어떤 경로에 접근할지 설정
@@ -68,19 +77,23 @@ public class FileConfig implements WebMvcConfigurer{
 		// 클라이언트가 특정 경로로 정적파일에 접근할 수 있도록 설정
 		registry
 		.addResourceHandler("/myPage/file/**") // 클라이언트 요청 주소 패턴
-		.addResourceLocations("file:///C:/uploadFiles/test/");
+		.addResourceLocations("file:///C:/uploadSemiFiles/test/");
 		// 요청을 연결해서 처리해줄 서버의 실제 폴더 경로
 		
 		// -> 클라이언트가 /myPage/file/** 패턴으로 이미지를 요청할 때
-		// 서버폴더 경로 중 C:/uploadFiles/test/로 연결하겠다(여기서 이미지 찾겠다)
+		// 서버폴더 경로 중 C:/uploadSemiFiles/test/로 연결하겠다(여기서 이미지 찾겠다)
 		
 		registry
 		.addResourceHandler(profileResourceHandler) // /myPage/profile/**
-		.addResourceLocations(profileResourceLocation); // file:///C:/uploadFiles/profile/
+		.addResourceLocations(profileResourceLocation); // file:///C:/uploadSemiFiles/profile/
 		
 		registry
 		.addResourceHandler(boardResourceHandler) // /images/board/**
-		.addResourceLocations(boardResourceLocation); // file:///C:/uploadFiles/board/
+		.addResourceLocations(boardResourceLocation); // file:///C:/uploadSemiFiles/board/
+		
+		registry
+        .addResourceHandler(resourceHandler) // /studyProfile/**
+        .addResourceLocations(resourceLocation); // file:///C:/uploadSemiFiles/studyProfile/
 	}
 	
 	

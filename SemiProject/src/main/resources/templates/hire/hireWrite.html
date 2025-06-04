@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>구인게시글 작성</title>
+
+    <link rel="stylesheet" th:href="@{/css/hire/hireWrite.css}" />
+     <link href="/css/common/header.css" rel="stylesheet" />
+       <link href="/css/common/footer.css" rel="stylesheet" />
+  </head>
+  </head>
+  <body>
+    <!-- hearder -->
+    <th:block th:replace="~{common/header}"></th:block>
+    <div class="side"></div>
+    <main class="container">
+      <h2 class="form-title">구인 게시글 작성</h2>
+      <div class="divider"></div>
+
+      <form action="/hire/write"
+            method="POST"  class="hireWrite" id="hireWriteFrm">
+        <div class="form-section">
+          <input
+            type="text"
+            class="title-input"
+            placeholder="제목을 입력하세요."
+			      name="hireTitle"
+            required
+          />
+        </div>
+
+        <h3 class="form-title">내용 작성</h3>
+        <div class="divider"></div>
+
+        <div class="two-columns">
+          <div class="column">
+            <div class="form-group">
+              <div class="form-row">
+                <label class="form-label">스터디 명</label>
+                <div class="form-input-area">
+                  <select name="studyNo">
+                    <th:block th:each="study : ${study}">
+                      <option selected disabled th:value="${study.studyNo}"
+                              th:text="${study.studyName}"
+                              th:data-studyMaxCount="${study.studyMaxCount}"
+                              th:data-currentMemberCount="${study.currentMemberCount}"
+                              th:data-studyType="${study.studyType}"
+                              th:data-studyPeriod="${study.studyPeriod}"></option>
+                    </th:block>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="form-group">
+              <div class="form-row">
+                <label class="form-label">모집 인원</label>
+                <div class="form-input-area">
+                  <div class="input-group">
+                    <select name="hireCount" id="hireCountSelect">
+                      <option value="" disabled selected>선택</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+
+            <div class="form-group">
+              <div class="form-row">
+                <label class="form-label">방향성</label>
+                <div class="form-input-area">
+                  <div class="radio-group">
+                    <div class="radio-item">
+                      <input type="radio" name="direction" id="direction-1" value="1" disabled/>
+                      <label class="radio-label" for="direction-1"
+                        >레벨업</label
+                      >
+                    </div>
+                    <div class="radio-item">
+                      <input type="radio" name="direction" id="direction-2" value="2" disabled/>
+                      <label class="radio-label" for="direction-2">복습</label>
+                    </div>
+                    <div class="radio-item">
+                      <input type="radio" name="direction" id="direction-3" value="3" disabled/>
+                      <label class="radio-label" for="direction-3"
+                        >문제풀이</label
+                      >
+                    </div>
+                    <div class="radio-item">
+                      <input type="radio" name="direction" id="direction-4" value="4" disabled/>
+                      <label class="radio-label" for="direction-4"
+                        >자격증</label
+                      >
+                    </div>
+                    <div class="radio-item">
+                      <input type="radio" name="direction" id="direction-5" value="5" disabled/>
+                      <label class="radio-label" for="direction-5"
+                        >프로젝트</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="column">
+            <div class="form-group1">
+              <div class="form-row">
+                <label class="form-label">기간</label>
+                <div class="form-input-area">
+                  <div class="radio-group1">
+                    <div class="period-item">
+                      <input type="radio" name="period" id="period-specific" disabled/>
+                      <input
+                        type="text"
+                        class="small-input"
+                        style="margin-left: 8px"
+                        id="periodNum"
+                        disabled
+                      />
+                      <label class="radio-label" for="period-specific"
+                        >개월</label
+                      >
+                    </div>
+                    <div class="radio-item">
+                      <input type="radio" name="period" id="period-unlimited" disabled />
+                      <label class="radio-label" for="period-unlimited"
+                        >무기한</label
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-row">
+                <label class="form-label">참여 요일</label>
+                <div class="form-input-area">
+                  <div class="radio-days">
+                    <div class="days-grid">
+                      <div class="radio-item">
+                        <input type="checkbox" name="dayCanJoin" id="day-mon" value="월"/>
+                        <label class="radio-label" for="day-mon">월요일</label>
+                      </div>
+                      <div class="radio-item">
+                        <input type="checkbox" name="dayCanJoin" id="day-tue" value="화"/>
+                        <label class="radio-label" for="day-tue">화요일</label>
+                      </div>
+                      <div class="radio-item">
+                        <input type="checkbox" name="dayCanJoin" id="day-wed" value="수"/>
+                        <label class="radio-label" for="day-wed">수요일</label>
+                      </div>
+                      <div class="radio-item">
+                        <input type="checkbox" name="dayCanJoin" id="day-thu" value="목"/>
+                        <label class="radio-label" for="day-thu">목요일</label>
+                      </div>
+                      <div class="radio-item">
+                        <input type="checkbox" name="dayCanJoin" id="day-fri" value="금"/>
+                        <label class="radio-label" for="day-fri">금요일</label>
+                      </div>
+                      <div class="radio-item">
+                        <input type="checkbox" name="dayCanJoin" id="day-sat" value="토"/>
+                        <label class="radio-label" for="day-sat">토요일</label>
+                      </div>
+                      <div class="radio-item">
+                        <input type="checkbox" name="dayCanJoin" id="day-sun" value="일"/>
+                        <label class="radio-label" for="day-sun">일요일</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-row">
+            <label class="form-label">내용</label>
+            <div class="form-input-area" style="width: 100%">
+              <textarea name="hireContent" placeholder="내용을 입력하세요."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">등록</button>
+      </form>
+    </main>
+    <div class="side"></div>
+    <!-- footer -->
+    <th:block th:replace="~{common/footer}"></th:block>
+
+    <script src="/js/hire/hireWrite.js"></script>
+	<script src="/js/common/header.js"></script>
+  </body>
+</html>

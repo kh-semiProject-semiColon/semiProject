@@ -1,15 +1,27 @@
 package kr.co.semi.member.model.service;
 
+import java.io.File;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.semi.common.util.Utility;
 import kr.co.semi.member.model.dto.Member;
 import kr.co.semi.member.model.mapper.MemberMapper;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
+@PropertySource("classpath:/config.properties")
+@SessionAttributes("loginMember")
 public class MemberSerivceImpl implements MemberService {
 
 	@Autowired
@@ -19,6 +31,12 @@ public class MemberSerivceImpl implements MemberService {
 	@Autowired
 	private BCryptPasswordEncoder bcrypt;
 	
+	
+	@Value("${my.profile.web-path}")
+	private String profileWebPath;
+	
+	@Value("${my.profile.folder-path}")
+	private String profileFolderPath;
 	/**
 	 *	로그인 서비스 by 김성원
 	 */
@@ -61,7 +79,7 @@ public class MemberSerivceImpl implements MemberService {
 	
 	// 회원가입 정보 등록
 	@Override
-	public int signupInfo(Member inputMember, String[] memberAddress) {
+	public int signupInfo(Member inputMember, String[] memberAddress, String profileResult) {
 		// 주소가 입력되지 않으면
 		// inputMember.getMemberAddress() -> ",,"
 		// memberAddress -> [,,]
@@ -98,25 +116,80 @@ public class MemberSerivceImpl implements MemberService {
 		
 		String encPw = bcrypt.encode(inputMember.getMemberPw());
 		inputMember.setMemberPw(encPw);
+		inputMember.setProfileImg(profileResult);
 
 		// 회원 가입 mapper 메서드 호출
 		return mapper.signupInfo(inputMember);
 	}
 	
+	// 닉네임 중복 검사
 	@Override
 	public int checkNickname(String memberNickname) {
 		return mapper.checkNickname(memberNickname);
 	}
 	
+	// ID찾기 일치하는 이름, 전화번호 조회
 	@Override
 	public int checkName(Member inputMember) {
 		return mapper.checkName(inputMember);
 	}
 	
 	// 아이디 얻어오기
-@Override
+	@Override
 	public String getId(Member inputMember) {
 		return mapper.getId(inputMember);
 	}
+	
+	// 입력한 이름, 아이디와 동일한 데이터 조회
+	@Override
+	public int checkNM(Map<String, String> map) {
+		return mapper.checkNM(map);
+	}
 
+	// 비밀번호 수정
+	@Override
+	public int changePw(Member inputMember) {
+		
+		String encPw = bcrypt.encode(inputMember.getMemberPw());
+		inputMember.setMemberPw(encPw);
+		
+		return mapper.changePw(inputMember);
+	}
+	
+	@Override
+	public String profile(MultipartFile profileImg, Member inputMember) throws Exception{
+		// 프로필 이미지 경로
+				String updatePath = null;
+				String finalPath = null;
+				
+				// 변경명 저장
+				String rename = null;
+				
+				// 업로드한 이미지가 있을 경우
+				// - 있을 경우 : 경로 조합 (클라이언트 접근 경로 + 리네임파일명)
+				if(!profileImg.isEmpty()) {
+					
+					// 1. 파일명 변경
+					rename = Utility.fileRename(profileImg.getOriginalFilename());
+					
+					// 2. /myPage/profile/변경된 파일명
+					updatePath = profileFolderPath + rename;
+					finalPath = profileWebPath + rename;
+					profileImg.transferTo(new File(updatePath));
+				}
+				
+				
+
+				return finalPath;
+	}
+
+	@Override
+	public List<Member> getStudyMembers(int studyNo) {
+		return mapper.getStudyMembers(studyNo);
+	}
+	
+	@Override
+	public List<Member> selectMemberName(int studyNo) {
+		return mapper.selectMemberName(studyNo);
+	}
 }

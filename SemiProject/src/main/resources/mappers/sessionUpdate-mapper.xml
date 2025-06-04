@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.semi.common.interceptor.model.mapper.UserSessionUpdateMapper">
+
+	<!-- 세션 업데이트 -->
+	<select id="update">
+		SELECT STUDY_NO
+		FROM STUDY_MEMBER
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+
+	<select id="studyCount">
+		SELECT COUNT(*)
+		FROM STUDY_MEMBER
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+</mapper>

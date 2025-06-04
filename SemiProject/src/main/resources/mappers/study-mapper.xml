@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.co.semi.main.Mapper.MainMapper">
+
+	<!-- 스터디 생성 -->
+	<insert id="studyCreation">
+		INSERT INTO STUDY
+		VALUES(SEQ_STUDY_NO.NEXTVAL, #{studyName}, DEFAULT, #{studyMaxCount}, DEFAULT, #{studyType}, #{studyPeriod}, #{studyMainImg})
+	</insert>
+	
+	<!-- 스터디 번호 조회 -->
+	<select id="studyNo">
+		SELECT STUDY_NO
+		FROM STUDY
+		WHERE STUDY_NAME = #{studyName}
+	</select>
+	
+	<!-- 스터디-멤버 테이블에 적용과 동시에 리더 지정 -->
+	<insert id="studyMember">
+		INSERT INTO STUDY_MEMBER
+		VALUES(#{studyNo}, #{memberNo}, 'Y')
+	</insert>
+
+	
+	<!-- 스터디명 중복검사 -->
+	<select id="studyNameConfirm">
+		SELECT COUNT(*)
+		FROM STUDY
+		WHERE STUDY_NAME = #{studyName}
+	</select>
+	
+	<!-- 최신 구인게시글 조회 -->
+	<select id="latedstPost">
+		SELECT H.HIRE_NO,
+       	H.DAY_CAN_JOIN,
+       	S.STUDY_MAIN_IMG,
+       	H.HIRE_TITLE,
+       	S.STUDY_NAME,
+       	S.STUDY_PERIOD,
+       	TO_CHAR(S.STUDY_DATE, 'yyyy-MM-dd') AS STUDY_DATE,
+       	S.STUDY_TYPE
+		FROM (
+    		SELECT * 
+    		FROM HIRE_INFO 
+    		WHERE HIRE_DEL_FL = 'N' 
+    		ORDER BY HIRE_NO DESC
+			) H
+		JOIN STUDY S ON H.STUDY_NO = S.STUDY_NO
+		WHERE ROWNUM = 1
+	</select>
+	
+	<!-- 최신 공지사항 글 조회 -->
+	<select id="latestAnouncement">
+		SELECT ANNOUNCE_NAME
+		FROM ANNOUNCEMENT
+		WHERE ROWNUM = 1
+		ORDER BY ANNOUNCE_NO DESC
+	</select>
+ 
+
+</mapper>

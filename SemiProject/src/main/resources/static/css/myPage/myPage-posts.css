@@ -1,0 +1,36 @@
+/* 페이지네이션 스타일 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  gap: 5px;
+}
+
+.page-item {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: #333;
+  text-decoration: none;
+}
+
+.page-item.active {
+  color: #3867ff;
+  font-weight: bold;
+}
+
+.page-item.arrow {
+  color: #3867ff;
+  font-weight: bold;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.no-data {
+  text-align: center;
+  margin-top: 20px;
+}

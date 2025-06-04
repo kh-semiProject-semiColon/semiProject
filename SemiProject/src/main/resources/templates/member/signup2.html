@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>회원가입 폼</title>
-    <link href="/css/signup2.css" rel="stylesheet" />
-    <link href="/css/main.css" rel="stylesheet" />
+    <link href="/css/member/signup2.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/common/footer.css" />
+    <link rel="stylesheet" href="/css/common/header.css" />
   </head>
   <body>
     <th:block th:replace="~{common/headerNude}"></th:block>
@@ -23,7 +24,28 @@
           method="POST"
           name="signUpForm"
           id="signUpForm"
+          enctype="multipart/form-data"
         >
+          <!-- 프로필 -->
+          <div class="profileImg">
+            <label for="profileImg" class="form-label">
+              <span>프로필 이미지</span>
+            </label>
+            <div class="profile-container">
+              <div class="imageFile">
+                <img class="preview" th:src="#{user.default.image}" />
+                <input
+                  type="file"
+                  name="profileImgs"
+                  class="inputImage"
+                  id="profileImg"
+                  accept="image/*"
+                />
+                <label for="profileImg" class="inputLabel"> 파일 선택 </label>
+              </div>
+              <button type="button" class="delete-image">X</button>
+            </div>
+          </div>
           <!-- 이메일 -->
           <div class="form-group-email">
             <label for="memberEmail" class="form-label">
@@ -166,7 +188,7 @@
                   name="memberMajor"
                   type="radio"
                   id="major-yes"
-                  value="yes"
+                  value="Y"
                 />
                 <label for="major-yes">전공자</label>
               </div>
@@ -176,7 +198,7 @@
                   name="memberMajor"
                   type="radio"
                   id="major-no"
-                  value="no"
+                  value="N"
                 />
                 <label for="major-no">비전공자</label>
               </div>
@@ -246,7 +268,7 @@
         </form>
       </div>
     </div>
-    <script src="/js/signup2.js"></script>
+    <script src="/js/member/signup2.js"></script>
     <!-- 다음 주소 API 추가 -->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <th:block th:replace="~{common/footer}"></th:block>

@@ -8,10 +8,8 @@
 		MEMBER_PW, MEMBER_TEL, MEMBER_ADDRESS, PROFILE_IMG,
 		AUTHORITY,
 		TO_CHAR(ENROLL_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') ENROLL_DATE,
-		STUDY_NO,
 		MEMBER_NAME
 		FROM "MEMBER"
-		JOIN STUDY_MEMBER USING(MEMBER_NO)
 		WHERE MEMBER_EMAIL=#{memberEmail}
 		AND MEMBER_DEL_FL = 'N'
 	</select>
@@ -50,6 +48,22 @@
 		AND MEMBER_DEL_FL = 'N'
 	</select>
 	
+	<!-- 입력한 이름, 아이디와 동일한 데이터 조회 -->
+	<select id="checkNM">
+		SELECT COUNT(*)
+		FROM "MEMBER"
+		WHERE MEMBER_NAME = #{memberName}
+		AND MEMBER_EMAIL = #{memberEmail}
+		AND MEMBER_DEL_FL = 'N'
+	</select>
+	
+	<!-- 비밀번호 수정 -->
+	<update id="changePw">
+		UPDATE "MEMBER" SET
+		MEMBER_PW = #{memberPw}
+		WHERE MEMBER_EMAIL = #{memberEmail}
+	</update>
+	
 	<!-- 회원가입 -->
 	<insert id="signupInfo">
 		INSERT INTO "MEMBER"
@@ -59,11 +73,11 @@
 					 #{memberNickname},
 					 #{memberTel},
 					 #{memberAddress},
-					 NULL,
+					 #{profileImg},
 					 DEFAULT,
 					 DEFAULT,
 					 DEFAULT,
-					 DEFAULT,
+					 #{memberMajor},
 					 #{memberIntroduce},
 					 #{memberName}
 		)
@@ -76,6 +90,22 @@
 	WHERE MEMBER_NICKNAME = #{memberNickname}
 	AND MEMBER_TEL = #{memberTel}
 	AND MEMBER_DEL_FL='N'
+	</select>
+	
+	<!-- 모든 스터디원의 정보 가져오기 -->
+	<select id="getStudyMembers">
+		SELECT STUDY_NO , MEMBER_NO,MEMBER_NAME
+		FROM MEMBER
+		JOIN STUDY_MEMBER USING(MEMBER_NO)
+		WHERE STUDY_NO = #{studyNo}
+	</select>
+	
+	<!-- 회원 이름 조회 -->
+	<select id="selectMemberName">
+		SELECT MEMBER_EMAIL, MEMBER_NICKNAME, PROFILE_IMG
+		FROM "MEMBER"
+		JOIN "STUDY_MEMBER" USING(MEMBER_NO)
+		WHERE STUDY_NO = #{studyNo}
 	</select>
  
 </mapper>

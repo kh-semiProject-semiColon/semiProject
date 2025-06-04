@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GoStudy - 내규</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="/css/studyBoard/style.css" />
+    <link rel="stylesheet" href="/css/common/footer.css" />
+    <link rel="stylesheet" href="/css/common/header.css" />
+    <link rel="stylesheet" href="/css/studyBoard/sidebar.css" />
+    <link rel="stylesheet" href="/css/studyBoard/rulecontent.css" />
+    <link rel="stylesheet" href="/css/chatting/study_chat.css" />
+    <!-- SockJS 라이브러리 추가 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+  </head>
+
+  <body>
+    <!-- 헤더 -->
+    <th:block th:replace="~{common/header}"></th:block>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="main-content">
+      <!-- 사이드바 -->
+      <th:block th:replace="~{studyBoard/sidebar}"></th:block>
+
+      <!-- 콘텐츠 영역 -->
+      <div class="content">
+        <!-- 스터디 내규 섹션 -->
+        <div class="content-section">
+          <!-- 헤더 부분 -->
+          <div class="study-header">
+            <div class="study-title-section">
+              <h1 class="study-title">
+                <span>스터디 채팅</span>
+              </h1>
+            </div>
+          </div>
+
+          <!-- 스터디 채팅룸 -->
+          <th:block th:replace="~{studyBoard/realtime_study_chat}"></th:block>
+        </div>
+      </div>
+    </div>
+    <th:block th:replace="~{common/footer}"></th:block>
+  </body>
+</html>

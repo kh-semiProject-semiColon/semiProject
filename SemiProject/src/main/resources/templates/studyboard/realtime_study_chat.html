@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>스터디 채팅방</title>
+    <link rel="stylesheet" href="/css/study-chat.css" />
+  </head>
+  <body>
+    <div th:fragment="studyChatRoom" class="gostudy-chat-container">
+      <div class="gostudy-chat-header">
+        <div class="gostudy-chat-title">스터디 채팅</div>
+        <div class="gostudy-connection-status" id="connectionStatus">
+          연결 중...
+        </div>
+      </div>
+
+      <div class="gostudy-chat-messages" id="gostudyChatMessages">
+        <!-- 타임리프로 메시지 목록을 렌더링 -->
+        <div
+          th:each="message : ${messages}"
+          th:class="'gostudy-message' + (${message.senderNo == session.loginMember.memberNo} ? ' gostudy-message-own' : '')"
+          th:data-message-no="${message.messageNo}"
+        >
+          <div
+            class="gostudy-message-avatar"
+            th:classappend="${'gostudy-avatar-' + (message.senderNo % 4 + 1)}"
+            th:text="${memberMap[message.senderNo] != null ? #strings.substring(memberMap[message.senderNo], 0, 1) : '?'}"
+          ></div>
+
+          <div class="gostudy-message-content">
+            <div class="gostudy-message-info">
+              <span
+                th:if="${message.senderNo != session.loginMember.memberNo}"
+                th:text="${memberMap[message.senderNo] ?: '알 수 없음'}"
+              ></span>
+              <span th:text="${message.sendTime}"></span>
+              <span th:if="${message.senderNo == session.loginMember.memberNo}"
+                >나</span
+              >
+            </div>
+
+            <div class="gostudy-message-bubble">
+              <div
+                class="gostudy-message-text"
+                th:text="${message.content}"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gostudy-chat-input-container">
+        <form id="gostudyMessageForm" class="gostudy-chat-input-wrapper">
+          <textarea
+            class="gostudy-chat-input"
+            placeholder="메시지를 입력하세요..."
+            rows="1"
+            name="content"
+            id="gostudyMessageInput"
+            required
+          ></textarea>
+
+          <button type="submit" class="gostudy-send-button">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M2 12L22 2L13 21L11 13L2 12Z"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script th:inline="javascript">
+      document.addEventListener("DOMContentLoaded", function () {
+        const messageInput = document.getElementById("gostudyMessageInput");
+        const messagesContainer = document.getElementById(
+          "gostudyChatMessages"
+        );
+        const messageForm = document.getElementById("gostudyMessageForm");
+        const connectionStatus = document.getElementById("connectionStatus");
+
+        // 현재 스터디 및 로그인 정보 (Thymeleaf에서 안전하게 가져오기)
+        const studyNo = parseInt("[[${session.loginMember.studyNo}]]") || 1;
+        const loginMemberNo =
+          parseInt("[[${session.loginMember.memberNo}]]") || 1;
+        const memberMapData = [[${memberMap}]];
+
+        // memberMap이 제대로 전달되었는지 확인
+        console.log("studyNo:", studyNo);
+        console.log("loginMemberNo:", loginMemberNo);
+        console.log("memberMap:", memberMapData);
+
+        // 웹소켓 변수
+        let websocket = null;
+        let isConnected = false;
+
+        if (!messageInput || !messagesContainer || !messageForm) return;
+
+        // 웹소켓 연결 초기화
+        initWebSocket();
+
+        // 텍스트 영역 자동 높이 조절
+        messageInput.addEventListener("input", function () {
+          this.style.height = "auto";
+          this.style.height = this.scrollHeight + "px";
+        });
+
+        // 엔터 키로 메시지 전송 (Shift+Enter는 줄바꿈)
+        messageInput.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+          }
+        });
+
+        // 폼 제출 방지하고 웹소켓으로 전송
+        messageForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          sendMessage();
+        });
+
+        // 웹소켓 초기화
+        function initWebSocket() {
+          try {
+            // SockJS를 통한 웹소켓 연결
+            websocket = new SockJS("/chattingSock");
+
+            websocket.onopen = function () {
+              console.log("웹소켓 연결됨");
+              isConnected = true;
+              updateConnectionStatus("연결됨", "connected");
+            };
+
+            websocket.onmessage = function (event) {
+              console.log("메시지 수신:", event.data);
+              try {
+                const message = JSON.parse(event.data);
+
+                // 메시지 유효성 검사
+                if (!message || typeof message !== "object") {
+                  console.warn("유효하지 않은 메시지 형식:", message);
+                  return;
+                }
+
+                // 오류 메시지인지 확인
+                if (message.type === "error") {
+                  console.error("서버 오류:", message.message);
+                  alert("서버 오류: " + message.message);
+                  return;
+                }
+
+                // 필수 필드 확인
+                if (!message.studyNo || !message.senderNo || !message.content) {
+                  console.warn("필수 필드가 없는 메시지:", message);
+                  return;
+                }
+
+                // 현재 스터디의 메시지인지 확인
+                if (message.studyNo === studyNo) {
+                  console.log("메시지 추가:", message);
+                  addMessageToChat(message);
+                } else {
+                  console.log(
+                    "다른 스터디 메시지 무시:",
+                    message.studyNo,
+                    "vs",
+                    studyNo
+                  );
+                }
+              } catch (error) {
+                console.error("메시지 파싱 오류:", error);
+                console.error("원본 데이터:", event.data);
+              }
+            };
+
+            websocket.onclose = function () {
+              console.log("웹소켓 연결 끊김");
+              isConnected = false;
+              updateConnectionStatus("연결 끊김", "disconnected");
+              // 재연결 시도
+              setTimeout(initWebSocket, 3000);
+            };
+
+            websocket.onerror = function (error) {
+              console.error("웹소켓 오류:", error);
+              updateConnectionStatus("연결 오류", "error");
+            };
+          } catch (error) {
+            console.error("웹소켓 초기화 오류:", error);
+            updateConnectionStatus("연결 실패", "error");
+            // 웹소켓 실패 시 폴링으로 대체
+            startPolling();
+          }
+        }
+
+        // 연결 상태 업데이트
+        function updateConnectionStatus(text, status) {
+          if (connectionStatus) {
+            connectionStatus.textContent = text;
+            connectionStatus.className = "gostudy-connection-status " + status;
+          }
+        }
+
+        // 메시지 전송
+        function sendMessage() {
+          const content = messageInput.value.trim();
+          if (!content || !isConnected) {
+            if (!isConnected) {
+              alert("서버와의 연결이 끊어졌습니다. 잠시 후 다시 시도해주세요.");
+            }
+            return;
+          }
+
+          const messageData = {
+            studyNo: studyNo,
+            senderNo: loginMemberNo,
+            content: content,
+          };
+
+          try {
+            websocket.send(JSON.stringify(messageData));
+            messageInput.value = "";
+            messageInput.style.height = "auto";
+          } catch (error) {
+            console.error("메시지 전송 오류:", error);
+            alert("메시지 전송에 실패했습니다.");
+          }
+        }
+
+        // 채팅에 새 메시지 추가
+        function addMessageToChat(message) {
+          try {
+            // 중복 메시지 확인
+            if (message.messageNo) {
+              const existingMessage = messagesContainer.querySelector(
+                `[data-message-no="${message.messageNo}"]`
+              );
+              if (existingMessage) {
+                console.log("중복 메시지 무시:", message.messageNo);
+                return;
+              }
+            }
+
+            const messageElement = createMessageElement(message);
+            messagesContainer.appendChild(messageElement);
+            scrollToBottom();
+
+            console.log("메시지 추가 완료:", message);
+          } catch (error) {
+            console.error("메시지 추가 오류:", error, message);
+          }
+        }
+
+        // 메시지 엘리먼트 생성
+        function createMessageElement(message) {
+          const isOwn = message.senderNo === loginMemberNo;
+          const messageDiv = document.createElement("div");
+          messageDiv.className =
+            "gostudy-message" + (isOwn ? " gostudy-message-own" : "");
+          messageDiv.setAttribute(
+            "data-message-no",
+            message.messageNo || Date.now()
+          );
+
+          // 안전한 사용자 이름 가져오기
+          let userName = "알 수 없음";
+          if (memberMapData && memberMapData[message.senderNo]) {
+            userName = memberMapData[message.senderNo];
+          } else if (isOwn) {
+            userName = "나";
+          }
+
+          // 안전한 아바타 텍스트 생성
+          const avatarText =
+            userName && userName.length > 0 ? userName.substring(0, 1) : "?";
+          const avatarClass = `gostudy-avatar-${(message.senderNo % 4) + 1}`;
+
+          // 시간 포맷팅 (서버에서 받은 시간이 있으면 사용, 없으면 현재 시간)
+          const sendTime = message.sendTime || formatCurrentTime();
+
+          // 안전한 콘텐츠 처리
+          const messageContent = message.content || "";
+
+          messageDiv.innerHTML = `
+            <div class="gostudy-message-avatar ${avatarClass}">${avatarText}</div>
+            <div class="gostudy-message-content">
+              <div class="gostudy-message-info">
+                ${!isOwn ? `<span>${userName}</span>` : ""}
+                <span>${sendTime}</span>
+                ${isOwn ? "<span>나</span>" : ""}
+              </div>
+              <div class="gostudy-message-bubble">
+                <div class="gostudy-message-text">${escapeHtml(
+                  messageContent
+                )}</div>
+              </div>
+            </div>
+          `;
+
+          return messageDiv;
+        }
+
+        // 현재 시간 포맷팅
+        function formatCurrentTime() {
+          const now = new Date();
+          const year = now.getFullYear();
+          const month = String(now.getMonth() + 1).padStart(2, "0");
+          const day = String(now.getDate()).padStart(2, "0");
+          const hours = String(now.getHours()).padStart(2, "0");
+          const minutes = String(now.getMinutes()).padStart(2, "0");
+          return `${year}.${month}.${day} ${hours}:${minutes}`;
+        }
+
+        // HTML 이스케이프
+        function escapeHtml(text) {
+          const div = document.createElement("div");
+          div.textContent = text;
+          return div.innerHTML;
+        }
+
+        // 스크롤을 맨 아래로
+        function scrollToBottom() {
+          setTimeout(() => {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+          }, 100);
+        }
+
+        // 초기 스크롤 설정
+        scrollToBottom();
+
+        // 디버깅용 - 초기 메시지 확인
+        console.log("초기 메시지 개수:", messagesContainer.children.length);
+
+        // 테스트용 - 메시지 목록 다시 로드
+        setTimeout(() => {
+          console.log("메시지 목록 재로드 시도...");
+          fetch(`/study/${studyNo}/chat/messages`)
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("메시지 조회 응답:", data);
+              if (data.success && data.messages) {
+                console.log("조회된 메시지 수:", data.messages.length);
+                // 기존 메시지 제거 후 다시 추가 (테스트용)
+                // messagesContainer.innerHTML = '';
+                // data.messages.forEach(message => {
+                //   addMessageToChat(message);
+                // });
+              }
+            })
+            .catch((error) => {
+              console.error("메시지 로드 테스트 오류:", error);
+            });
+        }, 1000);
+
+        // 페이지 종료 시 웹소켓 연결 해제
+        window.addEventListener("beforeunload", function () {
+          if (websocket) {
+            websocket.close();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

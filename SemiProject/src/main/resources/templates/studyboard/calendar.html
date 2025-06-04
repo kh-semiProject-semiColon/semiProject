@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GoStudy 마이페이지 게시글</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="/css/studyBoard/posts.css" />
+    <link rel="stylesheet" href="/css/studyBoard/style.css" />
+    <link rel="stylesheet" href="/css/common/footer.css" />
+    <link rel="stylesheet" href="/css/common/header.css" />
+    <link rel="stylesheet" href="/css/studyBoard/sidebar.css" />
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/list@6.1.8/index.global.min.js"></script>
+    <script th:inline="javascript">
+      document.addEventListener("DOMContentLoaded", function () {
+        const calendarEl = document.getElementById("calendar");
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: "dayGridMonth",
+          displayEventTime: false,
+        });
+      });
+    </script>
+
+    <style>
+      /* 일요일 날짜: 빨간색 */
+      .fc .fc-day-sun a {
+        color: rgb(253, 114, 114);
+      }
+
+      /* 토요일 날짜: 파란색 */
+      .fc .fc-day-sat a {
+        color: rgb(101, 101, 240);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 헤더 -->
+    <th:block th:replace="~{common/header}"></th:block>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="main-content">
+      <!-- 사이드바 -->
+
+      <!-- 상자를 구분하기 위해 id를 추가했습니다. 
+       id 추가 후 js 코드에서 사이드 바를 참고해주세요! -->
+      <th:block th:replace="~{studyBoard/sidebar}"></th:block>
+
+      <!-- 콘텐츠 영역 -->
+      <div class="content">
+        <!-- 스터디 스케줄 섹션 -->
+        <div class="content-section">
+          <h2 class="content-heading">스터디 스케줄</h2>
+        </div>
+        <!-- 캘린더 영역 -->
+        <div class="calendar-container">
+          <div id="calendar"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 푸터 -->
+    <th:block th:replace="~{common/footer}"></th:block>
+
+    <script src="/js/studyBoard/study-sidebar.js"></script>
+    <script src="/js/studyCal.js"></script>
+	<script src="/js/common/header.js"></script>
+  </body>
+</html>
