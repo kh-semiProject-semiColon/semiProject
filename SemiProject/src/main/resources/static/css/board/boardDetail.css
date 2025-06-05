@@ -5,6 +5,9 @@
   padding: 40px 20px;
   color: #25272b;
   margin-bottom: 100px;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
 main {

@@ -141,6 +141,10 @@ body {
   font-family: "Apple SD Gothic Neo", sans-serif;
   background-color: #fff;
   margin: 0px;
+  height: 100%;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
 .main {
@@ -153,11 +157,15 @@ body {
 }
 
 main {
-  width: 62.3%;
+  width: 100%;
   display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  max-width: 1196px;
+  min-width: 1120px;
+  margin: 0 auto;
 }
 
 .titleContainer {

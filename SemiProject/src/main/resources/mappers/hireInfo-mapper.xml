@@ -30,7 +30,9 @@
 	<select id="getListCount">
 	 SELECT COUNT(*)
 	 FROM "HIRE_INFO"
+	 JOIN STUDY USING(STUDY_NO)
 	 WHERE HIRE_DEL_FL = 'N'
+	 AND STUDY_DEL_FL = 'N'
 	</select>
 	
 	<!-- 지정된 페이지 목록 조회 -->
