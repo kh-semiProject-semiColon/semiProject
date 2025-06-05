@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // 올바른 속성명 사용 (소문자)
   const studyMaxCount = Number(selected.dataset.studymaxcount);
   const currentMemberCount = Number(selected.dataset.currentmembercount);
-  
+
   const studyType = selected.dataset.studytype || "";
   const studyPeriod = selected.dataset.studyperiod || "";
 
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // hireCountSelect.innerHTML = '';
 
   // hireCountSelect.innerHTML = '<option value="" disabled selected>선택</option>';
-  
+
   // for(let i=1; i<=hireCount; i++) {
   //   const option = document.createElement("option");
   //   option.value = i;
@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelector("#periodNum").value = studyPeriod;
   }
 });
+
 // 기본 선택 시 초기화하고 싶다면 아래 한 줄 추가
 // studySelect.dispatchEvent(new Event("change"));
 
@@ -64,6 +65,16 @@ document
   .getElementById("hireWriteFrm")
   .addEventListener("submit", function (e) {
     e.preventDefault(); // 기본 제출 방지
+    const textarea = document.getElementById("hireContent");
+    if (textarea.value.trim().length === 0) {
+      e.preventDefault();
+      // 폼 전송 막기
+      alert("내용을 입력하세요.");
+      // 경고창 띄우기
+      textarea.focus();
+      // 포커스 이동
+      return;
+    }
 
     const form = this;
 

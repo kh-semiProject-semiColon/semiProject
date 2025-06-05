@@ -67,6 +67,14 @@ public class MemberSerivceImpl implements MemberService {
 				
 		// 로그인 결과에서 비밀번호 제거
 		loginMember.setMemberPw(null);
+		
+		// 스터디가 있으면 스터디명을 불러옴
+		int result = mapper.result(loginMember.getMemberNo());
+		
+		if(result > 0) {
+			String studyName = mapper.loginStudyName(loginMember.getMemberNo());
+			loginMember.setStudyName(studyName);
+		}
 				
 		return loginMember;
 	}

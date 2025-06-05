@@ -10,3 +10,16 @@ if (insertBtn != null) {
     location.href = `/editBoard/${boardCode}/insert`;
   });
 }
+
+const input = document.querySelector(".search-input");
+
+document.querySelector("#boardSearch").addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  if (input.value.length >= 30) {
+    alert("검색어를 30글자 이내로 작성해주세요.");
+    return;
+  }
+
+  e.target.submit();
+});

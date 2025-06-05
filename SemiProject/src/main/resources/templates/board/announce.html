@@ -97,7 +97,9 @@
           </div>
         </div>
 
-        <th:block th:if="${session.loginMember.authority == 1}">
+        <th:block
+          th:if="${session.loginMember != null and session.loginMember.authority == 1}"
+        >
           <div class="write-button-container">
             <button class="write-button">글쓰기</button>
           </div>

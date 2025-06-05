@@ -67,6 +67,10 @@ public interface MemberMapper {
 
 	List<Member> selectMemberName(int studyNo);
 
+	int result(int memberNo);
+
+	String loginStudyName(int memberNo);
+
 
 
 }

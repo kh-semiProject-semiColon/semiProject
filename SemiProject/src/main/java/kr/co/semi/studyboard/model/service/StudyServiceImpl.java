@@ -75,26 +75,38 @@ public class StudyServiceImpl implements StudyService{
 				// 1. 지정된 게시판(boardCode)에서
 				// 검색 조건에 맞으면서
 				// 삭제되지 않은 게시글 수를 조회
-		if("c".equals(paramMap.get("key"))) {
+		if ("c".equals(paramMap.get("key"))) {
+
 		    String query = (String) paramMap.get("query");
 
-		    switch(query) {
-		        case "레벨업":
-		            paramMap.put("query", 1);
-		            break;
-		        case "복습":
-		            paramMap.put("query", 2);
-		            break;
-		        case "문제풀이":
-		            paramMap.put("query", 3);
-		            break;
-		        case "자격증":
-		            paramMap.put("query", 4);
-		            break;
-		        case "프로젝트":
-		            paramMap.put("query", 5);
-		            break;
+
+
+		    if (query.contains("레") || query.contains("벨") || query.contains("업")) {
+
+		        paramMap.put("query", 1);
+
+		    } else if (query.contains("습") || query.contains("복")) {
+
+		        paramMap.put("query", 2);
+
+		    } else if (query.contains("문") || query.contains("이") || query.contains("제") || query.contains("풀")) {
+
+		        paramMap.put("query", 3);
+
+		    } else if (query.contains("자")|| query.contains("격")|| query.contains("증")) {
+
+		        paramMap.put("query", 4);
+
+		    } else if (query.contains("프") || query.contains("로")|| query.contains("젝")|| query.contains("트")) {
+
+		        paramMap.put("query", 5);
+
+		    } else {
+
+		    	paramMap.put("query", 0);
+
 		    }
+
 		}
 		
 				int listCount = mapper.getSearchCount(paramMap);

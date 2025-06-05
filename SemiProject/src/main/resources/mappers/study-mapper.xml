@@ -47,6 +47,7 @@
 			) H
 		JOIN STUDY S ON H.STUDY_NO = S.STUDY_NO
 		WHERE ROWNUM = 1
+		AND STUDY_DEL_FL = 'N'
 	</select>
 	
 	<!-- 최신 공지사항 글 조회 -->

@@ -32,7 +32,7 @@
           <!-- 제목 -->
           <div class="subTitle">
             <div class="board-title" th:text="*{announceName}">게시글 제목</div>
-            <div th:if="${session.loginMember.memberNo == announce.memberNo}">
+            <div th:if="${session.loginMember.memberNo != null and session.loginMember.memberNo == announce.memberNo}">
               <button id="updateBtn">수정</button>
               <button id="deleteBtn2">삭제</button>
             </div>

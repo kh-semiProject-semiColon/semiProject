@@ -29,6 +29,7 @@ public class Member {
 	private String memberIntroduce;
 	private String memberName;
 	private String newLeaderId;
+	private String studyName;
 	
 }
 

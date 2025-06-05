@@ -23,7 +23,7 @@ public class InterceptorConfig implements WebMvcConfigurer{
 	   public void addInterceptors(InterceptorRegistry registry) {
 
 	        registry.addInterceptor(LoginInterceptor)
-	            .addPathPatterns("/board/**", "/study/**", "/studyBoard/**", "/hire/**") // 로그인 필요 경로
+	            .addPathPatterns("/board/1","/board/2", "/studyBoard/**") // 로그인 필요 경로
 	            .excludePathPatterns("/login", "/signup", "/resources/**", "/css/**", "/js/**","/member/**"); // 허용 경로
 	        
 	        registry.addInterceptor(sessionUpdateInterceptor)

@@ -42,7 +42,7 @@ public class StudyBoardServiceImpl implements StudyBoardService {
     public Study getStudyInfo(Member loginMember) {
         try {
             Study study = mapper.getStudyInfo(loginMember);
-            System.out.println(loginMember);
+            System.out.println(study);
             
             if (study != null) {
                 study.setCurrentMemberCount(mapper.getCurrentMemberCount(loginMember.getStudyNo()));

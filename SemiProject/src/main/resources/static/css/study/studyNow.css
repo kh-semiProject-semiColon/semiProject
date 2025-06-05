@@ -75,7 +75,6 @@ main {
 .card:hover {
   transform: scale(1.03);
   border: 2px solid #3867ff;
-  cursor: pointer;
 }
 
 .card-image-container {
